@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/fixed_top" />
+
+    <RelativeLayout
+        android:id="@+id/rl_AppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_icon_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/logo1" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txt_search"
+        android:alpha="0.7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_search"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="10dp"
+        android:padding="5dp"
+        android:rotation="-4"
+        android:text="SEARCH FOR:"
+        android:textColor="@color/yellow"
+        android:textSize="35sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/img"
+        android:layout_marginTop="-32dp"
+        android:background="@drawable/back_bg"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rotation="-3"
+            app:actionViewClass="android.support.v7.widget.SearchView"
+            app:iconifiedByDefault="false">
+
+            <!--  <requestFocus />-->
+
+        </android.support.v7.widget.SearchView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_recent_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_search"
+        android:layout_marginTop="-30dp"
+        android:background="@drawable/your_recent_search">
+
+        <TextView
+            android:id="@+id/txt_recentsearches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:padding="5dp"
+            android:rotation="-4"
+            android:text="YOUR RECENT SEARCHES:"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/yellow" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_recent_search"
+        android:layout_marginTop="-32dp"
+        android:background="@drawable/details_base">
+
+        <ListView
+            android:id="@+id/list_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="37dp"
+            android:layout_marginTop="20dp"
+            android:divider="@null"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+
+</RelativeLayout>

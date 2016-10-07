@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fixed_top" />
+
+        <RelativeLayout
+            android:id="@+id/rl_AppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_icon_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/logo1" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/img_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:padding="5dp"
+                    android:src="@drawable/alert" />
+
+                <ImageView
+                    android:id="@+id/img_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/img_notification"
+                    android:padding="5dp"
+                    android:src="@drawable/filter" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_location_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_AppBar"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/breadcrumbs_base">
+
+            <TextView
+                android:id="@+id/txt_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_toLeftOf="@+id/img_search"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:rotation="-5"
+                android:text="Location"
+                android:textColor="@android:color/black"
+                android:textSize="10sp" />
+
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/search" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txt_cat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_location_search"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="end"
+            android:alpha="0.7"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:rotation="-5"
+            android:text="Category name"
+            android:textAllCaps="true"
+            android:textColor="@color/yellow"
+            android:textSize="35sp" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list_store"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="-30dp"
+        android:divider="@color/yellow"
+        android:dividerHeight="5dp" />
+
+
+</RelativeLayout>

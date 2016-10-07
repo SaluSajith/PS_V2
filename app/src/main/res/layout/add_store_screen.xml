@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fixed_top" />
+
+        <RelativeLayout
+            android:id="@+id/rl_AppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_icon_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/logo1" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txt_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ll"
+            android:alpha="0.7"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:rotation="-5"
+            android:text="ADD STORE"
+            android:textColor="@color/yellow"
+            android:textSize="35sp" />
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img"
+            android:layout_marginTop="-39dp"
+            android:background="@drawable/add_store_bg"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="22dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/edt_store_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/email"
+                    android:hint="store name"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/edt_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-7dp"
+                    android:background="@drawable/password"
+                    android:hint="contact person name"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/edt_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-13dp"
+                    android:background="@drawable/email"
+                    android:hint="email id"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/edt_landline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-7dp"
+                    android:background="@drawable/password"
+                    android:hint="landline no."
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/edt_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-13dp"
+                    android:background="@drawable/email"
+                    android:hint="location"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/edt_mobileno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-7dp"
+                    android:background="@drawable/password"
+                    android:hint="mobile no."
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/edt_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="25dp"
+                    android:layout_marginTop="-13dp"
+                    android:background="@drawable/email"
+                    android:hint="about store"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="45dp"
+            android:src="@drawable/submit" />
+    </RelativeLayout>
+</ScrollView>

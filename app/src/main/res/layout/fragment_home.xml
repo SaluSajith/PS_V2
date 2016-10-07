@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fixed_top" />
+
+        <LinearLayout
+            android:id="@+id/ll_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_AppBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:rotation="-4">
+
+                <TextView
+                    android:id="@+id/txt_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:text="Hi, User Name"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:textColor="@color/yellow" />
+
+                <ImageView
+                    android:id="@+id/img_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:padding="5dp"
+                    android:src="@drawable/alert" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_location_search"
+                android:layout_width="match_parent"
+                android:layout_marginTop="-8dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/breadcrumbs_base">
+
+                <TextView
+                    android:id="@+id/txt_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_toLeftOf="@id/img_search"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:rotation="-5"
+                    android:text="Location of current status "
+                    android:textColor="@android:color/black"
+                    android:textSize="10sp" />
+
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:src="@drawable/search" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_top"
+            android:layout_marginTop="-18dp">
+
+            <ImageView
+                android:id="@+id/ps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/logo" />
+
+            <LinearLayout
+                android:id="@+id/ll_main_cat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ps"
+                android:layout_marginTop="-5dp"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/rl_sub_cat1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_main_cat"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="-45dp"
+                android:background="@drawable/categories"
+                android:visibility="invisible">
+
+                <LinearLayout
+                    android:id="@+id/first"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_bags"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:background="@drawable/bags"
+                        android:gravity="right">
+
+                        <TextView
+                            android:id="@+id/txt_bags"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="10dp"
+                            android:padding="5dp"
+                            android:rotation="4"
+                            android:text="Bags"
+                            android:textAllCaps="true"
+                            android:textAppearance="@android:style/TextAppearance.Large"
+                            android:textColor="@color/yellow"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_shoes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shoes">
+
+                        <TextView
+                            android:id="@+id/txt_shoes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:padding="5dp"
+                            android:rotation="4"
+                            android:text="Shoes"
+                            android:textAllCaps="true"
+                            android:textAppearance="@android:style/TextAppearance.Large"
+                            android:textColor="@color/yellow"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/second"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/first"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_eyewear"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:background="@drawable/eyewear"
+                        android:gravity="right">
+
+                        <TextView
+                            android:id="@+id/txt_eyewear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="10dp"
+                            android:padding="5dp"
+                            android:rotation="-4"
+                            android:text="Eyewear"
+                            android:textAllCaps="true"
+                            android:textAppearance="@android:style/TextAppearance.Large"
+                            android:textColor="@color/yellow"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_watches"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/watches">
+
+                        <TextView
+                            android:id="@+id/txt_watches"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="-15dp"
+                            android:layout_gravity="center"
+                            android:padding="5dp"
+                            android:rotation="-4"
+                            android:text="Watches"
+                            android:textAllCaps="true"
+                            android:textAppearance="@android:style/TextAppearance.Large"
+                            android:textColor="@color/yellow"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_accesories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/second"
+                    android:background="@drawable/accessories"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_accessories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-15dp"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:rotation="-2"
+                        android:text="Accessories"
+                        android:textAllCaps="true"
+                        android:textAppearance="@android:style/TextAppearance.Large"
+                        android:textColor="@color/yellow"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>
