@@ -208,7 +208,7 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
         }
     }
 
-    public void showOTPScreem() {
+    /*public void showOTPScreem() {
         final Dialog popupDialog = new Dialog(this);
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.popup_otp_screen, null);
@@ -292,7 +292,7 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
                 // json calling for change password from server
             }
         });
-    }
+    }*/
 
     private void forgotPasswordJSON(String email) {
         String urlJsonObj = Constant.FASHION_API + "route=forgot_password" + "&user_email=" + email;
