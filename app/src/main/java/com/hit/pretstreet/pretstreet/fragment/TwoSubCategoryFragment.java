@@ -190,10 +190,10 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
                     if (i % 2 == 0) {
                         if (i == 0) {
                         } else {
-                            relativeParams.setMargins(0, -75, 0, 0);
+                            relativeParams.setMargins(0, -86, 0, 0);
                         }
                     } else {
-                        relativeParams.setMargins(0, -95, 0, 0);
+                        relativeParams.setMargins(0, -110, 0, 0);
                     }
                 } else if (deviceSize == DisplayMetrics.DENSITY_XXHIGH) {//TODO: 480
                     if (i % 2 == 0) {
@@ -418,10 +418,10 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
                                 if (i % 2 == 0) {
                                     if (i == 0) {
                                     } else {
-                                        relativeParams.setMargins(0, -75, 0, 0);
+                                        relativeParams.setMargins(0, -86, 0, 0);
                                     }
                                 } else {
-                                    relativeParams.setMargins(0, -95, 0, 0);
+                                    relativeParams.setMargins(0, -110, 0, 0);
                                 }
                             } else if (deviceSize == DisplayMetrics.DENSITY_XXHIGH) {//TODO: 480
                                 if (i % 2 == 0) {
