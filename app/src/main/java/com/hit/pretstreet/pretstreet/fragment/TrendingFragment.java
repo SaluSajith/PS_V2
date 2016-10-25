@@ -149,28 +149,12 @@ public class TrendingFragment extends Fragment implements View.OnClickListener {
                                 .into(new BitmapImageViewTarget(img_trending) {
                                     @Override
                                     protected void setResource(Bitmap resource) {
-                                        /*Bitmap mask;
-                                        if (finalI % 2 == 0) {
-                                            mask = BitmapFactory.decodeResource(getResources(), R.drawable.brand1);
-                                        } else {
-                                            mask = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
-                                        }
-                                        Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
-                                        Canvas mCanvas = new Canvas(result);
-                                        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                                        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                                        //mCanvas.drawBitmap(resource, 0, 0, null);
-                                        mCanvas.drawBitmap(resource, 0, 0, null);
-                                        mCanvas.drawBitmap(mask, 0, 0, paint);
-                                        paint.setXfermode(null);*/
                                         img_trending.setImageBitmap(resource);
                                         img_trending.setScaleType(ImageView.ScaleType.CENTER_CROP);
                                     }
                                 });
                         break;
                     }
-                } else {
-
                 }
                 hidepDialog();
             }
