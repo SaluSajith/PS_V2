@@ -428,7 +428,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 rl_sale_arrival.requestLayout();
             }*/
 
-            Glide.with(getActivity()).load(list.get(position).get("thumb")).asBitmap()
+            Glide.with(CategoryWiseStoreListFragment.this).load(list.get(position).get("thumb")).asBitmap()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
