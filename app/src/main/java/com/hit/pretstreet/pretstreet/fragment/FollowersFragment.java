@@ -284,15 +284,20 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
 
             txt_cat_name.setText(mItems.get(position).get("cat_name"));
             txt_name.setText(mItems.get(position).get("name"));
-          /*  if (position == 0) {
-                LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
+            if (position == 0) {
+                //commented because of issue by nitin
+/* LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
                         new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                                LinearLayout.LayoutParams.WRAP_CONTENT));*/
+                LinearLayout.LayoutParams relativeParams =
+                        new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
                 relativeParams.setMargins(0, 100, 0, 0);
                 img_photo.setLayoutParams(relativeParams);
                 txt_name.setLayoutParams(relativeParams);
-            }*/
+            }
 
             Glide.with(getActivity()).load(mItems.get(position).get("small_image")).asBitmap()
                     .into(new BitmapImageViewTarget(img_photo) {
@@ -412,14 +417,21 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                 viewHolder = (RecordHolder) convertView.getTag();
             }
             viewHolder.txt_store_discount.setText(mItems.get(position).get("title"));
-           /* if (position == 0) {
-                LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
+            if (position == 0) {
+                //commented because of issue by nitin
+                /*LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
                         new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                                LinearLayout.LayoutParams.WRAP_CONTENT));*/
+
+                LinearLayout.LayoutParams relativeParams =
+                        new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+
                 relativeParams.setMargins(0, 100, 0, 0);
                 viewHolder.txt_store_discount.setLayoutParams(relativeParams);
-            }*/
+            }
             return convertView;
         }
     }

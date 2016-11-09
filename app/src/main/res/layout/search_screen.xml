@@ -102,7 +102,8 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="37dp"
             android:layout_marginTop="20dp"
-            android:divider="@null"
+            android:divider="@color/yellow"
+            android:dividerHeight="5dp"
             android:visibility="invisible" />
     </LinearLayout>
 
