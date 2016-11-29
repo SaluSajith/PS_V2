@@ -418,16 +418,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 txt_folleowercount.setText(Html.fromHtml(strFollowCount));
             }
 
-           /* if (position == 0) {
-                LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
-                        new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
-                relativeParams.setMargins(55, 70, 0, 0);
-                rl_sale_arrival.setLayoutParams(relativeParams);
-                rl_sale_arrival.requestLayout();
-            }*/
-
             Glide.with(CategoryWiseStoreListFragment.this).load(list.get(position).get("thumb")).asBitmap()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override

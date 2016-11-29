@@ -145,9 +145,9 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                 txt_cat_name.setMaxLines(1);
                 txt_cat_name.setTypeface(font);
 
-                LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams relativeParams =
                         new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
                 if (deviceSize == DisplayMetrics.DENSITY_LOW) {//TODO: 120
                     if (i % 2 == 0) {
                         if (i == 0) {
@@ -250,7 +250,7 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                 final int dheight = (int) ((displaymetrics.heightPixels) * 0.45);
 
                 final int finalI = i;
-                Glide.with(getActivity()).load(list.get(i).getImage()).asBitmap()
+                Glide.with(ThreeSubCategoryFragment.this).load(list.get(i).getImage()).asBitmap()
                         .into(new BitmapImageViewTarget(mImageView) {
                             @Override
                             protected void setResource(Bitmap resource) {
@@ -385,9 +385,9 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                             txt_cat_name.setMaxLines(1);
                             txt_cat_name.setTypeface(font);
 
-                            LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams relativeParams =
                                     new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                            LinearLayout.LayoutParams.WRAP_CONTENT));
+                                            LinearLayout.LayoutParams.WRAP_CONTENT);
 
                             if (deviceSize == DisplayMetrics.DENSITY_LOW) {//TODO: 120
                                 if (i % 2 == 0) {
@@ -491,7 +491,7 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                             final int dheight = (int) ((displaymetrics.heightPixels) * 0.45);
 
                             final int finalI = i;
-                            Glide.with(getActivity()).load(list.get(i).getImage()).asBitmap()
+                            Glide.with(ThreeSubCategoryFragment.this).load(list.get(i).getImage()).asBitmap()
                                     .into(new BitmapImageViewTarget(mImageView) {
                                         @Override
                                         protected void setResource(Bitmap resource) {

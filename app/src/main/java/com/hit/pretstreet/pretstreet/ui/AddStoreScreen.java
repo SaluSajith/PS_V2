@@ -12,6 +12,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,8 +47,12 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.ExpandableHeightGridView;
+import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.ActivityManagePermission;
@@ -71,6 +78,8 @@ public class AddStoreScreen extends ActivityManagePermission implements View.OnC
     private TextView txt_cat;
     private EditText edt_store_name, edt_name, edt_email, edt_location, edt_mobileno, edt_landline, edt_about;
     private Typeface font;
+    private String baseImage;
+    private ScrollView scroll;
     private ProgressDialog pDialog;
 
     @Override
@@ -85,6 +94,7 @@ public class AddStoreScreen extends ActivityManagePermission implements View.OnC
         img_submit = (ImageView) findViewById(R.id.img_submit);
 
         txt_cat = (TextView) findViewById(R.id.txt_cat);
+        scroll = (ScrollView) findViewById(R.id.scroll);
 
         edt_store_name = (EditText) findViewById(R.id.edt_store_name);
         edt_location = (EditText) findViewById(R.id.edt_location);
@@ -103,6 +113,24 @@ public class AddStoreScreen extends ActivityManagePermission implements View.OnC
         edt_name.setTypeface(font);
         edt_about.setTypeface(font);
         edt_email.setTypeface(font);
+
+
+        baseImage = PreferenceServices.getInstance().getBaseImage();
+        Log.e("baseImage", baseImage);
+        if (baseImage.equalsIgnoreCase("")) {
+        } else {
+            Glide.with(AddStoreScreen.this)
+                    .load(baseImage)
+                    .asBitmap()
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            Drawable dr = new BitmapDrawable(resource);
+                            scroll.setBackgroundDrawable(dr);
+                        }
+                    });
+        }
+
 
         img_icon_menu.setOnClickListener(this);
         img_submit.setOnClickListener(this);

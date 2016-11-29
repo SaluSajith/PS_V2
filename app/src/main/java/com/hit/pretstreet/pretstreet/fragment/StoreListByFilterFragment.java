@@ -343,14 +343,13 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
             }
             if (position == 0) {
                 LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
-                        new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
                 relativeParams.setMargins(45, 100, 0, 0);
                 rl_sale_arrival.setLayoutParams(relativeParams);
                 rl_sale_arrival.requestLayout();
             }
-           Glide.with(getActivity()).load(list.get(position).get("thumb")).asBitmap()
+            Glide.with(StoreListByFilterFragment.this).load(list.get(position).get("thumb")).asBitmap()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {

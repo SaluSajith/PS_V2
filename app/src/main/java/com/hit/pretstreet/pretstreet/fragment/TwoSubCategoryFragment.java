@@ -138,9 +138,9 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
                 txt_cat_name.setMaxLines(1);
                 txt_cat_name.setTypeface(font);
 
-                LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams relativeParams =
                         new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
                 if (deviceSize == DisplayMetrics.DENSITY_LOW) {//TODO: 120
                     if (i % 2 == 0) {
                         if (i == 0) {
@@ -243,7 +243,7 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
                 final int dheight = (int) ((displaymetrics.heightPixels) * 0.5);
 
                 final int finalI = i;
-                Glide.with(getActivity()).load(list.get(i).getImage()).asBitmap()
+                Glide.with(TwoSubCategoryFragment.this).load(list.get(i).getImage()).asBitmap()
                         .into(new BitmapImageViewTarget(mImageView) {
                             @Override
                             protected void setResource(Bitmap resource) {
@@ -365,9 +365,9 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
                             txt_cat_name.setMaxLines(1);
                             txt_cat_name.setTypeface(font);
 
-                            LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams relativeParams =
                                     new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                            LinearLayout.LayoutParams.WRAP_CONTENT));
+                                            LinearLayout.LayoutParams.WRAP_CONTENT);
 
                             if (deviceSize == DisplayMetrics.DENSITY_LOW) {//TODO: 120
                                 if (i % 2 == 0) {
@@ -471,7 +471,7 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
                             final int dheight = (int) ((displaymetrics.heightPixels) * 0.5);
 
                             final int finalI = i;
-                            Glide.with(getActivity()).load(list.get(i).getImage()).asBitmap()
+                            Glide.with(TwoSubCategoryFragment.this).load(list.get(i).getImage()).asBitmap()
                                     .into(new BitmapImageViewTarget(mImageView) {
                                         @Override
                                         protected void setResource(Bitmap resource) {

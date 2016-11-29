@@ -151,17 +151,15 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     });
         }
 
-
         img_icon_menu.setOnClickListener(this);
 
         searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (!searchview.isIconified())
-                    searchview.setIconified(true);
-
                 submitQuery = query;
                 pageCount = 0;
+                list = null;
+                list_search.setAdapter(null);
                 showSearchResult(query, true);
                 Constant.hide_keyboard(getActivity());
                 return true;
@@ -397,11 +395,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 if (responseSuccess) {
                     list_search.setVisibility(View.VISIBLE);
                     if (first) {
+                        if (!searchview.isIconified())
+                            searchview.setIconified(true);
+                        searchview.clearFocus();
                         searchLogTracking(query);
                         Constant.hide_keyboard(getActivity());
-//                        searchListAdapter = new SearchListAdapter(getActivity(), R.layout.row_search, list);
-//                        list_search.setAdapter(searchListAdapter);
-
                         storeListAdapter = new StoreListAdapter(getActivity(), R.layout.row_list_store1, list);
                         list_search.setAdapter(storeListAdapter);
                     } else
@@ -409,7 +407,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     requestCalled = false;
                 } else {
                     if (first)
-                        //getFragmentManager().popBackStack();
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                 }
                 if (first) {
@@ -422,6 +419,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 VolleyLog.d("Volley", "Error: " + error.getMessage());
                 if (first) {
                     hidepDialog();
+                    if (!searchview.isIconified())
+                        searchview.setIconified(true);
                 }
                 String message = null;
                 if (error instanceof NetworkError) {
@@ -522,6 +521,16 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             else
                 viewHolder.ll_store.setBackgroundResource(R.drawable.password);
 
+
+            if (position == 0) {
+                LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                relativeParams.setMargins(40, 100, 0, 0);
+                viewHolder.txt_store_name.setLayoutParams(relativeParams);
+                viewHolder.txt_store_name.requestLayout();
+            }
+
             viewHolder.txt_store_name.setText(mItems.get(position).get("name"));
             viewHolder.txt_address.setText(mItems.get(position).get("address"));
 
@@ -619,10 +628,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 txt_folleowercount.setText(Html.fromHtml(strFollowCount));
             }
             if (position == 0) {
-                /*LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
-                        new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));*/
                 LinearLayout.LayoutParams relativeParams =
                         new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -631,7 +636,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 rl_sale_arrival.setLayoutParams(relativeParams);
                 rl_sale_arrival.requestLayout();
             }
-            Glide.with(getActivity()).load(list.get(position).get("thumb")).asBitmap()
+            Glide.with(SearchFragment.this).load(list.get(position).get("thumb")).asBitmap()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
