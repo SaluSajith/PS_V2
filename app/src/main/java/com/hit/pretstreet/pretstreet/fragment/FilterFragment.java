@@ -155,8 +155,9 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
                     } else {
                         for (int i = 0; i < listGender.size(); i++) {
                             if (listGender.get(i).get("id").equalsIgnoreCase("79")) {
-                                img_men.setImageResource(R.drawable.male_active_sort);
-                                gender = listGender.get(i).get("id");
+                                //img_men.setImageResource(R.drawable.male_active_sort);
+                                //gender = listGender.get(i).get("id");
+                                gender = "";
                                 final int finalI = i;
                                 img_men.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -204,7 +205,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
                             img_like.setImageResource(R.drawable.followers_sort);
                             img_sale.setImageResource(R.drawable.sale_sort);
                             img_new.setImageResource(R.drawable.new_arrival_sort);
-                            selected_ids_popularity = listPopularity.get(i).get("key_name");
+                            selected_ids_popularity = listPopularity.get(0).get("key_name");
                             if (listPopularity.get(i).get("key_id").equalsIgnoreCase("96")) {
                                 final int finalI = i;
                                 img_location.setOnClickListener(new View.OnClickListener() {
@@ -321,6 +322,12 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
                 booleanSelectedArryPopularity = new ArrayList<Boolean>();
                 selectedidsPopularity.clear();
                 selected_ids_popularity = "";
+
+                gender = "";
+                img_men.setImageResource(R.drawable.male_sort);
+                img_women.setImageResource(R.drawable.female_sort);
+                img_kids.setImageResource(R.drawable.kids_sort);
+
                 img_location.setImageResource(R.drawable.distance_sort);
                 img_like.setImageResource(R.drawable.followers_sort);
                 img_sale.setImageResource(R.drawable.sale_sort);
