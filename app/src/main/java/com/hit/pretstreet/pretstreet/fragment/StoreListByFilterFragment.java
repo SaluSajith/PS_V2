@@ -375,9 +375,9 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
                     });
 
             if (mItems.get(position).get("wishlist").equalsIgnoreCase("notin")) {
-                img_follow_unfollow.setText("FOLLOW");
+                img_follow_unfollow.setText("Follow");
             } else {
-                img_follow_unfollow.setText("UNFOLLOW");
+                img_follow_unfollow.setText("Unfollow");
             }
 
             if (mItems.get(position).get("sale").equalsIgnoreCase("Yes")) {

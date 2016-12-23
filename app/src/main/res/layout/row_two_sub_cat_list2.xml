@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="33sp"
+        android:gravity="center"
         android:background="@drawable/nine"
         android:padding="5sp"
         android:rotation="6"

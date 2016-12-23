@@ -185,6 +185,7 @@ public class DefaultLocation extends ActivityManagePermission implements View.On
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + Constant.API_KEY_BROWSER);
+            sb.append("&components=country:in");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
             URL url = new URL(sb.toString());
             //System.out.println("URL: " + url);
@@ -267,8 +268,8 @@ public class DefaultLocation extends ActivityManagePermission implements View.On
                 if (list.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_LONG).show();
                 } else {
-                    Address location = list.get(1);
-                    currentLocation = location.getSubLocality();
+                    Address location = list.get(0);
+                    currentLocation = location.getAddressLine(0) + ", " + location.getAddressLine(1);
                     // Log.e("Location: ", currentLocation);
                     Toast.makeText(getApplicationContext(), "Location set to " + currentLocation, Toast.LENGTH_LONG).show();
                     PreferenceServices.instance().saveCurrentLocation(currentLocation);

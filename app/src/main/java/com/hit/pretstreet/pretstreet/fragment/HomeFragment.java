@@ -183,9 +183,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
 
                 txt_cat_name.setTypeface(font);
-                LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
                 if (deviceSize == DisplayMetrics.DENSITY_LOW) {//TODO: 120
                     if (i % 2 == 0) {
                         if (i == 0) {
@@ -332,17 +331,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             t3.add(R.id.frame_container, f3);
                             t3.addToBackStack(null);
                             t3.commit();
-                        } else if (list.get(finalI1).get("category_id").equalsIgnoreCase("55")) {
-                            Fragment f3 = new TwoSubCategoryFragment();
-                            Bundle b3 = new Bundle();
-                            b3.putString("main_cat_id", list.get(finalI1).get("category_id"));
-                            b3.putString("main_cat_name", list.get(finalI1).get("name"));
-                            f3.setArguments(b3);
-                            FragmentTransaction t3 = getFragmentManager().beginTransaction();
-                            t3.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                            t3.add(R.id.frame_container, f3);
-                            t3.addToBackStack(null);
-                            t3.commit();
+                        } else if (list.get(finalI1).get("category_id").equalsIgnoreCase("104")) {
+                            Fragment f1 = new CategoryWiseStoreListFragment();
+                            Bundle b1 = new Bundle();
+                            b1.putString("main_cat_id", list.get(finalI1).get("category_id"));
+                            b1.putString("sub_cat_id", list.get(finalI1).get("category_id"));
+                            b1.putSerializable("cat_list", null);
+                            b1.putString("isFrom", "");
+                            b1.putString("main_cat_name", list.get(finalI1).get("name"));
+                            f1.setArguments(b1);
+                            FragmentTransaction t1 = getFragmentManager().beginTransaction();
+                            t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                            t1.add(R.id.frame_container, f1);
+                            t1.addToBackStack(null);
+                            t1.commit();
                         } else {
                             Fragment f3 = new ThreeSubCategoryFragment();
                             Bundle b3 = new Bundle();
@@ -367,7 +369,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         SavedSubCatList = PreferenceServices.getInstance().getHomeSubCatList();
         if (SavedSubCatList.length() > 1) {
             rl_sub_cat1.setVisibility(View.VISIBLE);
-            final ArrayList<HashMap<String, String>> list = new ArrayList<>();
+            //final ArrayList<HashMap<String, String>> list = new ArrayList<>();
+            listsubcat = new ArrayList<>();
             JSONObject response = null;
             try {
                 response = new JSONObject(SavedSubCatList);
@@ -375,41 +378,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 JSONArray jsonArray = new JSONArray(response.getString("types"));
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    HashMap<String, String> hashMap = new HashMap<>();
-                    hashMap.put("category_id", jsonObject.getString("category_id"));
-                    hashMap.put("name", jsonObject.getString("name"));
-                    hashMap.put("image", jsonObject.getString("image"));
-                    list.add(hashMap);
+                    CategoryItem item = new CategoryItem();
+                    item.setId(jsonObject.getString("category_id"));
+                    item.setCat_name(jsonObject.getString("name"));
+                    item.setImage(jsonObject.getString("image"));
+                    listsubcat.add(item);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).get("category_id").equalsIgnoreCase("112")) {
-                    ll_bags.setTag(list.get(i).get("category_id"));
-                    txt_bags.setText(list.get(i).get("name"));
+            for (int i = 0; i < listsubcat.size(); i++) {
+                if (listsubcat.get(i).getId().equalsIgnoreCase("112")) {
+                    ll_bags.setTag(listsubcat.get(i).getId());
+                    txt_bags.setText(listsubcat.get(i).getCat_name());
                 }
-                if (list.get(i).get("category_id").equalsIgnoreCase("111")) {
-                    ll_shoes.setTag(list.get(i).get("category_id"));
-                    txt_shoes.setText(list.get(i).get("name"));
+                if (listsubcat.get(i).getId().equalsIgnoreCase("111")) {
+                    ll_shoes.setTag(listsubcat.get(i).getId());
+                    txt_shoes.setText(listsubcat.get(i).getCat_name());
                 }
-                if (list.get(i).get("category_id").equalsIgnoreCase("113")) {
-                    ll_eyewear.setTag(list.get(i).get("category_id"));
-                    txt_eyewear.setText(list.get(i).get("name"));
+                if (listsubcat.get(i).getId().equalsIgnoreCase("113")) {
+                    ll_eyewear.setTag(listsubcat.get(i).getId());
+                    txt_eyewear.setText(listsubcat.get(i).getCat_name());
                 }
-                if (list.get(i).get("category_id").equalsIgnoreCase("110")) {
-                    ll_watches.setTag(list.get(i).get("category_id"));
-                    txt_watches.setText(list.get(i).get("name"));
+                if (listsubcat.get(i).getId().equalsIgnoreCase("110")) {
+                    ll_watches.setTag(listsubcat.get(i).getId());
+                    txt_watches.setText(listsubcat.get(i).getCat_name());
                 }
-                if (list.get(i).get("category_id").equalsIgnoreCase("114")) {
-                    ll_accesories.setTag(list.get(i).get("category_id"));
-                    txt_accessories.setText(list.get(i).get("name"));
+                if (listsubcat.get(i).getId().equalsIgnoreCase("114")) {
+                    ll_accesories.setTag(listsubcat.get(i).getId());
+                    txt_accessories.setText(listsubcat.get(i).getCat_name());
                 }
             }
         } else {
             rl_sub_cat1.setVisibility(View.GONE);
         }
-
         getMainCategoryList();
         getSubCategoryList();
         return rootView;
@@ -527,8 +529,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 txt_cat_name.setVisibility(View.VISIBLE);
                             }
                             LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
-                                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                            LinearLayout.LayoutParams.WRAP_CONTENT));
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT);
 
                             if (deviceSize == DisplayMetrics.DENSITY_LOW) {//TODO: 120
                                 if (i % 2 == 0) {
@@ -678,17 +680,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                         t3.add(R.id.frame_container, f3);
                                         t3.addToBackStack(null);
                                         t3.commit();
-                                    } else if (list.get(finalI1).get("category_id").equalsIgnoreCase("55")) {
-                                        Fragment f3 = new TwoSubCategoryFragment();
-                                        Bundle b3 = new Bundle();
-                                        b3.putString("main_cat_id", list.get(finalI1).get("category_id"));
-                                        b3.putString("main_cat_name", list.get(finalI1).get("name"));
-                                        f3.setArguments(b3);
-                                        FragmentTransaction t3 = getFragmentManager().beginTransaction();
-                                        t3.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                                        t3.add(R.id.frame_container, f3);
-                                        t3.addToBackStack(null);
-                                        t3.commit();
+                                    } else if (list.get(finalI1).get("category_id").equalsIgnoreCase("104")) {
+                                        Fragment f1 = new CategoryWiseStoreListFragment();
+                                        Bundle b1 = new Bundle();
+                                        b1.putString("main_cat_id", list.get(finalI1).get("category_id"));
+                                        b1.putString("sub_cat_id", list.get(finalI1).get("category_id"));
+                                        b1.putSerializable("cat_list", null);
+                                        b1.putString("isFrom", "");
+                                        b1.putString("main_cat_name", list.get(finalI1).get("name"));
+                                        f1.setArguments(b1);
+                                        FragmentTransaction t1 = getFragmentManager().beginTransaction();
+                                        t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                                        t1.add(R.id.frame_container, f1);
+                                        t1.addToBackStack(null);
+                                        t1.commit();
                                     } else {
                                         Fragment f3 = new ThreeSubCategoryFragment();
                                         Bundle b3 = new Bundle();
@@ -755,7 +760,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             rl_sub_cat1.setVisibility(View.GONE);
             showpDialog();
         }
-        listsubcat = new ArrayList<>();
         jsonObjReqSub = new JsonObjectRequest(Request.Method.GET, urlJson, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(final JSONObject response) {
@@ -765,6 +769,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 try {
                     strsuccess = response.getString("success");
                     if (strsuccess.equals("true")) {
+                        listsubcat = new ArrayList<>();
                         responseSuccess = true;
                         parentID = response.getString("parent_id");
                         JSONArray jsonArray = new JSONArray(response.getString("types"));

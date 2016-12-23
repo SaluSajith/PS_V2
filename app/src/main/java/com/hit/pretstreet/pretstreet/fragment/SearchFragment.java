@@ -161,13 +161,20 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 list = null;
                 list_search.setAdapter(null);
                 showSearchResult(query, true);
-                Constant.hide_keyboard(getActivity());
+                //Constant.hide_keyboard(getActivity());
+                searchview.clearFocus();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                showDropDownSearchResult(newText);
+                if (newText.length() == 2) {
+                    showDropDownSearchResult(newText);
+                } else if (newText.length() == 4) {
+                    showDropDownSearchResult(newText);
+                } else if (newText.length() > 5) {
+                    showDropDownSearchResult(newText);
+                }
                 return false;
             }
         });
@@ -191,7 +198,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-
         return rootView;
     }
 
@@ -231,7 +237,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJson, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(final JSONObject response) {
-                Log.e("Volley", response.toString());
+                Log.e("search dropdown", response.toString());
                 boolean responseSuccess = false;
                 String strsuccess, category;
                 try {
@@ -595,7 +601,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             } else {
                 convertView = inflater.inflate(R.layout.row_list_store2, parent, false);
             }
-
             ll_listdata = (LinearLayout) convertView.findViewById(R.id.ll_listdata);
             rl_sale_arrival = (RelativeLayout) convertView.findViewById(R.id.rl_sale_arrival);
             img_store_photo = (ImageView) convertView.findViewById(R.id.img_store_photo);
@@ -662,9 +667,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     });
 
             if (mItems.get(position).get("wishlist").equalsIgnoreCase("notin")) {
-                img_follow_unfollow.setText("FOLLOW");
+                img_follow_unfollow.setText("Follow");
             } else {
-                img_follow_unfollow.setText("UNFOLLOW");
+                img_follow_unfollow.setText("Unfollow");
             }
 
             if (mItems.get(position).get("sale").equalsIgnoreCase("Yes")) {

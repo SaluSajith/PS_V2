@@ -3,9 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:dividerPadding="1dp"
-    android:showDividers="middle"
-    android:divider="@drawable/vertical1"
     android:orientation="horizontal">
 
     <LinearLayout

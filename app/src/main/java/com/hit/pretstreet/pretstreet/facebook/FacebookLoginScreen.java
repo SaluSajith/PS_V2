@@ -184,26 +184,6 @@ public class FacebookLoginScreen extends Activity {
         LoginManager.getInstance().logOut();
     }
 
-
-    /* private void handlePendingAction() {
-        PendingAction previouslyPendingAction = pendingAction;
-        // These actions may re-set pendingAction if they are still pending, but
-        // we assume they
-        // will succeed.
-        pendingAction = PendingAction.NONE;
-
-        switch (previouslyPendingAction) {
-            case NONE:
-                break;
-            case POST_PHOTO:
-                postPhoto();
-                break;
-            case POST_STATUS_UPDATE:
-                postStatusUpdate();
-                break;
-        }
-    }*/
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

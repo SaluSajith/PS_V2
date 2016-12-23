@@ -135,6 +135,16 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
                     placeList.setVisibility(View.VISIBLE);
                     locationListAdapter = new LocationListAdapter(getApplicationContext(), R.layout.row_search, list);
                     placeList.setAdapter(locationListAdapter);
+
+                    placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            //String str = resultList.get(i).toString();
+                            String str = ((TextView) view.findViewById(R.id.txt_loc_name)).getText().toString();
+                            Log.e("selected", str);
+                            getLocationFromAddress(SelectLocation.this, str);
+                        }
+                    });
                     break;
                 }
             }
@@ -142,7 +152,6 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
     }
 
     public class LocationListAdapter extends BaseAdapter {
-
         private Context context;
         int layoutResourceId;
         private ArrayList<HashMap<String, String>> mItems;
@@ -280,7 +289,7 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + Constant.API_KEY_BROWSER);
-            //sb.append(TYPE_CITIES);
+            sb.append("&components=country:in");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
             URL url = new URL(sb.toString());
             //System.out.println("URL: " + url);
@@ -363,15 +372,14 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
                 if (list.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_LONG).show();
                 } else {
-                    Address location = list.get(1);
-                    currentLocation = location.getSubLocality();
-                    //Log.e("Location: ", currentLocation);
+                    Address location = list.get(0);
+                    currentLocation = location.getAddressLine(0) + ", " + location.getAddressLine(1);
+                    Log.e("Location: ", currentLocation);
                     Toast.makeText(getApplicationContext(), "Location Changes to " + currentLocation, Toast.LENGTH_LONG).show();
                     PreferenceServices.instance().saveCurrentLocation(currentLocation);
                     PreferenceServices.instance().saveLatitute(lat1 + "");
                     PreferenceServices.instance().saveLongitute(long1 + "");
                     this.finish();
-                    //startActivity(new Intent(getApplicationContext(), AfterLoginScreen.class));
                 }
             } catch (IOException e) {
                 e.printStackTrace();

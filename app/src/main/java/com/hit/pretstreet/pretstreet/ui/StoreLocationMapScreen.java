@@ -33,7 +33,6 @@ import java.util.Locale;
  * Created by hit on 22/3/16.
  */
 public class StoreLocationMapScreen extends FragmentActivity {
-
     private ImageView img_back;
     private TextView txt_cat;
     private Typeface font;

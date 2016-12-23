@@ -146,7 +146,6 @@ public class LoginScreen extends ActivityManagePermission implements View.OnClic
 
     }
 
-
     private void showpDialog() {
         if (!pDialog.isShowing()) {
             pDialog.show();

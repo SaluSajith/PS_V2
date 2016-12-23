@@ -61,4 +61,11 @@
         android:divider="@color/yellow"
         android:dividerHeight="3dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/list_followers"
+        android:layout_marginTop="-38dp"
+        android:background="@color/yellow" />
+
 </RelativeLayout>

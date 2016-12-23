@@ -106,6 +106,9 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
         if (mainCAtId.equalsIgnoreCase("4")) {
             savedCaTList = PreferenceServices.getInstance().getTheshopscatlist();
         }
+        if (mainCAtId.equalsIgnoreCase("55")) {
+            savedCaTList = PreferenceServices.getInstance().getThedesignerscatlist();
+        }
         if (mainCAtId.equalsIgnoreCase("56")) {
             savedCaTList = PreferenceServices.getInstance().getThejewekkarytrendingcatlist();
         }

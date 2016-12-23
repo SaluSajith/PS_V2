@@ -157,11 +157,11 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/ll_popularity"
             android:layout_gravity="center"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="100dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:visibility="invisible">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/img_apply"
@@ -174,7 +174,7 @@
                 android:id="@+id/img_reset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-15dp"
+                android:layout_marginTop="-16dp"
                 android:padding="5dp"
                 android:src="@drawable/reset" />
 

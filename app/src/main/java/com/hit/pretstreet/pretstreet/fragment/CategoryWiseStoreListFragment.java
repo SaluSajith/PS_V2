@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -22,7 +21,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.Html;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -74,7 +72,6 @@ import java.util.HashMap;
  * Created by Jesal on 05-Sep-16.
  */
 public class CategoryWiseStoreListFragment extends Fragment implements View.OnClickListener {
-
     private ImageView img_icon_menu, img_notification, img_search, img_filter, img;
     private TextView txt_cat_name, txt_location;
     private LinearLayout ll_category;
@@ -111,26 +108,12 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         isFrom = bundle.getString("isFrom");
         listCategory = (ArrayList<CategoryItem>) bundle.getSerializable("cat_list");
 
-        img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
-        img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
-        img_search = (ImageView) rootView.findViewById(R.id.img_search);
-        img_filter = (ImageView) rootView.findViewById(R.id.img_filter);
-        img = (ImageView) rootView.findViewById(R.id.img);
-
-        txt_cat_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
-        txt_location = (TextView) rootView.findViewById(R.id.txt_location);
-
         list_store = (ListView) rootView.findViewById(R.id.list_store);
-        hsv_category = (HorizontalScrollView) rootView.findViewById(R.id.hsv_category);
-        ll_category = (LinearLayout) rootView.findViewById(R.id.ll_category);
+
 
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
 
-        txt_cat_name.setTypeface(font);
-        hsv_category.bringToFront();
-        txt_location.setTypeface(font);
-        txt_cat_name.setText(subCatName);
         if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("0.0")
                 || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("0.0")) {
             lat = "";
@@ -139,12 +122,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             lat = PreferenceServices.getInstance().getLatitute();
             lng = PreferenceServices.getInstance().getLongitute();
         }
-
-        txt_location.setOnClickListener(this);
-        img_icon_menu.setOnClickListener(this);
-        img_notification.setOnClickListener(this);
-        img_search.setOnClickListener(this);
-        img_filter.setOnClickListener(this);
 
         list_store.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -171,72 +148,105 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             }
         });
 
-        catValue = new String[listCategory.size()];
-        catId = new String[listCategory.size()];
-        txtname = new TextView[listCategory.size()];
-        txtnameAll = new TextView[listCategory.size()];
-        for (int i = 0; i < listCategory.size(); i++) {
-            catValue[i] = listCategory.get(i).getCat_name();
-            catId[i] = listCategory.get(i).getId();
-            LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = infl.inflate(R.layout.row_catwise_cat, null);
-            txtname[i] = (TextView) view.findViewById(R.id.name);
-            txtnameAll[i] = (TextView) view.findViewById(R.id.nameAll);
-            txtname[i].setTypeface(font);
-            txtnameAll[i].setTypeface(font);
-            if (i == 0) {
-                txtnameAll[i].setText("All");
-                list_store.setAdapter(null);
-            } else {
-                txtnameAll[i].setVisibility(View.GONE);
-            }
-            if (subCatId.equalsIgnoreCase(catId[i])) {
-                txtname[i].setTextColor(getResources().getColor(R.color.black));
-                LLSelectedID = catId[i];
-                pageCount = 0;
-                txtname[i].hasFocusable();
-                hsv_category.fullScroll(View.FOCUS_DOWN);
-                getStoreList(catId[i], true);
-            }
-            txtname[i].setText(catValue[i]);
-            ll_category.addView(view);
-            final int finalI = i;
-            txtname[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        /**inflate header view of the list starts.**/
+        LayoutInflater inflaterHeader = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflaterHeader.inflate(R.layout.header_store_list, null);
+        img_icon_menu = (ImageView) v.findViewById(R.id.img_icon_menu);
+        img_notification = (ImageView) v.findViewById(R.id.img_notification);
+        img_search = (ImageView) v.findViewById(R.id.img_search);
+        img_filter = (ImageView) v.findViewById(R.id.img_filter);
+        img = (ImageView) v.findViewById(R.id.img);
+        txt_cat_name = (TextView) v.findViewById(R.id.txt_cat_name);
+        txt_location = (TextView) v.findViewById(R.id.txt_location);
+        hsv_category = (HorizontalScrollView) v.findViewById(R.id.hsv_category);
+        ll_category = (LinearLayout) v.findViewById(R.id.ll_category);
+
+        txt_cat_name.setTypeface(font);
+        hsv_category.bringToFront();
+        txt_location.setTypeface(font);
+        txt_cat_name.setText(subCatName);
+
+        txt_location.setOnClickListener(this);
+        img_icon_menu.setOnClickListener(this);
+        img_notification.setOnClickListener(this);
+        img_search.setOnClickListener(this);
+        img_filter.setOnClickListener(this);
+        list_store.addHeaderView(v);
+        /**inflate header view of the list ends.**/
+
+        if (listCategory != null) {
+            catValue = new String[listCategory.size()];
+            catId = new String[listCategory.size()];
+            txtname = new TextView[listCategory.size()];
+            txtnameAll = new TextView[listCategory.size()];
+            for (int i = 0; i < listCategory.size(); i++) {
+                catValue[i] = listCategory.get(i).getCat_name();
+                catId[i] = listCategory.get(i).getId();
+                LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = infl.inflate(R.layout.row_catwise_cat, null);
+                txtname[i] = (TextView) view.findViewById(R.id.name);
+                txtnameAll[i] = (TextView) view.findViewById(R.id.nameAll);
+                txtname[i].setTypeface(font);
+                txtnameAll[i].setTypeface(font);
+                if (i == 0) {
+                    txtnameAll[i].setText("All");
                     list_store.setAdapter(null);
-                    LLSelectedID = catId[finalI];
+                } else {
+                    txtnameAll[i].setVisibility(View.GONE);
+                }
+                if (subCatId.equalsIgnoreCase(catId[i])) {
+                    txtname[i].setTextColor(getResources().getColor(R.color.black));
+                    LLSelectedID = catId[i];
                     pageCount = 0;
-                    if (isFrom.equalsIgnoreCase("SubCategory")) {
-                        txt_cat_name.setText(catValue[finalI]);
-                    }
-                    getStoreList(catId[finalI], true);
-                    for (int k = 0; k < listCategory.size(); k++) {
-                        if (finalI == k) {
-                            txtname[finalI].setTextColor(getResources().getColor(R.color.black));
-                        } else {
-                            txtname[k].setTextColor(getResources().getColor(R.color.dark_gray));
-                            txtnameAll[0].setTextColor(getResources().getColor(R.color.dark_gray));
+                    txtname[i].hasFocusable();
+                    hsv_category.fullScroll(View.FOCUS_DOWN);
+                    getStoreList(catId[i], true);
+                }
+                txtname[i].setText(catValue[i]);
+                ll_category.addView(view);
+                final int finalI = i;
+                txtname[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        list_store.setAdapter(null);
+                        LLSelectedID = catId[finalI];
+                        pageCount = 0;
+                        if (isFrom.equalsIgnoreCase("SubCategory")) {
+                            txt_cat_name.setText(catValue[finalI]);
+                        }
+                        getStoreList(catId[finalI], true);
+                        for (int k = 0; k < listCategory.size(); k++) {
+                            if (finalI == k) {
+                                txtname[finalI].setTextColor(getResources().getColor(R.color.black));
+                            } else {
+                                txtname[k].setTextColor(getResources().getColor(R.color.dark_gray));
+                                txtnameAll[0].setTextColor(getResources().getColor(R.color.dark_gray));
+                            }
                         }
                     }
-                }
-            });
-            txtnameAll[finalI].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    list_store.setAdapter(null);
-                    for (int i = 0; i < listCategory.size(); i++) {
-                        txtname[i].setTextColor(getResources().getColor(R.color.dark_gray));
+                });
+                txtnameAll[finalI].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        list_store.setAdapter(null);
+                        for (int i = 0; i < listCategory.size(); i++) {
+                            txtname[i].setTextColor(getResources().getColor(R.color.dark_gray));
+                        }
+                        txtnameAll[finalI].setTextColor(getResources().getColor(R.color.black));
+                        LLSelectedID = mainCatId;
+                        pageCount = 0;
+                        if (isFrom.equalsIgnoreCase("SubCategory")) {
+                            txt_cat_name.setText("All");
+                        }
+                        getStoreList(mainCatId, true);
                     }
-                    txtnameAll[finalI].setTextColor(getResources().getColor(R.color.black));
-                    LLSelectedID = mainCatId;
-                    pageCount = 0;
-                    if (isFrom.equalsIgnoreCase("SubCategory")) {
-                        txt_cat_name.setText("All");
-                    }
-                    getStoreList(mainCatId, true);
-                }
-            });
+                });
+            }
+        } else {
+            list_store.setAdapter(null);
+            LLSelectedID = subCatId;
+            hsv_category.setVisibility(View.INVISIBLE);
+            getStoreList(LLSelectedID, true);
         }
         return rootView;
     }
@@ -251,6 +261,8 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         //http://doctronics.co.in/fashionapp/fashion_api.php?route=cat_store_sort&main_cat_id=4&cat_id=104&user_id=68&start=3
         String urlJson = Constant.FASHION_API + "route=cat_store_sort&main_cat_id=" + mainCatId + "&cat_id=" + sub_catId
                 + "&user_id=" + PreferenceServices.getInstance().geUsertId() + "&start=" + ++pageCount + "&lat=" + lat + "&long=" + lng;
+        //String urlJson = Constant.FASHION_API + "route=get_stores_sort&gender=79&category_id=4&sortby=popularity&start=1&lat=19.1998211&long=72.842594&user_id=61";
+        //http://52.77.174.143/fashion_api.php?route=get_stores_sort&gender=79&category_id=4&sortby=popularity&start=1&lat=19.1998211&long=72.842594&user_id=61
         if (first) {
             list = new ArrayList<>();
             showpDialog();
@@ -444,9 +456,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     });
 
             if (mItems.get(position).get("wishlist").equalsIgnoreCase("notin")) {
-                img_follow_unfollow.setText("FOLLOW");
+                img_follow_unfollow.setText("Follow");
             } else {
-                img_follow_unfollow.setText("UNFOLLOW");
+                img_follow_unfollow.setText("Unfollow");
             }
 
             if (mItems.get(position).get("sale").equalsIgnoreCase("Yes")) {

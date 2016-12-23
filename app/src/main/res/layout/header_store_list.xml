@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <!--<ImageView
+    <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_cat_name"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:alpha="0.9"
         android:background="@color/yellow"
         android:gravity="center"
@@ -126,17 +126,5 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:orientation="horizontal" />
-    </HorizontalScrollView>-->
-
-    <ListView
-        android:id="@+id/list_store"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="40dp"
-        android:headerDividersEnabled="false"
-        android:divider="@color/yellow"
-        android:dividerHeight="5dp"
-        android:visibility="visible" />
-
-
+    </HorizontalScrollView>
 </RelativeLayout>

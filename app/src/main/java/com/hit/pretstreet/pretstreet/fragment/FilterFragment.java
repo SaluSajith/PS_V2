@@ -321,14 +321,14 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
             case R.id.img_reset:
                 booleanSelectedArryPopularity = new ArrayList<Boolean>();
                 selectedidsPopularity.clear();
-                selected_ids_popularity = "";
+                selected_ids_popularity = listPopularity.get(0).get("key_name");
 
                 gender = "";
                 img_men.setImageResource(R.drawable.male_sort);
                 img_women.setImageResource(R.drawable.female_sort);
                 img_kids.setImageResource(R.drawable.kids_sort);
 
-                img_location.setImageResource(R.drawable.distance_sort);
+                img_location.setImageResource(R.drawable.distance_active_sort);
                 img_like.setImageResource(R.drawable.followers_sort);
                 img_sale.setImageResource(R.drawable.sale_sort);
                 img_new.setImageResource(R.drawable.new_arrival_sort);

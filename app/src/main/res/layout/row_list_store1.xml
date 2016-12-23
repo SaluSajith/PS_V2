@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:orientation="horizontal">
 
@@ -55,12 +55,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:ellipsize="end"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:padding="3dp"
                     android:text="Store"
-                    android:textAllCaps="true"
-                    android:textAppearance="@android:style/TextAppearance.Large"
-                    android:textColor="@color/dark_gray" />
+                    android:textColor="@color/dark_gray"
+                    android:textSize="16sp" />
 
 
             </RelativeLayout>
@@ -74,9 +73,8 @@
                 android:maxLines="1"
                 android:padding="3dp"
                 android:text="Store Address"
-                android:textAllCaps="true"
-                android:textAppearance="@android:style/TextAppearance.Small"
-                android:textColor="@color/dark_gray" />
+                android:textColor="@color/dark_gray"
+                android:textSize="10sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -88,7 +86,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:padding="3dp"
                 android:layout_marginRight="5dp"
                 android:divider="@drawable/vertical"
                 android:orientation="horizontal"
@@ -101,7 +98,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.7"
                     android:gravity="left"
-                    android:padding="3dp"
+                    android:padding="5dp"
                     android:text="0"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/dark_gray" />
@@ -113,7 +110,7 @@
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:padding="3dp"
+                    android:padding="5dp"
                     android:text="Follow"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/dark_gray" />

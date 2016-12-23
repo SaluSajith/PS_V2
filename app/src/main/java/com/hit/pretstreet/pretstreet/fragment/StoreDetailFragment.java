@@ -94,16 +94,13 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
             txt_close_on1, txt_close_on2, txt_folleowercount, img_follow_unfollow;
     private RelativeLayout rl_pic, rl_location_search, rl_header;
     private LinearLayout ll_scroll_photo;
-
     private ArrayList<ProductImageItem> returnObjimage;
     private ProductImageItem productImageItem;
     private DisplayMetrics dMetric;
     private String id, name, phone1, phone2, phone3, href;
-
     private Bitmap bitmap;
     private String encodedImage;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-
     private int StarRating, rateValue = 0;
     private String rateTitle = "";
     Dialog popupDialog;
@@ -163,8 +160,8 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
         img_follow_unfollow.setTypeface(font);
         txt_storename.setTypeface(font);
         txt_address.setTypeface(fontM);
-        txt_website.setTypeface(fontM);
-        txt_website_value.setTypeface(fontM);
+        txt_website.setTypeface(font);
+        txt_website_value.setTypeface(font);
         txt_information.setTypeface(font);
         txt_information.setPaintFlags(txt_information.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         txt_timing.setTypeface(font);
@@ -299,9 +296,9 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
                             }
 
                             if (list.get(i).get("wishlist").equalsIgnoreCase("notin")) {
-                                img_follow_unfollow.setText("FOLLOW");
+                                img_follow_unfollow.setText("Follow");
                             } else {
-                                img_follow_unfollow.setText("UNFOLLOW");
+                                img_follow_unfollow.setText("Unfollow");
                             }
 
                             if (list.get(i).get("sale").equalsIgnoreCase("Yes"))
@@ -428,7 +425,7 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
 
             case R.id.img_follow_unfollow:
                 String str = img_follow_unfollow.getText().toString();
-                if (str.equalsIgnoreCase("FOLLOW")) {
+                if (str.equalsIgnoreCase("Follow")) {
                     addToFollowers(id);
                 } else {
                     removeFromFollowers(id);
@@ -741,7 +738,7 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
                     if (strsuccess.equalsIgnoreCase("true")) {
                         message = response.getString("message");
                         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                        img_follow_unfollow.setText("FOLLOW");
+                        img_follow_unfollow.setText("Follow");
                         int count = Integer.parseInt(txt_folleowercount.getText().toString());
                         txt_folleowercount.setText(--count + "");
                     } else {
@@ -779,7 +776,7 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
                     if (strsuccess.equalsIgnoreCase("true")) {
                         message = response.getString("message");
                         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                        img_follow_unfollow.setText("UNFOLLOW");
+                        img_follow_unfollow.setText("Unfollow");
                         int count = Integer.parseInt(txt_folleowercount.getText().toString());
                         txt_folleowercount.setText(++count + "");
                     } else {

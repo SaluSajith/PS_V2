@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-
     <RelativeLayout
         android:id="@+id/rl_AppBar"
         android:layout_width="match_parent"
@@ -55,8 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="10sp"
             android:layout_centerVertical="true"
+            android:padding="10sp"
             android:src="@drawable/auto_detect" />
 
     </RelativeLayout>
@@ -66,8 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_auto_detect"
-        android:background="@android:color/white"
-        android:padding="10sp">
+        android:background="@android:color/white">
 
         <EditText
             android:id="@+id/edt_search"
@@ -76,15 +74,43 @@
             android:backgroundTint="@android:color/white"
             android:drawableLeft="@drawable/searchloc"
             android:hint="Start typing your location"
-            android:padding="10sp"
+            android:padding="15sp"
             android:singleLine="true"
             android:textAppearance="@android:style/TextAppearance.Small" />
+
+        <RelativeLayout
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_search"
+            android:background="@drawable/auto">
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="10sp"
+                android:src="@drawable/map" />
+
+            <TextView
+                android:id="@+id/txt_auto_detect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img"
+                android:padding="10sp"
+                android:text="INDIA"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
 
         <ListView
             android:id="@+id/list_places"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edt_search" />
+            android:layout_below="@id/map"
+            android:padding="10sp" />
 
     </RelativeLayout>
 
