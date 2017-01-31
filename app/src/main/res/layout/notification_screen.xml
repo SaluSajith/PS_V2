@@ -48,7 +48,7 @@
             android:text=""
             android:textAllCaps="true"
             android:textColor="@color/yellow"
-            android:textSize="35sp" />
+            android:textSize="25sp" />
     </RelativeLayout>
 
     <ListView
@@ -57,15 +57,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl"
         android:layout_marginBottom="40dp"
-        android:layout_marginTop="-30dp"
+        android:layout_marginTop="-10dp"
         android:divider="@color/yellow"
         android:dividerHeight="3dp" />
 
     <TextView
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_below="@id/list_followers"
         android:layout_marginTop="-38dp"
-        android:background="@color/yellow" />
-
+        android:background="@color/yellow"
+        android:visibility="gone" />
 </RelativeLayout>

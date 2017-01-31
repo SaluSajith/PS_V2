@@ -86,8 +86,8 @@
             android:alpha="0.9"
             android:background="@drawable/sign_up_base"
             android:orientation="vertical"
-            android:paddingLeft="10sp"
-            android:paddingRight="10sp">
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp">
 
             <EditText
                 android:id="@+id/edt_name"
@@ -203,7 +203,7 @@
                 android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-8sp"
+                android:layout_marginTop="-9sp"
                 android:gravity="center"
                 android:padding="5sp"
                 android:src="@drawable/login1" />

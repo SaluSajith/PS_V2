@@ -128,7 +128,7 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
             for (int i = 0; i < list.size(); i++) {
                 int count = helper.fetchLocationCount();
                 Log.e("count:", count + "");
-                if (count > 5) {
+                if (count > 4) {
                     helper.deleteFirstSavedLocationRow();
                 } else {
                     Collections.reverse(list);
@@ -236,7 +236,6 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            // Retrieve the autocomplete results.
             resultList = autocomplete(strSearch);
             return null;
         }
@@ -244,19 +243,21 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(SelectLocation.this, android.R.layout.simple_list_item_1, android.R.id.text1, resultList);
-            // Setting the adapter
-            placeList.setAdapter(adapter);
-            placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    String str = resultList.get(i).toString();
-                    getLocationFromAddress(SelectLocation.this, str);
-                    //edt_search.setText(str);
-                    placeList.setAdapter(null);
-                }
-            });
+            if (resultList == null) {
+                Toast.makeText(getApplicationContext(), "something going wrong or Internet not available", Toast.LENGTH_SHORT).show();
+            } else {
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(SelectLocation.this, android.R.layout.simple_list_item_1, android.R.id.text1, resultList);
+                placeList.setAdapter(adapter);
+                placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String str = resultList.get(i).toString();
+                        getLocationFromAddress(SelectLocation.this, str);
+                        //edt_search.setText(str);
+                        placeList.setAdapter(null);
+                    }
+                });
+            }
         }
     }
 
@@ -271,8 +272,13 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
                 longitude = String.valueOf(location.getLongitude());
                 Log.e("Address:old ", latitude + ", " + longitude);
                 helper.saveLocation(strAddress);
-                Toast.makeText(getApplicationContext(), "Location Changes to " + strAddress, Toast.LENGTH_LONG).show();
-                PreferenceServices.instance().saveCurrentLocation(strAddress);
+                String parts[] = new String[0];
+                if (strAddress.contains(",")) {
+                     parts= strAddress.split(",");
+                    Log.e("Address", parts[0]);
+                }
+                Toast.makeText(getApplicationContext(), "Location Changes to " + parts[0], Toast.LENGTH_LONG).show();
+                PreferenceServices.instance().saveCurrentLocation(parts[0]+"");
                 PreferenceServices.instance().saveLatitute(latitude + "");
                 PreferenceServices.instance().saveLongitute(longitude + "");
                 finish();
@@ -292,11 +298,9 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
             sb.append("&components=country:in");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
             URL url = new URL(sb.toString());
-            //System.out.println("URL: " + url);
             Log.e("URL: ", url + "");
             conn = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
-            // Load the results into a StringBuilder
             int read;
             char[] buff = new char[1024];
             while ((read = in.read(buff)) != -1) {
@@ -362,19 +366,19 @@ public class SelectLocation extends ActivityManagePermission implements View.OnC
     private void getLocation() {
         GPSTracker gps = new GPSTracker(this);
         if (gps.canGetLocation()) {
+            Toast.makeText(this, "please wait while fetching your location..", Toast.LENGTH_SHORT).show();
             lat1 = gps.getLatitude();
             long1 = gps.getLongitude();
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             List<Address> list;
             try {
                 list = geocoder.getFromLocation(lat1, long1, 2);
-                Log.e("LIst: ", list + "");
                 if (list.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_LONG).show();
                 } else {
-                    Address location = list.get(0);
-                    currentLocation = location.getAddressLine(0) + ", " + location.getAddressLine(1);
-                    Log.e("Location: ", currentLocation);
+                    Address location = list.get(1);
+                    //currentLocation = location.getAddressLine(0) + ", " + location.getAddressLine(1);
+                    currentLocation = location.getSubLocality();
                     Toast.makeText(getApplicationContext(), "Location Changes to " + currentLocation, Toast.LENGTH_LONG).show();
                     PreferenceServices.instance().saveCurrentLocation(currentLocation);
                     PreferenceServices.instance().saveLatitute(lat1 + "");

@@ -277,7 +277,7 @@ public class UploadPhotoScreen extends ActivityManagePermission implements View.
         img_upload_photo.setImageBitmap(bitmap);
         //convert bitmap to base64
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }

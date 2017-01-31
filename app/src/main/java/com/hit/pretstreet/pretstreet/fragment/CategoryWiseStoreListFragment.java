@@ -78,7 +78,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     private HorizontalScrollView hsv_category;
     private ListView list_store;
 
-    private String mainCatId, subCatId, subCatName, isFrom;
+    private String mainCatId, subCatId, subCatName = "", isFrom;
     private String catValue[], catId[];
     private StoreListAdapter storeListAdapter;
     private Typeface font, fontM;
@@ -86,11 +86,12 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     ArrayList<CategoryItem> listCategory = new ArrayList<>();
     TextView[] txtname, txtnameAll, txtline, txtlineAll;
 
-    String LLSelectedID;
+    String LLSelectedID = "";
 
     private String lat = "", lng = "";
     boolean maleClick, femaleClick;
     int pageCount, totalPages;
+    public static int selectedPosition;
     boolean requestCalled;
     ArrayList<HashMap<String, String>> list;
 
@@ -103,14 +104,19 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         Bundle bundle = this.getArguments();
         mainCatId = bundle.getString("main_cat_id");
-        subCatId = bundle.getString("sub_cat_id");
-        subCatName = bundle.getString("main_cat_name");
+        if (LLSelectedID.equalsIgnoreCase("")) {
+            subCatId = bundle.getString("sub_cat_id");
+        } else {
+            subCatId = LLSelectedID;
+        }
         isFrom = bundle.getString("isFrom");
+        if (subCatName.equalsIgnoreCase("")) {
+            subCatName = bundle.getString("main_cat_name");
+        }
+
+
         listCategory = (ArrayList<CategoryItem>) bundle.getSerializable("cat_list");
-
         list_store = (ListView) rootView.findViewById(R.id.list_store);
-
-
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
 
@@ -194,6 +200,14 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 } else {
                     txtnameAll[i].setVisibility(View.GONE);
                 }
+                if (mainCatId.equalsIgnoreCase(subCatId)) {
+                    txtnameAll[i].setTextColor(getResources().getColor(R.color.black));
+                    LLSelectedID = subCatId;
+                    pageCount = 0;
+                    txtnameAll[i].hasFocusable();
+                    hsv_category.fullScroll(View.FOCUS_DOWN);
+                    getStoreList(subCatId, true);
+                }
                 if (subCatId.equalsIgnoreCase(catId[i])) {
                     txtname[i].setTextColor(getResources().getColor(R.color.black));
                     LLSelectedID = catId[i];
@@ -213,6 +227,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                         pageCount = 0;
                         if (isFrom.equalsIgnoreCase("SubCategory")) {
                             txt_cat_name.setText(catValue[finalI]);
+                            subCatName = catValue[finalI];
                         }
                         getStoreList(catId[finalI], true);
                         for (int k = 0; k < listCategory.size(); k++) {
@@ -237,6 +252,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                         pageCount = 0;
                         if (isFrom.equalsIgnoreCase("SubCategory")) {
                             txt_cat_name.setText("All");
+                            subCatName = "All";
                         }
                         getStoreList(mainCatId, true);
                     }
@@ -248,8 +264,24 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             hsv_category.setVisibility(View.INVISIBLE);
             getStoreList(LLSelectedID, true);
         }
+
+        // }
         return rootView;
     }
+
+
+   /* @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("selectedif", LLSelectedID);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        String greeting = (savedInstanceState != null) ? savedInstanceState.getString("selectedif") : "null";
+
+    }*/
 
     @Override
     public void onResume() {
@@ -387,18 +419,13 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
-            TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, txt_follwer, line;
-            LinearLayout ll_listdata, ll_listimage;
-            RelativeLayout rl_sale_arrival;
+            TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow;
             LayoutInflater inflater = LayoutInflater.from(context);
             if (position % 2 == 0) {
                 convertView = inflater.inflate(R.layout.row_list_store1, parent, false);
             } else {
                 convertView = inflater.inflate(R.layout.row_list_store2, parent, false);
             }
-            ll_listdata = (LinearLayout) convertView.findViewById(R.id.ll_listdata);
-            ll_listimage = (LinearLayout) convertView.findViewById(R.id.ll_listimage);
-            rl_sale_arrival = (RelativeLayout) convertView.findViewById(R.id.rl_sale_arrival);
             img_store_photo = (ImageView) convertView.findViewById(R.id.img_store_photo);
             img_follow_unfollow = (TextView) convertView.findViewById(R.id.img_follow_unfollow);
             img_call = (ImageView) convertView.findViewById(R.id.img_call);
@@ -409,7 +436,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             txt_storename = (TextView) convertView.findViewById(R.id.txt_storename);
             txt_address = (TextView) convertView.findViewById(R.id.txt_address);
             txt_folleowercount = (TextView) convertView.findViewById(R.id.txt_folleowercount);
-            line = (TextView) convertView.findViewById(R.id.line);
             //ll_listimage.bringToFront();
             txt_storename.setTypeface(font);
             txt_address.setTypeface(fontM);
@@ -437,12 +463,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             Bitmap mask;
                             if (position % 2 == 0) {
                                 mask = BitmapFactory.decodeResource(getResources(), R.drawable.storelistimage1);
-                                //img_store_photo.setBackground(getResources().getDrawable(R.drawable.storelistimage1));
                             } else {
                                 mask = BitmapFactory.decodeResource(getResources(), R.drawable.storelistimage2);
-                                //img_store_photo.setBackground(getResources().getDrawable(R.drawable.storelistimage2));
                             }
-                            //Bitmap original = BitmapFactory.decodeResource(getResources(),R.drawable.bottom);
                             Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
                             Canvas mCanvas = new Canvas(result);
                             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -451,7 +474,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             mCanvas.drawBitmap(mask, 0, 0, paint);
                             paint.setXfermode(null);
                             img_store_photo.setImageBitmap(result);
-                            //img_store_photo.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                            img_store_photo.setScaleType(ImageView.ScaleType.FIT_XY);
                         }
                     });
 
@@ -501,6 +524,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                         Bundle b = new Bundle();
                         storename = mItems.get(position).get("name");
                         b.putString("name", storename);
+                        b.putString("address", mItems.get(position).get("address"));
                         b.putDouble("lat", Double.parseDouble(mItems.get(position).get("latitude")));
                         b.putDouble("long", Double.parseDouble(mItems.get(position).get("longitude")));
                         i.putExtras(b);
@@ -538,10 +562,13 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     Bundle b1 = new Bundle();
                     b1.putString("cat_id", mItems.get(position).get("id"));
                     b1.putString("cat_name", subCatName);
+                    b1.putInt("position", position);
+                    selectedPosition = position;
                     f1.setArguments(b1);
                     FragmentTransaction t1 = getFragmentManager().beginTransaction();
-                    t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                    t1.add(R.id.frame_container, f1);
+                    //t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                    //t1.add(R.id.frame_container, f1);
+                    t1.replace(R.id.frame_container, f1);
                     t1.addToBackStack(null);
                     t1.commit();
                 }

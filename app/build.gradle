@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.hit.pretstreet.pretstreet"
@@ -28,4 +29,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     compile 'com.android.volley:volley:1.0.0'
+
 }

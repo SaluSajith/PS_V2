@@ -57,7 +57,7 @@ import java.util.HashMap;
  */
 public class FollowersFragment extends Fragment implements View.OnClickListener {
     private ImageView img_icon_menu;
-    private TextView txt_cat_name;
+    private TextView txt_cat_name, line;
     private RelativeLayout rl;
     private ListView list_notification;
     private FollowersListAdapter followersListAdapter;
@@ -79,6 +79,7 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
         rl.bringToFront();
 
         txt_cat_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
+        line = (TextView) rootView.findViewById(R.id.line);
         list_notification = (ListView) rootView.findViewById(R.id.list_followers);
 
         img_icon_menu.setOnClickListener(this);
@@ -95,7 +96,6 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
             txt_cat_name.setText("NOTIFICATION");
             getNotification();
         }
-
         return rootView;
     }
 
@@ -136,6 +136,7 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                     } else {
                         followersListAdapter = new FollowersListAdapter(getActivity(), R.layout.row_followers1, list);
                         list_notification.setAdapter(followersListAdapter);
+                        line.setVisibility(View.VISIBLE);
                     }
                 } else {
                     Toast.makeText(getActivity(), "Server not responding Please try again...", Toast.LENGTH_SHORT).show();
@@ -200,6 +201,7 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                     if (list.isEmpty()) {
                         Toast.makeText(getActivity(), "You have no Notifications", Toast.LENGTH_SHORT).show();
                     } else {
+                        line.setVisibility(View.GONE);
                         notificationListAdapter = new NotificationListAdapter(getActivity(), R.layout.row_notification, list);
                         list_notification.setAdapter(notificationListAdapter);
                     }
@@ -265,31 +267,23 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
             final ImageView img_photo, img_unfollw;
             TextView txt_name, txt_cat_name;
             LinearLayout rel;
-
             LayoutInflater inflater = LayoutInflater.from(context);
             if (position % 2 == 0) {
                 convertView = inflater.inflate(R.layout.row_followers1, parent, false);
             } else {
                 convertView = inflater.inflate(R.layout.row_followers2, parent, false);
             }
-
-            rel = (LinearLayout) convertView.findViewById(R.id.rel);
             img_photo = (ImageView) convertView.findViewById(R.id.img_photo);
             img_unfollw = (ImageView) convertView.findViewById(R.id.img_unfollw);
             txt_cat_name = (TextView) convertView.findViewById(R.id.txt_cat_name);
             txt_name = (TextView) convertView.findViewById(R.id.txt_name);
+            rel = (LinearLayout) convertView.findViewById(R.id.rel);
             txt_name.setTypeface(font);
             txt_cat_name.setTypeface(font);
 
-
             txt_cat_name.setText(mItems.get(position).get("cat_name"));
             txt_name.setText(mItems.get(position).get("name"));
-            if (position == 0) {
-                //commented because of issue by nitin
-/* LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
-                        new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));*/
+            /*if (position == 0) {
                 LinearLayout.LayoutParams relativeParams =
                         new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -297,7 +291,7 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                 relativeParams.setMargins(0, 100, 0, 0);
                 img_photo.setLayoutParams(relativeParams);
                 txt_name.setLayoutParams(relativeParams);
-            }
+            }*/
 
             Glide.with(getActivity()).load(mItems.get(position).get("small_image")).asBitmap()
                     .into(new BitmapImageViewTarget(img_photo) {
@@ -317,7 +311,7 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                             mCanvas.drawBitmap(mask, 0, 0, paint);
                             paint.setXfermode(null);
                             img_photo.setImageBitmap(result);
-                            //viewHolder.img_photo.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                            img_photo.setScaleType(ImageView.ScaleType.FIT_XY);
                         }
                     });
 

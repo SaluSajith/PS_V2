@@ -61,8 +61,8 @@
             android:layout_marginTop="-25dp"
             android:background="@drawable/lbase"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <EditText
                 android:id="@+id/edt_email_number"
@@ -71,9 +71,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/email"
-                android:hint="email id "
+                android:hint="Email id "
                 android:inputType="textEmailAddress"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:singleLine="true"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:textColor="@android:color/white"
@@ -85,9 +85,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/password"
-                android:hint="password"
+                android:hint="Password"
                 android:inputType="textPassword"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:singleLine="true"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:textColor="@android:color/white"
@@ -111,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="Show password"
+                    android:text="Show Password"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/dark_gray" />
             </LinearLayout>
@@ -126,7 +126,7 @@
                 android:gravity="right"
                 android:padding="5dp"
                 android:rotation="-5"
-                android:text="forgot password"
+                android:text="Forgot Password"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:textColor="@color/dark_gray" />
         </RelativeLayout>
@@ -136,7 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/login1"
+            android:background="@drawable/login2"
             android:gravity="center" />
     </LinearLayout>
 </ScrollView>

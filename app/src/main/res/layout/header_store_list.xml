@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="17dp"
             android:layout_toLeftOf="@+id/img_search"
             android:ellipsize="end"
             android:maxLines="1"
@@ -105,26 +105,32 @@
         android:text="Category name"
         android:textAllCaps="true"
         android:textColor="@color/yellow"
-        android:textSize="35sp" />
+        android:textSize="30sp" />
 
-    <HorizontalScrollView
-        android:id="@+id/hsv_category"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_cat_name"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:alpha="0.9"
         android:background="@color/yellow"
         android:gravity="center"
-        android:padding="2dp"
-        android:rotation="-4"
-        android:scrollbars="none">
+        android:rotation="-3">
 
-        <LinearLayout
-            android:id="@+id/ll_category"
+        <HorizontalScrollView
+            android:id="@+id/hsv_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal" />
-    </HorizontalScrollView>
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/ll_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+    </RelativeLayout>
 </RelativeLayout>

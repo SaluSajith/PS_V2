@@ -43,7 +43,7 @@
             android:rotation="-5"
             android:text="ADD STORE"
             android:textColor="@color/yellow"
-            android:textSize="35sp" />
+            android:textSize="25sp" />
 
         <LinearLayout
             android:id="@+id/ll"

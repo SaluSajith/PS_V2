@@ -74,7 +74,6 @@ public class DefaultLocation extends ActivityManagePermission implements View.On
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
-
     private static final String TYPE_CITIES = "&sensor=false&types=(cities)";
 
     @Override
@@ -139,18 +138,21 @@ public class DefaultLocation extends ActivityManagePermission implements View.On
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+            if (resultList==null) {
+                Toast.makeText(getApplicationContext(), "something going wrong or Internet not available", Toast.LENGTH_SHORT).show();
+            } else {
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, android.R.id.text1, resultList);
+                placeList.setAdapter(adapter);
+                placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String str = resultList.get(i).toString();
+                        getLocationFromAddress(DefaultLocation.this, str);
+                        placeList.setAdapter(null);
+                    }
+                });
+            }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, android.R.id.text1, resultList);
-            // Setting the adapter
-            placeList.setAdapter(adapter);
-            placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    String str = resultList.get(i).toString();
-                    getLocationFromAddress(DefaultLocation.this, str);
-                    placeList.setAdapter(null);
-                }
-            });
         }
     }
 
@@ -164,10 +166,14 @@ public class DefaultLocation extends ActivityManagePermission implements View.On
                 latitude = String.valueOf(location.getLatitude());
                 longitude = String.valueOf(location.getLongitude());
                 Log.e("Address: ", latitude + ", " + longitude);
-
                 helper.saveLocation(strAddress);
-                Toast.makeText(getApplicationContext(), "Location set to " + strAddress, Toast.LENGTH_LONG).show();
-                PreferenceServices.instance().saveCurrentLocation(strAddress);
+                String parts[] = new String[0];
+                if (strAddress.contains(",")) {
+                    parts= strAddress.split(",");
+                    Log.e("Address", parts[0]);
+                }
+                Toast.makeText(getApplicationContext(), "Location set to " + parts[0], Toast.LENGTH_LONG).show();
+                PreferenceServices.instance().saveCurrentLocation(parts[0]+"");
                 PreferenceServices.instance().saveLatitute(latitude + "");
                 PreferenceServices.instance().saveLongitute(longitude + "");
                 finish();
@@ -258,19 +264,19 @@ public class DefaultLocation extends ActivityManagePermission implements View.On
     private void getLocation() {
         GPSTracker gps = new GPSTracker(this);
         if (gps.canGetLocation()) {
+            Toast.makeText(this, "please wait while fetching your location..", Toast.LENGTH_SHORT).show();
             lat1 = gps.getLatitude();
             long1 = gps.getLongitude();
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             List<Address> list;
             try {
                 list = geocoder.getFromLocation(lat1, long1, 2);
-                Log.e("LIst: ", list + "");
                 if (list.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_LONG).show();
                 } else {
-                    Address location = list.get(0);
-                    currentLocation = location.getAddressLine(0) + ", " + location.getAddressLine(1);
-                    // Log.e("Location: ", currentLocation);
+                    Address location = list.get(1);
+                    currentLocation = location.getSubLocality();
+                    //currentLocation = location.getAddressLine(0) + ", " + location.getAddressLine(1);
                     Toast.makeText(getApplicationContext(), "Location set to " + currentLocation, Toast.LENGTH_LONG).show();
                     PreferenceServices.instance().saveCurrentLocation(currentLocation);
                     PreferenceServices.instance().saveLatitute(lat1 + "");
@@ -286,5 +292,16 @@ public class DefaultLocation extends ActivityManagePermission implements View.On
         }
     }
 
+    private void showpDialog() {
+        if (!pDialog.isShowing()) {
+            pDialog.show();
+            pDialog.setContentView(R.layout.progress_activity);
+            pDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+    }
 
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
 }

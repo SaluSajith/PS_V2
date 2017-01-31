@@ -208,15 +208,6 @@ public class MyProfileFragment extends FragmentManagePermission implements View.
                         Toast.makeText(getActivity(), "Server not responding Please try again...", Toast.LENGTH_SHORT).show();
                     } else {
                         for (int i = 0; i < list.size(); i++) {
-                           /* Glide.with(getActivity()).load(list.get(i).get("profile_pic")).asBitmap().centerCrop().into(new BitmapImageViewTarget(img_photo) {
-                                @Override
-                                protected void setResource(Bitmap resource) {
-                                    RoundedBitmapDrawable circularBitmapDrawable =
-                                            RoundedBitmapDrawableFactory.create(getActivity().getResources(), resource);
-                                    circularBitmapDrawable.setCircular(true);
-                                    img_photo.setImageDrawable(circularBitmapDrawable);
-                                }
-                            });*/
                             Glide.with(getActivity()).load(list.get(i).get("profile_pic")).into(img_photo);
                             edt_name.setText(list.get(i).get("first_name"));
                             edt_email.setText(list.get(i).get("email"));
@@ -297,8 +288,8 @@ public class MyProfileFragment extends FragmentManagePermission implements View.
                             e.printStackTrace();
                         }
                         if (responce) {
+                            Constant.hide_keyboard(getActivity());
                             Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-                            //HomeActivity.img_profile_pic.setImageBitmap(bitmap);
                             PreferenceServices.instance().saveUserName(name);
                             getFragmentManager().popBackStack();
                         } else {

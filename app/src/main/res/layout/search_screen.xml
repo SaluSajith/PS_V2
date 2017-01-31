@@ -41,7 +41,7 @@
         android:rotation="-4"
         android:text="SEARCH FOR:"
         android:textColor="@color/yellow"
-        android:textSize="35sp" />
+        android:textSize="25sp" />
 
     <LinearLayout
         android:id="@+id/ll_search"
@@ -59,7 +59,7 @@
             android:id="@+id/searchview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:rotation="-3"
+            android:rotation="-5"
             app:actionViewClass="android.support.v7.widget.SearchView"
             app:iconifiedByDefault="false">
 

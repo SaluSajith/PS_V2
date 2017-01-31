@@ -352,8 +352,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             b3.putString("main_cat_name", list.get(finalI1).get("name"));
                             f3.setArguments(b3);
                             FragmentTransaction t3 = getFragmentManager().beginTransaction();
-                            t3.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                            t3.add(R.id.frame_container, f3);
+                           /* t3.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                            t3.add(R.id.frame_container, f3);*/
+                            t3.replace(R.id.frame_container, f3);
                             t3.addToBackStack(null);
                             t3.commit();
                         }
@@ -460,9 +461,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         txt_location.setText(PreferenceServices.getInstance().getCurrentLocation());
-        String name = (PreferenceServices.getInstance().geUsertName().length() > 12 ?
-                PreferenceServices.getInstance().geUsertName().substring(0, 10) + "..." : PreferenceServices.getInstance().geUsertName());
-        txt_user_name.setText("Hi, " + name);
+        /*String name = (PreferenceServices.getInstance().geUsertName().length() > 12 ?
+                PreferenceServices.getInstance().geUsertName().substring(0, 10) + "..." : PreferenceServices.getInstance().geUsertName());*/
+        txt_user_name.setText("Hi, " + PreferenceServices.getInstance().geUsertName());
     }
 
     private void getMainCategoryList() {
@@ -690,8 +691,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                         b1.putString("main_cat_name", list.get(finalI1).get("name"));
                                         f1.setArguments(b1);
                                         FragmentTransaction t1 = getFragmentManager().beginTransaction();
-                                        t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                                        t1.add(R.id.frame_container, f1);
+                                       /* t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                                        t1.add(R.id.frame_container, f1);*/
+                                        t1.replace(R.id.frame_container, f1);
                                         t1.addToBackStack(null);
                                         t1.commit();
                                     } else {
@@ -701,8 +703,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                         b3.putString("main_cat_name", list.get(finalI1).get("name"));
                                         f3.setArguments(b3);
                                         FragmentTransaction t3 = getFragmentManager().beginTransaction();
-                                        t3.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                                        t3.add(R.id.frame_container, f3);
+                                       /* t3.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                                        t3.add(R.id.frame_container, f3);*/
+                                        t3.replace(R.id.frame_container, f3);
                                         t3.addToBackStack(null);
                                         t3.commit();
                                     }
@@ -885,8 +888,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 b4.putString("main_cat_name", txt_bags.getText().toString());
                 f4.setArguments(b4);
                 FragmentTransaction t4 = getFragmentManager().beginTransaction();
-                t4.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t4.add(R.id.frame_container, f4);
+               /* t4.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                t4.add(R.id.frame_container, f4);*/
+                t4.replace(R.id.frame_container,f4);
                 t4.addToBackStack(null);
                 t4.commit();
                 break;
@@ -902,8 +906,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 b5.putString("main_cat_name", txt_shoes.getText().toString());
                 f5.setArguments(b5);
                 FragmentTransaction t5 = getFragmentManager().beginTransaction();
-                t5.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t5.add(R.id.frame_container, f5);
+               /* t5.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                t5.add(R.id.frame_container, f5);*/
+                t5.replace(R.id.frame_container,f5);
                 t5.addToBackStack(null);
                 t5.commit();
                 break;
@@ -919,8 +924,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 b6.putString("main_cat_name", txt_eyewear.getText().toString());
                 f6.setArguments(b6);
                 FragmentTransaction t6 = getFragmentManager().beginTransaction();
-                t6.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t6.add(R.id.frame_container, f6);
+              /*  t6.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                t6.add(R.id.frame_container, f6);*/
+                t6.replace(R.id.frame_container,f6);
                 t6.addToBackStack(null);
                 t6.commit();
                 break;
@@ -936,8 +942,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 b7.putString("main_cat_name", txt_watches.getText().toString());
                 f7.setArguments(b7);
                 FragmentTransaction t7 = getFragmentManager().beginTransaction();
-                t7.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t7.add(R.id.frame_container, f7);
+               /* t7.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                t7.add(R.id.frame_container, f7);*/
+                t7.replace(R.id.frame_container,f7);
                 t7.addToBackStack(null);
                 t7.commit();
                 break;
@@ -953,8 +960,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 b8.putString("main_cat_name", txt_accessories.getText().toString());
                 f8.setArguments(b8);
                 FragmentTransaction t8 = getFragmentManager().beginTransaction();
-                t8.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t8.add(R.id.frame_container, f8);
+               /* t8.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                t8.add(R.id.frame_container, f8);*/
+                t8.replace(R.id.frame_container,f8);
                 t8.addToBackStack(null);
                 t8.commit();
                 break;

@@ -5,9 +5,26 @@
     android:background="@android:color/white">
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll"
+        android:layout_marginTop="-35dp">
+
+        <ImageView
+            android:id="@+id/img_trending"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/img"
@@ -78,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="17dp"
                     android:layout_toLeftOf="@id/img_search"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -110,23 +127,9 @@
                 android:text="Category name"
                 android:textAllCaps="true"
                 android:textColor="@color/yellow"
-                android:textSize="35dp" />
+                android:textSize="30sp" />
 
         </LinearLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ll"
-        android:layout_marginTop="-35dp">
-
-        <ImageView
-            android:id="@+id/img_trending"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
     </RelativeLayout>
 
 </RelativeLayout>

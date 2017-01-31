@@ -195,7 +195,7 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
                     edt_email.requestFocus();
                     Toast.makeText(getApplicationContext(), "field can't be empty.", Toast.LENGTH_LONG).show();
                 } else if (!Constant.isValidEmail(text)) {
-                    Toast.makeText(this, text + " is not valid email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please Enter a Valid Email Id", Toast.LENGTH_SHORT).show();
                     edt_email.requestFocus();
                 } else {
                     forgotPasswordJSON(text);

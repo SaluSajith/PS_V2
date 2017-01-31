@@ -25,8 +25,11 @@ import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.fragment.AccountFragment;
 import com.hit.pretstreet.pretstreet.fragment.AddStoreFragment;
+import com.hit.pretstreet.pretstreet.fragment.CategoryWiseStoreListFragment;
 import com.hit.pretstreet.pretstreet.fragment.FollowersFragment;
 import com.hit.pretstreet.pretstreet.fragment.HomeFragment;
+import com.hit.pretstreet.pretstreet.fragment.StoreDetailFragment;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +37,7 @@ import org.json.JSONObject;
 /**
  * Created by hit on 17/3/16.
  */
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
     private Button btn_home, btn_account, btn_following, btn_addstore;
     private Typeface font;
     private boolean doubleBackToExitPressedOnce;

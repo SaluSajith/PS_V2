@@ -276,7 +276,7 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         String urlJsonObj;
         try {
             urlJsonObj = Constant.REGISTRATION_URL + "email=" + email + "&firstname=" + URLEncoder.encode(firstname, "UTF-8")
-                    + "&password=" + password + "&mobile=" + selectedArea + mobile;
+                    + "&password=" + password + "&mobile=" + mobile;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             urlJsonObj = Constant.FASHION_API;

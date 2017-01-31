@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="17dp"
                 android:layout_toLeftOf="@+id/img_search"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -109,7 +109,7 @@
             android:text="Category name"
             android:textAllCaps="true"
             android:textColor="@color/yellow"
-            android:textSize="35sp" />
+            android:textSize="30sp" />
 
     </RelativeLayout>
 

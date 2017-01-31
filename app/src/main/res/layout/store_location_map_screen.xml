@@ -27,7 +27,7 @@
             android:layout_marginLeft="5sp"
             android:layout_toRightOf="@+id/img_back"
             android:maxLines="2"
-            android:text=""
+            android:ellipsize="end"
             android:textColor="@android:color/white" />
 
     </RelativeLayout>

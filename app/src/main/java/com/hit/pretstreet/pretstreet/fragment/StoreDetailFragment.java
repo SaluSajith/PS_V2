@@ -1,6 +1,6 @@
 package com.hit.pretstreet.pretstreet.fragment;
 
-import android.annotation.TargetApi;
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,24 +8,22 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.Html;
@@ -34,16 +32,13 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,13 +55,14 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
-import com.hit.pretstreet.pretstreet.ui.HomeActivity;
+import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.FragmentManagePermission;
+import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.ui.SelectLocation;
 import com.hit.pretstreet.pretstreet.ui.StoreLocationMapScreen;
 
@@ -76,19 +72,17 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by Jesal on 05-Sep-16.
  */
-public class StoreDetailFragment extends Fragment implements View.OnClickListener {
+public class StoreDetailFragment extends FragmentManagePermission implements View.OnClickListener {
     private ImageView img_icon_menu, img_search, img_filter, img_address, img_photo, img_call, img_map,
-            img_upload_pic, img_sale, img_new_arrival, img_notification;
+            img_upload_pic, img_sale, img_new_arrival, img_notification, img_arrow;
     private TextView txt_location, txt_store_name, txt_storename, txt_address, txt_website,
             txt_website_value, txt_information, txt_timing, txt_opentime, txt_closetime,
             txt_close_on1, txt_close_on2, txt_folleowercount, img_follow_unfollow;
@@ -101,11 +95,12 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
     private Bitmap bitmap;
     private String encodedImage;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private int StarRating, rateValue = 0;
+    private int StarRating, rateValue = 0, position;
     private String rateTitle = "";
     Dialog popupDialog;
     private Typeface font, fontM;
     private ProgressDialog pDialog;
+
 
     @Nullable
     @Override
@@ -116,6 +111,7 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
         Bundle bundle = this.getArguments();
         id = bundle.getString("cat_id");
         name = bundle.getString("cat_name");
+        position = bundle.getInt("position");
         Constant.hide_keyboard(getActivity());
         img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
         //img_share = (ImageView) rootView.findViewById(R.id.img_share);
@@ -127,7 +123,7 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
         img_new_arrival = (ImageView) rootView.findViewById(R.id.img_new_arrival);
         img_map = (ImageView) rootView.findViewById(R.id.img_map);
         img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
-
+        img_arrow = (ImageView) rootView.findViewById(R.id.img_arrow);
         rl_pic = (RelativeLayout) rootView.findViewById(R.id.rl_pic);
         rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
         rl_header = (RelativeLayout) rootView.findViewById(R.id.rl_header);
@@ -278,8 +274,6 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
 
                             txt_storename.setText(list.get(i).get("name"));
                             txt_address.setText(list.get(i).get("address"));
-                            txt_opentime.setText(list.get(i).get("open"));
-                            txt_closetime.setText(list.get(i).get("close"));
                             txt_website_value.setText(list.get(i).get("website_link"));
 
                             String strFollowCount = list.get(i).get("follow_count");
@@ -311,6 +305,14 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
                             else
                                 img_new_arrival.setVisibility(View.INVISIBLE);
 
+                            if (list.get(i).get("open").equalsIgnoreCase("") || list.get(i).get("close").equalsIgnoreCase("")) {
+                                txt_opentime.setVisibility(View.GONE);
+                                txt_closetime.setVisibility(View.GONE);
+                                img_arrow.setVisibility(View.GONE);
+                            } else {
+                                txt_opentime.setText(list.get(i).get("open"));
+                                txt_closetime.setText(list.get(i).get("close"));
+                            }
 
                             if (list.get(i).get("closed").equalsIgnoreCase(""))
                                 txt_close_on1.setVisibility(View.GONE);
@@ -336,6 +338,7 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
                                         Intent intent = new Intent(getActivity(), StoreLocationMapScreen.class);
                                         Bundle b = new Bundle();
                                         b.putString("name", name);
+                                        b.putString("address", list.get(finalI).get("address"));
                                         b.putDouble("lat", Double.parseDouble(list.get(finalI).get("latitude")));
                                         b.putDouble("long", Double.parseDouble(list.get(finalI).get("longitude")));
                                         intent.putExtras(b);
@@ -464,7 +467,7 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
                 break;
 
             case R.id.img_upload_pic:
-                //selectImage();
+                selectImage();
                 break;
 
             case R.id.img_notification:
@@ -502,12 +505,49 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (items[item].equals("Take Photo")) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, REQUEST_CAMERA);
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, REQUEST_CAMERA);*/
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File f = new File(Environment.getExternalStorageDirectory(), "/temp.jpg");
+                        intent.putExtra("return-data", true);
+                        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                        startActivityForResult(intent, REQUEST_CAMERA);
+                    } else {
+                        askCompactPermission(Manifest.permission.CAMERA, new PermissionResult() {
+                            @Override
+                            public void permissionGranted() {
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, REQUEST_CAMERA);
+                            }
+
+                            @Override
+                            public void permissionDenied() {
+
+                            }
+                        });
+                    }
                 } else if (items[item].equals("Choose from Library")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    //intent.setType("image");
-                    startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                    } else {
+                        askCompactPermission(Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionResult() {
+                            @Override
+                            public void permissionGranted() {
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                            }
+
+                            @Override
+                            public void permissionDenied() {
+
+                            }
+                        });
+                    }
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -528,37 +568,107 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
     }
 
     private void onCaptureImageResult(Intent data) {
-        bitmap = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        File destination = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //img_upload_pic.setImageBitmap(bitmap);  //convert bitmap to base64
+        File f = new File(Environment.getExternalStorageDirectory() + "/temp.jpg");
+        bitmap = getScaledBitmap(f.getAbsolutePath());
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+       /* bitmap = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        byte[] byteArray = bytes.toByteArray();
+        encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);*/
+        if (encodedImage.equalsIgnoreCase("")) {
+            Toast.makeText(getActivity(), "Image not found", Toast.LENGTH_SHORT).show();
+        } else {
+            uploadPhotoToServer();
+        }
+    }
+
+    private Bitmap getScaledBitmap(String path) {
+        // Get the dimensions of the View
+        int targetW = 1920;
+        int targetH = 1080;
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        return BitmapFactory.decodeFile(path, bmOptions);
+
+    }
+
+    private void uploadPhotoToServer() {
+        showpDialog();
+        String urlJsonObj = Constant.FASHION_API;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlJsonObj,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject object;
+                        Log.e("Volley", response.toString());
+                        String msg = null;
+                        try {
+                            object = new JSONObject(response);
+                            if (object.getString("success").equalsIgnoreCase("true")) {
+                                msg = object.getString("message");
+                            } else {
+                                msg = object.getString("message");
+                            }
+                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            encodedImage = "";
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                        hidepDialog();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        hidepDialog();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                //http://52.77.174.143/fashion_api.php?route=upload_imageby64&user_id=141&store_id=27799&image=
+                params.put("route", "upload_imageby64");
+                params.put("user_id", PreferenceServices.getInstance().geUsertId());
+                params.put("store_id", id);
+                params.put("image", encodedImage);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        PretStreet.getInstance().addToRequestQueue(stringRequest, Constant.tag_json_obj);
+       /* RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);*/
     }
 
     private void onSelectFromGalleryResult(Intent data) {
         Uri selectedImageUri = data.getData();
         String[] projection = {MediaStore.MediaColumns.DATA};
-        //Cursor cursor = getActivity().managedQuery(selectedImageUri, projection, null, null, null);
         Cursor cursor = getActivity().getContentResolver().query(selectedImageUri, projection, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         cursor.moveToFirst();
         String selectedImagePath = cursor.getString(column_index);
-        Bitmap bm;
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(selectedImagePath, options);
@@ -569,13 +679,18 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
             scale *= 2;
         options.inSampleSize = scale;
         options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(selectedImagePath, options);
-        //img_upload_pic.setImageBitmap(bm);
-        //convert bitmap to base64
+
+        bitmap = BitmapFactory.decodeFile(selectedImagePath, options);
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        if (encodedImage.equalsIgnoreCase("")) {
+            Toast.makeText(getActivity(), "Image not found", Toast.LENGTH_SHORT).show();
+        } else {
+            uploadPhotoToServer();
+        }
     }
 
     public void showPopupPhoneNumber() {
@@ -653,7 +768,7 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
                 TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
                 telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
                 try {
-                    String uri = "tel:" + phone1;
+                    String uri = "tel:" + phone2;
                     Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(uri));
                     startActivity(dialIntent);
                 } catch (Exception e) {
@@ -670,7 +785,7 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
                 TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
                 telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
                 try {
-                    String uri = "tel:" + phone1;
+                    String uri = "tel:" + phone3;
                     Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(uri));
                     startActivity(dialIntent);
                 } catch (Exception e) {
@@ -859,4 +974,5 @@ public class StoreDetailFragment extends Fragment implements View.OnClickListene
             this.image = image;
         }
     }
+
 }

@@ -712,6 +712,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                         Bundle b = new Bundle();
                         storename = mItems.get(position).get("name");
                         b.putString("name", storename);
+                        b.putString("address",  mItems.get(position).get("address"));
                         b.putDouble("lat", Double.parseDouble(mItems.get(position).get("latitude")));
                         b.putDouble("long", Double.parseDouble(mItems.get(position).get("longitude")));
                         i.putExtras(b);

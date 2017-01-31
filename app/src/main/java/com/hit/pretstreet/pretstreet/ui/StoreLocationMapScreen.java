@@ -52,26 +52,10 @@ public class StoreLocationMapScreen extends FragmentActivity {
         font = Typeface.createFromAsset(getApplicationContext().getAssets(), "Merriweather Light.ttf");
         txt_cat.setTypeface(font);
         Bundle b = getIntent().getExtras();
-        String name = b.getString("name");
+        String address = b.getString("address");
         latitute = b.getDouble("lat");
         longitute = b.getDouble("long");
-        Log.e("LAt Long:", latitute + ": " + longitute);
-        //get store location name
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> list;
-        try {
-            list = geocoder.getFromLocation(latitute, longitute, 1);
-            Log.e("List Store location:", list.toString() + "");
-            Address location = list.get(0);
-            String name1 = location.getAddressLine(0);
-            String name2 = location.getAddressLine(1);
-            String name3 = location.getAddressLine(2);
-            storeLocation = name1 + ", " + name2 + ", " + name3;
-            Log.e("Store location:", storeLocation);
-            txt_cat.setText(storeLocation);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        txt_cat.setText(address);
 
         currentLocation = PreferenceServices.getInstance().getCurrentLocation();
         Log.e("Current location:", currentLocation);
