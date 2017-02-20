@@ -74,7 +74,7 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
     private RelativeLayout rl;
     private TextView txt_cat_name, txt_location;
     private ListView list_store;
-    private String gender, popularity;
+    private String gender, popularity, mainCatId;
     private StoreListAdapter storeListAdapter;
     private Typeface font, fontM;
     private ProgressDialog pDialog;
@@ -93,6 +93,7 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
         Bundle b = this.getArguments();
         gender = b.getString("gender");
         popularity = b.getString("popularity");
+        mainCatId = b.getString("mainCatId");
 
         img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
         img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
@@ -159,7 +160,7 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
 
     private void getStoreListbyFilter(final boolean first) {
         //http://52.77.174.143/fashion_api.php?route=get_stores_sort&gender=78&category_id=4&sortby=sale&lat=19.2045&long=72.8520&start=2&user_id=39
-        String urlJson = Constant.FASHION_API + "route=get_stores_sort&gender=" + gender + "&category_id=" + "4" + "&sortby=" + popularity
+        String urlJson = Constant.FASHION_API + "route=get_stores_sort&gender=" + gender + "&category_id=" + mainCatId + "&sortby=" + popularity
                 + "&start=" + ++pageCount + "&lat=" + lat + "&long=" + lng + "&user_id=" + PreferenceServices.getInstance().geUsertId();
         Log.e("URL: ", urlJson);
         if (first) {

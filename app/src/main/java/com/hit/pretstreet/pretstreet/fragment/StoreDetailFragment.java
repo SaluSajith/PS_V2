@@ -37,6 +37,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -57,6 +58,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
@@ -355,7 +357,31 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                                 txt_cat.setVisibility(View.GONE);
                                 Glide.with(getActivity())
                                         .load(returnObjimage.get(j).getImage())
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                                         .into(img_photo);
+                                final int finalJ = j;
+                                view.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        final Dialog nagDialog = new Dialog(getActivity(),android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+                                        nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                        nagDialog.setCancelable(false);
+                                        nagDialog.setContentView(R.layout.preview_image);
+                                        ImageButton btnClose = (ImageButton)nagDialog.findViewById(R.id.btnIvClose);
+                                        ImageView ivPreview = (ImageView)nagDialog.findViewById(R.id.iv_preview_image);
+//                                        ivPreview.setBackgroundDrawable(dd);
+                                        Glide.with(getActivity()).load(returnObjimage.get(finalJ).getImage()).into(ivPreview);
+
+                                        btnClose.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View arg0) {
+
+                                                nagDialog.dismiss();
+                                            }
+                                        });
+                                        nagDialog.show();
+                                    }
+                                });
                                 ll_scroll_photo.addView(view);
                             }
                         }

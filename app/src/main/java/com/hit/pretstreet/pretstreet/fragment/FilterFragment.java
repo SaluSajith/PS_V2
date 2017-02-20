@@ -309,6 +309,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
                     Bundle b1 = new Bundle();
                     b1.putString("gender", gender);
                     b1.putString("popularity", selected_ids_popularity);
+                    b1.putString("mainCatId", getArguments().getString("mainCatId"));
                     f1.setArguments(b1);
                     FragmentTransaction t1 = getFragmentManager().beginTransaction();
                     t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));

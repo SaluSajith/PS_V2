@@ -580,6 +580,7 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
+        Bundle bundle;
         switch (viewId) {
 
             case R.id.img_icon_menu:
@@ -613,6 +614,9 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
 
             case R.id.img_filter:
                 Fragment f2 = new FilterFragment();
+                bundle = new Bundle();
+                bundle.putString("mainCatId", mainCAtId);
+                f2.setArguments(bundle);
                 FragmentTransaction t2 = getFragmentManager().beginTransaction();
                 t2.hide(getFragmentManager().findFragmentById(R.id.frame_container));
                 t2.add(R.id.frame_container, f2);

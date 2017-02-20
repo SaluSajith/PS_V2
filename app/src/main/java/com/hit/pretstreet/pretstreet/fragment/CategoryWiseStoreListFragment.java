@@ -261,7 +261,10 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         } else {
             list_store.setAdapter(null);
             LLSelectedID = subCatId;
-            hsv_category.setVisibility(View.INVISIBLE);
+            TextView tv = new TextView(getActivity());
+            tv.setText(" ");
+            ll_category.addView(tv);
+            hsv_category.setVisibility(View.VISIBLE);
             getStoreList(LLSelectedID, true);
         }
 
@@ -440,6 +443,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             txt_storename.setTypeface(font);
             txt_address.setTypeface(fontM);
             txt_folleowercount.setTypeface(font);
+            img_follow_unfollow.setTypeface(font);
             txt_storename.setText(mItems.get(position).get("name"));
             txt_address.setText(mItems.get(position).get("area"));
 
@@ -862,6 +866,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
+        Bundle bundle;
         switch (viewId) {
 
             case R.id.img_icon_menu:
@@ -895,6 +900,10 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
             case R.id.img_filter:
                 Fragment f2 = new FilterFragment();
+
+                bundle = new Bundle();
+                bundle.putString("mainCatId", mainCatId);
+                f2.setArguments(bundle);
                 FragmentTransaction t2 = getFragmentManager().beginTransaction();
                 t2.hide(getFragmentManager().findFragmentById(R.id.frame_container));
                 t2.add(R.id.frame_container, f2);

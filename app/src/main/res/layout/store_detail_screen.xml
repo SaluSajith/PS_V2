@@ -63,7 +63,8 @@
                             android:layout_height="wrap_content"
                             android:layout_toLeftOf="@id/img_notification"
                             android:padding="5dp"
-                            android:src="@drawable/filter" />
+                            android:src="@drawable/filter"
+                            android:visibility="gone"/>
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -352,7 +353,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="5sp"
-                            android:text="Website:- "
+                            android:text="Image Source:- "
                             android:textAppearance="@android:style/TextAppearance.Small"
                             android:textColor="@color/dark_gray" />
 
