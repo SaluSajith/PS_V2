@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -319,6 +320,23 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                 @Override
                 public void onClick(View v) {
                     unFollowStore(mItems.get(position).get("id"), position);
+                }
+            });
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment f1 = new StoreDetailFragment();
+                    Bundle b1 = new Bundle();
+                    b1.putString("cat_id", mItems.get(position).get("id"));
+                    b1.putString("cat_name", mItems.get(position).get("name"));
+                    f1.setArguments(b1);
+                    FragmentTransaction t1 = getFragmentManager().beginTransaction();
+                    t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                    t1.add(R.id.frame_container, f1);
+                    //t1.replace(R.id.frame_container, f1);
+                    t1.addToBackStack(null);
+                    t1.commit();
                 }
             });
             return convertView;

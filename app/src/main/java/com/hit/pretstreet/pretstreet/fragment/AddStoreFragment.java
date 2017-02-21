@@ -117,10 +117,10 @@ public class AddStoreFragment extends Fragment implements View.OnClickListener {
                 } else if (!Constant.isValidEmail(emailid)) {
                     Toast.makeText(getActivity(), "Enter valid email id", Toast.LENGTH_SHORT).show();
                     edt_email.requestFocus();
-                } else if (landline.length() < 2) {
+                }/* else if (landline.length() < 2) {
                     Toast.makeText(getActivity(), "Enter Landline number", Toast.LENGTH_SHORT).show();
                     edt_landline.requestFocus();
-                } else if (location.length() < 2) {
+                }*/ else if (location.length() < 2) {
                     Toast.makeText(getActivity(), "Enter Location", Toast.LENGTH_SHORT).show();
                     edt_location.requestFocus();
                 } else if (mobile.length() < 2) {

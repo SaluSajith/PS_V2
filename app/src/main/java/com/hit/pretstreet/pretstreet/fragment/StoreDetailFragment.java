@@ -74,6 +74,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -363,23 +364,33 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                                 view.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        final Dialog nagDialog = new Dialog(getActivity(),android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-                                        nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                        nagDialog.setCancelable(false);
-                                        nagDialog.setContentView(R.layout.preview_image);
-                                        ImageButton btnClose = (ImageButton)nagDialog.findViewById(R.id.btnIvClose);
-                                        ImageView ivPreview = (ImageView)nagDialog.findViewById(R.id.iv_preview_image);
-//                                        ivPreview.setBackgroundDrawable(dd);
-                                        Glide.with(getActivity()).load(returnObjimage.get(finalJ).getImage()).into(ivPreview);
 
-                                        btnClose.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View arg0) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("images", returnObjimage);
+                                        bundle.putInt("position", finalJ);
 
-                                                nagDialog.dismiss();
-                                            }
-                                        });
-                                        nagDialog.show();
+                                        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                                        SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
+                                        newFragment.setArguments(bundle);
+                                        newFragment.show(ft, "slideshow");
+
+//                                        final Dialog nagDialog = new Dialog(getActivity(),android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+//                                        nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                                        nagDialog.setCancelable(false);
+//                                        nagDialog.setContentView(R.layout.preview_image);
+//                                        ImageButton btnClose = (ImageButton)nagDialog.findViewById(R.id.btnIvClose);
+//                                        ImageView ivPreview = (ImageView)nagDialog.findViewById(R.id.iv_preview_image);
+////                                        ivPreview.setBackgroundDrawable(dd);
+//                                        Glide.with(getActivity()).load(returnObjimage.get(finalJ).getImage()).into(ivPreview);
+//
+//                                        btnClose.setOnClickListener(new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View arg0) {
+//
+//                                                nagDialog.dismiss();
+//                                            }
+//                                        });
+//                                        nagDialog.show();
                                     }
                                 });
                                 ll_scroll_photo.addView(view);
@@ -989,7 +1000,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
             pDialog.dismiss();
     }
 
-    public class ProductImageItem {
+    public class ProductImageItem implements Serializable {
         String image;
 
         public String getImage() {

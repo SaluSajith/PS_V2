@@ -184,7 +184,9 @@
         <ImageView
             android:id="@+id/img_store_photo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:src="@drawable/storelistimage1"
+            android:scaleType="fitXY"/>
 
     </LinearLayout>
 

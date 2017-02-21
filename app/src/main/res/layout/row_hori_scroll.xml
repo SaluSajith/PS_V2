@@ -6,9 +6,9 @@
 
     <ImageView
         android:id="@+id/img_photo"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="120dp"
-        android:scaleType="fitXY" />
+        android:scaleType="fitStart" />
 
     <TextView
         android:id="@+id/txt_cat"
