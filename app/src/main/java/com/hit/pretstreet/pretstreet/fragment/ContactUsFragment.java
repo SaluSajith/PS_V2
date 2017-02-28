@@ -47,11 +47,11 @@ import java.net.URLEncoder;
  */
 public class ContactUsFragment extends Fragment implements View.OnClickListener {
     private ImageView img_icon_menu, img_submit, img_cancel;
-    private TextView txt_cat_name;
+    private TextView txt_cat_name, txt_cnt_number, txt_cnt_mail;
     private EditText edt_name, edt_email, edt_mobile, edt_msg;
     private ScrollView scroll;
     private String Screen, id, sname, saddress, baseImage;
-    private Typeface font;
+    private Typeface font, fontM;
     private ProgressDialog pDialog;
 
     @Nullable
@@ -72,12 +72,20 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
         edt_msg = (EditText) rootView.findViewById(R.id.edt_msg);
         scroll = (ScrollView) rootView.findViewById(R.id.scroll);
 
+        txt_cnt_number = (TextView) rootView.findViewById(R.id.txt_cnt_number);
+        txt_cnt_mail = (TextView) rootView.findViewById(R.id.txt_cnt_mail);
+
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
+        fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
+
         txt_cat_name.setTypeface(font);
         edt_name.setTypeface(font);
         edt_email.setTypeface(font);
         edt_mobile.setTypeface(font);
         edt_msg.setTypeface(font);
+
+        txt_cnt_number.setTypeface(fontM);
+        txt_cnt_mail.setTypeface(fontM);
 
         Bundle b = this.getArguments();
         Screen = b.getString("screen");

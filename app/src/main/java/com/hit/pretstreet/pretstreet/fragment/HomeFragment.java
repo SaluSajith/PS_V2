@@ -320,7 +320,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onClick(View v) {
                         if (list.get(finalI1).get("category_id").equalsIgnoreCase("3")) {
-                            Fragment f3 = new TrendingFragment();
+                            Fragment f3 = new TrendingFragmentNew();
                             Bundle b3 = new Bundle();
                             b3.putString("main_cat_id", list.get(finalI1).get("category_id"));
                             b3.putString("main_cat_name", list.get(finalI1).get("name"));
@@ -670,7 +670,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 @Override
                                 public void onClick(View v) {
                                     if (list.get(finalI1).get("category_id").equalsIgnoreCase("3")) {
-                                        Fragment f3 = new TrendingFragment();
+                                        Fragment f3 = new TrendingFragmentNew();
                                         Bundle b3 = new Bundle();
                                         b3.putString("main_cat_id", list.get(finalI1).get("category_id"));
                                         b3.putString("main_cat_name", list.get(finalI1).get("name"));

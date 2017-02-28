@@ -3,12 +3,9 @@
     package="com.hit.pretstreet.pretstreet"
     android:installLocation="auto">
 
-
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -29,7 +26,6 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <receiver android:name=".Items.IncomingSms">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
@@ -41,6 +37,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -79,8 +76,7 @@
             android:name=".ui.DefaultLocation"
             android:screenOrientation="portrait" />
 
-
-        <!-- Facebook relatrd task start-->
+        <!-- Facebook relatrd task start -->
         <activity
             android:name=".facebook.FacebookLoginScreen"
             android:screenOrientation="portrait"
@@ -96,6 +92,7 @@
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider112206959218432"
             android:exported="true" />
+
         <receiver android:name=".facebook.PretStreetFacebookBroadcastReceiver">
             <intent-filter>
                 <action android:name="com.facebook.platform.AppCallResultBroadcast" />
@@ -122,7 +119,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC9zfZnqFROGAy0BfV0jWVazvzcr5il8ds" />
 
+        <activity android:name=".ui.WebViewActivity"></activity>
     </application>
-
 
 </manifest>

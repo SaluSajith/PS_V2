@@ -159,8 +159,8 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         img_follow_unfollow.setTypeface(font);
         txt_storename.setTypeface(font);
         txt_address.setTypeface(fontM);
-        txt_website.setTypeface(font);
-        txt_website_value.setTypeface(font);
+        txt_website.setTypeface(fontM);
+        txt_website_value.setTypeface(fontM);
         txt_information.setTypeface(font);
         txt_information.setPaintFlags(txt_information.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         txt_timing.setTypeface(font);
@@ -504,7 +504,8 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                 break;
 
             case R.id.img_upload_pic:
-                selectImage();
+//                selectImage();
+                shareTextUrl();
                 break;
 
             case R.id.img_notification:
@@ -528,10 +529,13 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        share.putExtra(Intent.EXTRA_SUBJECT, "Check this store on Prestreet App");
-        share.putExtra(Intent.EXTRA_TEXT, "Check below store on Pretstreet App:- " + href + "\n\nStore details:-"
-                + "\n" + name + "\n" + txt_address.getText().toString());
-        startActivity(Intent.createChooser(share, "Share store details with.."));
+//        share.putExtra(Intent.EXTRA_SUBJECT, "Check this store on Prestreet App");
+//        share.putExtra(Intent.EXTRA_TEXT, "Check below store on Pretstreet App:- " + href + "\n\nStore details:-"
+//                + "\n" + name + "\n" + txt_address.getText().toString());
+        share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
+        share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
+                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.html");
+        startActivity(Intent.createChooser(share, "Share with.."));
     }
 
     private void selectImage() {

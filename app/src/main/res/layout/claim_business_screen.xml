@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scroll"
     android:focusableInTouchMode="true">
 
     <RelativeLayout
@@ -33,11 +33,11 @@
         <TextView
             android:id="@+id/txt_cat_name"
             android:layout_width="wrap_content"
-            android:alpha="0.7"
             android:layout_height="wrap_content"
             android:layout_above="@+id/ll"
             android:layout_marginBottom="35dp"
             android:layout_marginLeft="10sp"
+            android:alpha="0.7"
             android:padding="5sp"
             android:rotation="-5"
             android:text="CONTACT US"
@@ -152,6 +152,30 @@
                         android:src="@drawable/cancel"
                         android:visibility="gone" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_cnt_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textAppearance="@android:style/TextAppearance.Small"
+                        android:text="022-26834677"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/txt_cnt_mail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textAppearance="@android:style/TextAppearance.Small"
+                        android:textColor="@android:color/white"
+                        android:text="contact@pretstreet.com" />
                 </LinearLayout>
             </LinearLayout>
 

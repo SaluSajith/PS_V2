@@ -24,6 +24,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.ui.SelectLocation;
+import com.hit.pretstreet.pretstreet.ui.WebViewActivity;
 import com.hit.pretstreet.pretstreet.ui.WelcomeScreen;
 
 /**
@@ -110,7 +111,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.img_about:
-                Fragment f1 = new About_TnCFragment();
+                /*Fragment f1 = new About_TnCFragment();
                 Bundle b1 = new Bundle();
                 b1.putString("screen", "aboutus");
                 f1.setArguments(b1);
@@ -118,7 +119,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
                 t1.add(R.id.frame_container, f1);
                 t1.addToBackStack(null);
-                t1.commit();
+                t1.commit();*/
+                startActivity(new Intent(getActivity(), WebViewActivity.class));
                 break;
 
             case R.id.img_edit_profile:
