@@ -14,7 +14,7 @@ public class Constant {
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
     //public static final String COMMON_URL = "http://doctronics.co.in/fashionapp/";
-    public static final String COMMON_URL = "http://52.77.174.143/";
+    public static final String COMMON_URL = "http://52.77.174.143/admin/";
     public static final String REGISTRATION_URL = COMMON_URL + "customercreates.php?";
     public static final String LOGIN_URL = COMMON_URL + "customerlogin.php?";
     public static final String FASHION_API = COMMON_URL + "fashion_api.php?";
