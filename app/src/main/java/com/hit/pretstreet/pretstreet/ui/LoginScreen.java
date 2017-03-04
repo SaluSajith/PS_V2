@@ -46,7 +46,7 @@ import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.facebook.FacebookLoginScreen;
-import com.hit.pretstreet.pretstreet.facebook.GooglePlusLogin;
+import com.hit.pretstreet.pretstreet.facebook.GoogleLoginActivity;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.ActivityManagePermission;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
 
@@ -174,13 +174,13 @@ public class LoginScreen extends ActivityManagePermission implements View.OnClic
             case R.id.btn_google:
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.GET_ACCOUNTS)
                         == PackageManager.PERMISSION_GRANTED) {
-                    Intent googleLoginIntent = new Intent(LoginScreen.this, GooglePlusLogin.class);
+                    Intent googleLoginIntent = new Intent(LoginScreen.this, GoogleLoginActivity.class);
                     startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
                 } else {
                     askCompactPermission(Manifest.permission.GET_ACCOUNTS, new PermissionResult() {
                         @Override
                         public void permissionGranted() {
-                            Intent googleLoginIntent = new Intent(LoginScreen.this, GooglePlusLogin.class);
+                            Intent googleLoginIntent = new Intent(LoginScreen.this, GoogleLoginActivity.class);
                             startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
                         }
 
@@ -309,7 +309,7 @@ public class LoginScreen extends ActivityManagePermission implements View.OnClic
                 break;
 
             case GOOGLE_LOGIN_REQUEST_CODE:
-                if (resultCode == GooglePlusLogin.GOOGLEPLUS_LOGIN_RESULT_CODE_SUCCESS) {
+                if (resultCode == RESULT_OK) {
                     getGoogleResponse();
                 } else {
                     Log.d("TAG", "Google  LOGIN FAIL");
@@ -323,14 +323,14 @@ public class LoginScreen extends ActivityManagePermission implements View.OnClic
     }
 
     public void getGoogleResponse() {
-        strName = GooglePlusLogin.username;
-        //firstname = GooglePlusLogin.firstName;
-        //lastname = GooglePlusLogin.lastName;
-        googleId = GooglePlusLogin.userId;
-        googleImageUrl = GooglePlusLogin.imageUrl;
+        strName = GoogleLoginActivity.username;
+        //firstname = GoogleLoginActivity.firstName;
+        //lastname = GoogleLoginActivity.lastName;
+        googleId = GoogleLoginActivity.userId;
+        googleImageUrl = GoogleLoginActivity.imageUrl;
         strSocialId = googleId;
         strSocialType = "google";
-        strEmail = GooglePlusLogin.email;
+        strEmail = GoogleLoginActivity.email;
         // by default the profile url gives 50x50 px
         // image only
         // we can replace the value with whatever

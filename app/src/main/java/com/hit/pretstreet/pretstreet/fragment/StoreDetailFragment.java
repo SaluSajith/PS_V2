@@ -534,7 +534,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
 //                + "\n" + name + "\n" + txt_address.getText().toString());
         share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
         share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
-                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.html");
+                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");
         startActivity(Intent.createChooser(share, "Share with.."));
     }
 

@@ -1,6 +1,7 @@
 package com.hit.pretstreet.pretstreet;
 
 import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -10,7 +11,7 @@ import com.android.volley.toolbox.Volley;
 /**
  * Created by hit on 14/3/16.
  */
-public class PretStreet extends Application {
+public class PretStreet extends MultiDexApplication {
 
     public static final String TAG = PretStreet.class.getSimpleName();
     private RequestQueue mRequestQueue;

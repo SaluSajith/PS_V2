@@ -49,7 +49,7 @@ import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.facebook.FacebookLoginScreen;
-import com.hit.pretstreet.pretstreet.facebook.GooglePlusLogin;
+import com.hit.pretstreet.pretstreet.facebook.GoogleLoginActivity;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.ActivityManagePermission;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
 
@@ -206,13 +206,13 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
             case R.id.btn_google:
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.GET_ACCOUNTS)
                         == PackageManager.PERMISSION_GRANTED) {
-                    Intent googleLoginIntent = new Intent(RegisterScreen.this, GooglePlusLogin.class);
+                    Intent googleLoginIntent = new Intent(RegisterScreen.this, GoogleLoginActivity.class);
                     startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
                 } else {
                     askCompactPermission(Manifest.permission.GET_ACCOUNTS, new PermissionResult() {
                         @Override
                         public void permissionGranted() {
-                            Intent googleLoginIntent = new Intent(RegisterScreen.this, GooglePlusLogin.class);
+                            Intent googleLoginIntent = new Intent(RegisterScreen.this, GoogleLoginActivity.class);
                             startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
                         }
 
@@ -350,7 +350,7 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
                 break;
 
             case GOOGLE_LOGIN_REQUEST_CODE:
-                if (resultCode == GooglePlusLogin.GOOGLEPLUS_LOGIN_RESULT_CODE_SUCCESS) {
+                if (resultCode == RESULT_OK) {
                     getGoogleResponse();
                 } else {
                     Log.d("TAG", "Google  LOGIN FAIL");
@@ -397,14 +397,14 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
     }
 
     public void getGoogleResponse() {
-        strName = GooglePlusLogin.username;
-        //firstname = GooglePlusLogin.firstName;
-        //lastname = GooglePlusLogin.lastName;
-        googleId = GooglePlusLogin.userId;
-        googleImageUrl = GooglePlusLogin.imageUrl;
+        strName = GoogleLoginActivity.username;
+        //firstname = GoogleLoginActivity.firstName;
+        //lastname = GoogleLoginActivity.lastName;
+        googleId = GoogleLoginActivity.userId;
+        googleImageUrl = GoogleLoginActivity.imageUrl;
         strSocialId = googleId;
         strSocialType = "google";
-        strEmail = GooglePlusLogin.email;
+        strEmail = GoogleLoginActivity.email;
         strProfilePic = googleImageUrl.substring(0, googleImageUrl.length() - 2) + PROFILE_PIC_SIZE;
         getCheckFBLogin();
     }

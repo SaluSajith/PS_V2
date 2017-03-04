@@ -19,7 +19,7 @@ public class WebViewActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         webView = (WebView) findViewById(R.id.activity_web_view);
 
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 webView.loadUrl(url);
@@ -27,6 +27,15 @@ public class WebViewActivity extends AppCompatActivity {
             }
         });
         webView.setWebChromeClient(new WebChromeClient());
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("http://pretstreet.com");
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack())
+            webView.goBack();
+        else
+            super.onBackPressed();
     }
 }
