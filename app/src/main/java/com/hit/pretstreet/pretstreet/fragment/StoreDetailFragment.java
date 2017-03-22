@@ -19,6 +19,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -366,7 +368,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                                     public void onClick(View v) {
 
                                         Bundle bundle = new Bundle();
-                                        bundle.putSerializable("images", returnObjimage);
+                                        bundle.putParcelableArrayList("images", returnObjimage);
                                         bundle.putInt("position", finalJ);
 
                                         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -1004,8 +1006,13 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
             pDialog.dismiss();
     }
 
-    public class ProductImageItem implements Serializable {
+    public class ProductImageItem implements Parcelable {
         String image;
+
+        public ProductImageItem(){
+
+        }
+
 
         public String getImage() {
             return image;
@@ -1014,6 +1021,35 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         public void setImage(String image) {
             this.image = image;
         }
+
+        protected ProductImageItem(Parcel in) {
+            image = in.readString();
+        }
+
+        public final Creator<ProductImageItem> CREATOR = new Creator<ProductImageItem>() {
+            @Override
+            public ProductImageItem createFromParcel(Parcel in) {
+                return new ProductImageItem(in);
+            }
+
+            @Override
+            public ProductImageItem[] newArray(int size) {
+                return new ProductImageItem[size];
+            }
+        };
+
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(image);
+        }
+
+
     }
 
 }

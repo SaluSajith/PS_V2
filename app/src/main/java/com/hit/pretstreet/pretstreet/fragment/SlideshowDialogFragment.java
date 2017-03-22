@@ -54,7 +54,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         lblTitle = (TextView) v.findViewById(R.id.title);
         lblDate = (TextView) v.findViewById(R.id.date);
 
-        images = (ArrayList<StoreDetailFragment.ProductImageItem>) getArguments().getSerializable("images");
+        images = getArguments().getParcelableArrayList("images");
         selectedPosition = getArguments().getInt("position");
 
 //        Log.e(TAG, "position: " + selectedPosition);

@@ -570,9 +570,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     selectedPosition = position;
                     f1.setArguments(b1);
                     FragmentTransaction t1 = getFragmentManager().beginTransaction();
-                    //t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                    //t1.add(R.id.frame_container, f1);
-                    t1.replace(R.id.frame_container, f1);
+                    t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                    t1.add(R.id.frame_container, f1);
+//                    t1.replace(R.id.frame_container, f1);
                     t1.addToBackStack(null);
                     t1.commit();
                 }

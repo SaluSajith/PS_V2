@@ -198,12 +198,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         ArrayList<HashMap<String, String>> list = helper.fetchSearchList();
         if (list.isEmpty()) {
         } else {
@@ -221,6 +215,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 }
             }
         }
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     private void showDropDownSearchResult(final String newText) {
