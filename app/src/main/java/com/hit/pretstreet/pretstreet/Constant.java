@@ -28,12 +28,14 @@ public class Constant {
     }
 
     public static void hide_keyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        View view = activity.getCurrentFocus();
-        if (view == null) {
-            view = new View(activity);
+        if (activity != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            View view = activity.getCurrentFocus();
+            if (view == null) {
+                view = new View(activity);
+            }
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public static int notificationID = 0;

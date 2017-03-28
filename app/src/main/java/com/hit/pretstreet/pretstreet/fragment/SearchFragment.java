@@ -168,12 +168,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length() == 2) {
+               /* if (newText.length() == 2) {
                     showDropDownSearchResult(newText);
                 } else if (newText.length() == 4) {
                     showDropDownSearchResult(newText);
-                } else if (newText.length() > 5) {
-                    showDropDownSearchResult(newText);
+                } else */if (newText.length() > 2) {
+                    showDropDownSearchResult(newText.trim());
                 }
                 return false;
             }

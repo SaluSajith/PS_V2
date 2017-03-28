@@ -51,8 +51,8 @@ public class SlideshowDialogFragment extends DialogFragment {
         View v = inflater.inflate(R.layout.fragment_slideshow_dialog_frgament, container, false);
         viewPager = (ViewPager) v.findViewById(R.id.viewpager);
         lblCount = (TextView) v.findViewById(R.id.lbl_count);
-        lblTitle = (TextView) v.findViewById(R.id.title);
-        lblDate = (TextView) v.findViewById(R.id.date);
+//        lblTitle = (TextView) v.findViewById(R.id.title);
+//        lblDate = (TextView) v.findViewById(R.id.date);
 
         images = getArguments().getParcelableArrayList("images");
         selectedPosition = getArguments().getInt("position");

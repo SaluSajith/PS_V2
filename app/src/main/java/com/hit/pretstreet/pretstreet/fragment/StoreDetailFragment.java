@@ -90,7 +90,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
             img_upload_pic, img_sale, img_new_arrival, img_notification, img_arrow;
     private TextView txt_location, txt_store_name, txt_storename, txt_address, txt_website,
             txt_website_value, txt_information, txt_timing, txt_opentime, txt_closetime,
-            txt_close_on1, txt_close_on2, txt_folleowercount, img_follow_unfollow;
+            txt_close_on1, txt_close_on2, txt_folleowercount, img_follow_unfollow, txt_appointment;
     private RelativeLayout rl_pic, rl_location_search, rl_header;
     private LinearLayout ll_scroll_photo;
     private ArrayList<ProductImageItem> returnObjimage;
@@ -151,6 +151,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         txt_close_on2 = (TextView) rootView.findViewById(R.id.txt_close_on2);
         txt_folleowercount = (TextView) rootView.findViewById(R.id.txt_folleowercount);
         img_follow_unfollow = (TextView) rootView.findViewById(R.id.img_follow_unfollow);
+        txt_appointment = (TextView) rootView.findViewById(R.id.txt_appointment);
         rl_header.bringToFront();
 
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
@@ -170,6 +171,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         txt_closetime.setTypeface(font);
         txt_close_on1.setTypeface(font);
         txt_close_on2.setTypeface(font);
+        txt_appointment.setTypeface(font);
 
         dMetric = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dMetric);
@@ -238,6 +240,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                             item.put("rating_count", jsonObject.getString("rating_count"));
                             item.put("wishlist", jsonObject.getString("wishlist"));
                             item.put("follow_count", jsonObject.getString("follow_count"));
+                            item.put("appointment", jsonObject.getString("appointment"));
                             JSONArray jsonArrayImage = new JSONArray(jsonObject.getString("image_collection"));
                             returnObjimage = new ArrayList<ProductImageItem>();
                             String imageUrl;
@@ -318,6 +321,10 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                                 txt_opentime.setText(list.get(i).get("open"));
                                 txt_closetime.setText(list.get(i).get("close"));
                             }
+
+                            if (list.get(i).get("appointment").trim().isEmpty())
+                                txt_appointment.setVisibility(View.GONE);
+                            else txt_appointment.setText(list.get(i).get("appointment"));
 
                             if (list.get(i).get("closed").equalsIgnoreCase(""))
                                 txt_close_on1.setVisibility(View.GONE);
@@ -1009,7 +1016,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
     public class ProductImageItem implements Parcelable {
         String image;
 
-        public ProductImageItem(){
+        public ProductImageItem() {
 
         }
 

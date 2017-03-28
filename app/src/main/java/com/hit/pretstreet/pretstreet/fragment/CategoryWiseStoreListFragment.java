@@ -21,7 +21,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +87,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     private ProgressDialog pDialog;
     ArrayList<CategoryItem> listCategory = new ArrayList<>();
     TextView[] txtname, txtnameAll, txtline, txtlineAll;
+    DisplayMetrics dm;
 
     String LLSelectedID = "";
 
@@ -114,6 +117,8 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             subCatName = bundle.getString("main_cat_name");
         }
 
+        dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         listCategory = (ArrayList<CategoryItem>) bundle.getSerializable("cat_list");
         list_store = (ListView) rootView.findViewById(R.id.list_store);
@@ -422,13 +427,14 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
-            TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow;
+            final TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, txt_line;
             LayoutInflater inflater = LayoutInflater.from(context);
             if (position % 2 == 0) {
                 convertView = inflater.inflate(R.layout.row_list_store1, parent, false);
             } else {
                 convertView = inflater.inflate(R.layout.row_list_store2, parent, false);
             }
+            txt_line = (TextView) convertView.findViewById(R.id.line);
             img_store_photo = (ImageView) convertView.findViewById(R.id.img_store_photo);
             img_follow_unfollow = (TextView) convertView.findViewById(R.id.img_follow_unfollow);
             img_call = (ImageView) convertView.findViewById(R.id.img_call);
@@ -460,7 +466,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 txt_folleowercount.setText(Html.fromHtml(strFollowCount));
             }
 
-            Glide.with(CategoryWiseStoreListFragment.this).load(list.get(position).get("thumb")).asBitmap()
+            Glide.with(CategoryWiseStoreListFragment.this).load(list.get(position).get("thumb")).asBitmap().fitCenter()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
@@ -474,11 +480,16 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             Canvas mCanvas = new Canvas(result);
                             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                            mCanvas.drawBitmap(resource, 0, 0, null);
-                            mCanvas.drawBitmap(mask, 0, 0, paint);
+                            if (resource.getWidth() > resource.getHeight()) {
+                                mCanvas.drawBitmap(resource, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), (mask.getHeight() / 2) - (resource.getHeight() / 2) , null);
+                            } else {
+                                mCanvas.drawBitmap(resource, (mask.getWidth() / 2) - (resource.getWidth() / 2) + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), null);
+                            }
+                            mCanvas.drawBitmap(mask, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), 0, paint);
+
                             paint.setXfermode(null);
                             img_store_photo.setImageBitmap(result);
-                            img_store_photo.setScaleType(ImageView.ScaleType.FIT_XY);
+                            img_store_photo.setScaleType(ImageView.ScaleType.CENTER);
                         }
                     });
 
