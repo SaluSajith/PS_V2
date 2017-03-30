@@ -262,7 +262,18 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                                 float scaleWidth = ((float) dwidth) / width;
                                 float scaleHeight = ((float) dheight) / height;
                                 Matrix matrix = new Matrix();
-                                matrix.postScale(scaleWidth, scaleHeight);
+
+                                if (width > height)
+                                    if (scaleHeight > scaleWidth)
+                                        matrix.postScale(scaleWidth, scaleWidth);
+                                    else
+                                        matrix.postScale(scaleHeight, scaleHeight);
+                                else {
+                                    if (scaleHeight > scaleWidth)
+                                        matrix.postScale(scaleHeight, scaleHeight);
+                                    else
+                                        matrix.postScale(scaleWidth, scaleWidth);
+                                }
                                 Bitmap resizedBitmap = Bitmap.createBitmap(resource, 0, 0, width, height, matrix, false);
 
                                 Bitmap mask;
@@ -275,12 +286,12 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                                 Canvas mCanvas = new Canvas(result);
                                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                                 paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                                //mCanvas.drawBitmap(resource, 0, 0, null);
+//                                mCanvas.drawBitmap(resource, 0, 0, null);
                                 mCanvas.drawBitmap(resizedBitmap, 0, 0, null);
                                 mCanvas.drawBitmap(mask, 0, 0, paint);
                                 paint.setXfermode(null);
                                 mImageView.setImageBitmap(result);
-                                mImageView.setScaleType(ImageView.ScaleType.CENTER);
+                                mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             }
                         });
 
@@ -299,7 +310,7 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                         FragmentTransaction t1 = getFragmentManager().beginTransaction();
                        /* t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
                         t1.add(R.id.frame_container, f1);*/
-                        t1.replace(R.id.frame_container,f1);
+                        t1.replace(R.id.frame_container, f1);
                         t1.addToBackStack(null);
                         t1.commit();
                     }
@@ -541,7 +552,7 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                                     FragmentTransaction t1 = getFragmentManager().beginTransaction();
                                     /*t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
                                     t1.add(R.id.frame_container, f1);*/
-                                    t1.replace(R.id.frame_container,f1);
+                                    t1.replace(R.id.frame_container, f1);
                                     t1.addToBackStack(null);
                                     t1.commit();
                                 }

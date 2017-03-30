@@ -483,7 +483,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             if (resource.getWidth() > resource.getHeight()) {
                                 mCanvas.drawBitmap(resource, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), (mask.getHeight() / 2) - (resource.getHeight() / 2) , null);
                             } else {
-                                mCanvas.drawBitmap(resource, (mask.getWidth() / 2) - (resource.getWidth() / 2) + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), null);
+                                mCanvas.drawBitmap(resource, (mask.getWidth() / 2) - (resource.getWidth() / 2) /*+ TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm)*/, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, dm), null);
                             }
                             mCanvas.drawBitmap(mask, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), 0, paint);
 

@@ -21,7 +21,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +84,7 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
     int pageCount, totalPages;
     boolean requestCalled;
     ArrayList<HashMap<String, String>> list;
+    private DisplayMetrics dm;
 
     @Nullable
     @Override
@@ -105,6 +108,10 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
         txt_location = (TextView) rootView.findViewById(R.id.txt_location);
 
         list_store = (ListView) rootView.findViewById(R.id.list_store);
+
+        dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
 
         rl.bringToFront();
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
@@ -350,7 +357,7 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
                 rl_sale_arrival.setLayoutParams(relativeParams);
                 rl_sale_arrival.requestLayout();
             }
-            Glide.with(StoreListByFilterFragment.this).load(list.get(position).get("thumb")).asBitmap()
+            Glide.with(StoreListByFilterFragment.this).load(list.get(position).get("thumb")).asBitmap().fitCenter()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
@@ -367,11 +374,15 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
                             Canvas mCanvas = new Canvas(result);
                             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                            mCanvas.drawBitmap(resource, 0, 0, null);
-                            mCanvas.drawBitmap(mask, 0, 0, paint);
+                            if (resource.getWidth() > resource.getHeight()) {
+                                mCanvas.drawBitmap(resource, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), (mask.getHeight() / 2) - (resource.getHeight() / 2) , null);
+                            } else {
+                                mCanvas.drawBitmap(resource, (mask.getWidth() / 2) - (resource.getWidth() / 2) /*+ TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm)*/, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, dm), null);
+                            }
+                            mCanvas.drawBitmap(mask, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), 0, paint);
                             paint.setXfermode(null);
                             img_store_photo.setImageBitmap(result);
-                            img_store_photo.setScaleType(ImageView.ScaleType.FIT_XY);
+//                            img_store_photo.setScaleType(ImageView.ScaleType.FIT_XY);
                         }
                     });
 

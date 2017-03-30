@@ -26,7 +26,9 @@ import android.support.v7.widget.SearchView;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,6 +91,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private ListView list_search;
     private SearchListAdapter searchListAdapter;
     private StoreListAdapter storeListAdapter;
+    ArrayAdapter<String> dropDownAdapter;
 
     String[] searchResult, searchID, searchAddress, result;
 
@@ -103,6 +106,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private ProgressDialog pDialog;
     JsonObjectRequest jsonObjReqSearch;
     private DatabaseHelper helper;
+    private DisplayMetrics dm;
 
     @Nullable
     @Override
@@ -135,6 +139,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         txt_search.setTypeface(font);
         txt_recentsearches.setTypeface(font);
+
+        dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         baseImage = PreferenceServices.getInstance().getBaseImage();
         if (baseImage.equalsIgnoreCase("")) {
@@ -172,7 +179,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     showDropDownSearchResult(newText);
                 } else if (newText.length() == 4) {
                     showDropDownSearchResult(newText);
-                } else */if (newText.length() > 2) {
+                } else */
+                if (newText.length() > 2) {
                     showDropDownSearchResult(newText.trim());
                 }
                 return false;
@@ -245,6 +253,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     strsuccess = response.getString("success");
                     if (strsuccess.equals("true")) {
                         responseSuccess = true;
+                        list.clear();
                         JSONArray jsonArray = new JSONArray(response.getString("searchresult"));
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -263,9 +272,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 }
                 if (responseSuccess) {
                     if (list.isEmpty()) {
-                        String[] stste = {"no result found"};
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, stste);
-                        img_searchAuto.setAdapter(adapter);
+                        result = new String[]{"no result found"};
+                        if (searchAdapter == null) {
+                            searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
+                            img_searchAuto.setAdapter(searchAdapter);
+                        } else searchAdapter.notifyDataSetChanged();
                     } else {
                         searchResult = new String[list.size()];
                         searchAddress = new String[list.size()];
@@ -277,11 +288,17 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                             searchID[i] = list.get(i).get("id");
                             result[i] = searchResult[i] + ", " + searchAddress[i];
                         }
-                        searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
-                        img_searchAuto.setAdapter(searchAdapter);
+                        if(searchAdapter == null) {
+                            searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
+                            img_searchAuto.setAdapter(searchAdapter);
+                        }else
+                            searchAdapter.notifyDataSetChanged();
                         img_searchAuto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if(position==0)
+                                    if(result[position].trim().equalsIgnoreCase("no result found"))
+                                        return;
                                 helper.saveSearches(searchID[position], searchResult[position], searchAddress[position]);
                                 searchLogTracking(searchResult[position]);
                                 Fragment f1 = new StoreDetailFragment();
@@ -299,13 +316,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                         });
                     }
                 }
-                hidepDialog();
+//                hidepDialog();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("Volley", "Error: " + error.getMessage());
-                hidepDialog();
+//                hidepDialog();
                 String message = null;
                 if (error instanceof NetworkError) {
                     message = "Cannot connect to Internet...Please check your connection!";
@@ -327,7 +344,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
     }
 
-    private void showSearchResult(final String query, final boolean first) {
+    private void showSearchResult(String query, final boolean first) {
         //http://52.77.174.143/fashion_api.php?route=search&keywords=gaurav&lat=&lon=&start=
         String lat = "", lng = "";
         if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("0.0")
@@ -339,6 +356,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             lng = PreferenceServices.getInstance().getLongitute();
         }
         String urlJson;
+        query = query.trim();
         try {
             urlJson = Constant.FASHION_API + "route=search&keywords="
                     + URLEncoder.encode(query, "UTF-8")
@@ -354,6 +372,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             showpDialog();
         }
         Log.e("URL: ", urlJson);
+        final String finalQuery = query;
         jsonObjReqSearch = new JsonObjectRequest(Request.Method.GET, urlJson, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(final JSONObject response) {
@@ -405,7 +424,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                         if (!searchview.isIconified())
                             searchview.setIconified(true);
                         searchview.clearFocus();
-                        searchLogTracking(query);
+                        searchLogTracking(finalQuery);
                         Constant.hide_keyboard(getActivity());
                         storeListAdapter = new StoreListAdapter(getActivity(), R.layout.row_list_store1, list);
                         list_search.setAdapter(storeListAdapter);
@@ -642,7 +661,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 rl_sale_arrival.setLayoutParams(relativeParams);
                 rl_sale_arrival.requestLayout();
             }
-            Glide.with(SearchFragment.this).load(list.get(position).get("thumb")).asBitmap()
+            Glide.with(SearchFragment.this).load(list.get(position).get("thumb")).asBitmap().fitCenter()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
@@ -659,8 +678,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                             Canvas mCanvas = new Canvas(result);
                             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                            mCanvas.drawBitmap(resource, 0, 0, null);
-                            mCanvas.drawBitmap(mask, 0, 0, paint);
+                            if (resource.getWidth() > resource.getHeight()) {
+                                mCanvas.drawBitmap(resource, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), (mask.getHeight() / 2) - (resource.getHeight() / 2) , null);
+                            } else {
+                                mCanvas.drawBitmap(resource, (mask.getWidth() / 2) - (resource.getWidth() / 2) /*+ TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm)*/, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, dm), null);
+                            }
+                            mCanvas.drawBitmap(mask, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), 0, paint);
                             paint.setXfermode(null);
                             img_store_photo.setImageBitmap(result);
                             //img_store_photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -713,7 +736,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                         Bundle b = new Bundle();
                         storename = mItems.get(position).get("name");
                         b.putString("name", storename);
-                        b.putString("address",  mItems.get(position).get("address"));
+                        b.putString("address", mItems.get(position).get("address"));
                         b.putDouble("lat", Double.parseDouble(mItems.get(position).get("latitude")));
                         b.putDouble("long", Double.parseDouble(mItems.get(position).get("longitude")));
                         i.putExtras(b);
