@@ -654,7 +654,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                             float scaleWidth = ((float) dwidth) / width;
                                             float scaleHeight = ((float) dheight) / height;
                                             Matrix matrix = new Matrix();
-                                            matrix.postScale(scaleWidth, scaleHeight);
+                                            if (width > height)
+                                                if (scaleHeight > scaleWidth)
+                                                    matrix.postScale(scaleWidth, scaleWidth);
+                                                else
+                                                    matrix.postScale(scaleHeight, scaleHeight);
+                                            else {
+                                                if (scaleHeight > scaleWidth)
+                                                    matrix.postScale(scaleHeight, scaleHeight);
+                                                else
+                                                    matrix.postScale(scaleWidth, scaleWidth);
+                                            }
                                             Bitmap resizedBitmap = Bitmap.createBitmap(resource, 0, 0, width, height, matrix, false);
                                             Bitmap mask;
                                             if (finalI % 2 == 0) {
@@ -671,7 +681,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                             mCanvas.drawBitmap(mask, 0, 0, paint);
                                             paint.setXfermode(null);
                                             mImageView.setImageBitmap(result);
-                                            mImageView.setScaleType(ImageView.ScaleType.CENTER);
+                                            mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                                         }
                                     });
 
