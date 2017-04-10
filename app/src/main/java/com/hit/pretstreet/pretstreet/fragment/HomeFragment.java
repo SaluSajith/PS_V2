@@ -362,7 +362,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             b3.putString("main_cat_name", list.get(finalI1).get("name"));
                             f3.setArguments(b3);
                             FragmentTransaction t3 = getFragmentManager().beginTransaction();
-                           /* t3.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                           /*t3.hide(getFragmentManager().findFragmentById(R.id.frame_container));
                             t3.add(R.id.frame_container, f3);*/
                             t3.replace(R.id.frame_container, f3);
                             t3.addToBackStack(null);

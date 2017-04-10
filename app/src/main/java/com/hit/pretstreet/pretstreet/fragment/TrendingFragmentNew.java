@@ -208,7 +208,6 @@ public class TrendingFragmentNew extends Fragment {
             } else {
                 LinkedHashMap<String, String> trendItem = list.get(position - 1);
 
-
                 Glide.with(getActivity()).load(trendItem.get("image")).centerCrop().into(holder.img_banner);
                 holder.txtTitle.setText(trendItem.get("name"));
                 holder.txtDescription.setText(trendItem.get("desc"));
