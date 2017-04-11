@@ -75,7 +75,7 @@ import java.util.ArrayList;
 public class AddStoreScreen extends ActivityManagePermission implements View.OnClickListener {
 
     private ImageView img_icon_menu, img_submit;
-    private TextView txt_cat;
+    private TextView txt_cat_name;
     private EditText edt_store_name, edt_name, edt_email, edt_location, edt_mobileno, edt_landline, edt_about;
     private Typeface font;
     private String baseImage;
@@ -93,7 +93,7 @@ public class AddStoreScreen extends ActivityManagePermission implements View.OnC
         img_icon_menu = (ImageView) findViewById(R.id.img_icon_menu);
         img_submit = (ImageView) findViewById(R.id.img_submit);
 
-        txt_cat = (TextView) findViewById(R.id.txt_cat);
+        txt_cat_name = (TextView) findViewById(R.id.txt_cat_name);
         scroll = (ScrollView) findViewById(R.id.scroll);
 
         edt_store_name = (EditText) findViewById(R.id.edt_store_name);
@@ -105,7 +105,8 @@ public class AddStoreScreen extends ActivityManagePermission implements View.OnC
         edt_about = (EditText) findViewById(R.id.edt_about);
 
         font = Typeface.createFromAsset(getApplicationContext().getAssets(), "RedVelvet-Regular.otf");
-        txt_cat.setTypeface(font);
+        txt_cat_name.setText("ADD STORE");
+        txt_cat_name.setTypeface(font);
         edt_store_name.setTypeface(font);
         edt_location.setTypeface(font);
         edt_mobileno.setTypeface(font);

@@ -68,7 +68,7 @@
                     android:layout_toLeftOf="@id/img_search"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:rotation="-5"
+                    android:rotation="-4"
                     android:text="Location of current status "
                     android:textColor="@android:color/black"
                     android:textSize="10sp" />

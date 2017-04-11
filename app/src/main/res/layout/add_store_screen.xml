@@ -5,62 +5,36 @@
     android:layout_height="match_parent"
     android:focusable="false"
     android:focusableInTouchMode="false">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/fixed_top" />
-
-        <RelativeLayout
-            android:id="@+id/rl_AppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/img_icon_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:src="@drawable/logo1" />
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/txt_cat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/ll"
+        <include layout="@layout/header_simple"
+            android:id="@+id/header"
             android:alpha="0.7"
-            android:layout_marginBottom="25dp"
-            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:padding="5dp"
             android:rotation="-5"
-            android:text="ADD STORE"
+            android:text="ACCOUNT"
             android:textColor="@color/yellow"
-            android:textSize="25sp" />
+            android:textSize="25sp"></include>
 
         <LinearLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/img"
-            android:layout_marginTop="-39dp"
-            android:background="@drawable/add_store_bg"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="-40dp"
+            android:orientation="vertical"
+            android:background="@drawable/accbase">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="22dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <EditText
@@ -69,6 +43,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/email"
                     android:hint="store name"
+                    android:layout_marginTop="3dp"
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textAppearance="@android:style/TextAppearance.Small"

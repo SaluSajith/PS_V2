@@ -72,6 +72,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         }
 
         txt_cat_name.setTypeface(font);
+        txt_cat_name.setText("ACCOUNT");
         img_your_location.setOnClickListener(this);
         img_edit_profile.setOnClickListener(this);
         img_about.setOnClickListener(this);

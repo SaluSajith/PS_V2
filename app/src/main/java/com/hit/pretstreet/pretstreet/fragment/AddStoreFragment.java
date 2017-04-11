@@ -30,7 +30,7 @@ import com.hit.pretstreet.pretstreet.R;
  */
 public class AddStoreFragment extends Fragment implements View.OnClickListener {
     private ImageView img_icon_menu, img_submit;
-    private TextView txt_cat;
+    private TextView txt_cat_name;
     private ScrollView scroll;
     private EditText edt_store_name, edt_name, edt_email, edt_location, edt_mobileno, edt_landline, edt_about;
     private Typeface font;
@@ -46,7 +46,7 @@ public class AddStoreFragment extends Fragment implements View.OnClickListener {
         img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
         img_submit = (ImageView) rootView.findViewById(R.id.img_submit);
 
-        txt_cat = (TextView) rootView.findViewById(R.id.txt_cat);
+        txt_cat_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
         scroll = (ScrollView) rootView.findViewById(R.id.scroll);
 
         edt_store_name = (EditText) rootView.findViewById(R.id.edt_store_name);
@@ -58,7 +58,8 @@ public class AddStoreFragment extends Fragment implements View.OnClickListener {
         edt_email = (EditText) rootView.findViewById(R.id.edt_email);
 
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
-        txt_cat.setTypeface(font);
+        txt_cat_name.setText("ADD STORE");
+        txt_cat_name.setTypeface(font);
         edt_store_name.setTypeface(font);
         edt_location.setTypeface(font);
         edt_mobileno.setTypeface(font);
