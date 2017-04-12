@@ -2,13 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
-
-    <!--<ImageView
+    android:background="@android:color/transparent">
+<!--
+    <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/fixed_top" />
+        android:src="@drawable/fixed_top"
+        android:scaleType="centerCrop"/>
 
     <RelativeLayout
         android:id="@+id/rl_AppBar"
@@ -107,36 +108,49 @@
         android:textColor="@color/yellow"
         android:textSize="35sp" />
 
-    <HorizontalScrollView
-        android:id="@+id/hsv_category"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_cat_name"
-        android:layout_marginTop="10dp"
-        android:alpha="0.9"
+        android:layout_marginTop="20dp"
+        android:alpha="1"
         android:background="@color/yellow"
         android:gravity="center"
-        android:padding="2dp"
-        android:rotation="-4"
-        android:scrollbars="none">
+        android:rotation="-3">
 
-        <LinearLayout
-            android:id="@+id/ll_category"
+        <HorizontalScrollView
+            android:id="@+id/hsv_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal" />
-    </HorizontalScrollView>-->
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:scrollbars="none">
 
+            <LinearLayout
+                android:id="@+id/ll_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+    </RelativeLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ll"></LinearLayout>
     <ListView
         android:id="@+id/list_store"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="40dp"
+        android:layout_marginTop="-30dp"
         android:headerDividersEnabled="false"
         android:divider="@color/yellow"
+        android:layout_below="@+id/ll"
         android:dividerHeight="5dp"
         android:visibility="visible" />
+
 
 
 </RelativeLayout>

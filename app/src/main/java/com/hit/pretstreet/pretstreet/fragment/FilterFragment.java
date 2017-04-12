@@ -94,6 +94,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener {
         txt_sort = (TextView) rootView.findViewById(R.id.txt_sort);
 
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
+        txt_cat_name.setText("FILTER");
         txt_cat_name.setTypeface(font);
         txt_sort.setTypeface(font);
 

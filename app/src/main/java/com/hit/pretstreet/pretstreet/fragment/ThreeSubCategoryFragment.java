@@ -60,7 +60,7 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
 
     private ImageView img_icon_menu, img_notification, img_search, img_filter;
     private TextView txt_Mcat_name;
-    private RelativeLayout rl_location_search;
+    private LinearLayout rl_location_search;
     private LinearLayout ll_brands;
     public TextView txt_location;
     private String mainCAtId, name, savedCaTList = "";
@@ -88,7 +88,7 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
         txt_Mcat_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
 
         ll_brands = (LinearLayout) rootView.findViewById(R.id.ll_brands);
-        rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
+        rl_location_search = (LinearLayout) rootView.findViewById(R.id.rl_location_search);
 
         txt_Mcat_name.setText(name);
         txt_location.setTypeface(font);

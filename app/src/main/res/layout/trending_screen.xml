@@ -13,12 +13,12 @@
         <ImageView
             android:id="@+id/img_trending"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,13 +26,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
+        <include layout="@layout/header_store_list"></include>
+
         <ImageView
             android:id="@+id/img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/fixed_top" />
+            android:src="@drawable/fixed_top"
+            android:scaleType="centerCrop"/>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:id="@+id/ll_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,7 +132,7 @@
                 android:textColor="@color/yellow"
                 android:textSize="30sp" />
 
-        </LinearLayout>
-    </RelativeLayout>
+        </LinearLayout>-->
+    </LinearLayout>
 
 </RelativeLayout>

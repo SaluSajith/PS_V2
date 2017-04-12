@@ -13,6 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
         android:src="@drawable/fixed_top" />
 
     <RelativeLayout
@@ -42,6 +43,10 @@
         android:text="SEARCH FOR:"
         android:textColor="@color/yellow"
         android:textSize="25sp" />
+
+    <!--<include layout="@layout/header_simple"
+        android:id="@+id/header"></include>-->
+
 
     <LinearLayout
         android:id="@+id/ll_search"
@@ -73,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_search"
-        android:layout_marginTop="-30dp"
+        android:layout_marginTop="-40dp"
         android:background="@drawable/your_recent_search">
 
         <TextView
@@ -81,9 +86,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:padding="5dp"
-            android:rotation="-4"
+            android:rotation="-4.5"
+            android:gravity="center_vertical"
             android:text="YOUR RECENT SEARCHES:"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/yellow" />
@@ -93,7 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_recent_search"
-        android:layout_marginTop="-32dp"
+        android:layout_marginTop="-40dp"
         android:background="@drawable/details_base">
 
         <ListView

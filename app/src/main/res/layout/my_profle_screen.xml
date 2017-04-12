@@ -8,46 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/fixed_top" />
-
-        <RelativeLayout
-            android:id="@+id/rl_AppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/img_icon_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:src="@drawable/logo1" />
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/txt_cat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="0.7"
-            android:layout_above="@+id/ll"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="10sp"
-            android:padding="5sp"
-            android:rotation="-5"
-            android:text="MY PROFILE"
-            android:textColor="@color/yellow"
-            android:textSize="25sp" />
-
+        <include layout="@layout/header_simple"
+            android:id="@+id/header"></include>
         <RelativeLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
-            android:layout_height="440dp"
-            android:layout_below="@+id/img"
+            android:layout_height="480dp"
+            android:layout_below="@+id/header"
             android:layout_marginTop="-38dp"
             android:background="@drawable/mprbase"
             android:padding="10dp">

@@ -45,7 +45,7 @@
             android:layout_marginLeft="10dp"
             android:alpha="0.7"
             android:padding="5dp"
-            android:rotation="-6"
+            android:rotation="-5"
             android:text="HELLO"
             android:textColor="@color/yellow"
             android:textSize="25sp" />

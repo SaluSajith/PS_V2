@@ -45,7 +45,7 @@ public class PrivacyandConditionsScreen extends Activity {
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
         img_icon_menu = (ImageView) findViewById(R.id.img_icon_menu);
-        txt_cat = (TextView) findViewById(R.id.txt_cat);
+        txt_cat = (TextView) findViewById(R.id.txt_cat_name);
         txt_content = (TextView) findViewById(R.id.txt_content);
         font = Typeface.createFromAsset(getApplicationContext().getAssets(), "RedVelvet-Regular.otf");
         txt_cat.setTypeface(font);

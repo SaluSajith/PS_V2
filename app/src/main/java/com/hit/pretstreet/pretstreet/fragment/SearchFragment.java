@@ -137,6 +137,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(getActivity().SEARCH_SERVICE);
         searchview.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
+        txt_search.setText("SEARCH FOR:");
         txt_search.setTypeface(font);
         txt_recentsearches.setTypeface(font);
 

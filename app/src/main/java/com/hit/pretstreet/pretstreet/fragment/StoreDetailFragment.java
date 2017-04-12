@@ -106,7 +106,6 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
     private Typeface font, fontM;
     private ProgressDialog pDialog;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -130,7 +129,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
         img_arrow = (ImageView) rootView.findViewById(R.id.img_arrow);
         rl_pic = (RelativeLayout) rootView.findViewById(R.id.rl_pic);
-        rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
+        //rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
         rl_header = (RelativeLayout) rootView.findViewById(R.id.rl_header);
         ll_scroll_photo = (LinearLayout) rootView.findViewById(R.id.ll_scroll_photo);
 
@@ -138,7 +137,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         img_address = (ImageView) rootView.findViewById(R.id.img_address);
 
         txt_location = (TextView) rootView.findViewById(R.id.txt_location);
-        txt_store_name = (TextView) rootView.findViewById(R.id.txt_store_name);
+        txt_store_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
         txt_storename = (TextView) rootView.findViewById(R.id.txt_storename);
         txt_address = (TextView) rootView.findViewById(R.id.txt_address);
         txt_website = (TextView) rootView.findViewById(R.id.txt_website);
@@ -152,7 +151,6 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         txt_folleowercount = (TextView) rootView.findViewById(R.id.txt_folleowercount);
         img_follow_unfollow = (TextView) rootView.findViewById(R.id.img_follow_unfollow);
         txt_appointment = (TextView) rootView.findViewById(R.id.txt_appointment);
-        rl_header.bringToFront();
 
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
@@ -171,7 +169,8 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         txt_closetime.setTypeface(font);
         txt_close_on1.setTypeface(font);
         txt_close_on2.setTypeface(font);
-        txt_appointment.setTypeface(font);
+
+        //img_filter.setVisibility(View.GONE);
 
         dMetric = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dMetric);
@@ -189,6 +188,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
 
         //fetchRatings();
         getStoreDetails();
+        rl_header.bringToFront();
         return rootView;
     }
 

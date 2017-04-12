@@ -102,13 +102,14 @@ public class MyProfileFragment extends FragmentManagePermission implements View.
         img_photo = (CircleImageView) rootView.findViewById(R.id.img_photo);
         img_submit = (ImageView) rootView.findViewById(R.id.img_submit);
         scroll = (ScrollView) rootView.findViewById(R.id.scroll);
-        txt_cat = (TextView) rootView.findViewById(R.id.txt_cat);
+        txt_cat = (TextView) rootView.findViewById(R.id.txt_cat_name);
         edt_name = (EditText) rootView.findViewById(R.id.edt_name);
         edt_email = (EditText) rootView.findViewById(R.id.edt_email);
         edt_mobile = (EditText) rootView.findViewById(R.id.edt_mobile);
         edt_dob = (EditText) rootView.findViewById(R.id.edt_dob);
 
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
+        txt_cat.setText("MY PROFILE");
         txt_cat.setTypeface(font);
         edt_name.setTypeface(font);
         edt_email.setTypeface(font);

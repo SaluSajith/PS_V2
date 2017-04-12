@@ -59,11 +59,12 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
         img_submit = (ImageView) rootView.findViewById(R.id.img_submit);
         rel = (RelativeLayout) rootView.findViewById(R.id.rel);
 
-        txt_cat = (TextView) rootView.findViewById(R.id.txt_cat);
+        txt_cat = (TextView) rootView.findViewById(R.id.txt_cat_name);
         edt_current_password = (EditText) rootView.findViewById(R.id.edt_current_password);
         edt_new_password = (EditText) rootView.findViewById(R.id.edt_new_password);
         edt_confirm_password = (EditText) rootView.findViewById(R.id.edt_confirm_password);
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
+        txt_cat.setText("CHANGE PASSWORD");
         txt_cat.setTypeface(font);
         edt_current_password.setTypeface(font);
         edt_new_password.setTypeface(font);

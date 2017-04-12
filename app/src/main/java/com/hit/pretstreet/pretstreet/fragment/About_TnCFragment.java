@@ -49,7 +49,7 @@ public class About_TnCFragment extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
         img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
-        txt_cat = (TextView) rootView.findViewById(R.id.txt_cat);
+        txt_cat = (TextView) rootView.findViewById(R.id.txt_cat_name);
         txt_content = (TextView) rootView.findViewById(R.id.txt_content);
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         txt_cat.setTypeface(font);

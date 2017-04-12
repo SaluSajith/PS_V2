@@ -78,6 +78,7 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
 
+        txt_cat_name.setText("CONTACT US");
         txt_cat_name.setTypeface(font);
         edt_name.setTypeface(font);
         edt_email.setTypeface(font);

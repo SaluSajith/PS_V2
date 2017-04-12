@@ -9,15 +9,15 @@
         android:layout_height="match_parent">
 
         <include layout="@layout/header_simple"
-            android:id="@+id/header"
-            android:alpha="0.7"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:padding="5dp"
-            android:rotation="-5"
-            android:text="ACCOUNT"
-            android:textColor="@color/yellow"
-            android:textSize="25sp"></include>
+        android:id="@+id/header"
+        android:alpha="0.7"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:rotation="-5"
+        android:text="ACCOUNT"
+        android:textColor="@color/yellow"
+        android:textSize="25sp"></include>
 
         <LinearLayout
             android:id="@+id/ll"

@@ -96,7 +96,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         ll_accesories = (LinearLayout) rootView.findViewById(R.id.ll_accesories);
 
         rl_sub_cat1 = (RelativeLayout) rootView.findViewById(R.id.rl_sub_cat1);
-        rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
 
         LinearLayout ll_top = (LinearLayout) rootView.findViewById(R.id.ll_top);
 

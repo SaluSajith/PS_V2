@@ -76,7 +76,7 @@ import java.util.HashMap;
 public class CategoryWiseStoreListFragment extends Fragment implements View.OnClickListener {
     private ImageView img_icon_menu, img_notification, img_search, img_filter, img;
     private TextView txt_cat_name, txt_location;
-    private LinearLayout ll_category;
+    private LinearLayout ll_category, ll_header;
     private HorizontalScrollView hsv_category;
     private ListView list_store;
 
@@ -122,6 +122,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
         listCategory = (ArrayList<CategoryItem>) bundle.getSerializable("cat_list");
         list_store = (ListView) rootView.findViewById(R.id.list_store);
+        ll_header = (LinearLayout) rootView.findViewById(R.id.ll);
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
 
@@ -182,7 +183,10 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         img_notification.setOnClickListener(this);
         img_search.setOnClickListener(this);
         img_filter.setOnClickListener(this);
-        list_store.addHeaderView(v);
+
+        ll_header.addView(v);
+        ll_header.bringToFront();
+        //list_store.addHeaderView(v);
         /**inflate header view of the list ends.**/
 
         if (listCategory != null) {
@@ -489,7 +493,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
                             paint.setXfermode(null);
                             img_store_photo.setImageBitmap(result);
-                            img_store_photo.setScaleType(ImageView.ScaleType.CENTER);
+                            img_store_photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
                     });
 
