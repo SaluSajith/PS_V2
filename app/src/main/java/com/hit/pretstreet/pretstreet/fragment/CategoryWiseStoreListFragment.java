@@ -432,15 +432,12 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
             final TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, txt_line;
-            final LinearLayout ll_listdata;
             LayoutInflater inflater = LayoutInflater.from(context);
             if (position % 2 == 0) {
                 convertView = inflater.inflate(R.layout.row_list_store1, parent, false);
             } else {
                 convertView = inflater.inflate(R.layout.row_list_store2, parent, false);
             }
-           // txt_line = (TextView) convertView.findViewById(R.id.line_yellow);
-            ll_listdata = (LinearLayout) convertView.findViewById(R.id.ll_icons);
             img_store_photo = (ImageView) convertView.findViewById(R.id.img_store_photo);
             img_follow_unfollow = (TextView) convertView.findViewById(R.id.img_follow_unfollow);
             img_call = (ImageView) convertView.findViewById(R.id.img_call);
@@ -451,7 +448,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             txt_storename = (TextView) convertView.findViewById(R.id.txt_storename);
             txt_address = (TextView) convertView.findViewById(R.id.txt_address);
             txt_folleowercount = (TextView) convertView.findViewById(R.id.txt_folleowercount);
-            //ll_listimage.bringToFront();
             txt_storename.setTypeface(font);
             txt_address.setTypeface(fontM);
             txt_folleowercount.setTypeface(font);
@@ -471,7 +467,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             } else {
                 txt_folleowercount.setText(Html.fromHtml(strFollowCount));
             }
-            //txt_line.bringToFront();
             Glide.with(CategoryWiseStoreListFragment.this).load(list.get(position).get("thumb")).asBitmap().fitCenter()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
@@ -482,27 +477,11 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             } else {
                                 mask = BitmapFactory.decodeResource(getResources(), R.drawable.storelistimage2);
                             }
-                            /*Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
-                            Canvas mCanvas = new Canvas(result);
-                            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                            if (resource.getWidth() > resource.getHeight()) {
-                                mCanvas.drawBitmap(resource, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), (mask.getHeight() / 2) - (resource.getHeight() / 2) , null);
-                            } else {
-                                mCanvas.drawBitmap(resource, (mask.getWidth() / 2) - (resource.getWidth() / 2) + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, dm), null);
-                            }
-                            mCanvas.drawBitmap(mask, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), 0, paint);
-
-                            paint.setXfermode(null);
-                            img_store_photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                            img_store_photo.setImageBitmap(result);*/
 
                             Bitmap croppedBmp = Bitmap.createBitmap(resource);
                             img_store_photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             img_store_photo.setImageBitmap(croppedBmp);
 
-                            //ll_listdata.bringToFront();
-                            //ll_listdata.invalidate();
                         }
                     });
 
@@ -516,11 +495,11 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             if (mItems.get(position).get("sale").equalsIgnoreCase("Yes")) {
                 img_sale.setVisibility(View.VISIBLE);
             } else {
-                img_sale.setVisibility(View.INVISIBLE);
+                img_sale.setVisibility(View.GONE);
             }
 
             if (mItems.get(position).get("arrival").equalsIgnoreCase("No")) {
-                img_new_arrival.setVisibility(View.INVISIBLE);
+                img_new_arrival.setVisibility(View.GONE);
             } else {
                 img_new_arrival.setVisibility(View.VISIBLE);
             }

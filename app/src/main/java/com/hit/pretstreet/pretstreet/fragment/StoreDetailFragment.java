@@ -306,12 +306,12 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                             if (list.get(i).get("sale").equalsIgnoreCase("Yes"))
                                 img_sale.setVisibility(View.VISIBLE);
                             else
-                                img_sale.setVisibility(View.INVISIBLE);
+                                img_sale.setVisibility(View.GONE);
 
                             if (list.get(i).get("arrival").equalsIgnoreCase("Yes"))
                                 img_new_arrival.setVisibility(View.VISIBLE);
                             else
-                                img_new_arrival.setVisibility(View.INVISIBLE);
+                                img_new_arrival.setVisibility(View.GONE);
 
                             if (list.get(i).get("open").equalsIgnoreCase("") || list.get(i).get("close").equalsIgnoreCase("")) {
                                 txt_opentime.setVisibility(View.GONE);

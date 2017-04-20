@@ -267,7 +267,6 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ImageView img_photo, img_unfollw;
             TextView txt_name, txt_cat_name;
-            LinearLayout rel;
             LayoutInflater inflater = LayoutInflater.from(context);
             if (position % 2 == 0) {
                 convertView = inflater.inflate(R.layout.row_followers1, parent, false);
@@ -278,7 +277,6 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
             img_unfollw = (ImageView) convertView.findViewById(R.id.img_unfollw);
             txt_cat_name = (TextView) convertView.findViewById(R.id.txt_cat_name);
             txt_name = (TextView) convertView.findViewById(R.id.txt_name);
-            rel = (LinearLayout) convertView.findViewById(R.id.rel);
             txt_name.setTypeface(font);
             txt_cat_name.setTypeface(font);
 
@@ -304,15 +302,19 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                             } else {
                                 mask = BitmapFactory.decodeResource(getResources(), R.drawable.followers_img_1);
                             }
-                            Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
+                            /*Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
                             Canvas mCanvas = new Canvas(result);
                             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
                             mCanvas.drawBitmap(resource, 0, 0, null);
                             mCanvas.drawBitmap(mask, 0, 0, paint);
                             paint.setXfermode(null);
+                            img_photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             img_photo.setImageBitmap(result);
-                            img_photo.setScaleType(ImageView.ScaleType.FIT_XY);
+*/
+                            Bitmap croppedBmp = Bitmap.createBitmap(resource);
+                            img_photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            img_photo.setImageBitmap(croppedBmp);
                         }
                     });
 

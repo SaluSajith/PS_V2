@@ -116,6 +116,8 @@
         android:layout_below="@id/txt_cat_name"
         android:layout_marginTop="10dp"
         android:alpha="1"
+        android:layout_marginRight="-3dp"
+        android:layout_marginLeft="-3dp"
         android:background="@color/yellow"
         android:gravity="center"
         android:rotation="-4">
