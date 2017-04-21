@@ -107,6 +107,7 @@ public class TrendingFragmentNew extends Fragment {
             @Override
             public void onResponse(final JSONObject response) {
                 boolean responseSuccess = false;
+                Log.e("TrendingData", response+"");
                 String strsuccess;
                 try {
                     strsuccess = response.getString("success");
@@ -128,6 +129,7 @@ public class TrendingFragmentNew extends Fragment {
                             list.add(item);
                         }
                     } else {
+                        Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_SHORT).show();
                         responseSuccess = false;
                     }
                 } catch (JSONException e1) {

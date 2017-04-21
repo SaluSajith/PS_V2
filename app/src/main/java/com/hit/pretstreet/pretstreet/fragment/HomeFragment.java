@@ -139,7 +139,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             getUseerName();
         }
         deviceSize = PreferenceServices.getInstance().getDeviceSize();
-        Log.e("deveice:", deviceSize + "");
         // set saved data of the main catrgoty list
         SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
         if (SavedMAinCaTList.length() > 1) {
@@ -149,6 +148,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             try {
                 response = new JSONObject(SavedMAinCaTList);
                 JSONArray jsonArray = new JSONArray(response.getString("categories"));
+                Log.e("jsonArray categories:", jsonArray + "");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     HashMap<String, String> hashMap = new HashMap<>();

@@ -131,7 +131,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <include layout="@layout/header_withlabel"></include>
+
+        <include layout="@layout/header_withlabel">
+        </include>
 
         <LinearLayout
             android:id="@+id/ll_brands"
@@ -142,4 +144,5 @@
             android:orientation="vertical"
             android:layout_marginTop="-50dp"/>
     </LinearLayout>
+
 </ScrollView>

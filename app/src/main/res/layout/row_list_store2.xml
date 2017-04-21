@@ -10,7 +10,8 @@
         android:layout_width="140dp"
         android:layout_height="120dp"
         android:layout_alignParentRight="true"
-        android:scaleType="centerCrop"
+        android:scaleType="matrix"
+        android:adjustViewBounds="true"
         android:src="@drawable/storelistimage2" />
 
     <LinearLayout
@@ -156,7 +157,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">

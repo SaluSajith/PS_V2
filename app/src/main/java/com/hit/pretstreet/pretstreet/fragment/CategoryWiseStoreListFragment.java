@@ -8,11 +8,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -243,7 +246,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             if (finalI == k) {
                                 txtname[finalI].setTextColor(getResources().getColor(R.color.black));
                             } else {
-                                txtname[k].setTextColor(getResources().getColor(R.color.dark_gray));
                                 txtnameAll[0].setTextColor(getResources().getColor(R.color.dark_gray));
                             }
                         }
@@ -270,17 +272,20 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         } else {
             list_store.setAdapter(null);
             LLSelectedID = subCatId;
-            TextView tv = new TextView(getActivity());
-            tv.setText(" ");
-            ll_category.addView(tv);
+            LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = infl.inflate(R.layout.row_catwise_cat, null);
+            txtname = new TextView[1];
+            txtname[0] = (TextView) view.findViewById(R.id.name);
+            txtname[0].setTextColor(getResources().getColor(R.color.black));
+            txtname[0].setTypeface(font);
+            txtname[0].setText("ALL");
+            ll_category.addView(view);
+            ll_category.setVisibility(View.VISIBLE);
             hsv_category.setVisibility(View.VISIBLE);
             getStoreList(LLSelectedID, true);
         }
-
-        // }
         return rootView;
     }
-
 
    /* @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -471,20 +476,19 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
-                            Bitmap mask;
-                            if (position % 2 == 0) {
-                                mask = BitmapFactory.decodeResource(getResources(), R.drawable.storelistimage1);
-                            } else {
-                                mask = BitmapFactory.decodeResource(getResources(), R.drawable.storelistimage2);
-                            }
 
                             Bitmap croppedBmp = Bitmap.createBitmap(resource);
-                            img_store_photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            final Matrix matrix = img_store_photo.getImageMatrix();
+                            /*Drawable d = new BitmapDrawable(getResources(), resource);
+                            final float imageWidth = d.getIntrinsicWidth();
+                            final int screenWidth = getResources().getDisplayMetrics().widthPixels;
+                            final float scaleRatio = screenWidth / imageWidth;*/
+                            matrix.postScale(2, 2);
+                            img_store_photo.setImageMatrix(matrix);
                             img_store_photo.setImageBitmap(croppedBmp);
 
                         }
                     });
-
 
             if (mItems.get(position).get("wishlist").equalsIgnoreCase("notin")) {
                 img_follow_unfollow.setText("Follow");

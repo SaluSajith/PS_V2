@@ -67,6 +67,7 @@
         android:layout_marginBottom="40dp"
         android:layout_marginTop="-15dp"
         android:divider="@color/yellow"
+        android:fastScrollEnabled="true"
         android:dividerHeight="3dp" />
 
     <TextView
