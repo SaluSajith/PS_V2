@@ -203,7 +203,7 @@ public class TrendingFragmentNew extends Fragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
 
-            if (holder.viewType == R.layout.header_store_list) {
+            if (holder.viewType == R.layout.header_withlabel) {
                 holder.txt_cat_name.setText(name);
                 holder.txt_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
@@ -225,7 +225,7 @@ public class TrendingFragmentNew extends Fragment {
         @Override
         public int getItemViewType(int position) {
             if (position == 0)
-                return R.layout.header_store_list;
+                return R.layout.header_withlabel;
             else
                 return R.layout.row_trending_data;
         }
@@ -248,7 +248,7 @@ public class TrendingFragmentNew extends Fragment {
                 Typeface fontDesc = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
 
 
-                if (viewType == R.layout.header_store_list) {
+                if (viewType == R.layout.header_withlabel) {
 
                     img_icon_menu = (ImageView) itemView.findViewById(R.id.img_icon_menu);
                     img_notification = (ImageView) itemView.findViewById(R.id.img_notification);

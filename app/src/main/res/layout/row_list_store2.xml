@@ -20,25 +20,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:background="@android:color/transparent"
         android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/img_store_photo"
-        android:background="@android:color/transparent">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4.5"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:id="@+id/ll_sale_arrival">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_margintop"
+                ></TextView>
             <RelativeLayout
-                android:id="@+id/rl_sale_arrival"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:id="@+id/rl_sale_arrival">
 
                 <ImageView
                     android:id="@+id/img_sale"
@@ -53,12 +56,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/img_sale"
                     android:src="@drawable/new_arrivals" />
 
             </RelativeLayout>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,9 +74,8 @@
                     android:ellipsize="end"
                     android:minLines="2"
                     android:maxLines="2"
-                    android:layout_marginTop="3dp"
                     android:gravity="center_vertical"
-                    android:padding="3dp"
+                    android:padding="1dp"
                     android:text="Store"
                     android:textColor="@color/dark_gray"
                     android:textSize="16sp" />
@@ -88,7 +89,7 @@
                 android:layout_marginLeft="15dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:padding="3dp"
+                android:padding="1dp"
                 android:text="Store Address"
                 android:textColor="@color/dark_gray"
                 android:textSize="10sp" />
@@ -96,14 +97,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginRight="3dp"
                 android:layout_marginTop="5dp"
                 android:background="@color/dark_gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:divider="@drawable/vertical"
                 android:orientation="horizontal"
@@ -115,9 +115,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="0.7"
-                    android:gravity="left"
-                    android:padding="5dp"
+                    android:gravity="center_horizontal"
                     android:text="0"
+                    android:padding="2dp"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/dark_gray" />
 
@@ -128,8 +128,8 @@
                     android:layout_marginLeft="2dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:padding="2dp"
                     android:gravity="center"
-                    android:padding="5dp"
                     android:text="Follow"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/dark_gray" />
@@ -148,12 +148,12 @@
             android:background="@color/white"
             android:id="@+id/ll_icons">
 
-            <TextView
-                android:id="@+id/line1"
-                android:layout_width="1dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_marginTop="-15dp"
                 android:layout_height="match_parent"
-                android:background="@color/dark_gray"
-                />
+                android:background="@drawable/vertical" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -161,6 +161,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:background="@color/white"
                 android:orientation="vertical">
 
                 <ImageView
@@ -187,6 +188,7 @@
                     android:padding="3dp"
                     android:src="@drawable/map_icon" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/line1"
                 android:layout_width="5dp"

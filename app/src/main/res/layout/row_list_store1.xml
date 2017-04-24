@@ -20,25 +20,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:background="@android:color/transparent"
         android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/img_store_photo"
-        android:background="@android:color/transparent">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4.5"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:id="@+id/ll_sale_arrival">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_margintop"
+                ></TextView>
             <RelativeLayout
-                android:id="@+id/rl_sale_arrival"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:id="@+id/rl_sale_arrival">
 
                 <ImageView
                     android:id="@+id/img_new_arrival"
@@ -72,12 +75,10 @@
                     android:minLines="2"
                     android:maxLines="2"
                     android:gravity="center_vertical"
-                    android:padding="3dp"
+                    android:padding="1dp"
                     android:text="Store"
-                    android:layout_marginTop="3dp"
                     android:textColor="@color/dark_gray"
                     android:textSize="16sp" />
-
 
             </RelativeLayout>
 
@@ -88,7 +89,7 @@
                 android:layout_marginLeft="15dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:padding="3dp"
+                android:padding="1dp"
                 android:text="Store Address"
                 android:textColor="@color/dark_gray"
                 android:textSize="10sp" />
@@ -102,7 +103,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:divider="@drawable/vertical"
                 android:orientation="horizontal"
@@ -114,8 +115,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="0.7"
-                    android:gravity="left"
-                    android:padding="5dp"
+                    android:gravity="center_horizontal"
+                    android:padding="2dp"
                     android:text="0"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/dark_gray" />
@@ -128,7 +129,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="2dp"
                     android:text="Follow"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="@color/dark_gray" />

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <RelativeLayout
+   <!-- <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -111,16 +111,16 @@
             android:textColor="@color/yellow"
             android:textSize="30sp" />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
-    <!--<include layout="@layout/header_withlabel"
-        android:id="@+id/header"></include>-->
+    <include layout="@layout/header_withlabel"
+    android:id="@+id/header"></include>
 
     <ListView
         android:id="@+id/list_store"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rl"
+        android:layout_below="@id/header"
         android:layout_marginBottom="32dp"
         android:layout_marginTop="-40dp"
         android:divider="@color/yellow"

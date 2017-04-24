@@ -89,7 +89,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     private Typeface font, fontM;
     private ProgressDialog pDialog;
     ArrayList<CategoryItem> listCategory = new ArrayList<>();
-    TextView[] txtname, txtnameAll, txtline, txtlineAll;
+    TextView[] txtname, txtnameAll;
     DisplayMetrics dm;
 
     String LLSelectedID = "";
@@ -165,7 +165,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
         /**inflate header view of the list starts.**/
         LayoutInflater inflaterHeader = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflaterHeader.inflate(R.layout.header_store_list, null);
+        View v = inflaterHeader.inflate(R.layout.header_withlabel, null);
         img_icon_menu = (ImageView) v.findViewById(R.id.img_icon_menu);
         img_notification = (ImageView) v.findViewById(R.id.img_notification);
         img_search = (ImageView) v.findViewById(R.id.img_search);
@@ -246,6 +246,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             if (finalI == k) {
                                 txtname[finalI].setTextColor(getResources().getColor(R.color.black));
                             } else {
+                                txtname[k].setTextColor(getResources().getColor(R.color.dark_gray));
                                 txtnameAll[0].setTextColor(getResources().getColor(R.color.dark_gray));
                             }
                         }
@@ -436,7 +437,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
-            final TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, txt_line;
+            final TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, tv_margintop;
             LayoutInflater inflater = LayoutInflater.from(context);
             if (position % 2 == 0) {
                 convertView = inflater.inflate(R.layout.row_list_store1, parent, false);
@@ -452,6 +453,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             img_new_arrival = (ImageView) convertView.findViewById(R.id.img_new_arrival);
             txt_storename = (TextView) convertView.findViewById(R.id.txt_storename);
             txt_address = (TextView) convertView.findViewById(R.id.txt_address);
+            tv_margintop = (TextView) convertView.findViewById(R.id.tv_margintop);
             txt_folleowercount = (TextView) convertView.findViewById(R.id.txt_folleowercount);
             txt_storename.setTypeface(font);
             txt_address.setTypeface(fontM);
@@ -472,6 +474,15 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             } else {
                 txt_folleowercount.setText(Html.fromHtml(strFollowCount));
             }
+            if (position == 0) {
+                LinearLayout.LayoutParams relativeParams =
+                        new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                relativeParams.setMargins(0, 40, 10, 0);
+                tv_margintop.setLayoutParams(relativeParams);
+                tv_margintop.requestLayout();
+            }
             Glide.with(CategoryWiseStoreListFragment.this).load(list.get(position).get("thumb")).asBitmap().fitCenter()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
@@ -479,10 +490,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
                             Bitmap croppedBmp = Bitmap.createBitmap(resource);
                             final Matrix matrix = img_store_photo.getImageMatrix();
-                            /*Drawable d = new BitmapDrawable(getResources(), resource);
-                            final float imageWidth = d.getIntrinsicWidth();
-                            final int screenWidth = getResources().getDisplayMetrics().widthPixels;
-                            final float scaleRatio = screenWidth / imageWidth;*/
                             matrix.postScale(2, 2);
                             img_store_photo.setImageMatrix(matrix);
                             img_store_photo.setImageBitmap(croppedBmp);

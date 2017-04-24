@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -33,6 +34,7 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -73,8 +75,10 @@ import java.util.HashMap;
  */
 public class StoreListByFilterFragment extends Fragment implements View.OnClickListener {
     private ImageView img_icon_menu, img_notification, img_search, img_filter;
-    private RelativeLayout rl;
+    private View header;
     private TextView txt_cat_name, txt_location;
+    private LinearLayout ll_category;
+    private HorizontalScrollView hsv_category;
     private ListView list_store;
     private String gender, popularity, mainCatId;
     private StoreListAdapter storeListAdapter;
@@ -102,7 +106,9 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
         img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
         img_search = (ImageView) rootView.findViewById(R.id.img_search);
         img_filter = (ImageView) rootView.findViewById(R.id.img_filter);
-        rl = (RelativeLayout) rootView.findViewById(R.id.rl);
+        header = (View) rootView.findViewById(R.id.header);
+        hsv_category = (HorizontalScrollView) header.findViewById(R.id.hsv_category);
+        ll_category = (LinearLayout) header.findViewById(R.id.ll_category);
 
         txt_cat_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
         txt_location = (TextView) rootView.findViewById(R.id.txt_location);
@@ -112,7 +118,7 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
         dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        rl.bringToFront();
+        header.bringToFront();
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
         txt_cat_name.setText("FILTER RESULT");
@@ -154,6 +160,18 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
             lng = PreferenceServices.getInstance().getLongitute();
         }
         getStoreListbyFilter(true);
+
+        //dummy header
+        LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View headerview = infl.inflate(R.layout.row_catwise_cat, null);
+        TextView txtname = new TextView(getContext());
+        txtname = (TextView) headerview.findViewById(R.id.name);
+        txtname.setTextColor(getResources().getColor(R.color.cardview_shadow_end_color));
+        txtname.setTypeface(font);
+        txtname.setText(popularity+" "+gender+ " "+mainCatId);
+        ll_category.addView(headerview);
+        ll_category.setVisibility(View.VISIBLE);
+        hsv_category.setVisibility(View.VISIBLE);
 
         return rootView;
     }
@@ -307,9 +325,7 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
-            TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, txt_follwer, line;
-            LinearLayout ll_listdata;
-            RelativeLayout rl_sale_arrival;
+            TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, tv_margintop;
             LayoutInflater inflater = LayoutInflater.from(context);
             if (position % 2 == 0) {
                 convertView = inflater.inflate(R.layout.row_list_store1, parent, false);
@@ -317,8 +333,6 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
                 convertView = inflater.inflate(R.layout.row_list_store2, parent, false);
             }
 
-            ll_listdata = (LinearLayout) convertView.findViewById(R.id.ll_listdata);
-            rl_sale_arrival = (RelativeLayout) convertView.findViewById(R.id.rl_sale_arrival);
             img_store_photo = (ImageView) convertView.findViewById(R.id.img_store_photo);
             img_follow_unfollow = (TextView) convertView.findViewById(R.id.img_follow_unfollow);
             img_call = (ImageView) convertView.findViewById(R.id.img_call);
@@ -329,10 +343,11 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
             txt_storename = (TextView) convertView.findViewById(R.id.txt_storename);
             txt_address = (TextView) convertView.findViewById(R.id.txt_address);
             txt_folleowercount = (TextView) convertView.findViewById(R.id.txt_folleowercount);
-            line = (TextView) convertView.findViewById(R.id.line);
+            tv_margintop = (TextView) convertView.findViewById(R.id.tv_margintop);
             txt_storename.setTypeface(font);
             txt_address.setTypeface(fontM);
             txt_folleowercount.setTypeface(font);
+            img_follow_unfollow.setTypeface(font);
             txt_storename.setText(mItems.get(position).get("name"));
             txt_address.setText(mItems.get(position).get("area"));
 
@@ -352,36 +367,20 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
                 LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
-                relativeParams.setMargins(45, 100, 0, 0);
-                rl_sale_arrival.setLayoutParams(relativeParams);
-                rl_sale_arrival.requestLayout();
+                relativeParams.setMargins(0, 50, 10, 0);
+                tv_margintop.setLayoutParams(relativeParams);
+                tv_margintop.requestLayout();
             }
             Glide.with(StoreListByFilterFragment.this).load(list.get(position).get("thumb")).asBitmap().fitCenter()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
-                            Bitmap mask;
-                            if (position % 2 == 0) {
-                                mask = BitmapFactory.decodeResource(getResources(), R.drawable.storelistimage1);
-                                //img_store_photo.setBackground(getResources().getDrawable(R.drawable.storelistimage1));
-                            } else {
-                                mask = BitmapFactory.decodeResource(getResources(), R.drawable.storelistimage2);
-                                //img_store_photo.setBackground(getResources().getDrawable(R.drawable.storelistimage2));
-                            }
-                            //Bitmap original = BitmapFactory.decodeResource(getResources(),R.drawable.bottom);
-                            Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
-                            Canvas mCanvas = new Canvas(result);
-                            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                            if (resource.getWidth() > resource.getHeight()) {
-                                mCanvas.drawBitmap(resource, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), (mask.getHeight() / 2) - (resource.getHeight() / 2) , null);
-                            } else {
-                                mCanvas.drawBitmap(resource, (mask.getWidth() / 2) - (resource.getWidth() / 2) /*+ TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm)*/, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, dm), null);
-                            }
-                            mCanvas.drawBitmap(mask, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7f, dm), 0, paint);
-                            paint.setXfermode(null);
-                            img_store_photo.setImageBitmap(result);
-//                            img_store_photo.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                            Bitmap croppedBmp = Bitmap.createBitmap(resource);
+                            final Matrix matrix = img_store_photo.getImageMatrix();
+                            matrix.postScale(2, 2);
+                            img_store_photo.setImageMatrix(matrix);
+                            img_store_photo.setImageBitmap(croppedBmp);
                         }
                     });
 
@@ -394,11 +393,11 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
             if (mItems.get(position).get("sale").equalsIgnoreCase("Yes")) {
                 img_sale.setVisibility(View.VISIBLE);
             } else {
-                img_sale.setVisibility(View.INVISIBLE);
+                img_sale.setVisibility(View.GONE);
             }
 
             if (mItems.get(position).get("arrival").equalsIgnoreCase("No")) {
-                img_new_arrival.setVisibility(View.INVISIBLE);
+                img_new_arrival.setVisibility(View.GONE);
             } else {
                 img_new_arrival.setVisibility(View.VISIBLE);
             }
