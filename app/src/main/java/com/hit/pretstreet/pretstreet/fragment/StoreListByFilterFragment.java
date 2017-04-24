@@ -166,9 +166,9 @@ public class StoreListByFilterFragment extends Fragment implements View.OnClickL
         View headerview = infl.inflate(R.layout.row_catwise_cat, null);
         TextView txtname = new TextView(getContext());
         txtname = (TextView) headerview.findViewById(R.id.name);
-        txtname.setTextColor(getResources().getColor(R.color.cardview_shadow_end_color));
+        txtname.setTextColor(getResources().getColor(R.color.black));
         txtname.setTypeface(font);
-        txtname.setText(popularity+" "+gender+ " "+mainCatId);
+        txtname.setText("Filter by " + popularity);
         ll_category.addView(headerview);
         ll_category.setVisibility(View.VISIBLE);
         hsv_category.setVisibility(View.VISIBLE);

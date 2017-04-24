@@ -122,7 +122,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/header"
         android:layout_marginBottom="32dp"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="-30dp"
         android:divider="@color/yellow"
         android:dividerHeight="5dp" />
 

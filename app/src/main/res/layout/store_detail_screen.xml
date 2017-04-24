@@ -120,29 +120,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
-          <!--  <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txt_cat_name"
-                android:layout_marginTop="10dp"
-                android:alpha="1"
-                android:background="@color/yellow"
-                android:gravity="center"
-                android:rotation="-4">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""/>
-            </LinearLayout>-->
-
         </RelativeLayout>
-        <!--
-                    <include layout="@layout/header_withlabel"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:id="@+id/header"
-                        ></include>-->
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -154,20 +132,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
                     <RelativeLayout
                         android:id="@+id/rl_pic"
                         android:layout_width="match_parent"
-                        android:layout_height="230dp">
-
-                        <LinearLayout
-                            android:id="@+id/ll_pic"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                        android:layout_height="230dp"
+                        android:layout_marginTop="-25dp">
 
                             <ImageView
                                 android:id="@+id/img_photo"
@@ -175,10 +144,8 @@
                                 android:layout_height="match_parent"
                                 android:background="#939393"
                                 android:scaleType="fitCenter" />
-                        </LinearLayout>
 
                     </RelativeLayout>
-                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -505,5 +472,15 @@
             </LinearLayout>
 
         </RelativeLayout>
+        <!--<TextView
+            android:id="@+id/tv_transparent"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:rotation="-4"
+            android:layout_marginTop="-20dp"
+            android:background="#aaffdf5d"
+            android:layout_marginLeft="-3dp"
+            android:layout_marginRight="-3dp"
+            android:layout_below="@+id/rl_header"/>-->
     </RelativeLayout>
 </ScrollView>
