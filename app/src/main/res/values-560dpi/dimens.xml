@@ -33,7 +33,6 @@
     <dimen name="divider_space_xlarge">10dp</dimen>
     <dimen name="divider_space_xxlarge">16dp</dimen>
 
-
     <dimen name="subcategory_margintop">-58dp</dimen>
     <dimen name="subcategory_inner_margintop">-30dp</dimen>
 </resources>

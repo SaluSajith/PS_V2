@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/brand1">
 
-
     <ImageView
         android:id="@+id/img_cat_image"
         android:layout_width="match_parent"
@@ -16,11 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:rotation="-4.5"
-        android:layout_marginTop="15sp"
+        android:layout_marginTop="@dimen/padding_xlarge"
         android:layout_marginLeft="-20dp"
         android:layout_marginRight="-20dp"
         android:id="@+id/view_seperator"
         android:background="@color/yellow"></View>
+
     <TextView
         android:id="@+id/txt_cat_name"
         android:layout_width="wrap_content"

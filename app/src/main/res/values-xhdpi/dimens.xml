@@ -9,23 +9,23 @@
     <dimen name="padding_xsmall">3dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_standard">5dp</dimen>
-    <dimen name="padding_large">10dp</dimen>
-    <dimen name="padding_xlarge">15dp</dimen>
-    <dimen name="padding_xxlarge">20dp</dimen>
-    <dimen name="padding_xxxlarge">25dp</dimen>
+    <dimen name="padding_large">8dp</dimen>
+    <dimen name="padding_xlarge">8dp</dimen>
+    <dimen name="padding_xxlarge">12dp</dimen>//
+    <dimen name="padding_xxxlarge">20dp</dimen>
     <dimen name="padding_huge">30dp</dimen>
 
-    <dimen name="margin_xxlarge">20dp</dimen>
+    <dimen name="margin_xxlarge">18dp</dimen>//
 
     <dimen name="button_radius_standard">10dp</dimen>
     <dimen name="button_radius_small">5dp</dimen>
 
-    <dimen name="textsize_small">10sp</dimen>
-    <dimen name="textsize_standard">12sp</dimen>
-    <dimen name="textsize_large">14sp</dimen>
-    <dimen name="textsize_xlarge">17sp</dimen>
-    <dimen name="textsize_xxlarge">20sp</dimen>
-    <dimen name="textsize_xxxlarge">24sp</dimen>
+    <dimen name="textsize_small">10dp</dimen>
+    <dimen name="textsize_standard">12dp</dimen>
+    <dimen name="textsize_large">12dp</dimen>
+    <dimen name="textsize_xlarge">16dp</dimen>
+    <dimen name="textsize_xxlarge">20dp</dimen>
+    <dimen name="textsize_xxxlarge">24dp</dimen>
 
     <dimen name="divider_space_small">2dp</dimen>
     <dimen name="divider_space_standard">5dp</dimen>
@@ -34,6 +34,6 @@
     <dimen name="divider_space_xxlarge">16dp</dimen>
 
 
-    <dimen name="subcategory_margintop">-58dp</dimen>
-    <dimen name="subcategory_inner_margintop">-30dp</dimen>
+    <dimen name="subcategory_margintop">-30dp</dimen>
+    <dimen name="subcategory_inner_margintop">-10dp</dimen>
 </resources>
