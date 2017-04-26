@@ -14,7 +14,7 @@
     <dimen name="padding_xxxlarge">20dp</dimen>
     <dimen name="padding_huge">30dp</dimen>
 
-    <dimen name="margin_xxlarge">18dp</dimen>//
+    <dimen name="margin_xxlarge">15dp</dimen>//
 
     <dimen name="button_radius_standard">10dp</dimen>
     <dimen name="button_radius_small">5dp</dimen>
@@ -36,5 +36,5 @@
     <dimen name="subcategory_inner_margintop">-25dp</dimen>
     <dimen name="header_marginbottom">14dp</dimen>
     <dimen name="margin_custom_row">17dp</dimen>
-    <dimen name="margin_top_custom_row">11dp</dimen>
+    <dimen name="margin_top_custom_row">13dp</dimen>
 </resources>

@@ -17,7 +17,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="33sp"
         android:gravity="center"
-        android:background="@drawable/nine"
+        android:background="@drawable/yellow_rectangle"
         android:padding="5sp"
         android:rotation="6"
         android:text="Category Name"

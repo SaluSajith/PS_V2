@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
     <ImageView
@@ -118,9 +118,11 @@
         android:alpha="1"
         android:layout_marginRight="-3dp"
         android:layout_marginLeft="-3dp"
-        android:background="@color/yellow"
+        android:background="@drawable/yellow_rectangle"
         android:gravity="center"
-        android:rotation="-4">
+        android:rotation="-4"
+        android:id="@+id/rl_background"
+        android:layout_marginBottom="@dimen/header_marginbottom">
 
         <HorizontalScrollView
             android:id="@+id/hsv_category"
@@ -134,7 +136,8 @@
                 android:id="@+id/ll_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:orientation="horizontal">
+            </LinearLayout>
         </HorizontalScrollView>
     </RelativeLayout>
 </RelativeLayout>

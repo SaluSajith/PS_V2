@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/brand1">
-
     <ImageView
         android:id="@+id/img_cat_image"
         android:layout_width="match_parent"
@@ -19,20 +18,20 @@
         android:layout_marginLeft="-20dp"
         android:layout_marginRight="-20dp"
         android:id="@+id/view_seperator"
-        android:background="@color/yellow"></View>
+        android:background="@drawable/yellow_rectangle"></View>
 
     <TextView
         android:id="@+id/txt_cat_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/nine"
+        android:background="@drawable/yellow_rectangle"
         android:gravity="center"
-        android:padding="5sp"
+        android:padding="8sp"
         android:rotation="-4"
         android:text="Category "
         android:textAllCaps="true"
         android:layout_below="@+id/view_seperator"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/padding_large"
         android:layout_marginLeft="-5dp"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:textColor="@color/dark_gray" />

@@ -80,6 +80,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     private ImageView img_icon_menu, img_notification, img_search, img_filter, img;
     private TextView txt_cat_name, txt_location;
     private LinearLayout ll_category, ll_header;
+    RelativeLayout rl_background;
     private HorizontalScrollView hsv_category;
     private ListView list_store;
 
@@ -175,6 +176,8 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         txt_location = (TextView) v.findViewById(R.id.txt_location);
         hsv_category = (HorizontalScrollView) v.findViewById(R.id.hsv_category);
         ll_category = (LinearLayout) v.findViewById(R.id.ll_category);
+        rl_background = (RelativeLayout) v.findViewById(R.id.rl_background);
+        rl_background.getBackground().setFilterBitmap(true);
 
         txt_cat_name.setTypeface(font);
         hsv_category.bringToFront();
@@ -189,6 +192,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
         ll_header.addView(v);
         ll_header.bringToFront();
+        //txt_cat_name.getBackground().setFilterBitmap(true);
         //list_store.addHeaderView(v);
         /**inflate header view of the list ends.**/
 
@@ -479,7 +483,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                         new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
-                relativeParams.setMargins(0, 40, 10, 0);
+                relativeParams.setMargins(0, 15, 10, 0);
                 tv_margintop.setLayoutParams(relativeParams);
                 tv_margintop.requestLayout();
             }

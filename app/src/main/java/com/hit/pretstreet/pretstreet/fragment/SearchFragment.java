@@ -657,7 +657,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                         new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
-                relativeParams.setMargins(0, 60, 10, 0);
+                relativeParams.setMargins(0, 20, 10, 0);
                 tv_margintop.setLayoutParams(relativeParams);
                 tv_margintop.requestLayout();
             }

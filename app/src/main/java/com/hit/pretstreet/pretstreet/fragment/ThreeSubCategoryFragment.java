@@ -291,7 +291,17 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                                 mCanvas.drawBitmap(mask, 0, 0, paint);
                                 paint.setXfermode(null);
                                 mImageView.setImageBitmap(result);
-                                mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                switch (getResources().getDisplayMetrics().densityDpi) {
+                                    case DisplayMetrics.DENSITY_MEDIUM:
+                                        mImageView.setScaleType(ImageView.ScaleType.CENTER);
+                                        break;
+                                    case DisplayMetrics.DENSITY_HIGH:
+                                        mImageView.setScaleType(ImageView.ScaleType.CENTER);
+                                        break;
+                                    default:
+                                        mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                                        break;
+                                }
                             }
                         });
 
@@ -543,7 +553,17 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                                             mCanvas.drawBitmap(mask, 0, 0, paint);
                                             paint.setXfermode(null);
                                             mImageView.setImageBitmap(result);
-                                            mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                            switch (getResources().getDisplayMetrics().densityDpi) {
+                                                case DisplayMetrics.DENSITY_MEDIUM:
+                                                    mImageView.setScaleType(ImageView.ScaleType.CENTER);
+                                                    break;
+                                                case DisplayMetrics.DENSITY_HIGH:
+                                                    mImageView.setScaleType(ImageView.ScaleType.CENTER);
+                                                    break;
+                                                default:
+                                                    mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                                                    break;
+                                            }
                                         }
                                     });
 

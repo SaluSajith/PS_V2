@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     android:focusableInTouchMode="true">
 
     <RelativeLayout
@@ -12,7 +12,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/fixed_top" />
+            android:src="@drawable/fixed_top"
+            android:background="@color/black"/>
 
         <LinearLayout
             android:id="@+id/ll_top"

@@ -14,5 +14,7 @@
     <color name="red">#ec1d1d</color>
     <color name="white">#fff</color>
     <color name="transparent">#00000000</color>
+    <color name="trans_yellow">#bbffdf5d</color>
+    <color name="trans_grey">#5b5d5e</color>
 
 </resources>
