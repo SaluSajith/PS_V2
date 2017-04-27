@@ -232,7 +232,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:divider="@drawable/vertical"
                             android:orientation="horizontal"
@@ -244,7 +244,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_weight="0.7"
-                                android:gravity="left"
+                                android:gravity="center"
                                 android:padding="8dp"
                                 android:text=""
                                 android:textAppearance="@android:style/TextAppearance.Medium"
@@ -332,11 +332,75 @@
                         android:layout_marginTop="10sp"
                         android:src="@drawable/share" />
 
+                    <TextView
+                        android:id="@+id/txt_information"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:padding="5sp"
+                        android:text="Information"
+                        android:textAppearance="@android:style/TextAppearance.Small"
+                        android:textColor="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/txt_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5sp"
+                        android:layout_marginLeft="10sp"
+                        android:text="Desc"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:textAppearance="@android:style/TextAppearance.Small"
+                        android:textColor="@color/dark_gray" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10sp"
-                        android:layout_marginTop="10sp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/txt_timing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5sp"
+                            android:text="Timing "
+                            android:textAppearance="@android:style/TextAppearance.Small"
+                            android:textColor="@color/dark_gray" />
+                        <TextView
+                            android:id="@+id/txt_opentime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5sp"
+                            android:text=""
+                            android:textAppearance="@android:style/TextAppearance.Small"
+                            android:textColor="@color/dark_gray" />
+
+                        <TextView
+                            android:id="@+id/txt_to"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginRight="2dp"
+                            android:padding="3sp"
+                            android:text="to"/>
+
+                        <TextView
+                            android:id="@+id/txt_closetime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5sp"
+                            android:text=""
+                            android:textAppearance="@android:style/TextAppearance.Small"
+                            android:textColor="@color/dark_gray" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -359,89 +423,36 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/txt_information"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:padding="5sp"
-                        android:text="Information"
-                        android:textAppearance="@android:style/TextAppearance.Small"
-                        android:textColor="@color/dark_gray" />
-
-                    <TextView
-                        android:id="@+id/txt_timing"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:padding="5sp"
-                        android:text="Timing "
-                        android:textAppearance="@android:style/TextAppearance.Small"
-                        android:textColor="@color/dark_gray" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/txt_opentime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5sp"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/dark_gray" />
-
-                        <ImageView
-                            android:id="@+id/img_arrow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginRight="2dp"
-                            android:padding="3sp"
-                            android:src="@drawable/arrow" />
-
-                        <TextView
-                            android:id="@+id/txt_closetime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5sp"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/dark_gray" />
-
-                    </LinearLayout>
-
-                    <TextView
                         android:id="@+id/txt_appointment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10sp"
                         android:padding="5sp"
+                        android:text="vhgvhh"
                         android:textAppearance="@android:style/TextAppearance.Small"
                         android:textColor="@color/dark_gray" />
 
                     <TextView
                         android:id="@+id/txt_close_on1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10sp"
                         android:padding="5sp"
                         android:text=""
+                        android:gravity="right"
                         android:textAppearance="@android:style/TextAppearance.Small"
                         android:textColor="@color/red" />
 
                     <TextView
                         android:id="@+id/txt_close_on2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10sp"
+                        android:gravity="right"
                         android:padding="5sp"
                         android:text=""
                         android:textAppearance="@android:style/TextAppearance.Small"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/dark_gray" />
 
                     <ImageView
                         android:layout_width="wrap_content"

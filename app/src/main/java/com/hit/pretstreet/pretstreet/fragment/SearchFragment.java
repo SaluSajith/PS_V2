@@ -89,7 +89,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private ImageView img_icon_menu;
     private TextView txt_search, txt_recentsearches;
     private RelativeLayout rl_recent_search, rel;
-    private ListView list_search;
+    private ListView list_search, list_recentsearch;
     private SearchListAdapter searchListAdapter;
     private StoreListAdapter storeListAdapter;
     ArrayAdapter<String> dropDownAdapter;
@@ -126,6 +126,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         rl_recent_search.bringToFront();
 
         list_search = (ListView) rootView.findViewById(R.id.list_search);
+        list_recentsearch = (ListView) rootView.findViewById(R.id.list_recentsearch);
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
 
@@ -218,9 +219,10 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     helper.deleteFirstRow();
                 } else {
                     Collections.reverse(list);
-                    list_search.setVisibility(View.VISIBLE);
+                    list_search.setVisibility(View.INVISIBLE);
+                    list_recentsearch.setVisibility(View.VISIBLE);
                     searchListAdapter = new SearchListAdapter(getActivity(), R.layout.row_search, list);
-                    list_search.setAdapter(searchListAdapter);
+                    list_recentsearch.setAdapter(searchListAdapter);
                     break;
                 }
             }
@@ -422,6 +424,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 }
                 if (responseSuccess) {
                     list_search.setVisibility(View.VISIBLE);
+                    list_recentsearch.setVisibility(View.INVISIBLE);
                     if (first) {
                         if (!searchview.isIconified())
                             searchview.setIconified(true);

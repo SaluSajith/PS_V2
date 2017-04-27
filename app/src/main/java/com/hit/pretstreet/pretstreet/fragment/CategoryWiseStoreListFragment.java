@@ -487,7 +487,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 tv_margintop.setLayoutParams(relativeParams);
                 tv_margintop.requestLayout();
             }
-            Glide.with(CategoryWiseStoreListFragment.this).load(list.get(position).get("thumb")).asBitmap().fitCenter()
+            Glide.with(CategoryWiseStoreListFragment.this)
+                    .load(list.get(position).get("thumb"))
+                    .asBitmap().fitCenter()
                     .into(new BitmapImageViewTarget(img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {

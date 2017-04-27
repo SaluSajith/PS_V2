@@ -90,7 +90,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
             img_upload_pic, img_sale, img_new_arrival, img_notification, img_arrow;
     private TextView txt_location, txt_store_name, txt_storename, txt_address, txt_website,
             txt_website_value, txt_information, txt_timing, txt_opentime, txt_closetime,
-            txt_close_on1, txt_close_on2, txt_folleowercount, img_follow_unfollow, txt_appointment;
+            txt_close_on1, txt_close_on2, txt_folleowercount, img_follow_unfollow, txt_appointment, txt_description, txt_to;
     private RelativeLayout rl_pic, rl_location_search, rl_header;
     private LinearLayout ll_scroll_photo;
     private ArrayList<ProductImageItem> returnObjimage;
@@ -127,7 +127,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         img_new_arrival = (ImageView) rootView.findViewById(R.id.img_new_arrival);
         img_map = (ImageView) rootView.findViewById(R.id.img_map);
         img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
-        img_arrow = (ImageView) rootView.findViewById(R.id.img_arrow);
+       // img_arrow = (ImageView) rootView.findViewById(R.id.img_arrow);
         rl_pic = (RelativeLayout) rootView.findViewById(R.id.rl_pic);
         //rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
         rl_header = (RelativeLayout) rootView.findViewById(R.id.rl_header);
@@ -151,6 +151,8 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         txt_folleowercount = (TextView) rootView.findViewById(R.id.txt_folleowercount);
         img_follow_unfollow = (TextView) rootView.findViewById(R.id.img_follow_unfollow);
         txt_appointment = (TextView) rootView.findViewById(R.id.txt_appointment);
+        txt_description = (TextView) rootView.findViewById(R.id.txt_description);
+        txt_to = (TextView) rootView.findViewById(R.id.txt_to);
 
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
@@ -161,6 +163,9 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         txt_storename.setTypeface(font);
         txt_address.setTypeface(fontM);
         txt_website.setTypeface(fontM);
+        txt_appointment.setTypeface(fontM);
+        txt_description.setTypeface(fontM);
+        txt_to.setTypeface(font);
         txt_website_value.setTypeface(fontM);
         txt_information.setTypeface(font);
         txt_information.setPaintFlags(txt_information.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -168,7 +173,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         txt_opentime.setTypeface(font);
         txt_closetime.setTypeface(font);
         txt_close_on1.setTypeface(font);
-        txt_close_on2.setTypeface(font);
+        txt_close_on2.setTypeface(fontM);
 
         //img_filter.setVisibility(View.GONE);
 
@@ -241,6 +246,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                             item.put("wishlist", jsonObject.getString("wishlist"));
                             item.put("follow_count", jsonObject.getString("follow_count"));
                             item.put("appointment", jsonObject.getString("appointment"));
+                            item.put("short_description", jsonObject.getString("short_description"));
                             JSONArray jsonArrayImage = new JSONArray(jsonObject.getString("image_collection"));
                             returnObjimage = new ArrayList<ProductImageItem>();
                             String imageUrl;
@@ -276,6 +282,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                             layoutParams.width = rlWidth;
                             layoutParams.height = rlHeight;
                             rl_pic.setLayoutParams(layoutParams);
+                            Log.e("image", list.get(i).get("thumb"));
                             Glide.with(getActivity())
                                     .load(list.get(i).get("thumb"))
                                     .into(img_photo);
@@ -316,12 +323,14 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                             if (list.get(i).get("open").equalsIgnoreCase("") || list.get(i).get("close").equalsIgnoreCase("")) {
                                 txt_opentime.setVisibility(View.GONE);
                                 txt_closetime.setVisibility(View.GONE);
-                                img_arrow.setVisibility(View.GONE);
+                                //img_arrow.setVisibility(View.GONE);
                             } else {
                                 txt_opentime.setText(list.get(i).get("open"));
                                 txt_closetime.setText(list.get(i).get("close"));
                             }
-
+                            if (list.get(i).get("short_description").trim().isEmpty())
+                                txt_description.setVisibility(View.GONE);
+                            else txt_description.setText(list.get(i).get("short_description"));
                             if (list.get(i).get("appointment").trim().isEmpty())
                                 txt_appointment.setVisibility(View.GONE);
                             else txt_appointment.setText(list.get(i).get("appointment"));
