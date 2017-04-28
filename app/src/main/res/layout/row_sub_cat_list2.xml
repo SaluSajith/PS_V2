@@ -29,9 +29,12 @@
         android:padding="8sp"
         android:gravity="center"
         android:rotation="5.5"
-        android:text="Category "
+        android:lines="1"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="Category"
         android:textAllCaps="true"
-        android:layout_marginRight="-5dp"
+        android:layout_marginRight="-3dp"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:textColor="@color/dark_gray" />
 

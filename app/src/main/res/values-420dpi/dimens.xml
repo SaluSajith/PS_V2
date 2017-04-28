@@ -37,4 +37,6 @@
     <dimen name="header_marginbottom">0dp</dimen>
     <dimen name="margin_custom_row">20dp</dimen>
     <dimen name="margin_top_custom_row">13dp</dimen>
+
+    <dimen name="margin_top_difference">10dp</dimen>
 </resources>

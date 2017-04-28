@@ -81,6 +81,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * Created by Jesal on 05-Sep-16.
@@ -239,7 +240,9 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                             item.put("latitude", jsonObject.getString("latitude"));
                             item.put("longitude", jsonObject.getString("longitude"));
                             item.put("address", jsonObject.getString("address"));
-                            item.put("closed", jsonObject.getString("closed"));
+                            String closeddays = jsonObject.getString("closed").replace("[","");
+                            closeddays = closeddays.replace("]","").replace("'", "").replaceAll("\"","").replaceAll(",",", ");
+                            item.put("closed", closeddays);
                             item.put("closed_date", jsonObject.getString("closed_date"));
                             item.put("reason", jsonObject.getString("reason"));
                             item.put("rating_count", jsonObject.getString("rating_count"));
@@ -333,7 +336,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                             else txt_description.setText(list.get(i).get("short_description"));
                             if (list.get(i).get("appointment").trim().isEmpty())
                                 txt_appointment.setVisibility(View.GONE);
-                            else txt_appointment.setText(list.get(i).get("appointment"));
+                            else txt_appointment.setText("Appointment : "+list.get(i).get("appointment"));
 
                             if (list.get(i).get("closed").equalsIgnoreCase(""))
                                 txt_close_on1.setVisibility(View.GONE);
@@ -341,11 +344,11 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                                 txt_close_on1.setText("* " + list.get(i).get("closed") + " Closed");
 
                             String closeDate = list.get(i).get("closed_date").equalsIgnoreCase("") ? "" : list.get(i).get("closed_date");
-                            String closeReason = list.get(i).get("reason").equalsIgnoreCase("") ? "" : "on " + list.get(i).get("reason");
+                            String closeReason = list.get(i).get("reason").equalsIgnoreCase("") ? "" : list.get(i).get("reason");
                             if (closeDate.equalsIgnoreCase("") && closeReason.equalsIgnoreCase(""))
                                 txt_close_on2.setVisibility(View.GONE);
                             else
-                                txt_close_on2.setText(closeDate + " " + "Close " + closeReason);
+                                txt_close_on2.setText("Closed on "+closeDate + " (" + closeReason+")");
 
                             final int finalI = i;
                             img_map.setOnClickListener(new View.OnClickListener() {

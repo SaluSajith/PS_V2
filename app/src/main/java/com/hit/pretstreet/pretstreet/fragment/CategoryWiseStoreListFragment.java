@@ -165,18 +165,18 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         });
 
         /**inflate header view of the list starts.**/
-        LayoutInflater inflaterHeader = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflaterHeader.inflate(R.layout.header_withlabel, null);
-        img_icon_menu = (ImageView) v.findViewById(R.id.img_icon_menu);
-        img_notification = (ImageView) v.findViewById(R.id.img_notification);
-        img_search = (ImageView) v.findViewById(R.id.img_search);
-        img_filter = (ImageView) v.findViewById(R.id.img_filter);
-        img = (ImageView) v.findViewById(R.id.img);
-        txt_cat_name = (TextView) v.findViewById(R.id.txt_cat_name);
-        txt_location = (TextView) v.findViewById(R.id.txt_location);
-        hsv_category = (HorizontalScrollView) v.findViewById(R.id.hsv_category);
-        ll_category = (LinearLayout) v.findViewById(R.id.ll_category);
-        rl_background = (RelativeLayout) v.findViewById(R.id.rl_background);
+        /*LayoutInflater inflaterHeader = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflaterHeader.inflate(R.layout.header_withlabel, null);*/
+        img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
+        img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
+        img_search = (ImageView) rootView.findViewById(R.id.img_search);
+        img_filter = (ImageView) rootView.findViewById(R.id.img_filter);
+        img = (ImageView) rootView.findViewById(R.id.img);
+        txt_cat_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
+        txt_location = (TextView) rootView.findViewById(R.id.txt_location);
+        hsv_category = (HorizontalScrollView) rootView.findViewById(R.id.hsv_category);
+        ll_category = (LinearLayout) rootView.findViewById(R.id.ll_category);
+        rl_background = (RelativeLayout) rootView.findViewById(R.id.rl_background);
         rl_background.getBackground().setFilterBitmap(true);
 
         txt_cat_name.setTypeface(font);
@@ -190,8 +190,8 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         img_search.setOnClickListener(this);
         img_filter.setOnClickListener(this);
 
-        ll_header.addView(v);
-        ll_header.bringToFront();
+       // ll_header.addView(v);
+        //ll_header.bringToFront();
         //txt_cat_name.getBackground().setFilterBitmap(true);
         //list_store.addHeaderView(v);
         /**inflate header view of the list ends.**/
