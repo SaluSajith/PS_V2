@@ -127,7 +127,7 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
                         }
                     });
         }
-
+        ///showOTPScreem();
     }
 
     private void showpDialog() {
@@ -290,6 +290,7 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
             public void onClick(View v) {
                 popupDialog.dismiss();
                 // json calling for change password from server
+
             }
         });
     }
