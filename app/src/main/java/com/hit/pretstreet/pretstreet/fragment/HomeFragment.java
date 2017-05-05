@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ImageView img_notification, img_search;
     public TextView txt_location;
     private TextView txt_user_name, txt_bags, txt_shoes, txt_eyewear, txt_watches, txt_accessories;
-    private LinearLayout ll_main_cat, ll_bags, ll_shoes, ll_eyewear, ll_watches, ll_accesories;
+    private LinearLayout ll_main_cat, ll_bags, ll_shoes, ll_eyewear, ll_watches, ll_accesories, ll_exhibitions;
     private RelativeLayout rl_location_search, rl_sub_cat1;
     private String parentID, SavedMAinCaTList, SavedSubCatList, baseImage;
     private JsonObjectRequest jsonObjReqMain, jsonObjReqSub;
@@ -94,6 +94,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         ll_eyewear = (LinearLayout) rootView.findViewById(R.id.ll_eyewear);
         ll_watches = (LinearLayout) rootView.findViewById(R.id.ll_watches);
         ll_accesories = (LinearLayout) rootView.findViewById(R.id.ll_accesories);
+        ll_exhibitions = (LinearLayout) rootView.findViewById(R.id.ll_exhibitions);
 
         rl_sub_cat1 = (RelativeLayout) rootView.findViewById(R.id.rl_sub_cat1);
 
@@ -158,6 +159,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     hashMap.put("url_key", jsonObject.getString("url_key"));
                     list.add(hashMap);
                 }
+
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }
@@ -381,6 +383,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 });
                 ll_main_cat.addView(view);
+                if(i==4){
+                    ll_exhibitions.removeAllViews();
+
+                    LayoutInflater inf = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view1;
+                        view1 = inf.inflate(R.layout.row_sub_cat_list2, null);
+                    ll_exhibitions.addView(view1);
+                }
             }
         } else {
             ll_main_cat.setVisibility(View.GONE);
@@ -466,7 +476,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReq);
     }
 
@@ -780,7 +790,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        jsonObjReqMain.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReqMain.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReqMain, Constant.tag_json_obj);
     }
 
@@ -885,7 +895,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        jsonObjReqSub.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReqSub.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReqSub, Constant.tag_json_obj);
     }
 

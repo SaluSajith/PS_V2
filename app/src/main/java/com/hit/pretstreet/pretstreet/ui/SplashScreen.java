@@ -67,6 +67,7 @@ public class SplashScreen extends Activity {
             @Override
             public void onResponse(JSONObject response) {
                 boolean responseSuccess = false;
+                System.out.println("response  "+response);
                 String strsuccess, imgUrl = null;
                 try {
                     strsuccess = response.getString("success");
@@ -92,7 +93,7 @@ public class SplashScreen extends Activity {
                 VolleyLog.d("Volley", "Error: " + error.getMessage());
             }
         });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReq);
     }
 

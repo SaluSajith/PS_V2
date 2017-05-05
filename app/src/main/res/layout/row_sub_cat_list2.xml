@@ -32,7 +32,7 @@
         android:lines="1"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="Category"
+        android:text="Exhibitions"
         android:textAllCaps="true"
         android:layout_marginRight="-3dp"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"

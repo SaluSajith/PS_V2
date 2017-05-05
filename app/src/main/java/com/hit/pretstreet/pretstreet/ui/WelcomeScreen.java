@@ -197,7 +197,7 @@ public class WelcomeScreen extends ActivityManagePermission implements View.OnCl
                 VolleyLog.d("Volley", "Error: " + error.getMessage());
             }
         });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReq);
     }
 
@@ -455,7 +455,7 @@ public class WelcomeScreen extends ActivityManagePermission implements View.OnCl
                 Toast.makeText(WelcomeScreen.this, message, Toast.LENGTH_SHORT).show();
             }
         });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
     }
 }

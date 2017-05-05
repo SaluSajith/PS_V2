@@ -4,13 +4,11 @@ android {
     compileSdkVersion 23
     buildToolsVersion '25.0.2'
     useLibrary 'org.apache.http.legacy'
-
     defaultConfig {
         applicationId "com.hit.pretstreet.pretstreet"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.3"
+        versionName '1.4'
         multiDexEnabled true
     }
     buildTypes {
@@ -23,7 +21,8 @@ android {
     dexOptions {
         javaMaxHeapSize = "4g"
     }
-
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -38,9 +37,11 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:cardview-v7:23.4.0'
     compile 'com.android.support:design:23.0.1'
-    //    compile 'com.google.firebase:firebase-core:10.2.0'
-    //    compile 'com.android.support.constraint:constraint-layout:+'
+    //compile 'com.google.firebase:firebase-crash:10.2.4'
+    //compile 'com.google.firebase:firebase-core:10.2.0'
+    //compile 'com.android.support.constraint:constraint-layout:+'
     testCompile 'junit:junit:4.12'
+    //compile 'com.google.firebase:firebase-crash:10.2.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

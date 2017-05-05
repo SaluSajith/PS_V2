@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/black"
     android:focusableInTouchMode="true">
 
     <RelativeLayout
@@ -111,13 +111,22 @@
                 android:orientation="vertical"
                 android:visibility="visible" />
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_main_cat"
+                android:orientation="horizontal"
+
+                android:layout_marginTop="-45dp"
+                android:id="@+id/ll_exhibitions"></LinearLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_sub_cat1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ll_main_cat"
+                android:layout_below="@id/ll_exhibitions"
                 android:layout_marginBottom="30dp"
-                android:layout_marginTop="-45dp"
                 android:background="@drawable/categories"
                 android:visibility="visible">
 
@@ -260,6 +269,7 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
+
             </RelativeLayout>
 
         </RelativeLayout>

@@ -5,22 +5,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.PhoneStateListener;
@@ -28,20 +22,17 @@ import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +57,6 @@ import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.ui.OnLoadMoreListener;
-import com.hit.pretstreet.pretstreet.ui.RecyclerItemClickListener;
 import com.hit.pretstreet.pretstreet.ui.SelectLocation;
 import com.hit.pretstreet.pretstreet.ui.SimpleDividerItemDecoration;
 import com.hit.pretstreet.pretstreet.ui.StoreLocationMapScreen;
@@ -77,7 +67,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Jesal on 05-Sep-16.
@@ -90,10 +79,10 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     private HorizontalScrollView hsv_category;
     private RecyclerView list_store;
     StoreList_RecyclerAdapter storeList_recyclerAdapter;
+    NestedScrollView nsv_header;
 
     private String mainCatId, subCatId, subCatName = "", isFrom;
     private String catValue[], catId[];
-    private StoreListAdapter storeListAdapter;
     private Typeface font, fontM;
     private ProgressDialog pDialog;
     ArrayList<CategoryItem> listCategory = new ArrayList<>();
@@ -108,6 +97,8 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     public static int selectedPosition;
     boolean requestCalled;
     ArrayList<HashMap<String, String>> list;
+
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     @Nullable
     @Override
@@ -134,6 +125,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         listCategory = (ArrayList<CategoryItem>) bundle.getSerializable("cat_list");
         list_store = (RecyclerView) rootView.findViewById(R.id.list_store);
         ll_header = (LinearLayout) rootView.findViewById(R.id.ll);
+        nsv_header = (NestedScrollView) rootView.findViewById(R.id.nsv_header);
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         fontM = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
 
@@ -146,66 +138,46 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             lng = PreferenceServices.getInstance().getLongitute();
         }
 
-        /*list_store.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                final int lastItem = firstVisibleItem + visibleItemCount;
-                if (lastItem == totalItemCount - 10) {
-                    if (pageCount < totalPages) {
-                        if (!requestCalled) {
-                            requestCalled = true;
-                            if (maleClick) {
-                                //SortStoreListByMenWomen("male", false);
-                            } else if (femaleClick) {
-                                //SortStoreListByMenWomen("female", false);
-                            } else {
-                                getStoreList(LLSelectedID, false);
-                            }
-                        }
-                    }
-                }
-            }
-        });*/
-
         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity(), R.layout.row_list_store1, list, list_store);
         final LinearLayoutManager mManager = new LinearLayoutManager(getActivity());
         list_store.setLayoutManager(mManager);
         list_store.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         list_store.setNestedScrollingEnabled(false);
 
-       /* list_store.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    /*if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY) {
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
-                int visibleItemCount = mManager.getChildCount();
-                int totalItemCount = mManager.getItemCount();
-                int firstVisibleItem = mManager.findFirstVisibleItemPosition();
-                final int lastItem = firstVisibleItem + visibleItemCount;
-                if (lastItem == totalItemCount - 10) {
-                    if (pageCount < totalPages) {
-                        if (!requestCalled) {
-                            requestCalled = true;
-                            if (maleClick) {
-                                //SortStoreListByMenWomen("male", false);
-                            } else if (femaleClick) {
-                                //SortStoreListByMenWomen("female", false);
-                            } else {
-                                getStoreList(LLSelectedID, false);
+                    }*/
+                    if (scrollY > oldScrollY) {
+                        visibleItemCount = mManager.getChildCount();
+                        totalItemCount = mManager.getItemCount();
+                        pastVisiblesItems = mManager.findFirstVisibleItemPosition();
+
+                        int visibleItemCount = mManager.getChildCount();
+                        final int lastItem = mManager.findFirstVisibleItemPosition() + visibleItemCount;
+                        System.out.println("log lastItem "+lastItem+" "+(mManager.getItemCount() ));
+                        if (lastItem == mManager.getItemCount() ) {
+                            System.out.println("log pageCount "+pageCount+" totalPages "+totalPages);
+                            if (pageCount < totalPages) {
+                                if (!requestCalled) {
+                                    requestCalled = true;
+                                    if (maleClick) {
+                                        //SortStoreListByMenWomen("male", false);
+                                    } else if (femaleClick) {
+                                        //SortStoreListByMenWomen("female", false);
+                                    } else {
+                                            getStoreList(LLSelectedID, false);
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-        });*/
+        });
 
         /**inflate header view of the list starts.**/
         LayoutInflater inflaterHeader = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -412,20 +384,12 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 }
                 if (responseSuccess) {
                     if (first) {
-                        //storeListAdapter = new StoreListAdapter(getActivity(), R.layout.row_list_store1, list);
-                        //list_store.setAdapter(storeListAdapter);
                         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity(), R.layout.row_list_store1, list, list_store);
                         list_store.setAdapter(storeList_recyclerAdapter);
 
-                        storeList_recyclerAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-                            @Override
-                            public void onLoadMore() {
-                                getStoreList(LLSelectedID, false);
-                            }
-                        });
                     } else
-                        storeListAdapter.notifyDataSetChanged();
-                    requestCalled = false;
+                        storeList_recyclerAdapter.notifyDataSetChanged();
+                            requestCalled = false;
                 } else {
                     if (first) {
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
@@ -458,443 +422,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }
         });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
     }
-
-
-    public class StoreListAdapter extends BaseAdapter {
-        private Context context;
-        int layoutResourceId;
-        private ArrayList<HashMap<String, String>> mItems;
-        String phone1, phone2, phone3, storename;
-        int followCount;
-
-        public StoreListAdapter(Context context, int layoutResourceId, ArrayList<HashMap<String, String>> data) {
-            this.context = context;
-            this.mItems = data;
-            this.layoutResourceId = layoutResourceId;
-        }
-
-        @Override
-        public int getCount() {
-            return mItems.size();
-        }
-
-        @Override
-        public HashMap<String, String> getItem(int position) {
-            return mItems.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            final ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
-            final TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, tv_margintop;
-            LayoutInflater inflater = LayoutInflater.from(context);
-            if (position % 2 == 0) {
-                convertView = inflater.inflate(R.layout.row_list_store1, parent, false);
-            } else {
-                convertView = inflater.inflate(R.layout.row_list_store2, parent, false);
-            }
-            img_store_photo = (ImageView) convertView.findViewById(R.id.img_store_photo);
-            img_follow_unfollow = (TextView) convertView.findViewById(R.id.img_follow_unfollow);
-            img_call = (ImageView) convertView.findViewById(R.id.img_call);
-            img_map = (ImageView) convertView.findViewById(R.id.img_map);
-            img_address = (ImageView) convertView.findViewById(R.id.img_address);
-            img_sale = (ImageView) convertView.findViewById(R.id.img_sale);
-            img_new_arrival = (ImageView) convertView.findViewById(R.id.img_new_arrival);
-            txt_storename = (TextView) convertView.findViewById(R.id.txt_storename);
-            txt_address = (TextView) convertView.findViewById(R.id.txt_address);
-            tv_margintop = (TextView) convertView.findViewById(R.id.tv_margintop);
-            txt_folleowercount = (TextView) convertView.findViewById(R.id.txt_folleowercount);
-            txt_storename.setTypeface(font);
-            txt_address.setTypeface(fontM);
-            txt_folleowercount.setTypeface(font);
-            img_follow_unfollow.setTypeface(font);
-            txt_storename.setText(mItems.get(position).get("name"));
-            txt_address.setText(mItems.get(position).get("area"));
-
-            String strFollowCount = list.get(position).get("follow_count");
-            if (strFollowCount.length() >= 4) {
-                String convertedCountK = strFollowCount.substring(0, strFollowCount.length() - 3);
-                if (convertedCountK.length() >= 4) {
-                    String convertedCount = convertedCountK.substring(0, convertedCountK.length() - 3);
-                    txt_folleowercount.setText(Html.fromHtml(convertedCount + "<sup>M</sup>"));
-                } else {
-                    txt_folleowercount.setText(Html.fromHtml(convertedCountK + "<sup>K</sup>"));
-                }
-            } else {
-                txt_folleowercount.setText(Html.fromHtml(strFollowCount));
-            }
-            if (position == 0) {
-                LinearLayout.LayoutParams relativeParams =
-                        new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT);
-                relativeParams.setMargins(0, 15, 10, 0);
-                tv_margintop.setLayoutParams(relativeParams);
-                tv_margintop.requestLayout();
-            }
-            Glide.with(CategoryWiseStoreListFragment.this)
-                    .load(list.get(position).get("thumb"))
-                    .asBitmap().fitCenter()
-                    .into(new BitmapImageViewTarget(img_store_photo) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-
-                            Bitmap croppedBmp = Bitmap.createBitmap(resource);
-                            final Matrix matrix = img_store_photo.getImageMatrix();
-                            matrix.postScale(2, 2);
-                            img_store_photo.setImageMatrix(matrix);
-                            img_store_photo.setImageBitmap(croppedBmp);
-
-                        }
-                    });
-
-            if (mItems.get(position).get("wishlist").equalsIgnoreCase("notin")) {
-                img_follow_unfollow.setText("Follow");
-            } else {
-                img_follow_unfollow.setText("Unfollow");
-            }
-
-            if (mItems.get(position).get("sale").equalsIgnoreCase("Yes")) {
-                img_sale.setVisibility(View.VISIBLE);
-            } else {
-                img_sale.setVisibility(View.GONE);
-            }
-
-            if (mItems.get(position).get("arrival").equalsIgnoreCase("No")) {
-                img_new_arrival.setVisibility(View.GONE);
-            } else {
-                img_new_arrival.setVisibility(View.VISIBLE);
-            }
-
-            img_call.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    phone1 = mItems.get(position).get("phone1");
-                    phone2 = mItems.get(position).get("phone2");
-                    phone3 = mItems.get(position).get("phone3");
-                    storename = mItems.get(position).get("name");
-                    if (phone1.equalsIgnoreCase("") && phone2.equalsIgnoreCase("") && phone3.equalsIgnoreCase(""))
-                        Toast.makeText(getActivity(), "Number not Found", Toast.LENGTH_SHORT).show();
-                    else {
-                        clickLogTracking("call", mItems.get(position).get("id"));
-                        showPopupPhoneNumber();
-                    }
-                }
-            });
-
-            img_map.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mItems.get(position).get("latitude").equalsIgnoreCase("") ||
-                            mItems.get(position).get("longitude").equalsIgnoreCase("")) {
-                        Toast.makeText(getActivity(), "Lat Long not Found", Toast.LENGTH_SHORT).show();
-                    } else {
-                        clickLogTracking("map", mItems.get(position).get("id"));
-                        Intent i = new Intent(getActivity(), StoreLocationMapScreen.class);
-                        Bundle b = new Bundle();
-                        storename = mItems.get(position).get("name");
-                        b.putString("name", storename);
-                        b.putString("address", mItems.get(position).get("address"));
-                        b.putDouble("lat", Double.parseDouble(mItems.get(position).get("latitude")));
-                        b.putDouble("long", Double.parseDouble(mItems.get(position).get("longitude")));
-                        i.putExtras(b);
-                        startActivity(i);
-                    }
-                }
-            });
-
-            img_follow_unfollow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    followCount = Integer.parseInt(mItems.get(position).get("follow_count"));
-                    if (mItems.get(position).get("wishlist").equalsIgnoreCase("notin")) {
-                        addToFollowers(mItems.get(position).get("id"), position);
-                    } else {
-                        removeFromFollowers(mItems.get(position).get("id"), position);
-                    }
-                }
-            });
-
-            img_address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickLogTracking("address", mItems.get(position).get("id"));
-                    storename = mItems.get(position).get("name");
-                    showAddress(mItems.get(position).get("address"));
-                }
-            });
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickLogTracking("storeview", mItems.get(position).get("id"));
-                    Fragment f1 = new StoreDetailFragment();
-                    Bundle b1 = new Bundle();
-                    b1.putString("cat_id", mItems.get(position).get("id"));
-                    b1.putString("cat_name", subCatName);
-                    b1.putInt("position", position);
-                    selectedPosition = position;
-                    f1.setArguments(b1);
-                    FragmentTransaction t1 = getFragmentManager().beginTransaction();
-                    t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                    t1.add(R.id.frame_container, f1);
-//                    t1.replace(R.id.frame_container, f1);
-                    t1.addToBackStack(null);
-                    t1.commit();
-                }
-            });
-            return convertView;
-        }
-
-        private void clickLogTracking(String event, String storeId) {
-            String urlJson = Constant.FASHION_API + "route=trackinglogs&action=" + event + "&user_id="
-                    + PreferenceServices.getInstance().geUsertId() + "&pid=" + storeId;
-            Log.e("URL: ", urlJson);
-            final ArrayList<HashMap<String, String>> list = new ArrayList<>();
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJson, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(final JSONObject response) {
-                    Log.e("Volley", response.toString());
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleyLog.d("Volley", "Error: " + error.getMessage());
-                }
-            });
-            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
-        }
-
-        private void removeFromFollowers(String id, final int pos) {
-            //http://doctronics.co.in/fashionapp/fashion_api.php?route=remove_follow&store_id=31&user_id=3
-            String urlJsonObj = Constant.FASHION_API + "route=remove_follow&store_id=" + id + "&user_id=" + PreferenceServices.getInstance().geUsertId();
-            showpDialog();
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJsonObj,
-                    null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    String strsuccess, message;
-                    try {
-                        strsuccess = response.getString("success");
-                        if (strsuccess.equalsIgnoreCase("true")) {
-                            message = response.getString("message");
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            mItems.get(pos).put("wishlist", "notin");
-                            mItems.get(pos).put("follow_count", String.valueOf(--followCount));
-                            notifyDataSetChanged();
-                        } else {
-                            message = response.getString("message");
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                    hidepDialog();
-                }
-            }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    hidepDialog();
-                }
-            });
-            PretStreet.getInstance().addToRequestQueue(jsonObjReq);
-        }
-
-        private void addToFollowers(String id, final int pos) {
-            //http://doctronics.co.in/fashionapp/fashion_api.php?route=save_follow&store_id=31&user_id=3
-            String urlJsonObj = Constant.FASHION_API + "route=save_follow&store_id=" + id + "&user_id=" + PreferenceServices.getInstance().geUsertId();
-            showpDialog();
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJsonObj,
-                    null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    String strsuccess, message;
-                    try {
-                        strsuccess = response.getString("success");
-                        if (strsuccess.equalsIgnoreCase("true")) {
-                            message = response.getString("message");
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            mItems.get(pos).put("wishlist", "in");
-                            mItems.get(pos).put("follow_count", String.valueOf(++followCount));
-                            notifyDataSetChanged();
-                        } else {
-                            message = response.getString("message");
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                    hidepDialog();
-                }
-            }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    hidepDialog();
-                }
-            });
-            PretStreet.getInstance().addToRequestQueue(jsonObjReq);
-        }
-
-        public void showPopupPhoneNumber() {
-            final Dialog popupDialog = new Dialog(context);
-            LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = li.inflate(R.layout.popup_phone_number, null);
-            TextView txt_cat = (TextView) view.findViewById(R.id.txt_cat);
-            ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
-            img_close.setVisibility(View.VISIBLE);
-            RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
-            RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
-            RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
-            TextView txt_phone1 = (TextView) view.findViewById(R.id.txt_phone1);
-            TextView txt_phone2 = (TextView) view.findViewById(R.id.txt_phone2);
-            TextView txt_phone3 = (TextView) view.findViewById(R.id.txt_phone3);
-            txt_cat.setTypeface(fontM);
-            txt_phone1.setTypeface(fontM);
-            txt_phone2.setTypeface(fontM);
-            txt_phone3.setTypeface(fontM);
-            txt_cat.setText(storename);
-            txt_phone1.setText(phone1);
-            txt_phone2.setText(phone2);
-            txt_phone3.setText(phone3);
-            if (phone1.equalsIgnoreCase(""))
-                rl_phone1.setVisibility(View.GONE);
-            if (phone2.equalsIgnoreCase(""))
-                rl_phone2.setVisibility(View.GONE);
-            if (phone3.equalsIgnoreCase(""))
-                rl_phone3.setVisibility(View.GONE);
-            popupDialog.setCanceledOnTouchOutside(true);
-            popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
-            rl.setPadding(0, 0, 0, 0);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(0, 0, 0, 0);
-            rl.setLayoutParams(lp);
-            popupDialog.setContentView(view);
-            popupDialog.getWindow().setGravity(Gravity.CENTER);
-            WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
-            popupDialog.getWindow().setAttributes(params);
-            popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            popupDialog.show();
-
-            img_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupDialog.dismiss();
-                }
-            });
-
-            rl_phone1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyPhoneListener phoneListener = new MyPhoneListener();
-                    TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-                    telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
-                    try {
-                        String uri = "tel:" + phone1;
-                        Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(uri));
-                        startActivity(dialIntent);
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), "Call Failed", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            rl_phone2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyPhoneListener phoneListener = new MyPhoneListener();
-                    TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-                    telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
-                    try {
-                        String uri = "tel:" + phone2;
-                        Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(uri));
-                        startActivity(dialIntent);
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), "Call Failed", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            rl_phone3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyPhoneListener phoneListener = new MyPhoneListener();
-                    TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-                    telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
-                    try {
-                        String uri = "tel:" + phone3;
-                        Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(uri));
-                        startActivity(dialIntent);
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), "Call Failed", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-
-        public void showAddress(String address) {
-            final Dialog popupDialog = new Dialog(context);
-            LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = li.inflate(R.layout.popup_phone_number, null);
-            TextView txt_cat = (TextView) view.findViewById(R.id.txt_cat);
-            TextView txt_close = (TextView) view.findViewById(R.id.txt_close);
-            TextView txt_address = (TextView) view.findViewById(R.id.txt_address);
-            RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
-            RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
-            RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
-            rl_phone1.setVisibility(View.GONE);
-            rl_phone2.setVisibility(View.GONE);
-            rl_phone3.setVisibility(View.GONE);
-            txt_close.setVisibility(View.VISIBLE);
-            txt_address.setVisibility(View.VISIBLE);
-            txt_cat.setTypeface(fontM);
-            txt_close.setTypeface(fontM);
-            txt_address.setTypeface(fontM);
-            txt_cat.setText(storename);
-            txt_address.setText(address);
-            popupDialog.setCanceledOnTouchOutside(true);
-            popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
-            rl.setPadding(0, 0, 0, 0);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(0, 0, 0, 0);
-            rl.setLayoutParams(lp);
-            popupDialog.setContentView(view);
-            popupDialog.getWindow().setGravity(Gravity.CENTER);
-            WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
-            popupDialog.getWindow().setAttributes(params);
-            popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            popupDialog.show();
-
-            txt_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupDialog.dismiss();
-                }
-            });
-        }
-    }
-
 
     private class MyPhoneListener extends PhoneStateListener {
 
@@ -998,9 +528,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         private ArrayList<HashMap<String, String>> mItems;
         String phone1, phone2, phone3, storename;
         int followCount;
-        private int lastVisibleItem, totalitemCount, firstVisibleItem, visibleItemCount, totalItemCount;
-        private int visibleThreshold = 20;
-        private OnLoadMoreListener onLoadMoreListener;
 
         public StoreList_RecyclerAdapter(Context context, int layoutResourceId,
                                          ArrayList<HashMap<String, String>> data, RecyclerView recyclerView) {
@@ -1008,61 +535,10 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             this.mItems = data;
             this.layoutResourceId = layoutResourceId;
 
-           /* if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-
-                final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
-                        .getLayoutManager();
-
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                            @Override
-                            public void onScrolled(RecyclerView recyclerView,
-                                                   int dx, int dy) {
-                                super.onScrolled(recyclerView, dx, dy);
-
-                                firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
-                                visibleItemCount = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                                totalitemCount = linearLayoutManager.getItemCount();
-                                lastVisibleItem = linearLayoutManager
-                                        .findLastVisibleItemPosition();
-
-                                    if (onLoadMoreListener != null) {
-                                        onLoadMoreListener.onLoadMore(firstVisibleItem, visibleItemCount, totalitemCount);
-                                    }
-                            }
-                        });
-            }*/
-
-            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-
-                final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
-                        .getLayoutManager();
-
-                recyclerView
-                        .addOnScrollListener(new RecyclerView.OnScrollListener() {
-                            @Override
-                            public void onScrolled(RecyclerView recyclerView,
-                                                   int dx, int dy) {
-                                super.onScrolled(recyclerView, dx, dy);
-
-                                totalItemCount = linearLayoutManager.getItemCount();
-                                lastVisibleItem = linearLayoutManager
-                                        .findLastVisibleItemPosition();
-                                if ( totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                                    // End has been reached
-                                    // Do something
-                                    if (onLoadMoreListener != null) {
-                                        onLoadMoreListener.onLoadMore();
-                                    }
-                                }
-                            }
-                        });
-            }
-
         }
 
         @Override
         public ShopsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            //View mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store1, parent, false);
             View mRootView;
             int listViewItemType = getItemViewType(viewType);
             if (listViewItemType % 2 == 0) {
@@ -1075,12 +551,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
         @Override
         public void onBindViewHolder(final ShopsHolder holder, final int position) {
-           /* LayoutInflater inflater = LayoutInflater.from(context);
-            if (position % 2 == 0) {
-                convertView = inflater.inflate(R.layout.row_list_store1, parent, false);
-            } else {
-                convertView = inflater.inflate(R.layout.row_list_store2, parent, false);
-            }*/
 
             holder.txt_storename.setTypeface(font);
             holder.txt_address.setTypeface(fontM);
@@ -1262,10 +732,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             return position;
         }
 
-        public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
-            this.onLoadMoreListener = onLoadMoreListener;
-        }
-
         private void clickLogTracking(String event, String storeId) {
             String urlJson = Constant.FASHION_API + "route=trackinglogs&action=" + event + "&user_id="
                     + PreferenceServices.getInstance().geUsertId() + "&pid=" + storeId;
@@ -1282,7 +748,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     VolleyLog.d("Volley", "Error: " + error.getMessage());
                 }
             });
-            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
         }
 

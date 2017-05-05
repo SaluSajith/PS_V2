@@ -61,7 +61,7 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
 
     private ImageView img_icon_menu, img_notification, img_search, img_filter;
     private TextView txt_Mcat_name;
-    private RelativeLayout rl_location_search;
+    //private RelativeLayout rl_location_search;
     private LinearLayout ll_brands;
     public TextView txt_location;
     private String mainCAtId, name, savedCaTList = "";
@@ -89,12 +89,12 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
         txt_Mcat_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
 
         ll_brands = (LinearLayout) rootView.findViewById(R.id.ll_brands);
-        rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
+        //rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
 
         txt_Mcat_name.setText(name);
         txt_location.setTypeface(font);
         txt_Mcat_name.setTypeface(font);
-        rl_location_search.bringToFront();
+        //rl_location_search.bringToFront();
 
         txt_location.setOnClickListener(this);
         img_icon_menu.setOnClickListener(this);
@@ -580,7 +580,7 @@ public class TwoSubCategoryFragment extends Fragment implements View.OnClickList
                 }
             }
         });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
     }
 
