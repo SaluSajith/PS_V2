@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.google.firebase.crash.FirebaseCrash;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
@@ -58,6 +59,8 @@ public class SplashScreen extends Activity {
             Glide.with(getApplicationContext()).load(savedImage).into(img_splash);
         }
         getSplashImage();
+
+        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
     }
 
     private void getSplashImage() {
