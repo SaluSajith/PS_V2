@@ -40,6 +40,6 @@
 
     <dimen name="margin_top_difference">10dp</dimen>
 
-   <!-- <dimen name="home_image_height">658dp</dimen>-->
+    <!-- <dimen name="home_image_height">658dp</dimen>-->
     <dimen name="home_image_height">280dp</dimen>
 </resources>

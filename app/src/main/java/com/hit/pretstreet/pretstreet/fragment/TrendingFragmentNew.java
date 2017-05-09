@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -22,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -40,6 +42,7 @@ import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.Items.TrendingItems;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.adapters.ViewPagerAdapter;
 import com.hit.pretstreet.pretstreet.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.ui.SelectLocation;
 
@@ -66,10 +69,11 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
     ArrayList<TrendingItems> list;
     TrendingAdapter adapter;
 
-    private LinearLayout ll_category, ll_header;
-    private HorizontalScrollView hsv_category;
-    private ImageView img_icon_menu, img_notification, img_filter, img_search, img_header;
+    private LinearLayout  ll_header;
+    private ImageView img_icon_menu, img_notification, img_filter, img_search;
     private TextView txt_location, txt_cat_name;
+    private boolean loading = true;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     @Nullable
     @Override
@@ -87,14 +91,11 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
 
         ll_header= (LinearLayout) view.findViewById(R.id.ll_header);
         rv_trending = (RecyclerView) view.findViewById(R.id.rv_trending);
-        hsv_category = (HorizontalScrollView) view.findViewById(R.id.hsv_category);
-        ll_category = (LinearLayout) view.findViewById(R.id.ll_category);
 
         img_icon_menu = (ImageView) view.findViewById(R.id.img_icon_menu);
         img_notification = (ImageView) view.findViewById(R.id.img_notification);
         img_filter = (ImageView) view.findViewById(R.id.img_filter);
         img_search = (ImageView) view.findViewById(R.id.img_search);
-        img_header = (ImageView) view.findViewById(R.id.img);
 
         txt_location = (TextView) view.findViewById(R.id.txt_location);
         txt_cat_name = (TextView) view.findViewById(R.id.txt_cat_name);
@@ -112,11 +113,33 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         lp.setMargins(10, 40, 0, 0);
         txt_cat_name.setLayoutParams(lp);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-
-        rv_trending.setLayoutManager(layoutManager);
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rv_trending.setLayoutManager(mLayoutManager);
         rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.yellow), 5.0f));
 
+        rv_trending.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                if(dy > 0) //check for scroll down
+                {
+                    visibleItemCount = mLayoutManager.getChildCount();
+                    totalItemCount = mLayoutManager.getItemCount();
+                    pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+
+                    if (loading)
+                    {
+                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
+                        {
+                            loading = false;
+                            Log.v("...", "Last Item Wow !");
+                            //Do pagination.. i.e. fetch new data
+                        }
+                    }
+                }
+            }
+        });
         list = new ArrayList<>();
 
         ll_header.bringToFront();
@@ -137,7 +160,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             String URL = Constant.TRENDING_API + "ftc";
-            Log.e("URL", URL);
+            Log.d("URL", URL);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
             jsonBody.put("Limit", Constant.LIMIT);
@@ -151,7 +174,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.e("Trending_api_response", String.valueOf(response));
+                            Log.d("Trending_api_response", String.valueOf(response));
                             try {
                                 JSONObject jsonObject =  new JSONObject(response);
                                 boolean responseSuccess = false;
@@ -159,12 +182,13 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                 try {
                                     strsuccess = jsonObject.getString("Status");
                                     if (strsuccess.equals("1")) {
-                                        Log.e("Trending_api_response",strsuccess);
+                                        Log.d("Trending_api_response",strsuccess);
                                         responseSuccess = true;
                                         JSONArray jsonArray = null;
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                                             jsonArray = jsonObject.getJSONArray("TrendingContent");
                                             TrendingItems item;
+                                            ArrayList imagearray = new ArrayList();
                                             if (list == null)
                                                 list = new ArrayList<>();
                                             else
@@ -180,23 +204,21 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                                 item.setLike(trendingContent.getString("CustomerLike"));
                                                 item.setStoreName(trendingContent.getString("Storename"));
 
-                                                ArrayList imagearray = new ArrayList();
                                                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageArray");
                                                 for(int j=0;j<jsonImagearray.length();j++) {
                                                     imagearray.add(jsonImagearray.get(j));
                                                 }
                                                 item.setImagearray(imagearray);
                                                 try {
-                                                DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aaa");
-                                                DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
-                                                String inputDateStr = trendingContent.getString("ArticleDate");
-                                                Date date = inputFormat.parse(inputDateStr);
+                                                    DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aaa");
+                                                    DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
+                                                    String inputDateStr = trendingContent.getString("ArticleDate");
+                                                    Date date = inputFormat.parse(inputDateStr);
                                                     String outputDateStr = outputFormat.format(date);
                                                     item.setArticledate(outputDateStr);
                                                 } catch (ParseException e) {
                                                     e.printStackTrace();
                                                 }
-
                                                 list.add(item);
                                             }
                                         }
@@ -223,7 +245,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("Trending_api_error", error.toString());
+                    Log.d("Trending_api_error", error.toString());
+                    hidepDialog();
                 }
             }) {
                 @Override
@@ -321,6 +344,9 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         ArrayList<TrendingItems> list;
         int button01pos = 0;
         TrendingItems trendingItems;
+        ViewPagerAdapter mAdapter;
+
+        int dotsCount;
 
         public TrendingAdapter(Context context, ArrayList<TrendingItems> list) {
             this.context = context;
@@ -337,17 +363,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
 
-               /* LinkedHashMap<String, String> trendItem = list.get(position - 1);
-                Glide.with(getActivity()).load(trendItem.get("image")).centerCrop().into(holder.img_banner);
-                holder.txtTitle.setText(trendItem.get("name"));
-                holder.txtDescription.setText(trendItem.get("desc"));*/
-            //LinkedHashMap<String, String> trendItem = list.get(position - 1);
-
             TrendingItems trendingItems = list.get(position);
-
-            Glide.with(getActivity())
-                    .load("http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg")
-                    .centerCrop().into(holder.iv_banner);
             holder.txt_date.setText(trendingItems.getArticledate());
             holder.txt_title.setText(trendingItems.getTitle());
             holder.txt_description.setText(trendingItems.getArticle());
@@ -372,6 +388,39 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 button01pos = 1;
                 holder.img_like.setImageResource(R.drawable.red_heart);
             }
+            Log.d("mResources", trendingItems.getImagearray().size()+"");
+            if(trendingItems.getImagearray().size()==0){
+                holder.iv_banner.setVisibility(View.VISIBLE);
+                holder.iv_banner.setImageResource(R.mipmap.ic_launcher);
+            }
+            else {
+                holder.iv_banner.setVisibility(View.INVISIBLE);
+                mAdapter = new ViewPagerAdapter(getActivity(), trendingItems.getImagearray());
+                holder.intro_images.setAdapter(mAdapter);
+                holder.intro_images.setCurrentItem(0);
+            }
+            //setUiPageViewController(holder, position);
+
+        }
+        private void setUiPageViewController(ViewHolder holder, int position) {
+
+            dotsCount = list.get(position).getImagearray().size();
+            holder.dots = new ImageView[dotsCount];
+
+            for (int i = 0; i < dotsCount; i++) {
+                holder.dots[i] = new ImageView(getActivity());
+                holder.dots[i].setImageDrawable(getResources().getDrawable(R.drawable.image_indicator_unselected));
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+
+                params.setMargins(4, 0, 4, 0);
+                holder.pager_indicator.addView(holder.dots[i], params);
+            }
+
+            holder.dots[0].setImageDrawable(getResources().getDrawable(R.drawable.image_indicator_selected));
         }
 
         private Bitmap getCircleBitmap(Bitmap bitmap) {
@@ -387,7 +436,6 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
 
         @Override
         public int getItemCount() {
-            //return 3;
             return list.size() ;
         }
 
@@ -396,27 +444,27 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
             return R.layout.row_trending_data;
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public class ViewHolder extends RecyclerView.ViewHolder implements
+                ViewPager.OnPageChangeListener, View.OnClickListener {
 
             View view;
             int viewType;
-            ImageView iv_banner;
-            ImageView img_like, img_share, img_profile;
-
+            ImageView img_like, img_share, img_profile, iv_banner;
             TextView txt_title, txt_description, txt_shopname, txt_date;
-
+            ViewPager intro_images;
+            LinearLayout pager_indicator;
+            ImageView[] dots;
 
             public ViewHolder(View itemView, int viewType) {
                 super(itemView);
 
-                view = itemView;
                 this.viewType = viewType;
                 Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
                 Typeface fontDesc = Typeface.createFromAsset(getActivity().getAssets(), "Merriweather Light.ttf");
 
-                iv_banner = (ImageView) itemView.findViewById(R.id.iv_banner);
                 img_like = (ImageView) itemView.findViewById(R.id.iv_like);
                 img_share = (ImageView) itemView.findViewById(R.id.iv_share);
+                iv_banner = (ImageView) itemView.findViewById(R.id.iv_banner);
                 img_profile = (ImageView) itemView.findViewById(R.id.iv_profile);
                 txt_description = (TextView) itemView.findViewById(R.id.txt_description);
                 txt_title = (TextView) itemView.findViewById(R.id.txt_title);
@@ -428,7 +476,12 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 txt_title.setTypeface(font);
                 txt_shopname.setTypeface(font);
 
+                intro_images = (ViewPager) itemView.findViewById(R.id.pager_introduction);
+                intro_images.setOnPageChangeListener(this);
+                pager_indicator = (LinearLayout) itemView.findViewById(R.id.viewPagerCountDots);
+
                 img_like.setOnClickListener(this);
+
             }
 
             @Override
@@ -451,6 +504,23 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                         break;
                 }
             }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dotsCount; i++) {
+                    dots[i].setImageDrawable(getResources().getDrawable(R.drawable.image_indicator_unselected));
+                }
+                dots[position].setImageDrawable(getResources().getDrawable(R.drawable.image_indicator_selected));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
         }
     }
 
@@ -458,7 +528,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             String URL = Constant.TRENDING_API + "litc";
-            Log.e("URL", URL);
+            Log.d("URL", URL);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
             jsonBody.put("tcId", tcId);
@@ -471,14 +541,14 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.e("Like_api_response", String.valueOf(response));
+                            Log.d("Like_api_response", String.valueOf(response));
                             try {
                                 JSONObject jsonObject =  new JSONObject(response);
                                 String strsuccess;
                                 try {
                                     strsuccess = jsonObject.getString("Status");
                                     if (strsuccess.equals("1")) {
-                                        Log.e("Trending_api_response",strsuccess);
+                                        Log.d("Trending_api_response",strsuccess);
                                         getTrendingData();
                                     } else {
                                         Toast.makeText(getActivity(), jsonObject.getString("Message"), Toast.LENGTH_SHORT).show();
@@ -494,7 +564,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("Like_api_error", error.toString());
+                    hidepDialog();
+                    Log.d("Like_api_error", error.toString());
                 }
             }) {
                 @Override
@@ -520,4 +591,5 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         }
 
     }
+
 }

@@ -42,5 +42,4 @@
 
     <!--<dimen name="home_image_height">658dp</dimen>-->
     <dimen name="home_image_height">280dp</dimen>
-
 </resources>

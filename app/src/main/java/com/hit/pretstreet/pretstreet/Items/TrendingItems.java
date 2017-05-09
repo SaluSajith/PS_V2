@@ -82,7 +82,7 @@ public class TrendingItems implements Serializable {
         return imagearray;
     }
 
-    public void setImagearray(ArrayList<String> cat_name) {
+    public void setImagearray(ArrayList<String> imagearray) {
         this.imagearray = imagearray;
     }
 
