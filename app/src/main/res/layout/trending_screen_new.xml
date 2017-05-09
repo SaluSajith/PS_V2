@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recyclerView"
+<android.support.v4.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:paddingBottom="50dp" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nsv_header"
+    android:background="@color/yellow">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll_header">
+            <include layout="@layout/header_withlabel"></include>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trending"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|top"
+            android:scrollIndicators="none"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="@dimen/subcategory_inner_margintop"
+            android:headerDividersEnabled="false"
+            android:divider="@color/yellow"
+            android:layout_below="@+id/ll_header"
+            android:dividerHeight="@dimen/divider_space_xlarge"
+            android:visibility="visible"
+            android:nestedScrollingEnabled="false"/>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="50dp" />-->
 

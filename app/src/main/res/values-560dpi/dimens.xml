@@ -33,10 +33,13 @@
     <dimen name="divider_space_xxlarge">16dp</dimen>
 
     <dimen name="subcategory_margintop">-58dp</dimen>
-    <dimen name="subcategory_inner_margintop">-30dp</dimen>
+    <dimen name="subcategory_inner_margintop">-32dp</dimen>
     <dimen name="header_marginbottom">0dp</dimen>
     <dimen name="margin_custom_row">20dp</dimen>
     <dimen name="margin_top_custom_row">13dp</dimen>
 
     <dimen name="margin_top_difference">10dp</dimen>
+
+    <!--<dimen name="home_image_height">878dp</dimen>-->
+    <dimen name="home_image_height">280dp</dimen>
 </resources>

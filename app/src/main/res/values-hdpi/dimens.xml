@@ -39,4 +39,8 @@
     <dimen name="margin_top_custom_row">8dp</dimen>
 
     <dimen name="margin_top_difference">10dp</dimen>
+
+    <!--<dimen name="home_image_height">329dp</dimen>-->
+
+    <dimen name="home_image_height">280dp</dimen>
 </resources>

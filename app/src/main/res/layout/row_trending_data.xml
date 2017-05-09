@@ -1,29 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/iv_banner"
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        />
-
-    <TextView
-        android:id="@+id/txt_title"
+    xmlns:app="http://schemas.android.com/tools"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="4sp"
+    android:layout_marginBottom="@dimen/divider_space_xxlarge"
+    android:paddingBottom="@dimen/divider_space_xlarge"
+    app:cardUseCompatPadding="true">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:padding="5dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:maxLines="2" />
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/iv_banner"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/padding_large"
+            android:layout_marginRight="@dimen/padding_large"
+            android:layout_marginTop="@dimen/padding_small"
+            android:gravity="center">
 
-    <TextView
-        android:id="@+id/txt_description"
-        android:layout_width="match_parent"
-        android:padding="5dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/iv_profile"
+                android:layout_margin="@dimen/padding_small"/>
+            <TextView
+                android:id="@+id/txt_shopname"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:text="Z Studio"
+                android:textColor="@color/dark_gray"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:maxLines="2" />
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:text="28 Apr 2017"
+                android:gravity="bottom"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/padding_xlarge"
+            android:layout_marginRight="@dimen/padding_xlarge"
+            android:layout_marginTop="@dimen/padding_large">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/padding_large">
+                <TextView
+                    android:id="@+id/txt_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:textColor="@color/dark_gray"
+                    android:text="4 trends to follow"
+                    android:textAllCaps="true"
+                    android:inputType="textMultiLine"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:maxLines="2" />
+
+                <TextView
+                    android:id="@+id/txt_description"
+                    android:layout_width="match_parent"
+                    android:text="Text"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:textColor="@color/dark_gray"
+                    android:inputType="textMultiLine"
+                    android:layout_marginTop="@dimen/padding_large"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/grey_heart"
+                    android:id="@+id/iv_like"
+                    android:layout_marginBottom="@dimen/padding_large"/>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/share_icon"
+                    android:id="@+id/iv_share"
+                    android:layout_marginBottom="@dimen/padding_large"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

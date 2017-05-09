@@ -68,9 +68,9 @@ import java.util.HashMap;
 public class HomeFragment extends Fragment implements View.OnClickListener {
     private ImageView img_notification, img_search;
     public TextView txt_location;
-    private TextView txt_user_name, txt_bags, txt_shoes, txt_eyewear, txt_watches, txt_accessories;
-    private LinearLayout ll_main_cat, ll_bags, ll_shoes, ll_eyewear, ll_watches, ll_accesories, ll_exhibitions;
-    private RelativeLayout rl_location_search, rl_sub_cat1;
+    private TextView txt_user_name, txt_eyewear, txt_watches, txt_accessories;
+    private LinearLayout ll_main_cat, ll_eyewear, ll_watches, ll_accesories, ll_exhibitions;
+    private LinearLayout  rl_sub_cat1;
     private String parentID, SavedMAinCaTList, SavedSubCatList, baseImage;
     private JsonObjectRequest jsonObjReqMain, jsonObjReqSub;
     private ArrayList<CategoryItem> listsubcat;
@@ -89,22 +89,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         img_search = (ImageView) rootView.findViewById(R.id.img_search);
 
         ll_main_cat = (LinearLayout) rootView.findViewById(R.id.ll_main_cat);
-        ll_bags = (LinearLayout) rootView.findViewById(R.id.ll_bags);
-        ll_shoes = (LinearLayout) rootView.findViewById(R.id.ll_shoes);
+        /*ll_bags = (LinearLayout) rootView.findViewById(R.id.ll_bags);
+        ll_shoes = (LinearLayout) rootView.findViewById(R.id.ll_shoes);*/
         ll_eyewear = (LinearLayout) rootView.findViewById(R.id.ll_eyewear);
         ll_watches = (LinearLayout) rootView.findViewById(R.id.ll_watches);
         ll_accesories = (LinearLayout) rootView.findViewById(R.id.ll_accesories);
         ll_exhibitions = (LinearLayout) rootView.findViewById(R.id.ll_exhibitions);
 
-        rl_sub_cat1 = (RelativeLayout) rootView.findViewById(R.id.rl_sub_cat1);
+        rl_sub_cat1 = (LinearLayout) rootView.findViewById(R.id.rl_sub_cat1);
 
         LinearLayout ll_top = (LinearLayout) rootView.findViewById(R.id.ll_top);
 
         txt_user_name = (TextView) rootView.findViewById(R.id.txt_user_name);
         txt_location = (TextView) rootView.findViewById(R.id.txt_location);
 
-        txt_bags = (TextView) rootView.findViewById(R.id.txt_bags);
-        txt_shoes = (TextView) rootView.findViewById(R.id.txt_shoes);
+        /*txt_bags = (TextView) rootView.findViewById(R.id.txt_bags);
+        txt_shoes = (TextView) rootView.findViewById(R.id.txt_shoes);*/
         txt_eyewear = (TextView) rootView.findViewById(R.id.txt_eyewear);
         txt_watches = (TextView) rootView.findViewById(R.id.txt_watches);
         txt_accessories = (TextView) rootView.findViewById(R.id.txt_accessories);
@@ -112,20 +112,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         txt_user_name.setTypeface(font);
         txt_location.setTypeface(font);
 
-        txt_bags.setTypeface(font);
-        txt_shoes.setTypeface(font);
+        /*txt_bags.setTypeface(font);
+        txt_shoes.setTypeface(font);*/
         txt_eyewear.setTypeface(font);
         txt_watches.setTypeface(font);
         txt_accessories.setTypeface(font);
 
-        ll_bags.setOnClickListener(this);
-        ll_shoes.setOnClickListener(this);
+        /*ll_bags.setOnClickListener(this);
+        ll_shoes.setOnClickListener(this);*/
         ll_eyewear.setOnClickListener(this);
         ll_watches.setOnClickListener(this);
         ll_accesories.setOnClickListener(this);
 
-        txt_bags.setOnClickListener(this);
-        txt_shoes.setOnClickListener(this);
+        /*txt_bags.setOnClickListener(this);
+        txt_shoes.setOnClickListener(this);*/
         txt_eyewear.setOnClickListener(this);
         txt_watches.setOnClickListener(this);
         txt_accessories.setOnClickListener(this);
@@ -420,12 +420,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
             for (int i = 0; i < listsubcat.size(); i++) {
                 if (listsubcat.get(i).getId().equalsIgnoreCase("112")) {
-                    ll_bags.setTag(listsubcat.get(i).getId());
-                    txt_bags.setText(listsubcat.get(i).getCat_name());
+                    //ll_bags.setTag(listsubcat.get(i).getId());
+                    //txt_bags.setText(listsubcat.get(i).getCat_name());
                 }
                 if (listsubcat.get(i).getId().equalsIgnoreCase("111")) {
-                    ll_shoes.setTag(listsubcat.get(i).getId());
-                    txt_shoes.setText(listsubcat.get(i).getCat_name());
+                    //ll_shoes.setTag(listsubcat.get(i).getId());
+                    //txt_shoes.setText(listsubcat.get(i).getCat_name());
                 }
                 if (listsubcat.get(i).getId().equalsIgnoreCase("113")) {
                     ll_eyewear.setTag(listsubcat.get(i).getId());
@@ -839,12 +839,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     PreferenceServices.instance().saveHomeSubCatList(response.toString());
                     for (int i = 0; i < listsubcat.size(); i++) {
                         if (listsubcat.get(i).getId().equalsIgnoreCase("112")) {
-                            ll_bags.setTag(listsubcat.get(i).getId());
-                            txt_bags.setText(listsubcat.get(i).getCat_name());
+                            //ll_bags.setTag(listsubcat.get(i).getId());
+                            //txt_bags.setText(listsubcat.get(i).getCat_name());
                         }
                         if (listsubcat.get(i).getId().equalsIgnoreCase("111")) {
-                            ll_shoes.setTag(listsubcat.get(i).getId());
-                            txt_shoes.setText(listsubcat.get(i).getCat_name());
+                            //ll_shoes.setTag(listsubcat.get(i).getId());
+                           // txt_shoes.setText(listsubcat.get(i).getCat_name());
                         }
                         if (listsubcat.get(i).getId().equalsIgnoreCase("113")) {
                             ll_eyewear.setTag(listsubcat.get(i).getId());
@@ -917,7 +917,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         int viewId = v.getId();
         switch (viewId) {
 
-            case R.id.txt_bags:
+            /*case R.id.txt_bags:
             case R.id.ll_bags:
                 Fragment f4 = new CategoryWiseStoreListFragment();
                 Bundle b4 = new Bundle();
@@ -928,8 +928,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 b4.putString("main_cat_name", txt_bags.getText().toString());
                 f4.setArguments(b4);
                 FragmentTransaction t4 = getFragmentManager().beginTransaction();
-               /* t4.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t4.add(R.id.frame_container, f4);*/
+               *//* t4.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                t4.add(R.id.frame_container, f4);*//*
                 t4.replace(R.id.frame_container,f4);
                 t4.addToBackStack(null);
                 t4.commit();
@@ -946,13 +946,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 b5.putString("main_cat_name", txt_shoes.getText().toString());
                 f5.setArguments(b5);
                 FragmentTransaction t5 = getFragmentManager().beginTransaction();
-               /* t5.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t5.add(R.id.frame_container, f5);*/
+               *//* t5.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                t5.add(R.id.frame_container, f5);*//*
                 t5.replace(R.id.frame_container,f5);
                 t5.addToBackStack(null);
                 t5.commit();
                 break;
-
+*/
             case R.id.txt_eyewear:
             case R.id.ll_eyewear:
                 Fragment f6 = new CategoryWiseStoreListFragment();

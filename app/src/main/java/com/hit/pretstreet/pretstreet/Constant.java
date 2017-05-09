@@ -18,6 +18,9 @@ public class Constant {
     public static final String REGISTRATION_URL = COMMON_URL + "customercreates.php?";
     public static final String LOGIN_URL = COMMON_URL + "customerlogin.php?";
     public static final String FASHION_API = COMMON_URL + "fashion_api.php?";
+    public static final String TRENDING_API = COMMON_URL + "index.php/trendingpage/mobileapp/";
+    public static final String API = "Mpjdfanknavfrnefjndjbf";
+    public static final String LIMIT = "10";
 
     public static boolean isValidEmail(CharSequence target) {
         if (target == null) {
