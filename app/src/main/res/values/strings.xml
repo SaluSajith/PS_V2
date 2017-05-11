@@ -4,6 +4,7 @@
     <string name="facebook_app_name">PretStreet</string>
     <string name="facebookapp_id">112206959218432</string>
     <string name="method_checksocial">check_face_google_exits</string>
+    <!--<string name="fb_login_protocol_scheme">fb1915060202049591</string>-->
 
     <string name="select_code">Select Code</string>
     <string-array name="code">

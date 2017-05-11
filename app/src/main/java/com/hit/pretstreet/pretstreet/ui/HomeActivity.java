@@ -57,6 +57,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressDialog pDialog;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        //getCurrentAppVersion();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
@@ -64,12 +70,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         PreferenceServices.init(this);
         init();
 
-        getCurrentAppVersion();
-
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         Log.e("dm.densityDpi:", dm.densityDpi + "");
         PreferenceServices.instance().saveDeviceSize(dm.densityDpi);
+
+        getCurrentAppVersion();
 
         btn_home.setOnClickListener(this);
         btn_account.setOnClickListener(this);
