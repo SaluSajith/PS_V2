@@ -43,7 +43,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             View itemView = LayoutInflater.from(mContext).inflate(R.layout.image_slider_item, container, false);
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
-            Log.d("mResources", String.valueOf(mResources.get(position).length()));
+            //Log.d("mResources", String.valueOf(mResources.get(position).length()));
             if((mResources.get(position)).length()==0){
                 imageView.setImageResource(R.mipmap.ic_launcher);
             }else {

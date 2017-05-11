@@ -67,6 +67,7 @@ import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.FragmentManagePermission;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
+import com.hit.pretstreet.pretstreet.ui.ArticleActivity;
 import com.hit.pretstreet.pretstreet.ui.SelectLocation;
 import com.hit.pretstreet.pretstreet.ui.StoreLocationMapScreen;
 
@@ -128,7 +129,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         img_new_arrival = (ImageView) rootView.findViewById(R.id.img_new_arrival);
         img_map = (ImageView) rootView.findViewById(R.id.img_map);
         img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
-       // img_arrow = (ImageView) rootView.findViewById(R.id.img_arrow);
+        // img_arrow = (ImageView) rootView.findViewById(R.id.img_arrow);
         rl_pic = (RelativeLayout) rootView.findViewById(R.id.rl_pic);
         //rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
         rl_header = (RelativeLayout) rootView.findViewById(R.id.rl_header);
@@ -272,6 +273,12 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                     if (list.isEmpty()) {
                         Toast.makeText(getActivity(), "Server not responding Please try again...", Toast.LENGTH_SHORT).show();
                     } else {
+                        txt_information.setVisibility(View.VISIBLE);
+                        txt_description.setVisibility(View.VISIBLE);
+                        txt_timing.setVisibility(View.VISIBLE);
+                        txt_to.setVisibility(View.VISIBLE);
+                        txt_website.setVisibility(View.VISIBLE);
+
                         for (int i = 0; i < list.size(); i++) {
                             href = list.get(i).get("href");
                             phone1 = list.get(i).get("phone1");
@@ -293,6 +300,8 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                             txt_storename.setText(list.get(i).get("name"));
                             txt_address.setText(list.get(i).get("address"));
                             txt_website_value.setText(list.get(i).get("website_link"));
+                            if(list.get(i).get("website_link").trim().length()==0) txt_website.setVisibility(View.INVISIBLE);
+                            else txt_website.setVisibility(View.VISIBLE);
 
                             String strFollowCount = list.get(i).get("follow_count");
                             if (strFollowCount.length() >= 4) {
@@ -333,7 +342,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                             }
                             if (list.get(i).get("short_description").trim().isEmpty())
                                 txt_description.setVisibility(View.GONE);
-                            else txt_description.setText(list.get(i).get("short_description"));
+                            else ;//txt_description.setText(list.get(i).get("short_description"));
                             if (list.get(i).get("appointment").trim().isEmpty())
                                 txt_appointment.setVisibility(View.GONE);
                             else txt_appointment.setText("Appointment : "+list.get(i).get("appointment"));
@@ -368,6 +377,24 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                                         intent.putExtras(b);
                                         startActivity(intent);
                                     }
+                                }
+                            });
+
+                            txt_description.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    /*Bundle bundle = new Bundle();
+                                    bundle.putString("articleData", list.get(finalI).get("short_description"));
+
+                                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                                    WebViewDialogFragment newFragment = WebViewDialogFragment.newInstance();
+                                    newFragment.setArguments(bundle);
+                                    newFragment.show(ft, "showArticle");*/
+
+                                    Intent intent = new Intent(getActivity(), ArticleActivity.class);
+                                    intent.putExtra("articleData", list.get(finalI).get("short_description"));
+                                    intent.putExtra("name", list.get(finalI).get("name"));
+                                    startActivity(intent);
                                 }
                             });
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:paddingTop="@dimen/padding_large"
+        android:paddingBottom="@dimen/padding_large"
+        android:paddingLeft="@dimen/padding_small"
+        android:paddingRight="@dimen/padding_small">
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:background="@drawable/arrow_back"
+            android:id="@+id/btn_back"/>
+
+        <TextView
+            android:id="@+id/txt_storename"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="2"
+            android:padding="3dp"
+            android:text=""
+            android:ellipsize="end"
+            android:lines="1"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/dark_gray" />
+    </LinearLayout>
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/wv_article"
+        android:padding="@dimen/padding_large"></WebView>
+</LinearLayout>

@@ -203,6 +203,7 @@
             android:scaleType="centerCrop"
             android:layout_marginLeft="-10dp"
             android:visibility="invisible"
+            android:clickable="false"
             android:src="@drawable/storelistimage2" />
 
     </LinearLayout>

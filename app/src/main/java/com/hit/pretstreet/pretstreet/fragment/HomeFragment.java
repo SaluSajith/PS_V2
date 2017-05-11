@@ -383,14 +383,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 });
                 ll_main_cat.addView(view);
-                if(i==4){
+                /*if(i==4){
                     ll_exhibitions.removeAllViews();
 
                     LayoutInflater inf = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View view1;
                         view1 = inf.inflate(R.layout.row_sub_cat_list2, null);
                     ll_exhibitions.addView(view1);
-                }
+                }*/
             }
         } else {
             ll_main_cat.setVisibility(View.GONE);

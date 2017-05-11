@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -30,19 +31,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.Items.TrendingItems;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
+import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.adapters.ViewPagerAdapter;
+import com.hit.pretstreet.pretstreet.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.ui.SelectLocation;
 
@@ -56,6 +64,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by HIT on 22-02-2017.
@@ -110,7 +120,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         img_filter.setOnClickListener(this);
 
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
-        lp.setMargins(10, 40, 0, 0);
+        int margin = (int) getResources().getDimension(R.dimen.text_margintop);
+        lp.setMargins(10, margin, 0, 0);
         txt_cat_name.setLayoutParams(lp);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -140,7 +151,6 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 }
             }
         });
-        list = new ArrayList<>();
 
         ll_header.bringToFront();
 
@@ -160,6 +170,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             String URL = Constant.TRENDING_API + "ftc";
+            list = new ArrayList<>();
             Log.d("URL", URL);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
@@ -188,7 +199,6 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                                             jsonArray = jsonObject.getJSONArray("TrendingContent");
                                             TrendingItems item;
-                                            ArrayList imagearray = new ArrayList();
                                             if (list == null)
                                                 list = new ArrayList<>();
                                             else
@@ -201,14 +211,16 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                                 item.setLogoImage(trendingContent.getString("LogoImage"));
                                                 item.setTitle(trendingContent.getString("Title"));
                                                 item.setArticle(trendingContent.getString("Article"));
-                                                item.setLike(trendingContent.getString("CustomerLike"));
+                                                item.setLike((trendingContent.getInt("CustomerLike")+""));
                                                 item.setStoreName(trendingContent.getString("Storename"));
 
                                                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageArray");
+                                                ArrayList imagearray = new ArrayList();
                                                 for(int j=0;j<jsonImagearray.length();j++) {
                                                     imagearray.add(jsonImagearray.get(j));
                                                 }
                                                 item.setImagearray(imagearray);
+
                                                 try {
                                                     DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aaa");
                                                     DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
@@ -231,11 +243,11 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                     responseSuccess = false;
                                 }
                                 if (responseSuccess && list.size()>0) {
-                                    if (adapter == null) {
+                                    //if (adapter == null) {
                                         adapter = new TrendingAdapter(getActivity(), list);
                                         rv_trending.setAdapter(adapter);
-                                    } else
-                                        adapter.notifyDataSetChanged();
+                                   // } else
+                                   //     adapter.notifyDataSetChanged();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -343,16 +355,12 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         Context context;
         ArrayList<TrendingItems> list;
         int button01pos = 0;
-        TrendingItems trendingItems;
         ViewPagerAdapter mAdapter;
-
-        int dotsCount;
+        int dotsCount = 0;
 
         public TrendingAdapter(Context context, ArrayList<TrendingItems> list) {
             this.context = context;
             this.list = list;
-            System.out.println("this.list.size "+this.list.size());
-            trendingItems = new TrendingItems();
         }
 
         @Override
@@ -361,34 +369,16 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
 
             TrendingItems trendingItems = list.get(position);
             holder.txt_date.setText(trendingItems.getArticledate());
             holder.txt_title.setText(trendingItems.getTitle());
             holder.txt_description.setText(trendingItems.getArticle());
 
-            String udata = trendingItems.getStoreName();
-            SpannableString content = new SpannableString(udata);
-            content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
-            holder.txt_shopname.setText(content);
+            System.out.println("like "+list.get(0).getLike());
+            System.out.println("like "+list.get(1).getLike());
 
-            if(!trendingItems.getStoreLink().equals("0")){
-                Glide.with(getActivity())
-                        .load(trendingItems.getLogoImage())
-                        .centerCrop().into(holder.img_profile);
-                /*Bitmap bitmap = ((BitmapDrawable)holder.img_profile.getDrawable()).getBitmap();
-                holder.img_profile.setImageBitmap(getCircleBitmap(bitmap));*/
-            }
-            if(trendingItems.getLike().equals("0")){
-                button01pos = 0;
-                holder.img_like.setImageResource(R.drawable.grey_heart);
-            }
-            else{
-                button01pos = 1;
-                holder.img_like.setImageResource(R.drawable.red_heart);
-            }
-            Log.d("mResources", trendingItems.getImagearray().size()+"");
             if(trendingItems.getImagearray().size()==0){
                 holder.iv_banner.setVisibility(View.VISIBLE);
                 holder.iv_banner.setImageResource(R.mipmap.ic_launcher);
@@ -399,15 +389,44 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 holder.intro_images.setAdapter(mAdapter);
                 holder.intro_images.setCurrentItem(0);
             }
-            //setUiPageViewController(holder, position);
+            setUiPageViewController(holder, position);
+
+            String udata = trendingItems.getStoreName();
+            SpannableString content = new SpannableString(udata);
+            content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
+            holder.txt_shopname.setText(content);
+
+            if(!trendingItems.getStoreLink().equals("0")){
+                Glide.with(getActivity())
+                        .load(trendingItems.getLogoImage())
+                        .centerCrop()
+                        //.placeholder(R.mipmap.ic_launcher)
+                        .into(holder.img_profile);
+            }
+            else{
+                holder.img_profile.setImageResource(R.mipmap.ic_launcher);
+                Bitmap bitmap = ((BitmapDrawable)holder.img_profile.getDrawable()).getBitmap();
+                holder.img_profile.setImageBitmap(getCircleBitmap(bitmap));
+            }
+
+            if(trendingItems.getLike().equals("0")){
+                button01pos = 0;
+                holder.img_like.setImageResource(R.drawable.grey_heart);
+            }
+            else{
+                button01pos = 1;
+                holder.img_like.setImageResource(R.drawable.red_heart);
+            }
 
         }
         private void setUiPageViewController(ViewHolder holder, int position) {
 
             dotsCount = list.get(position).getImagearray().size();
             holder.dots = new ImageView[dotsCount];
+            holder.pager_indicator.removeAllViews();
 
             for (int i = 0; i < dotsCount; i++) {
+            //for (Iterator it = list.iterator(); it.hasNext(); ) {
                 holder.dots[i] = new ImageView(getActivity());
                 holder.dots[i].setImageDrawable(getResources().getDrawable(R.drawable.image_indicator_unselected));
 
@@ -419,18 +438,18 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 params.setMargins(4, 0, 4, 0);
                 holder.pager_indicator.addView(holder.dots[i], params);
             }
-
-            holder.dots[0].setImageDrawable(getResources().getDrawable(R.drawable.image_indicator_selected));
+            if(holder.dots.length>0)
+                holder.dots[0].setImageDrawable(getResources().getDrawable(R.drawable.image_indicator_selected));
         }
 
         private Bitmap getCircleBitmap(Bitmap bitmap) {
+
             Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
             BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
             Paint paint = new Paint();
             paint.setShader(shader);
             Canvas c = new Canvas(circleBitmap);
             c.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
-
             return circleBitmap;
         }
 
@@ -449,7 +468,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
 
             View view;
             int viewType;
-            ImageView img_like, img_share, img_profile, iv_banner;
+            ImageView img_like, img_share, iv_banner;
+            CircularImageView img_profile;
             TextView txt_title, txt_description, txt_shopname, txt_date;
             ViewPager intro_images;
             LinearLayout pager_indicator;
@@ -465,7 +485,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 img_like = (ImageView) itemView.findViewById(R.id.iv_like);
                 img_share = (ImageView) itemView.findViewById(R.id.iv_share);
                 iv_banner = (ImageView) itemView.findViewById(R.id.iv_banner);
-                img_profile = (ImageView) itemView.findViewById(R.id.iv_profile);
+                img_profile = (CircularImageView) itemView.findViewById(R.id.iv_profile);
                 txt_description = (TextView) itemView.findViewById(R.id.txt_description);
                 txt_title = (TextView) itemView.findViewById(R.id.txt_title);
                 txt_shopname = (TextView) itemView.findViewById(R.id.txt_shopname);
@@ -481,6 +501,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 pager_indicator = (LinearLayout) itemView.findViewById(R.id.viewPagerCountDots);
 
                 img_like.setOnClickListener(this);
+                img_share.setOnClickListener(this);
+                txt_shopname.setOnClickListener(this);
 
             }
 
@@ -499,6 +521,11 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                         sendButtonStatus(list.get(getAdapterPosition()).getId());
                         break;
                     case R.id.iv_share:
+                        shareTextUrl();
+                        break;
+                    case R.id.txt_shopname:
+                        if(!list.get(getAdapterPosition()).getStoreLink().equals("0"))
+                        openStoreDetails();
                         break;
                     default:
                         break;
@@ -519,7 +546,56 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
 
             @Override
             public void onPageScrollStateChanged(int state) {
+            }
 
+            private void openStoreDetails(){
+                int position = getAdapterPosition();
+                clickLogTracking("storeview", list.get(getAdapterPosition()).getStoreLink());
+                Fragment f1 = new StoreDetailFragment();
+                Bundle b1 = new Bundle();
+                b1.putString("cat_id", list.get(getAdapterPosition()).getStoreLink());
+                b1.putString("cat_name", "");
+                b1.putInt("position", position);
+                f1.setArguments(b1);
+                FragmentTransaction t1 = getFragmentManager().beginTransaction();
+                t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                t1.add(R.id.frame_container, f1);
+//                    t1.replace(R.id.frame_container, f1);
+                t1.addToBackStack(null);
+                t1.commit();
+            }
+
+            private void clickLogTracking(String event, String storeId) {
+                String urlJson = Constant.FASHION_API + "route=trackinglogs&action=" + event + "&user_id="
+                        + PreferenceServices.getInstance().geUsertId() + "&pid=" + storeId;
+                Log.e("URL: ", urlJson);
+                final ArrayList<HashMap<String, String>> list = new ArrayList<>();
+                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJson, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(final JSONObject response) {
+                        Log.e("Volley", response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d("Volley", "Error: " + error.getMessage());
+                    }
+                });
+                jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
+            }
+
+            private void shareTextUrl() {
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+//        share.putExtra(Intent.EXTRA_SUBJECT, "Check this store on Prestreet App");
+//        share.putExtra(Intent.EXTRA_TEXT, "Check below store on Pretstreet App:- " + href + "\n\nStore details:-"
+//                + "\n" + name + "\n" + txt_address.getText().toString());
+                share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
+                share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
+                        " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");
+                startActivity(Intent.createChooser(share, "Share with.."));
             }
         }
     }
@@ -549,7 +625,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                     strsuccess = jsonObject.getString("Status");
                                     if (strsuccess.equals("1")) {
                                         Log.d("Trending_api_response",strsuccess);
-                                        getTrendingData();
+                                        //getTrendingData();
                                     } else {
                                         Toast.makeText(getActivity(), jsonObject.getString("Message"), Toast.LENGTH_SHORT).show();
                                     }

@@ -532,7 +532,9 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                             final int dheight = (int) ((displaymetrics.heightPixels) * 0.45);
 
                             final int finalI = i;
-                            Glide.with(ThreeSubCategoryFragment.this).load(list.get(i).getImage()).asBitmap()
+                            Glide.with(ThreeSubCategoryFragment.this)
+                                    .load(list.get(i).getImage())
+                                    .asBitmap()
                                     .into(new BitmapImageViewTarget(mImageView) {
                                         @Override
                                         protected void setResource(Bitmap resource) {

@@ -118,12 +118,13 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC9zfZnqFROGAy0BfV0jWVazvzcr5il8ds" />
-        <!--android:value="AIzaSyC5oAbU5rMUtQ7-IyutXsqmXAX_K-c_kSc" />-->
+        <!-- android:value="AIzaSyC5oAbU5rMUtQ7-IyutXsqmXAX_K-c_kSc" /> -->
 
         <activity android:name=".ui.WebViewActivity" />
         <activity
             android:name=".facebook.GoogleLoginActivity"
             android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity android:name=".ui.ArticleActivity"></activity>
     </application>
 
 </manifest>

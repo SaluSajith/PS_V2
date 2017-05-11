@@ -339,6 +339,7 @@
                         android:layout_marginLeft="10sp"
                         android:padding="5sp"
                         android:text="Information"
+                        android:visibility="invisible"
                         android:textAppearance="@android:style/TextAppearance.Small"
                         android:textColor="@color/dark_gray" />
 
@@ -348,11 +349,12 @@
                         android:layout_height="wrap_content"
                         android:padding="5sp"
                         android:layout_marginLeft="10sp"
-                        android:text="Desc"
+                        android:text="Link"
                         android:ellipsize="end"
                         android:maxLines="3"
+                        android:visibility="invisible"
                         android:textAppearance="@android:style/TextAppearance.Small"
-                        android:textColor="@color/dark_gray" />
+                        android:textColor="@color/com_facebook_blue" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -365,6 +367,7 @@
                             android:layout_height="wrap_content"
                             android:padding="5sp"
                             android:text="Timing "
+                            android:visibility="invisible"
                             android:textAppearance="@android:style/TextAppearance.Small"
                             android:textColor="@color/dark_gray" />
                         <TextView
@@ -384,7 +387,8 @@
                             android:layout_marginLeft="2dp"
                             android:layout_marginRight="2dp"
                             android:padding="3sp"
-                            android:text="to"/>
+                            android:text="to"
+                            android:visibility="invisible"/>
 
                         <TextView
                             android:id="@+id/txt_closetime"
@@ -409,6 +413,7 @@
                             android:layout_height="wrap_content"
                             android:padding="5sp"
                             android:text="Image Source: "
+                            android:visibility="invisible"
                             android:textAppearance="@android:style/TextAppearance.Small"
                             android:textColor="@color/dark_gray" />
 

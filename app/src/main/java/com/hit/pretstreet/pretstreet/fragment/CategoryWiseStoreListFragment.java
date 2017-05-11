@@ -50,6 +50,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.Items.CategoryItem;
@@ -582,7 +583,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             }
             Glide.with(CategoryWiseStoreListFragment.this)
                     .load(list.get(position).get("thumb"))
-                    .asBitmap().fitCenter()
+                    .asBitmap()
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) //use this to cache
                     .into(new BitmapImageViewTarget(holder.img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
