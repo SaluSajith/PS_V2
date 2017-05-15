@@ -8,23 +8,23 @@
     <dimen name="padding_xsmall">3dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_standard">5dp</dimen>
-    <dimen name="padding_large">10.5dp</dimen>
-    <dimen name="padding_xlarge">15dp</dimen>
-    <dimen name="padding_xxlarge">20dp</dimen>
-    <dimen name="padding_xxxlarge">25dp</dimen>
+    <dimen name="padding_large">8dp</dimen>//
+    <dimen name="padding_xlarge">14dp</dimen>//
+    <dimen name="padding_xxlarge">12dp</dimen>//
+    <dimen name="padding_xxxlarge">20dp</dimen>
     <dimen name="padding_huge">30dp</dimen>
 
-    <dimen name="margin_xxlarge">20dp</dimen>
+    <dimen name="margin_xxlarge">18dp</dimen>//
 
     <dimen name="button_radius_standard">10dp</dimen>
     <dimen name="button_radius_small">5dp</dimen>
 
-    <dimen name="textsize_small">10sp</dimen>
-    <dimen name="textsize_standard">12sp</dimen>
-    <dimen name="textsize_large">14sp</dimen>
-    <dimen name="textsize_xlarge">17sp</dimen>
-    <dimen name="textsize_xxlarge">20sp</dimen>
-    <dimen name="textsize_xxxlarge">24sp</dimen>
+    <dimen name="textsize_small">10dp</dimen>
+    <dimen name="textsize_standard">12dp</dimen>
+    <dimen name="textsize_large">12dp</dimen>
+    <dimen name="textsize_xlarge">16dp</dimen>
+    <dimen name="textsize_xxlarge">20dp</dimen>
+    <dimen name="textsize_xxxlarge">24dp</dimen>
 
     <dimen name="divider_space_small">2dp</dimen>
     <dimen name="divider_space_standard">5dp</dimen>
@@ -32,40 +32,46 @@
     <dimen name="divider_space_xlarge">10dp</dimen>
     <dimen name="divider_space_xxlarge">16dp</dimen>
 
-    <dimen name="subcategory_margintop">-58dp</dimen>
+    <dimen name="subcategory_margintop">-30dp</dimen>
     <dimen name="subcategory_inner_margintop">-33dp</dimen>
-    <dimen name="header_marginbottom">0dp</dimen>
-    <dimen name="margin_custom_row">20dp</dimen>
-    <dimen name="margin_top_custom_row">13dp</dimen>
+    <dimen name="header_marginbottom">14dp</dimen>
+    <dimen name="margin_custom_row">17dp</dimen>
+    <dimen name="margin_top_custom_row">10dp</dimen>
 
     <dimen name="margin_top_difference">10dp</dimen>
-    <dimen name="text_margintop">20dp</dimen>
+    <dimen name="text_margintop">30dp</dimen>
 
     <!--<dimen name="home_image_height">878dp</dimen>-->
-    <dimen name="home_image_height">280dp</dimen>
+    <dimen name="home_image_height">350dp</dimen>
 
     <dimen name="about_img_width">712dp</dimen>
     <dimen name="about_img_height">465dp</dimen>
     <dimen name="accessories_img_width">1428dp</dimen>
     <dimen name="accessories_img_height">478dp</dimen>
+    <dimen name="active_img_width">42dp</dimen>
     <dimen name="add_store_img_width">412dp</dimen>
     <dimen name="add_store_img_height">196dp</dimen>
     <dimen name="add_store_bg_img_width">1440dp</dimen>
     <dimen name="add_store_bg_img_height">1892dp</dimen>
+    <dimen name="address_bg_img_width">88dp</dimen>
+    <dimen name="alert_bg_img_width">96dp</dimen>
     <dimen name="alreadyaccounthere_img_width">1440dp</dimen>
     <dimen name="alreadyaccounthere_img_height">210dp</dimen>
+    <dimen name="arrow_img_width">73dp</dimen>
+    <dimen name="arrow_img_height">51dp</dimen>
+    <dimen name="autodetect_img_width">72dp</dimen>
     <dimen name="bags_img_width">737dp</dimen>
-    <dimen name="bags_img_height">466dp</dimen>
+    <dimen name="back_img_height">466dp</dimen>
     <dimen name="blackpatch_img_width">1440dp</dimen>
     <dimen name="blackpatch_img_height">564dp</dimen>
     <dimen name="brand1_img_width">1440dp</dimen>
     <dimen name="brand1_img_height">761dp</dimen>
-    <dimen name="brand2_img_width">1440dp</dimen>
-    <dimen name="brand2_img_height">754dp</dimen>
-    <dimen name="breadcrumps_img_width">1440dp</dimen>
+    <dimen name="breadcrumps_img_width">1080dp</dimen>
     <dimen name="breadcrumps_img_height">186dp</dimen>
     <dimen name="cancel_img_width">428dp</dimen>
     <dimen name="cancel_img_height">151dp</dimen>
     <dimen name="countrycode_img_width">340dp</dimen>
     <dimen name="countrycode_img_height">227dp</dimen>
+    <dimen name="distanceactivesort_img_width">318dp</dimen>
+    <dimen name="distanceactivesort_img_height">210dp</dimen>
 </resources>

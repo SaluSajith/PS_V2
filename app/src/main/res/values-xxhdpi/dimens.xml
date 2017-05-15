@@ -43,4 +43,41 @@
 
     <!--<dimen name="home_image_height">878dp</dimen>-->
     <dimen name="home_image_height">350dp</dimen>
+
+    <dimen name="about_img_width">534dp</dimen>
+    <dimen name="about_img_height">349dp</dimen>
+    <dimen name="accessories_img_width">1071dp</dimen>
+    <dimen name="accessories_img_height">359dp</dimen>
+    <dimen name="active_img_width">32dp</dimen>
+    <dimen name="add_store_img_width">309dp</dimen>
+    <dimen name="add_store_img_height">147dp</dimen>
+    <dimen name="add_store_bg_img_width">1080dp</dimen>
+    <dimen name="add_store_bg_img_height">1419dp</dimen>
+    <dimen name="address_bg_img_width">66dp</dimen>
+    <dimen name="alert_bg_img_width">72dp</dimen>
+    <dimen name="alreadyaccounthere_img_width">1080dp</dimen>
+    <dimen name="alreadyaccounthere_img_height">158dp</dimen>
+    <dimen name="apply_img_width">361dp</dimen>
+    <dimen name="apply_img_height">170dp</dimen>
+    <dimen name="arrow_img_width">55dp</dimen>
+    <dimen name="arrow_img_height">38dp</dimen>
+    <dimen name="auto_img_width">1080dp</dimen>
+    <dimen name="auto_img_height">104dp</dimen>
+    <dimen name="autodetect_img_width">54dp</dimen>
+    <dimen name="back_img_width">32dp</dimen>
+    <dimen name="back_img_height">60dp</dimen>
+    <dimen name="bags_img_width">553dp</dimen>
+    <dimen name="bags_img_height">350dp</dimen>
+    <dimen name="blackpatch_img_width">1080dp</dimen>
+    <dimen name="blackpatch_img_height">423dp</dimen>
+    <dimen name="brand1_img_width">1080dp</dimen>
+    <dimen name="brand1_img_height">571dp</dimen>
+    <dimen name="breadcrumps_img_width">1080dp</dimen>
+    <dimen name="breadcrumps_img_height">140dp</dimen>
+    <dimen name="cancel_img_width">321dp</dimen>
+    <dimen name="cancel_img_height">113dp</dimen>
+    <dimen name="countrycode_img_width">255dp</dimen>
+    <dimen name="countrycode_img_height">170dp</dimen>
+    <dimen name="distanceactivesort_img_width">239dp</dimen>
+    <dimen name="distanceactivesort_img_height">158dp</dimen>
 </resources>
