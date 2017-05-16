@@ -17,5 +17,6 @@
     <color name="transparent">#00000000</color>
     <color name="trans_yellow">#bbffdf5d</color>
     <color name="trans_grey">#5b5d5e</color>
+    <color name="trending_grey">#cacaca</color>
 
 </resources>

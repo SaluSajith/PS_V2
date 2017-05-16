@@ -6,7 +6,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/nsv_header"
-    android:background="@color/dark_gray">
+    android:background="@color/trending_grey">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:layout_marginBottom="40dp"
             android:layout_marginTop="@dimen/subcategory_inner_margintop"
             android:headerDividersEnabled="false"
-            android:divider="@color/yellow"
+            android:divider="@color/trending_grey"
             android:layout_below="@+id/ll_header"
             android:dividerHeight="@dimen/divider_space_xlarge"
             android:visibility="visible"

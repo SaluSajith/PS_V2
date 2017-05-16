@@ -521,7 +521,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                 break;
 
             case R.id.txt_location:
-                startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
+                //startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
                 break;
 
             case R.id.img_search:

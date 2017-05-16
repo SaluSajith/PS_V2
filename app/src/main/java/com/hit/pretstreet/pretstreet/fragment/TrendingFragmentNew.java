@@ -126,7 +126,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv_trending.setLayoutManager(mLayoutManager);
-        rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.yellow), 5.0f));
+        rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.trending_grey), 5.0f));
 
         rv_trending.addOnScrollListener(new RecyclerView.OnScrollListener()
         {

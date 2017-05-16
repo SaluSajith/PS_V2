@@ -48,8 +48,8 @@
     <dimen name="about_img_height">465dp</dimen>
     <dimen name="accessories_img_width">1428dp</dimen>
     <dimen name="accessories_img_height">478dp</dimen>
-    <dimen name="add_store_img_width">412dp</dimen>
-    <dimen name="add_store_img_height">196dp</dimen>
+    <dimen name="add_store_img_width">155dp</dimen>//412
+    <dimen name="add_store_img_height">74dp</dimen>//196
     <dimen name="add_store_bg_img_width">1440dp</dimen>
     <dimen name="add_store_bg_img_height">1892dp</dimen>
     <dimen name="alreadyaccounthere_img_width">1440dp</dimen>

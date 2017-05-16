@@ -125,7 +125,7 @@ public class FacebookLoginScreen extends Activity {
                     @Override
                     public void onError(FacebookException error) {
                         // TODO Auto-generated method stub
-                        Log.e("Error", error.getMessage());
+                        Log.e("FbError", error.getMessage());
                         if (pendingAction != PendingAction.NONE && error instanceof FacebookAuthorizationException) {
                             pendingAction = PendingAction.NONE;
                         }
@@ -134,6 +134,7 @@ public class FacebookLoginScreen extends Activity {
                     @Override
                     public void onCancel() {
                         // TODO Auto-generated method stub
+                        Log.e("FbError", String.valueOf(FACEBOOK_LOGIN_RESULT_CODE_FAILURE));
                         FacebookLoginScreen.this.setResult(FACEBOOK_LOGIN_RESULT_CODE_FAILURE);
                         FacebookLoginScreen.this.finish();
                         if (pendingAction != PendingAction.NONE) {

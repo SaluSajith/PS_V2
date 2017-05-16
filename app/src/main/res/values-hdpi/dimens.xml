@@ -50,8 +50,8 @@
     <dimen name="accessories_img_width">536dp</dimen>
     <dimen name="accessories_img_height">179dp</dimen>
     <dimen name="active_img_width">16dp</dimen>
-    <dimen name="add_store_img_width">155dp</dimen>
-    <dimen name="add_store_img_height">74dp</dimen>
+    <dimen name="add_store_img_width">115dp</dimen>//155
+    <dimen name="add_store_img_height">44dp</dimen>//74
     <dimen name="add_store_bg_img_width">540dp</dimen>
     <dimen name="add_store_bg_img_height">710dp</dimen>
     <dimen name="address_bg_img_width">22dp</dimen>
