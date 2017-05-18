@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Created by Jesal on 05-Sep-16.
  */
 public class ChangePasswordFragment extends Fragment implements View.OnClickListener {
-    private ImageView img_icon_menu, img_submit;
+    private ImageView img_icon_menu, img_submit, img_back;
     private TextView txt_cat;
     private RelativeLayout rel;
     private String baseImage;
@@ -57,6 +57,7 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
 
         img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
         img_submit = (ImageView) rootView.findViewById(R.id.img_submit);
+        img_back = (ImageView) rootView.findViewById(R.id.img_back);
         rel = (RelativeLayout) rootView.findViewById(R.id.rel);
 
         txt_cat = (TextView) rootView.findViewById(R.id.txt_cat_name);
@@ -71,21 +72,7 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
         edt_confirm_password.setTypeface(font);
         img_icon_menu.setOnClickListener(this);
         img_submit.setOnClickListener(this);
-
-        baseImage = PreferenceServices.getInstance().getBaseImage();
-        if (baseImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getActivity())
-                    .load(baseImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            rel.setBackgroundDrawable(dr);
-                        }
-                    });
-        }
+        img_back.setOnClickListener(this);
 
         return rootView;
     }
@@ -134,7 +121,8 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         int viewId = v.getId();
         switch (viewId) {
-            case R.id.img_icon_menu:
+            case R.id.img_back:
+                getActivity().onBackPressed();
                 //startActivity(new Intent(this, HomeActivity.class));
                 break;
 

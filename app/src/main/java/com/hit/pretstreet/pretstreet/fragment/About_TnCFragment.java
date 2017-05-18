@@ -36,7 +36,7 @@ import org.json.JSONObject;
  */
 public class About_TnCFragment extends Fragment {
 
-    private ImageView img_icon_menu;
+    private ImageView img_icon_menu, img_back;
     private TextView txt_cat, txt_content;
     private String screen;
     private Typeface font;
@@ -49,6 +49,7 @@ public class About_TnCFragment extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
         img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
+        img_back = (ImageView) rootView.findViewById(R.id.img_back);
         txt_cat = (TextView) rootView.findViewById(R.id.txt_cat_name);
         txt_content = (TextView) rootView.findViewById(R.id.txt_content);
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
@@ -67,6 +68,13 @@ public class About_TnCFragment extends Fragment {
                 if (screen.equalsIgnoreCase("aboutus")) {
                     getFragmentManager().popBackStack();
                 }
+            }
+        });
+
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
             }
         });
 

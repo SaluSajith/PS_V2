@@ -30,7 +30,7 @@ import com.hit.pretstreet.pretstreet.R;
  * Created by Jesal on 05-Sep-16.
  */
 public class AddStoreFragment extends Fragment implements View.OnClickListener {
-    private ImageView img_icon_menu, img_submit;
+    private ImageView img_icon_menu, img_submit, img_back;
     private TextView txt_cat_name;
     private ScrollView scroll;
     private EditText edt_store_name, edt_name, edt_email, edt_location, edt_mobileno, edt_landline, edt_about;
@@ -46,6 +46,7 @@ public class AddStoreFragment extends Fragment implements View.OnClickListener {
         pDialog.setCancelable(false);
         img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
         img_submit = (ImageView) rootView.findViewById(R.id.img_submit);
+        img_back = (ImageView) rootView.findViewById(R.id.img_back);
 
         txt_cat_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
         scroll = (ScrollView) rootView.findViewById(R.id.scroll);
@@ -69,23 +70,9 @@ public class AddStoreFragment extends Fragment implements View.OnClickListener {
         edt_about.setTypeface(font);
         edt_email.setTypeface(font);
 
-        baseImage = PreferenceServices.getInstance().getBaseImage();
-        if (baseImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getActivity())
-                    .load(baseImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            scroll.setBackgroundDrawable(dr);
-                        }
-                    });
-        }
-
         img_icon_menu.setOnClickListener(this);
         img_submit.setOnClickListener(this);
+        img_back.setOnClickListener(this);
 
         return rootView;
     }
@@ -96,6 +83,10 @@ public class AddStoreFragment extends Fragment implements View.OnClickListener {
         switch (viewId) {
             case R.id.img_icon_menu:
                 //this.finish();
+                break;
+
+            case R.id.img_back:
+                getActivity().onBackPressed();
                 break;
 
             case R.id.img_submit:

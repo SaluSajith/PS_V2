@@ -33,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,7 +74,7 @@ import java.util.HashMap;
  * Created by Jesal on 05-Sep-16.
  */
 public class CategoryWiseStoreListFragment extends Fragment implements View.OnClickListener {
-    private ImageView img_icon_menu, img_notification, img_search, img_filter, img;
+    private ImageView img_icon_menu, img_notification, img_search, img_expand, img_back;
     private TextView txt_cat_name, txt_location;
     private LinearLayout ll_category, ll_header;
     RelativeLayout rl_background;
@@ -96,7 +97,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     boolean maleClick, femaleClick;
     int pageCount, totalPages;
     public static int selectedPosition;
-    boolean requestCalled;
+    static boolean requestCalled = false;
     ArrayList<HashMap<String, String>> list;
 
     int pastVisiblesItems, visibleItemCount, totalItemCount;
@@ -139,7 +140,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             lng = PreferenceServices.getInstance().getLongitute();
         }
 
-        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity(), R.layout.row_list_store1, list, list_store);
+        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity(), R.layout.row_list_store1, list);
         final LinearLayoutManager mManager = new LinearLayoutManager(getActivity());
         list_store.setLayoutManager(mManager);
         list_store.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
@@ -170,7 +171,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                     } else if (femaleClick) {
                                         //SortStoreListByMenWomen("female", false);
                                     } else {
-                                            getStoreList(LLSelectedID, false);
+                                        getStoreList(LLSelectedID, false);
                                     }
                                 }
                             }
@@ -186,8 +187,8 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         img_icon_menu = (ImageView) v.findViewById(R.id.img_icon_menu);
         img_notification = (ImageView) v.findViewById(R.id.img_notification);
         img_search = (ImageView) v.findViewById(R.id.img_search);
-        img_filter = (ImageView) v.findViewById(R.id.img_filter);
-        img = (ImageView) v.findViewById(R.id.img);
+        img_back = (ImageView) v.findViewById(R.id.img_back);
+        img_expand = (ImageView) v.findViewById(R.id.img_expand);
         txt_cat_name = (TextView) v.findViewById(R.id.txt_cat_name);
         txt_location = (TextView) v.findViewById(R.id.txt_location);
         hsv_category = (HorizontalScrollView) v.findViewById(R.id.hsv_category);
@@ -204,12 +205,16 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         img_icon_menu.setOnClickListener(this);
         img_notification.setOnClickListener(this);
         img_search.setOnClickListener(this);
-        img_filter.setOnClickListener(this);
+        img_back.setOnClickListener(this);
+        img_expand.setVisibility(View.INVISIBLE);
 
         ll_header.addView(v);
         ll_header.bringToFront();
         //txt_cat_name.getBackground().setFilterBitmap(true);
         //list_store.addHeaderView(v);
+        View footerView = ((LayoutInflater)getActivity()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.footer_categorylist, null, false);
         /**inflate header view of the list ends.**/
 
         if (listCategory != null) {
@@ -308,19 +313,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         return rootView;
     }
 
-   /* @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("selectedif", LLSelectedID);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        String greeting = (savedInstanceState != null) ? savedInstanceState.getString("selectedif") : "null";
-
-    }*/
-
     @Override
     public void onResume() {
         super.onResume();
@@ -385,20 +377,19 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 }
                 if (responseSuccess) {
                     if (first) {
-                        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity(), R.layout.row_list_store1, list, list_store);
+                        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity(), R.layout.row_list_store1, list);
                         list_store.setAdapter(storeList_recyclerAdapter);
-
                     } else
                         storeList_recyclerAdapter.notifyDataSetChanged();
-                            requestCalled = false;
+
                 } else {
                     if (first) {
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     }
                 }
-                if (first) {
+                requestCalled = false;
+                if (first)
                     hidepDialog();
-                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -475,7 +466,8 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         Bundle bundle;
         switch (viewId) {
 
-            case R.id.img_icon_menu:
+            case R.id.img_back:
+                getActivity().onBackPressed();
                 //startActivity(new Intent(getActivity(), HomeActivity.class));
                 break;
 
@@ -504,19 +496,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 t1.commit();
                 break;
 
-            case R.id.img_filter:
-                Fragment f2 = new FilterFragment();
-
-                bundle = new Bundle();
-                bundle.putString("mainCatId", mainCatId);
-                f2.setArguments(bundle);
-                FragmentTransaction t2 = getFragmentManager().beginTransaction();
-                t2.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t2.add(R.id.frame_container, f2);
-                t2.addToBackStack(null);
-                t2.commit();
-                break;
-
             default:
                 break;
         }
@@ -531,11 +510,10 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         int followCount;
 
         public StoreList_RecyclerAdapter(Context context, int layoutResourceId,
-                                         ArrayList<HashMap<String, String>> data, RecyclerView recyclerView) {
+                                         ArrayList<HashMap<String, String>> data) {
             this.context = context;
             this.mItems = data;
             this.layoutResourceId = layoutResourceId;
-
         }
 
         @Override
@@ -551,7 +529,25 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         }
 
         @Override
+        public int getItemCount() {
+            return this.mItems != null ? mItems.size() : 0;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            //return mItems.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+            return position;
+        }
+
+        @Override
         public void onBindViewHolder(final ShopsHolder holder, final int position) {
+            Log.d("requestCalled", requestCalled+"");
+            if(position == mItems.size()-1) {
+                if (pageCount < totalPages) {
+                        holder.ll_progress.setVisibility(View.VISIBLE);
+                    }}
+            else
+                holder.ll_progress.setVisibility(View.GONE);
 
             holder.txt_storename.setTypeface(font);
             holder.txt_address.setTypeface(fontM);
@@ -676,19 +672,10 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             });
         }
 
-        @Override
-        public int getItemCount() {
-            return this.mItems != null ? mItems.size() : 0;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return position;
-        }
-
         class ShopsHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-            public ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
+            ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
             TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, tv_margintop;
+            LinearLayout ll_progress;
 
             public ShopsHolder(View itemView) {
                 super(itemView);
@@ -704,6 +691,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 txt_address = (TextView) itemView.findViewById(R.id.txt_address);
                 tv_margintop = (TextView) itemView.findViewById(R.id.tv_margintop);
                 txt_folleowercount = (TextView) itemView.findViewById(R.id.txt_folleowercount);
+                ll_progress = (LinearLayout) itemView.findViewById(R.id.ll_progress);
 
                 itemView.setOnClickListener(this);
 

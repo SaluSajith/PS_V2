@@ -69,7 +69,7 @@ import java.net.URLEncoder;
 public class RegisterScreen extends ActivityManagePermission implements View.OnClickListener {
     private Button btn_facebook, btn_google, btn_addstore;
     private ImageView btn_login, btn_sign_up;
-    private TextView txt_sign_number, txt_pretstreet_app, txt_conditon, txt_and, txt_privacy;
+    private TextView txt_sign_number, txt_pretstreet_app, txt_conditon;
     private EditText edt_name, edt_number, edt_email, edt_password;
     private ScrollView scroll;
     private LinearLayout rl_fixed_top;
@@ -99,7 +99,6 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         btn_sign_up.setOnClickListener(this);
         btn_addstore.setOnClickListener(this);
         txt_conditon.setOnClickListener(this);
-        txt_privacy.setOnClickListener(this);
         spinnewr_code.setOnItemSelectedListener(new CustomOnItemSelectedListener());
     }
 
@@ -113,9 +112,6 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         txt_sign_number = (TextView) findViewById(R.id.txt_sign_number);
         txt_pretstreet_app = (TextView) findViewById(R.id.txt_pretstreet_app);
         txt_conditon = (TextView) findViewById(R.id.txt_conditon);
-        txt_and = (TextView) findViewById(R.id.txt_and);
-        txt_privacy = (TextView) findViewById(R.id.txt_privacy);
-
         edt_name = (EditText) findViewById(R.id.edt_name);
         edt_number = (EditText) findViewById(R.id.edt_number);
         edt_email = (EditText) findViewById(R.id.edt_email);
@@ -126,39 +122,18 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         rl_fixed_top = (LinearLayout) findViewById(R.id.rl_fixed_top);
 
         font = Typeface.createFromAsset(getApplicationContext().getAssets(), "RedVelvet-Regular.otf");
-        txt_privacy.setPaintFlags(txt_privacy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         txt_conditon.setPaintFlags(txt_conditon.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         txt_sign_number.setTypeface(font);
         txt_pretstreet_app.setTypeface(font);
         txt_conditon.setTypeface(font);
-        txt_and.setTypeface(font);
-        txt_privacy.setTypeface(font);
         edt_name.setTypeface(font);
         edt_number.setTypeface(font);
         edt_email.setTypeface(font);
         edt_password.setTypeface(font);
 
         headerImage = PreferenceServices.getInstance().getHeaderImage();
-        baseImage = PreferenceServices.getInstance().getBaseImage();
-        /*  if (headerImage.equalsIgnoreCase("")) {
-            img_header.setImageDrawable(getResources().getDrawable(R.drawable.fixed_top));
-        } else {
-            Glide.with(getApplicationContext()).load(headerImage).into(img_header);
-        }*/
-        if (baseImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getApplicationContext())
-                    .load(baseImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            scroll.setBackgroundDrawable(dr);
-                        }
-                    });
-        }
+
     }
 
     public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
@@ -259,10 +234,6 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
 
             case R.id.txt_conditon:
                 startActivity(new Intent(RegisterScreen.this, PrivacyandConditionsScreen.class).putExtra("screen", "conditions"));
-                break;
-
-            case R.id.txt_privacy:
-                startActivity(new Intent(RegisterScreen.this, PrivacyandConditionsScreen.class).putExtra("screen", "privacy"));
                 break;
 
             default:

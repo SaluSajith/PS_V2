@@ -57,7 +57,7 @@ import java.util.HashMap;
  * Created by Jesal on 05-Sep-16.
  */
 public class FollowersFragment extends Fragment implements View.OnClickListener {
-    private ImageView img_icon_menu;
+    private ImageView img_icon_menu, img_back;
     private TextView txt_cat_name, line;
     private RelativeLayout rl;
     private ListView list_notification;
@@ -76,6 +76,7 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
         pDialog.setCancelable(false);
 
         img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
+        img_back = (ImageView) rootView.findViewById(R.id.img_back);
         rl = (RelativeLayout) rootView.findViewById(R.id.rl);
         rl.bringToFront();
 
@@ -84,6 +85,7 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
         list_notification = (ListView) rootView.findViewById(R.id.list_followers);
 
         img_icon_menu.setOnClickListener(this);
+        img_back.setOnClickListener(this);
 
         font = Typeface.createFromAsset(getActivity().getAssets(), "RedVelvet-Regular.otf");
         txt_cat_name.setTypeface(font);
@@ -200,7 +202,7 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                 }
                 if (responseSuccess) {
                     if (list.isEmpty()) {
-                        Toast.makeText(getActivity(), "You have no Notifications", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "You don't have any notifications", Toast.LENGTH_SHORT).show();
                     } else {
                         line.setVisibility(View.GONE);
                         notificationListAdapter = new NotificationListAdapter(getActivity(), R.layout.row_notification, list);
@@ -471,7 +473,9 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
             case R.id.img_icon_menu:
                 // startActivity(new Intent(getActivity(), HomeActivity.class));
                 break;
-
+            case R.id.img_back:
+                getActivity().onBackPressed();
+                break;
             default:
                 break;
         }

@@ -74,7 +74,7 @@ import java.util.ArrayList;
  */
 public class AddStoreScreen extends ActivityManagePermission implements View.OnClickListener {
 
-    private ImageView img_icon_menu, img_submit;
+    private ImageView img_icon_menu, img_submit, img_back;
     private TextView txt_cat_name;
     private EditText edt_store_name, edt_name, edt_email, edt_location, edt_mobileno, edt_landline, edt_about;
     private Typeface font;
@@ -92,6 +92,7 @@ public class AddStoreScreen extends ActivityManagePermission implements View.OnC
 
         img_icon_menu = (ImageView) findViewById(R.id.img_icon_menu);
         img_submit = (ImageView) findViewById(R.id.img_submit);
+        img_back = (ImageView) findViewById(R.id.img_back);
 
         txt_cat_name = (TextView) findViewById(R.id.txt_cat_name);
         scroll = (ScrollView) findViewById(R.id.scroll);
@@ -115,26 +116,9 @@ public class AddStoreScreen extends ActivityManagePermission implements View.OnC
         edt_about.setTypeface(font);
         edt_email.setTypeface(font);
 
-
-        baseImage = PreferenceServices.getInstance().getBaseImage();
-        Log.e("baseImage", baseImage);
-        if (baseImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(AddStoreScreen.this)
-                    .load(baseImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            scroll.setBackgroundDrawable(dr);
-                        }
-                    });
-        }
-
-
         img_icon_menu.setOnClickListener(this);
         img_submit.setOnClickListener(this);
+        img_back.setOnClickListener(this);
     }
 
     @Override
@@ -144,7 +128,9 @@ public class AddStoreScreen extends ActivityManagePermission implements View.OnC
             case R.id.img_icon_menu:
                 //this.finish();
                 break;
-
+            case R.id.img_back:
+                onBackPressed();
+                break;
             case R.id.img_submit:
                 String storeName = edt_store_name.getText().toString();
                 String location = edt_location.getText().toString();

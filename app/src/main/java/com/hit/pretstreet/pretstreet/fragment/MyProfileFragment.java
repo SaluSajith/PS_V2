@@ -80,7 +80,7 @@ import java.util.Map;
  * Created by Jesal on 05-Sep-16.
  */
 public class MyProfileFragment extends FragmentManagePermission implements View.OnClickListener {
-    private ImageView img_icon_menu, img_submit;
+    private ImageView img_icon_menu, img_submit, img_back;
     private TextView txt_cat;
     private ScrollView scroll;
     private CircleImageView img_photo;
@@ -100,6 +100,7 @@ public class MyProfileFragment extends FragmentManagePermission implements View.
         pDialog.setCancelable(false);
         img_icon_menu = (ImageView) rootView.findViewById(R.id.img_icon_menu);
         img_photo = (CircleImageView) rootView.findViewById(R.id.img_photo);
+        img_back = (ImageView) rootView.findViewById(R.id.img_back);
         img_submit = (ImageView) rootView.findViewById(R.id.img_submit);
         scroll = (ScrollView) rootView.findViewById(R.id.scroll);
         txt_cat = (TextView) rootView.findViewById(R.id.txt_cat_name);
@@ -120,6 +121,7 @@ public class MyProfileFragment extends FragmentManagePermission implements View.
         img_icon_menu.setOnClickListener(this);
         img_photo.setOnClickListener(this);
         img_submit.setOnClickListener(this);
+        img_back.setOnClickListener(this);
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -141,21 +143,6 @@ public class MyProfileFragment extends FragmentManagePermission implements View.
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
-        baseImage = PreferenceServices.getInstance().getBaseImage();
-        if (baseImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getActivity())
-                    .load(baseImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            scroll.setBackgroundDrawable(dr);
-                        }
-                    });
-        }
 
         return rootView;
     }
@@ -239,7 +226,9 @@ public class MyProfileFragment extends FragmentManagePermission implements View.
             case R.id.img_icon_menu:
                 //startActivity(new Intent(this, HomeActivity.class));
                 break;
-
+            case R.id.img_back:
+                getActivity().onBackPressed();
+                break;
             case R.id.img_photo:
                 selectImage();
                 break;

@@ -60,8 +60,8 @@
     <dimen name="arrow_img_width">73dp</dimen>
     <dimen name="arrow_img_height">51dp</dimen>
     <dimen name="autodetect_img_width">72dp</dimen>
-    <dimen name="bags_img_width">737dp</dimen>
-    <dimen name="back_img_height">466dp</dimen>
+    <dimen name="back_img_width">25dp</dimen>
+    <dimen name="back_img_height">25dp</dimen>
     <dimen name="blackpatch_img_width">1440dp</dimen>
     <dimen name="blackpatch_img_height">564dp</dimen>
     <dimen name="brand1_img_width">1440dp</dimen>

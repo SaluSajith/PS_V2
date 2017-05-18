@@ -66,7 +66,7 @@ import java.util.HashMap;
  * Created by hit on 18/3/16.
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
-    private ImageView img_notification, img_search;
+    private ImageView img_notification, img_search, img_expand, img_back;
     public TextView txt_location;
     private TextView txt_user_name, txt_eyewear, txt_watches, txt_accessories;
     private LinearLayout ll_main_cat, ll_eyewear, ll_watches, ll_accesories, ll_exhibitions;
@@ -87,6 +87,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
         img_search = (ImageView) rootView.findViewById(R.id.img_search);
+        img_expand = (ImageView) rootView.findViewById(R.id.img_expand);
+        img_back = (ImageView) rootView.findViewById(R.id.img_back);
 
         ll_main_cat = (LinearLayout) rootView.findViewById(R.id.ll_main_cat);
         /*ll_bags = (LinearLayout) rootView.findViewById(R.id.ll_bags);
@@ -133,6 +135,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         txt_location.setOnClickListener(this);
         img_notification.setOnClickListener(this);
         img_search.setOnClickListener(this);
+        img_expand.setOnClickListener(this);
+        img_back.setVisibility(View.GONE);
 
         // rl_location_search.bringToFront();
         ll_top.bringToFront();
@@ -1008,6 +1012,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.txt_location:
+                startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
+                break;
+
+            case R.id.img_expand:
                 startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
                 break;
 

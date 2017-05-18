@@ -125,24 +125,6 @@ public class LoginScreen extends ActivityManagePermission implements View.OnClic
         checkbox.setTypeface(font);
 
         headerImage = PreferenceServices.getInstance().getHeaderImage();
-        baseImage = PreferenceServices.getInstance().getBaseImage();
-        if (baseImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getApplicationContext())
-                    .load(baseImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            scroll.setBackgroundDrawable(dr);
-                        }
-                    });
-        }
-        /*if (headerImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getApplicationContext()).load(headerImage).into(img_header);
-        }*/
 
     }
 

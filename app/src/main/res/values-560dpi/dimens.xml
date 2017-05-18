@@ -68,4 +68,6 @@
     <dimen name="cancel_img_height">151dp</dimen>
     <dimen name="countrycode_img_width">340dp</dimen>
     <dimen name="countrycode_img_height">227dp</dimen>
+    <dimen name="back_img_width">25dp</dimen>
+    <dimen name="back_img_height">25dp</dimen>
 </resources>

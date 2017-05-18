@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white">
 
     <RelativeLayout
@@ -57,6 +58,18 @@
             android:layout_below="@+id/img"
             android:orientation="vertical">
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="@dimen/back_img_width"
+            android:layout_height="@dimen/back_img_width"
+            android:src="@drawable/back_button"
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/txt_cat_name"
+            android:layout_alignStart="@+id/txt_cat_name"
+            android:layout_marginLeft="23dp"
+            android:layout_marginStart="23dp" />
+
     </RelativeLayout>
 
     <ListView

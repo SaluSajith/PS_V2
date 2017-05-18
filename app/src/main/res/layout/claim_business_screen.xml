@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     android:clipToPadding="false"
-    android:paddingBottom="50dp">
+    android:paddingBottom="50dp"
+    android:background="@drawable/base">
 
     <RelativeLayout
         android:layout_width="match_parent"

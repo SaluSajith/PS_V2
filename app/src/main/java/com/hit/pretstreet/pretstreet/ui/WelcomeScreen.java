@@ -109,34 +109,6 @@ public class WelcomeScreen extends ActivityManagePermission implements View.OnCl
         btn_google.setTypeface(font);
 
         headerImage = PreferenceServices.getInstance().getHeaderImage();
-        baseImage = PreferenceServices.getInstance().getBaseImage();
-       /* if (headerImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getApplicationContext())
-                    .load(headerImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            rl_fixed_top.setBackgroundDrawable(dr);
-                        }
-                    });
-        }*/
-
-        if (baseImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getApplicationContext())
-                    .load(baseImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            rel.setBackgroundDrawable(dr);
-                        }
-                    });
-        }
 
     }
 
@@ -168,22 +140,7 @@ public class WelcomeScreen extends ActivityManagePermission implements View.OnCl
                             PreferenceServices.instance().saveHeaderImage(imgUrl);
                         }
                         getFixedImages("loginscreen");
-                    } else {
-                        if (baseImage.equalsIgnoreCase(imgUrl)) {
-                        } else {
-                            PreferenceServices.instance().saveBaseImage(imgUrl);
-                            Glide.with(getApplicationContext())
-                                    .load(imgUrl)
-                                    .asBitmap()
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                            Drawable dr = new BitmapDrawable(resource);
-                                            rel.setBackgroundDrawable(dr);
-                                        }
-                                    });
-                        }
-                    }
+                    } else ;
                 } else {
                     if (id.equalsIgnoreCase("header")) {
                         getFixedImages("loginscreen");

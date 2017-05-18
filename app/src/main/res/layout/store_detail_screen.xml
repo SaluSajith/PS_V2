@@ -77,19 +77,38 @@
                 android:layout_marginTop="-10dp"
                 android:background="@drawable/breadcrumbs_base">
 
-                <TextView
-                    android:id="@+id/txt_location"
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="@dimen/back_img_width"
+                    android:layout_height="@dimen/back_img_width"
+                    android:layout_marginLeft="25dp"
+                    android:src="@drawable/back_button"
+                    android:layout_gravity="bottom"/>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="@dimen/margin_xxlarge"
-                    android:ellipsize="end"
-                    android:layout_weight="1"
-                    android:maxLines="1"
                     android:rotation="-4.2"
-                    android:text="Location of current status "
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/textsize_large"  />
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/txt_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="@dimen/margin_xxlarge"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="Location of current status "
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/textsize_large"  />
+                    <ImageView
+                        android:id="@+id/img_expand"
+                        android:layout_width="@dimen/textsize_xlarge"
+                        android:layout_height="@dimen/textsize_xlarge"
+                        android:src="@drawable/expand_more"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="10dp"/>
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/img_search"

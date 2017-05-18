@@ -146,21 +146,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        baseImage = PreferenceServices.getInstance().getBaseImage();
-        if (baseImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getActivity())
-                    .load(baseImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            rel.setBackgroundDrawable(dr);
-                        }
-                    });
-        }
-
         img_icon_menu.setOnClickListener(this);
 
         searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

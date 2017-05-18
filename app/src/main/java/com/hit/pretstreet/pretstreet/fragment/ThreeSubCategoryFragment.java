@@ -59,7 +59,7 @@ import java.util.ArrayList;
  */
 public class ThreeSubCategoryFragment extends Fragment implements View.OnClickListener {
 
-    private ImageView img_icon_menu, img_notification, img_search, img_filter;
+    private ImageView img_icon_menu, img_notification, img_search, img_filter, img_expand, img_back;
     private TextView txt_Mcat_name;
     private LinearLayout rl_location_search;
     private LinearLayout ll_brands;
@@ -84,6 +84,8 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
         img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
         img_search = (ImageView) rootView.findViewById(R.id.img_search);
         img_filter = (ImageView) rootView.findViewById(R.id.img_filter);
+        img_expand = (ImageView) rootView.findViewById(R.id.img_expand);
+        img_back = (ImageView) rootView.findViewById(R.id.img_back);
 
         txt_location = (TextView) rootView.findViewById(R.id.txt_location);
         txt_Mcat_name = (TextView) rootView.findViewById(R.id.txt_cat_name);
@@ -101,6 +103,8 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
         img_notification.setOnClickListener(this);
         img_search.setOnClickListener(this);
         img_filter.setOnClickListener(this);
+        img_expand.setOnClickListener(this);
+        img_back.setOnClickListener(this);
 
         deviceSize = PreferenceServices.getInstance().getDeviceSize();
         //keys: trending,luxury-fashion=The Shops,designer-directory,the-jewellery
@@ -675,6 +679,10 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                 startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
                 break;
 
+            case R.id.img_expand:
+                startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
+                break;
+
             case R.id.img_notification:
                 Fragment f3 = new FollowersFragment();
                 Bundle b3 = new Bundle();
@@ -696,18 +704,9 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                 t1.commit();
                 break;
 
-            case R.id.img_filter:
-                Fragment f2 = new FilterFragment();
-                bundle = new Bundle();
-                bundle.putString("mainCatId", mainCAtId);
-                f2.setArguments(bundle);
-                FragmentTransaction t2 = getFragmentManager().beginTransaction();
-                t2.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t2.add(R.id.frame_container, f2);
-                t2.addToBackStack(null);
-                t2.commit();
+            case R.id.img_back:
+                getActivity().onBackPressed();
                 break;
-
             default:
                 break;
         }

@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * Created by hit on 30/3/16.
  */
 public class PrivacyandConditionsScreen extends Activity {
-    private ImageView img_icon_menu;
+    private ImageView img_back;
     private TextView txt_cat, txt_content;
     private String screen;
     private Typeface font;
@@ -44,7 +44,7 @@ public class PrivacyandConditionsScreen extends Activity {
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        img_icon_menu = (ImageView) findViewById(R.id.img_icon_menu);
+        img_back = (ImageView) findViewById(R.id.img_back);
         txt_cat = (TextView) findViewById(R.id.txt_cat_name);
         txt_content = (TextView) findViewById(R.id.txt_content);
         font = Typeface.createFromAsset(getApplicationContext().getAssets(), "RedVelvet-Regular.otf");
@@ -52,6 +52,13 @@ public class PrivacyandConditionsScreen extends Activity {
         txt_content.setTypeface(font);
         screen = getIntent().getStringExtra("screen");
         fetchContentData();
+
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void fetchContentData() {

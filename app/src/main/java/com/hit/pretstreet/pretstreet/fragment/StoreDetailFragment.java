@@ -89,7 +89,7 @@ import java.util.regex.Matcher;
  */
 public class StoreDetailFragment extends FragmentManagePermission implements View.OnClickListener {
     private ImageView img_icon_menu, img_search, img_filter, img_address, img_photo, img_call, img_map,
-            img_upload_pic, img_sale, img_new_arrival, img_notification, img_arrow;
+            img_upload_pic, img_sale, img_new_arrival, img_notification, img_expand, img_back;
     private TextView txt_location, txt_store_name, txt_storename, txt_address, txt_website,
             txt_website_value, txt_information, txt_timing, txt_opentime, txt_closetime,
             txt_close_on1, txt_close_on2, txt_folleowercount, img_follow_unfollow, txt_appointment, txt_description, txt_to;
@@ -129,7 +129,8 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         img_new_arrival = (ImageView) rootView.findViewById(R.id.img_new_arrival);
         img_map = (ImageView) rootView.findViewById(R.id.img_map);
         img_notification = (ImageView) rootView.findViewById(R.id.img_notification);
-        // img_arrow = (ImageView) rootView.findViewById(R.id.img_arrow);
+        img_expand = (ImageView) rootView.findViewById(R.id.img_expand);
+        img_back = (ImageView) rootView.findViewById(R.id.img_back);
         rl_pic = (RelativeLayout) rootView.findViewById(R.id.rl_pic);
         //rl_location_search = (RelativeLayout) rootView.findViewById(R.id.rl_location_search);
         rl_header = (RelativeLayout) rootView.findViewById(R.id.rl_header);
@@ -177,7 +178,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         txt_close_on1.setTypeface(font);
         txt_close_on2.setTypeface(fontM);
 
-        //img_filter.setVisibility(View.GONE);
+        img_expand.setVisibility(View.GONE);
 
         dMetric = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dMetric);
@@ -192,6 +193,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         img_upload_pic.setOnClickListener(this);
         img_follow_unfollow.setOnClickListener(this);
         img_notification.setOnClickListener(this);
+        img_back.setOnClickListener(this);
 
         //fetchRatings();
         getStoreDetails();
@@ -533,15 +535,6 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                 t1.commit();
                 break;
 
-            case R.id.img_filter:
-                Fragment f2 = new FilterFragment();
-                FragmentTransaction t2 = getFragmentManager().beginTransaction();
-                t2.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t2.add(R.id.frame_container, f2);
-                t2.addToBackStack(null);
-                t2.commit();
-                break;
-
             case R.id.img_call:
                 if (phone1.equalsIgnoreCase("") && phone2.equalsIgnoreCase("") && phone3.equalsIgnoreCase(""))
                     Toast.makeText(getActivity(), "Number not Found", Toast.LENGTH_SHORT).show();
@@ -554,6 +547,10 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
             case R.id.img_upload_pic:
 //                selectImage();
                 shareTextUrl();
+                break;
+
+            case R.id.img_back:
+                getActivity().onBackPressed();
                 break;
 
             case R.id.img_notification:

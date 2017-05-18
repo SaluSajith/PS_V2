@@ -35,7 +35,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     private ScrollView scroll;
     private String baseImage;
     private ImageView img_your_location, img_edit_profile, img_about, img_tems, img_privacy_policy,
-            img_licenses, img_rate_us, img_feedback, img_contact, img_logout, img_change_password, img_last;
+            img_rate_us, img_feedback, img_contact, img_logout, img_change_password, img_back;
     private Typeface font;
     private ProgressDialog pDialog;
 
@@ -55,20 +55,20 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         img_about = (ImageView) rootView.findViewById(R.id.img_about);
         img_tems = (ImageView) rootView.findViewById(R.id.img_tems);
         img_privacy_policy = (ImageView) rootView.findViewById(R.id.img_privacy_policy);
-        img_licenses = (ImageView) rootView.findViewById(R.id.img_licenses);
         img_rate_us = (ImageView) rootView.findViewById(R.id.img_rate_us);
         img_feedback = (ImageView) rootView.findViewById(R.id.img_feedback);
         img_contact = (ImageView) rootView.findViewById(R.id.img_contact);
         img_logout = (ImageView) rootView.findViewById(R.id.img_logout);
         img_change_password = (ImageView) rootView.findViewById(R.id.img_change_password);
-        img_last = (ImageView) rootView.findViewById(R.id.img_last);
+        //img_last = (ImageView) rootView.findViewById(R.id.img_last);
+        img_back = (ImageView) rootView.findViewById(R.id.img_back);
 
         if (PreferenceServices.getInstance().getLoginType().equalsIgnoreCase("Social")) {
-            img_change_password.setVisibility(View.GONE);
-            img_last.setVisibility(View.GONE);
+            img_change_password.setVisibility(View.INVISIBLE);
+            //img_last.setVisibility(View.GONE);
         } else {
             img_change_password.setVisibility(View.VISIBLE);
-            img_last.setVisibility(View.INVISIBLE);
+            //img_last.setVisibility(View.INVISIBLE);
         }
 
         txt_cat_name.setTypeface(font);
@@ -78,27 +78,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         img_about.setOnClickListener(this);
         img_tems.setOnClickListener(this);
         img_privacy_policy.setOnClickListener(this);
-        img_licenses.setOnClickListener(this);
         img_rate_us.setOnClickListener(this);
         img_feedback.setOnClickListener(this);
         img_contact.setOnClickListener(this);
         img_logout.setOnClickListener(this);
         img_change_password.setOnClickListener(this);
-
-        baseImage = PreferenceServices.getInstance().getBaseImage();
-        if (baseImage.equalsIgnoreCase("")) {
-        } else {
-            Glide.with(getActivity())
-                    .load(baseImage)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Drawable dr = new BitmapDrawable(resource);
-                            scroll.setBackgroundDrawable(dr);
-                        }
-                    });
-        }
+        img_back.setOnClickListener(this);
 
         return rootView;
     }
@@ -192,7 +177,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 t7.commit();
                 break;
 
-            case R.id.img_licenses:
+            /*case R.id.img_licenses:
                 Fragment f8 = new About_TnCFragment();
                 Bundle b8 = new Bundle();
                 b8.putString("screen", "license");
@@ -202,7 +187,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 t8.add(R.id.frame_container, f8);
                 t8.addToBackStack(null);
                 t8.commit();
-                break;
+                break;*/
 
             case R.id.img_rate_us:
                 final String appPackageName = getActivity().getPackageName();
@@ -223,6 +208,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
 
+            case R.id.img_back:
+                getActivity().onBackPressed();
+                break;
             default:
                 break;
         }

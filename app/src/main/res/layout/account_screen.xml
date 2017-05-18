@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/base">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -99,12 +100,12 @@
                          android:src="@drawable/privacy_policy" />
 
                      <ImageView
-                         android:id="@+id/img_licenses"
+                         android:id="@+id/img_contact"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
                          android:layout_weight="1"
                          android:gravity="center"
-                         android:src="@drawable/licenses" />
+                         android:src="@drawable/contact" />
 
                  </LinearLayout>
 
@@ -136,16 +137,17 @@
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:layout_marginTop="-15dp"
+                     android:layout_marginBottom="60dp"
                      android:orientation="horizontal">
 
                      <ImageView
-                         android:id="@+id/img_contact"
+                         android:id="@+id/img_change_password"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
                          android:layout_marginTop="10dp"
                          android:layout_weight="1"
                          android:gravity="center"
-                         android:src="@drawable/contact" />
+                         android:src="@drawable/change_password" />
 
                      <ImageView
                          android:id="@+id/img_logout"
@@ -157,7 +159,7 @@
 
                  </LinearLayout>
 
-                 <LinearLayout
+                 <!--<LinearLayout
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:layout_marginBottom="45dp"
@@ -181,7 +183,7 @@
                          android:src="@drawable/change_password"
                          android:visibility="invisible" />
 
-                 </LinearLayout>
+                 </LinearLayout>-->
 
             </LinearLayout>
         </LinearLayout>

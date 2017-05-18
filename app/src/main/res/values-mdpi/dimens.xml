@@ -62,7 +62,7 @@
     <dimen name="auto_img_width">405dp</dimen>
     <dimen name="auto_img_height">39dp</dimen>
     <dimen name="autodetect_img_width">18dp</dimen>
-    <dimen name="back_img_width">12dp</dimen>
+    <dimen name="back_img_width">23dp</dimen>
     <dimen name="back_img_height">23dp</dimen>
     <dimen name="bags_img_width">185dp</dimen>
     <dimen name="bags_img_height">117dp</dimen>

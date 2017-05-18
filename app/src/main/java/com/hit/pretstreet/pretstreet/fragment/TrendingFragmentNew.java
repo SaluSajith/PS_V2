@@ -80,7 +80,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
     TrendingAdapter adapter;
 
     private LinearLayout  ll_header;
-    private ImageView img_icon_menu, img_notification, img_filter, img_search;
+    private ImageView img_icon_menu, img_notification, img_filter, img_search, img_expand,img_back;
     private TextView txt_location, txt_cat_name;
     private boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
@@ -106,6 +106,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         img_notification = (ImageView) view.findViewById(R.id.img_notification);
         img_filter = (ImageView) view.findViewById(R.id.img_filter);
         img_search = (ImageView) view.findViewById(R.id.img_search);
+        img_expand = (ImageView) view.findViewById(R.id.img_expand);
+        img_back = (ImageView) view.findViewById(R.id.img_back);
 
         txt_location = (TextView) view.findViewById(R.id.txt_location);
         txt_cat_name = (TextView) view.findViewById(R.id.txt_cat_name);
@@ -118,6 +120,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         img_notification.setOnClickListener(this);
         img_search.setOnClickListener(this);
         img_filter.setOnClickListener(this);
+        img_expand.setOnClickListener(this);
+        img_back.setOnClickListener(this);
 
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
         int margin = (int) getResources().getDimension(R.dimen.text_margintop);
@@ -304,8 +308,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         Bundle bundle;
         switch (viewId) {
 
-            case R.id.img_icon_menu:
-                //startActivity(new Intent(getActivity(), HomeActivity.class));
+            case R.id.img_expand:
+                startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
                 break;
 
             case R.id.txt_location:
@@ -333,16 +337,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 t1.commit();
                 break;
 
-            case R.id.img_filter:
-                Fragment f2 = new FilterFragment();
-                bundle = new Bundle();
-                bundle.putString("mainCatId", mainCAtId);
-                f2.setArguments(bundle);
-                FragmentTransaction t2 = getFragmentManager().beginTransaction();
-                t2.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t2.add(R.id.frame_container, f2);
-                t2.addToBackStack(null);
-                t2.commit();
+            case R.id.img_back:
+                getActivity().onBackPressed();
                 break;
 
             default:
