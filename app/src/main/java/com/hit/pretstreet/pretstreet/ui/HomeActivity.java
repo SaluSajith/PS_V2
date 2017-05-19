@@ -180,6 +180,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
+        FragmentManager fm = getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
         switch (viewId) {
 
             case R.id.btn_home:

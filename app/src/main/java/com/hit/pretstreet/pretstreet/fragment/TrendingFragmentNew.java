@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,17 +42,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.Items.TrendingItems;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
-import com.hit.pretstreet.pretstreet.adapters.ViewPagerAdapter;
 import com.hit.pretstreet.pretstreet.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.customview.DividerDecoration;
+import com.hit.pretstreet.pretstreet.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.ui.SelectLocation;
 
 import org.json.JSONArray;
@@ -71,7 +69,7 @@ import java.util.Iterator;
  * Created by HIT on 22-02-2017.
  */
 
-public class TrendingFragmentNew extends Fragment implements View.OnClickListener{
+public class TrendingFragmentNew extends Fragment implements View.OnClickListener, ZoomedViewListener{
 
     private String mainCAtId, name, image;
     private ProgressDialog pDialog;
@@ -248,10 +246,10 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                 }
                                 if (responseSuccess && list.size()>0) {
                                     //if (adapter == null) {
-                                        adapter = new TrendingAdapter(getActivity(), list);
-                                        rv_trending.setAdapter(adapter);
-                                   // } else
-                                   //     adapter.notifyDataSetChanged();
+                                    adapter = new TrendingAdapter(getActivity(), list);
+                                    rv_trending.setAdapter(adapter);
+                                    // } else
+                                    //     adapter.notifyDataSetChanged();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -346,12 +344,24 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         }
     }
 
-    private class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHolder> {
+    @Override
+    public void onClicked(int position, ArrayList<StoreDetailFragment.ProductImageItem> mImagearray) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("images", mImagearray);
+        bundle.putInt("position", position);
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
+        newFragment.setArguments(bundle);
+        newFragment.show(ft, "slideshow");
+    }
+
+    private class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHolder>{
 
         Context context;
         ArrayList<TrendingItems> list;
         int button01pos = 0;
-        ViewPagerAdapter mAdapter;
+        ArticlePagerAdapter mAdapter;
         int dotsCount = 0;
 
         public TrendingAdapter(Context context, ArrayList<TrendingItems> list) {
@@ -372,18 +382,15 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
             holder.txt_title.setText(trendingItems.getTitle());
             holder.txt_description.setText(trendingItems.getArticle());
 
-            System.out.println("like "+list.get(0).getLike());
-            System.out.println("like "+list.get(1).getLike());
-
             if(trendingItems.getImagearray().size()==0){
                 holder.iv_banner.setVisibility(View.VISIBLE);
                 holder.iv_banner.setImageResource(R.mipmap.ic_launcher);
             }
             else {
                 holder.iv_banner.setVisibility(View.INVISIBLE);
-                mAdapter = new ViewPagerAdapter(getActivity(), trendingItems.getImagearray());
-                holder.intro_images.setAdapter(mAdapter);
-                holder.intro_images.setCurrentItem(0);
+                mAdapter = new ArticlePagerAdapter(context, trendingItems.getImagearray());
+                holder.article_images.setAdapter(mAdapter);
+                holder.article_images.setCurrentItem(0);
             }
             setUiPageViewController(holder, position);
 
@@ -422,7 +429,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
             holder.pager_indicator.removeAllViews();
 
             for (int i = 0; i < dotsCount; i++) {
-            //for (Iterator it = list.iterator(); it.hasNext(); ) {
+                //for (Iterator it = list.iterator(); it.hasNext(); ) {
                 holder.dots[i] = new ImageView(getActivity());
                 holder.dots[i].setImageDrawable(getResources().getDrawable(R.drawable.image_indicator_unselected));
 
@@ -467,7 +474,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
             ImageView img_like, img_share, iv_banner;
             CircularImageView img_profile;
             TextView txt_title, txt_description, txt_shopname, txt_date;
-            ViewPager intro_images;
+            ViewPager article_images;
             LinearLayout pager_indicator;
             ImageView[] dots;
 
@@ -492,13 +499,14 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 txt_title.setTypeface(font);
                 txt_shopname.setTypeface(font);
 
-                intro_images = (ViewPager) itemView.findViewById(R.id.pager_introduction);
-                intro_images.setOnPageChangeListener(this);
+                article_images = (ViewPager) itemView.findViewById(R.id.pager_article);
+                article_images.setOnPageChangeListener(this);
                 pager_indicator = (LinearLayout) itemView.findViewById(R.id.viewPagerCountDots);
 
                 img_like.setOnClickListener(this);
                 img_share.setOnClickListener(this);
                 txt_shopname.setOnClickListener(this);
+                iv_banner.setOnClickListener(this);
 
             }
 
@@ -521,7 +529,10 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                         break;
                     case R.id.txt_shopname:
                         if(!list.get(getAdapterPosition()).getStoreLink().equals("0"))
-                        openStoreDetails();
+                            openStoreDetails();
+                        break;
+                    case R.id.iv_banner:
+                        Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
@@ -664,4 +675,61 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
 
     }
 
+    private class ArticlePagerAdapter extends PagerAdapter{
+
+        private Context mContext;
+        private ArrayList<String> mResources;
+        private ArrayList<StoreDetailFragment.ProductImageItem > mImagearray;
+
+        public ArticlePagerAdapter(Context mContext, ArrayList<String> mResources) {
+            this.mContext = mContext;
+            this.mResources = mResources;
+            mImagearray = new ArrayList<>();
+
+            StoreDetailFragment.ProductImageItem productImageItem;
+            for(int i = 0;i<mResources.size();i++) {
+                productImageItem = new StoreDetailFragment.ProductImageItem();
+                productImageItem.setImage(mResources.get(i));
+                mImagearray.add(productImageItem);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return mResources.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == ((LinearLayout) object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, final int position) {
+            final View itemView = LayoutInflater.from(mContext).inflate(R.layout.image_slider_item, container, false);
+
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
+            if((mResources.get(position)).length()==0){
+                imageView.setImageResource(R.mipmap.ic_launcher);
+            }else {
+                Glide.with(mContext)
+                        .load(mResources.get(position))
+                        .centerCrop().into(imageView);
+            }
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClicked(position, mImagearray);
+                }
+            });
+            container.addView(itemView);
+
+            return itemView;
+        }
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((LinearLayout) object);
+        }
+    }
 }

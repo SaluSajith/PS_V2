@@ -1049,7 +1049,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
             pDialog.dismiss();
     }
 
-    public class ProductImageItem implements Parcelable {
+    public static class ProductImageItem implements Parcelable {
         String image;
 
         public ProductImageItem() {

@@ -8,7 +8,7 @@
     <dimen name="padding_xsmall">3dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_standard">5dp</dimen>
-    <dimen name="padding_large">10dp</dimen>
+    <dimen name="padding_large">11dp</dimen>
     <dimen name="padding_xlarge">15dp</dimen>
     <dimen name="padding_xxlarge">20dp</dimen>
     <dimen name="padding_xxxlarge">25dp</dimen>
@@ -34,6 +34,7 @@
 
     <dimen name="subcategory_margintop">-58dp</dimen>
     <dimen name="subcategory_inner_margintop">-33dp</dimen>
+    <dimen name="trending_margintop">-40dp</dimen>
     <dimen name="header_marginbottom">0dp</dimen>
     <dimen name="margin_custom_row">20dp</dimen>
     <dimen name="margin_top_custom_row">13dp</dimen>

@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical">h
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             android:layout_gravity="center_horizontal|top"
             android:scrollIndicators="none"
             android:layout_marginBottom="40dp"
-            android:layout_marginTop="@dimen/subcategory_inner_margintop"
+            android:layout_marginTop="@dimen/trending_margintop"
             android:headerDividersEnabled="false"
             android:divider="@color/trending_grey"
             android:layout_below="@+id/ll_header"
