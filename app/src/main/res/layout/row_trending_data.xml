@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/iv_banner"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="wrap_content"
                 android:visibility="invisible"/>
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager_article"

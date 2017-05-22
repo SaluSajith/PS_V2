@@ -57,12 +57,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressDialog pDialog;
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //getCurrentAppVersion();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
@@ -74,8 +68,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         Log.e("dm.densityDpi:", dm.densityDpi + "");
         PreferenceServices.instance().saveDeviceSize(dm.densityDpi);
-
-        getCurrentAppVersion();
 
         btn_home.setOnClickListener(this);
         btn_account.setOnClickListener(this);
@@ -96,47 +88,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         btn_account.setTypeface(font);
         btn_following.setTypeface(font);
         btn_addstore.setTypeface(font);
-        getFixedImages("loginscreen");
 
         pDialog = new ProgressDialog(HomeActivity.this);
         pDialog.setCancelable(false);
-    }
-
-    private void getFixedImages(final String id) {
-        String urlJsonObj = Constant.FASHION_API + "route=" + id;
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJsonObj,
-                null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.e("Volley Base Image", response.toString());
-                boolean responseSuccess = false;
-                String strsuccess, imgUrl = null;
-                try {
-                    strsuccess = response.getString("success");
-                    if (strsuccess.equalsIgnoreCase("true")) {
-                        responseSuccess = true;
-                        imgUrl = response.getString("url");
-                    } else {
-                        responseSuccess = false;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    responseSuccess = false;
-                }
-                if (responseSuccess) {
-                    PreferenceServices.instance().saveBaseImage(imgUrl);
-                }
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("Volley", "Error: " + error.getMessage());
-            }
-        });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        PretStreet.getInstance().addToRequestQueue(jsonObjReq);
     }
 
     private void displayView(int position) {
@@ -231,121 +185,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
-    }
-
-    private void showUpdateDialog(){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("A New Update is Available");
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
-                            ("market://details?id=com.hit.pretstreet.pretstreet")));
-                    dialog.dismiss();
-                }
-                catch (Exception e){}
-            }
-        });
-/*
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });*/
-
-        builder.setCancelable(false);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.setCancelable(false);
-        alertDialog.show();
-    }
-
-    private void getCurrentAppVersion(){
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            String URL = Constant.COMMON_URL + "index.php/forceupdate/mobileapp/androidVersion";
-            Log.d("URL", URL);
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
-            jsonBody.put("ApiKey", Constant.API);
-            final String requestBody = jsonBody.toString();
-
-            showpDialog();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("VersionUpdate_api_response", String.valueOf(response));
-                            try {
-                                JSONObject jsonObject =  new JSONObject(response);
-                                String strsuccess;
-                                try {
-                                    strsuccess = jsonObject.getString("Status");
-                                    if (strsuccess.equals("1")) {
-                                        PackageManager manager = getApplicationContext().getPackageManager();
-                                        PackageInfo info = null;
-                                        try {
-                                            info = manager.getPackageInfo(getApplicationContext().getPackageName(), 0);
-                                        } catch (PackageManager.NameNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
-                                        String serverVersion = jsonObject.getString("Version");
-                                        String curVersion = info.versionCode + "";
-                                        if(!serverVersion.equals(curVersion))
-                                        showUpdateDialog();
-                                    }
-                                } catch (JSONException e1) {
-                                    e1.printStackTrace();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            hidepDialog();
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    hidepDialog();
-                    Log.d("VersionUpdate_api_response", error.toString());
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                        return null;
-                    }
-                }
-            };
-
-            requestQueue.add(stringRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-
-        }
-
-    }
-
-    private void showpDialog() {
-        if (!pDialog.isShowing()) {
-            pDialog.show();
-            pDialog.setContentView(R.layout.progress_activity);
-            pDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        }
-    }
-
-    private void hidepDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
     }
 
 }

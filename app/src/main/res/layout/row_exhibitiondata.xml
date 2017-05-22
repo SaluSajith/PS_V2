@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="4sp"
+    android:layout_marginBottom="@dimen/divider_space_xlarge"
+    android:paddingBottom="@dimen/divider_space_xlarge"
+    app:cardUseCompatPadding="true"
+    android:layout_marginLeft="-4dp"
+    android:layout_marginRight="-4dp"
+    card_view:cardPreventCornerOverlap="false">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/padding_large"
+            android:layout_marginRight="@dimen/padding_large"
+            android:layout_marginTop="@dimen/padding_small">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_heading"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:text="Z Studio"
+                        android:textColor="@color/dark_gray"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:maxLines="1" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txt_description"
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:textColor="@color/dark_gray"
+                    android:inputType="textMultiLine"
+                    android:layout_marginTop="@dimen/padding_large"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txt_date"
+                    android:layout_width="wrap_content"
+                    android:padding="5dp"
+                    android:text="28 Apr 2017"
+                    android:gravity="bottom"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_gray"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/padding_large"
+                android:layout_gravity="center">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/map_icon"
+                    android:id="@+id/iv_map"
+                    android:layout_marginBottom="@dimen/padding_small"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/grey_heart"
+                    android:id="@+id/iv_like"
+                    android:layout_marginBottom="@dimen/padding_small"/>
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/share_icon"
+                    android:id="@+id/iv_share"
+                    android:layout_marginBottom="@dimen/padding_large"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

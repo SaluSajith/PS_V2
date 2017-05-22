@@ -44,17 +44,21 @@ import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.Items.CategoryItem;
+import com.hit.pretstreet.pretstreet.Items.TrendingItems;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
@@ -67,7 +71,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -171,7 +180,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                     } else if (femaleClick) {
                                         //SortStoreListByMenWomen("female", false);
                                     } else {
-                                        getStoreList(LLSelectedID, false);
+                                        getStoreList_distancewise(LLSelectedID, false);
                                     }
                                 }
                             }
@@ -243,7 +252,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     pageCount = 0;
                     txtnameAll[i].hasFocusable();
                     hsv_category.fullScroll(View.FOCUS_DOWN);
-                    getStoreList(subCatId, true);
+                    getStoreList_distancewise(subCatId, true);
                 }
                 if (subCatId.equalsIgnoreCase(catId[i])) {
                     txtname[i].setTextColor(getResources().getColor(R.color.black));
@@ -251,7 +260,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     pageCount = 0;
                     txtname[i].hasFocusable();
                     hsv_category.fullScroll(View.FOCUS_DOWN);
-                    getStoreList(catId[i], true);
+                    getStoreList_distancewise(catId[i], true);
                 }
                 txtname[i].setText(catValue[i]);
                 ll_category.addView(view);
@@ -266,7 +275,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             txt_cat_name.setText(catValue[finalI]);
                             subCatName = catValue[finalI];
                         }
-                        getStoreList(catId[finalI], true);
+                        getStoreList_distancewise(catId[finalI], true);
                         for (int k = 0; k < listCategory.size(); k++) {
                             if (finalI == k) {
                                 txtname[finalI].setTextColor(getResources().getColor(R.color.black));
@@ -291,7 +300,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             txt_cat_name.setText("All");
                             subCatName = "All";
                         }
-                        getStoreList(mainCatId, true);
+                        getStoreList_distancewise(mainCatId, true);
                     }
                 });
             }
@@ -308,7 +317,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             ll_category.addView(view);
             ll_category.setVisibility(View.VISIBLE);
             hsv_category.setVisibility(View.VISIBLE);
-            getStoreList(LLSelectedID, true);
+            getStoreList_distancewise(LLSelectedID, true);
         }
         return rootView;
     }
@@ -319,103 +328,150 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         txt_location.setText(PreferenceServices.getInstance().getCurrentLocation());
     }
 
-    private void getStoreList(String sub_catId, final boolean first) {
-        //http://doctronics.co.in/fashionapp/fashion_api.php?route=cat_store_sort&main_cat_id=4&cat_id=104&user_id=68&start=3
-        String urlJson = Constant.FASHION_API + "route=cat_store_sort&main_cat_id=" + mainCatId + "&cat_id=" + sub_catId
-                + "&user_id=" + PreferenceServices.getInstance().geUsertId() + "&start=" + ++pageCount + "&lat=" + lat + "&long=" + lng;
-        //String urlJson = Constant.FASHION_API + "route=get_stores_sort&gender=79&category_id=4&sortby=popularity&start=1&lat=19.1998211&long=72.842594&user_id=61";
-        //http://52.77.174.143/fashion_api.php?route=get_stores_sort&gender=79&category_id=4&sortby=popularity&start=1&lat=19.1998211&long=72.842594&user_id=61
-        if (first) {
-            list = new ArrayList<>();
-            showpDialog();
-        }
-        Log.e("url", urlJson);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJson, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(final JSONObject response) {
-                boolean responseSuccess = false;
-                String strsuccess, msg = null;
-                Log.e("response", response.toString());
-                try {
-                    strsuccess = response.getString("success");
-                    if (strsuccess.equals("true")) {
-                        responseSuccess = true;
-                        if (first) {
-                            totalPages = response.getInt("page_count");
-                            if (totalPages < 1) {
-                                Toast.makeText(getActivity(), "Page not Found", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        JSONArray jsonArray = new JSONArray(response.getString("stores"));
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            HashMap<String, String> hashMap = new HashMap<>();
-                            hashMap.put("id", jsonObject.getString("id"));
-                            hashMap.put("name", jsonObject.getString("name"));
-                            hashMap.put("address", jsonObject.getString("address"));
-                            hashMap.put("thumb", jsonObject.getString("thumb"));
-                            hashMap.put("phone1", jsonObject.getString("phone1"));
-                            hashMap.put("phone2", jsonObject.getString("phone2"));
-                            hashMap.put("phone3", jsonObject.getString("phone3"));
-                            hashMap.put("latitude", jsonObject.getString("latitude"));
-                            hashMap.put("longitude", jsonObject.getString("longitude"));
-                            hashMap.put("rating_count", jsonObject.getString("rating_count"));
-                            hashMap.put("follow_count", jsonObject.getString("follow_count"));
-                            hashMap.put("wishlist", jsonObject.getString("wishlist"));
-                            hashMap.put("sale", jsonObject.getString("sale"));
-                            hashMap.put("arrival", jsonObject.getString("arrival"));
-                            hashMap.put("area", jsonObject.getString("area"));
-                            list.add(hashMap);
-                        }
-                    } else {
-                        responseSuccess = false;
-                        msg = response.getString("message");
-                    }
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
-                    responseSuccess = false;
-                }
-                if (responseSuccess) {
-                    if (first) {
-                        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity(), R.layout.row_list_store1, list);
-                        list_store.setAdapter(storeList_recyclerAdapter);
-                    } else
-                        storeList_recyclerAdapter.notifyDataSetChanged();
+    private void getStoreList_distancewise(String sub_catId, final boolean first){
+        try {
 
-                } else {
+            if (first) {
+                list = new ArrayList<>();
+                showpDialog();
+            }
+
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            String URL = Constant.INDEX_PATH + "getCategoryStores";
+            list = new ArrayList<>();
+            Log.d("URL", URL + " "+ PreferenceServices.getInstance().geUsertId()+" "+mainCatId +" "+sub_catId +" "+lat +" "+lng);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
+            jsonBody.put("MainCategoryId", mainCatId);
+            jsonBody.put("CategoryId", sub_catId);
+            jsonBody.put("Start",  ++pageCount);
+            jsonBody.put("Latitude", lat);
+            jsonBody.put("Longitude", lng);
+            jsonBody.put("ApiKey", Constant.API);
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("CategoryListing_api_response", String.valueOf(response));
+                            try {
+                                JSONObject jsonObjectAll =  new JSONObject(response);
+                                boolean responseSuccess = false;
+                                String strsuccess;
+                                try {
+                                    strsuccess = jsonObjectAll.getString("Status");
+                                    JSONObject jsonContent = jsonObjectAll.getJSONObject("Content");
+                                    if (jsonContent.getString("success").equals("true")) {
+
+
+                                        responseSuccess = true;
+                                        if (first) {
+                                            totalPages = jsonContent.getInt("page_count");
+                                            if (totalPages < 1) {
+                                                Toast.makeText(getActivity(), "Page not Found", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        JSONArray jsonArray = new JSONArray(jsonContent.getString("stores"));
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                            HashMap<String, String> hashMap = new HashMap<>();
+                                            hashMap.put("id", jsonObject.getString("id"));
+                                            hashMap.put("name", jsonObject.getString("name"));
+                                            hashMap.put("address", jsonObject.getString("address"));
+                                            hashMap.put("thumb", jsonObject.getString("thumb"));
+                                            hashMap.put("phone1", jsonObject.getString("phone1"));
+                                            hashMap.put("phone2", jsonObject.getString("phone2"));
+                                            hashMap.put("phone3", jsonObject.getString("phone3"));
+                                            hashMap.put("latitude", jsonObject.getString("latitude"));
+                                            hashMap.put("longitude", jsonObject.getString("longitude"));
+                                            hashMap.put("rating_count", jsonObject.getString("rating_count"));
+                                            hashMap.put("follow_count", jsonObject.getString("follow_count"));
+                                            hashMap.put("wishlist", jsonObject.getString("wishlist"));
+                                            hashMap.put("sale", jsonObject.getString("sale"));
+                                            hashMap.put("arrival", jsonObject.getString("arrival"));
+                                            hashMap.put("area", jsonObject.getString("area"));
+                                            list.add(hashMap);
+                                        }
+                                        requestCalled = false;
+                                        if (first) {
+                                            hidepDialog();
+                                        }
+
+                                        if (responseSuccess) {
+                                            if (first) {
+                                                storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity(), R.layout.row_list_store1, list);
+                                                list_store.setAdapter(storeList_recyclerAdapter);
+                                            } else
+                                                storeList_recyclerAdapter.notifyDataSetChanged();
+
+                                        } else {
+                                            if (first) {
+                                                Toast.makeText(getActivity(), "Something went wrong. Please try again later.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                    } else {
+                                        responseSuccess = false;
+                                    }
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                    responseSuccess = false;
+                                }
+                                if (responseSuccess && list.size()>0) {
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            hidepDialog();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hidepDialog();
+
                     if (first) {
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                        hidepDialog();
+                    }
+                    String message = null;
+                    if (error instanceof NetworkError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                    } else if (error instanceof AuthFailureError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                    } else if (error instanceof NoConnectionError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                    } else if (error instanceof TimeoutError) {
+                        message = "Connection TimeOut! Please check your internet connection.";
+                    }
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
                     }
                 }
-                requestCalled = false;
-                if (first)
-                    hidepDialog();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (first) {
-                    hidepDialog();
-                }
-                String message = null;
-                if (error instanceof NetworkError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof ServerError) {
-                    message = "The server could not be found. Please try again after some time!!";
-                } else if (error instanceof AuthFailureError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof ParseError) {
-                    message = "Parsing error! Please try again after some time!!";
-                } else if (error instanceof NoConnectionError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof TimeoutError) {
-                    message = "Connection TimeOut! Please check your internet connection.";
-                }
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
+            };
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
     }
 
     private class MyPhoneListener extends PhoneStateListener {
@@ -541,12 +597,17 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
         @Override
         public void onBindViewHolder(final ShopsHolder holder, final int position) {
-            Log.d("requestCalled", requestCalled+"");
-            if(position == mItems.size()-1) {
+
+            /* Log.d("requestCalled", mItems.get(position)+" "+mItems.size());
+           if(position == mItems.size()-1) {
                 if (pageCount < totalPages) {
-                        holder.ll_progress.setVisibility(View.VISIBLE);
-                    }}
-            else
+                    if(requestCalled)
+                    holder.ll_progress.setVisibility(View.VISIBLE);
+                }
+                else
+                    holder.ll_progress.setVisibility(View.GONE);
+            }
+            else*/
                 holder.ll_progress.setVisibility(View.GONE);
 
             holder.txt_storename.setTypeface(font);
@@ -556,7 +617,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             holder.txt_storename.setText(mItems.get(position).get("name"));
             holder.txt_address.setText(mItems.get(position).get("area"));
 
-            String strFollowCount = list.get(position).get("follow_count");
+            String strFollowCount = mItems.get(position).get("follow_count");
             if (strFollowCount.length() >= 4) {
                 String convertedCountK = strFollowCount.substring(0, strFollowCount.length() - 3);
                 if (convertedCountK.length() >= 4) {
@@ -578,7 +639,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 holder.tv_margintop.requestLayout();
             }
             Glide.with(CategoryWiseStoreListFragment.this)
-                    .load(list.get(position).get("thumb"))
+                    .load(mItems.get(position).get("thumb"))
                     .asBitmap()
                     .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.ALL) //use this to cache
