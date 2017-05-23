@@ -2,8 +2,12 @@ package com.hit.pretstreet.pretstreet.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -12,15 +16,23 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,12 +47,15 @@ import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -50,6 +65,7 @@ import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.facebook.FacebookLoginScreen;
 import com.hit.pretstreet.pretstreet.facebook.GoogleLoginActivity;
+import com.hit.pretstreet.pretstreet.fragment.About_TnCFragment;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.ActivityManagePermission;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
 
@@ -76,15 +92,23 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
     private Spinner spinnewr_code;
     private ProgressDialog pDialog;
     private Typeface font;
-    private String selectedArea, baseImage, headerImage;
+    StringRequest stringRequest;
+    private String selectedArea, otpValue;
+    Dialog popupDialog;
 
-    String strEmail, strPassword, facebookId, strName, strGender, googleImageUrl, firstname, strlocation,
-            lastname, googleId, strSocialId, strSocialType, strProfilePic;
+    String strEmail, strPassword, facebookId, strName, strGender, googleImageUrl,
+            googleId, strSocialId, strSocialType, strProfilePic;
     private static final int FACEBOOK_LOGIN_REQUEST_CODE = 1;
 
     private static final int GOOGLE_LOGIN_REQUEST_CODE = 2;
     private static final int PROFILE_PIC_SIZE = 400;
 
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +124,19 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         btn_addstore.setOnClickListener(this);
         txt_conditon.setOnClickListener(this);
         spinnewr_code.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("otp"));
     }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            Log.d("receiver", "Got message: " + message);
+        }
+    };
 
     private void init() {
         btn_addstore = (Button) findViewById(R.id.btn_addstore);
@@ -131,8 +167,6 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         edt_number.setTypeface(font);
         edt_email.setTypeface(font);
         edt_password.setTypeface(font);
-
-        headerImage = PreferenceServices.getInstance().getHeaderImage();
 
     }
 
@@ -220,7 +254,8 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
                     Toast.makeText(this, "Enter Minimum 6 Character Password", Toast.LENGTH_SHORT).show();
                     edt_password.requestFocus();
                 } else {
-                    registerUserInformation(firstname, mobile, email, password);
+                    //registerUserInformation(firstname, mobile, email, password);
+                    getOTP(mobile);
                 }
                 break;
 
@@ -459,6 +494,135 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         });
         jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
+    }
+
+    private void getOTP(String number){
+
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            String URL;
+                URL = Constant.INDEX_PATH + "otpGenerate";
+            Log.d("URL", URL+" "+number);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("Mobile", number);
+            jsonBody.put("ApiKey", Constant.API);
+            final String requestBody = jsonBody.toString();
+
+            showpDialog();
+
+            stringRequest = new StringRequest(Request.Method.POST, URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("OTP_api_response", String.valueOf(response));
+                            try {
+                                JSONObject jsonObject =  new JSONObject(response);
+                                String strsuccess;
+                                try {
+                                    strsuccess = jsonObject.getString("Status");
+                                    if (strsuccess.equals("1")) {
+                                        otpValue = jsonObject.getString("OTP");
+
+                                        showOTPScreem();
+
+                                    } else {
+                                        //Toast.makeText(getApplicationContext(), jsonObject.getString("Message"), Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            hidepDialog();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hidepDialog();
+                    Log.d("OTP_api_error", error.toString());
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+            };
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+        /*stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        PretStreet.getInstance().addToRequestQueue(stringRequest, Constant.tag_json_obj);*/
+    }
+
+    public void showOTPScreem() {
+
+        popupDialog = new Dialog(this);
+        popupDialog.setCanceledOnTouchOutside(false);
+        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = li.inflate(R.layout.popup_otp_screen, null);
+        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        final EditText edt_otp = (EditText) view.findViewById(R.id.edt_otp);
+        ImageView btn_send = (ImageView) view.findViewById(R.id.btn_send);
+
+        edt_otp.setTypeface(font);
+
+
+        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
+        rl.setPadding(0, 0, 0, 0);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, 0, 0);
+        rl.setLayoutParams(lp);
+        popupDialog.setContentView(view);
+
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        popupDialog.getWindow().setAttributes(params);
+        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        popupDialog.show();
+
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupDialog.dismiss();
+            }
+        });
+
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupDialog.dismiss();
+
+                if(otpValue.equals(edt_otp.getText().toString())) {
+                    String email = edt_email.getText().toString().trim();
+                    String firstname = edt_name.getText().toString().trim();
+                    String password = edt_password.getText().toString();
+                    String mobile = edt_number.getText().toString().trim();
+                    registerUserInformation(firstname, mobile, email, password);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Wrong OTP", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }
 

@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -77,11 +79,13 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
     ArrayList<TrendingItems> list;
     TrendingAdapter adapter;
 
-    private LinearLayout  ll_header;
+    private FrameLayout  ll_header;
+    private NestedScrollView nsv_header;
     private ImageView img_icon_menu, img_notification, img_filter, img_search, img_expand,img_back;
-    private TextView txt_location, txt_cat_name;
-    private boolean loading = true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private TextView txt_location, txt_cat_name, txt_recent;
+    private boolean loading = true, first = true;
+    int visibleItemCount;
+    int offset=0, pagecount =0;
 
     @Nullable
     @Override
@@ -97,8 +101,11 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
 
-        ll_header= (LinearLayout) view.findViewById(R.id.ll_header);
+        list = new ArrayList<>();
+
+        ll_header= (FrameLayout) view.findViewById(R.id.ll_header);
         rv_trending = (RecyclerView) view.findViewById(R.id.rv_trending);
+        nsv_header = (NestedScrollView) view.findViewById(R.id.nsv_header);
 
         img_icon_menu = (ImageView) view.findViewById(R.id.img_icon_menu);
         img_notification = (ImageView) view.findViewById(R.id.img_notification);
@@ -108,8 +115,10 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         img_back = (ImageView) view.findViewById(R.id.img_back);
 
         txt_location = (TextView) view.findViewById(R.id.txt_location);
+        txt_recent = (TextView) view.findViewById(R.id.txt_recent);
         txt_cat_name = (TextView) view.findViewById(R.id.txt_cat_name);
         txt_location.setTypeface(font);
+        txt_recent.setTypeface(font);
         txt_cat_name.setTypeface(font);
         txt_cat_name.setText(name);
 
@@ -130,24 +139,20 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         rv_trending.setLayoutManager(mLayoutManager);
         rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.trending_grey), 5.0f));
 
-        rv_trending.addOnScrollListener(new RecyclerView.OnScrollListener()
-        {
+        nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
-                if(dy > 0) //check for scroll down
-                {
-                    visibleItemCount = mLayoutManager.getChildCount();
-                    totalItemCount = mLayoutManager.getItemCount();
-                    pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    if (scrollY > oldScrollY) {
+                        visibleItemCount = mLayoutManager.getChildCount();
 
-                    if (loading)
-                    {
-                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
-                        {
-                            loading = false;
-                            Log.v("...", "Last Item Wow !");
-                            //Do pagination.. i.e. fetch new data
+                        int visibleItemCount = mLayoutManager.getChildCount();
+                        final int lastItem = mLayoutManager.findFirstVisibleItemPosition() + visibleItemCount;
+
+                        if (lastItem == mLayoutManager.getItemCount() ) {
+                            if(!loading)
+                                if(offset<pagecount)
+                                    getData();
                         }
                     }
                 }
@@ -172,17 +177,18 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
             String URL ;
 
             URL = Constant.TRENDING_API + "ftc";
+            loading = true;
 
-            list = new ArrayList<>();
-            Log.d("URL", URL);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
             jsonBody.put("Limit", Constant.LIMIT);
-            jsonBody.put("Offset", 1);
+            jsonBody.put("Offset", ++offset);
             jsonBody.put("ApiKey", Constant.API);
             final String requestBody = jsonBody.toString();
-
-            showpDialog();
+            Log.d("URL", URL+"offset "+offset);
+            if(first) {
+                showpDialog();
+            }
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                     new Response.Listener<String>() {
@@ -195,8 +201,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                 String strsuccess;
                                 try {
                                     strsuccess = jsonObject.getString("Status");
+                                    pagecount = jsonObject.getInt("PageCount");
                                     if (strsuccess.equals("1")) {
-                                        Log.d("Trending_api_response",strsuccess);
                                         responseSuccess = true;
                                         JSONArray jsonArray = null;
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
@@ -205,8 +211,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                             TrendingItems item;
                                             if (list == null)
                                                 list = new ArrayList<>();
-                                            else
-                                                list.clear();
+                                            /*else
+                                                list.clear();*/
                                             for (int i = 0; i < jsonArray.length(); i++) {
                                                 JSONObject trendingContent = jsonArray.getJSONObject(i);
                                                 item = new TrendingItems();
@@ -238,6 +244,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                                 list.add(item);
                                             }
                                         }
+                                        loading = false;
                                     } else {
                                         //Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_SHORT).show();
                                         responseSuccess = false;
@@ -257,12 +264,16 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            if(first)
+                                first = false;
                             hidepDialog();
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.d("Trending_api_error", error.toString());
+                    if(first)
+                        first = false;
                     hidepDialog();
                 }
             }) {
@@ -287,6 +298,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
             e.printStackTrace();
 
         }
+        /*stringRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        PretStreet.getInstance().addToRequestQueue(stringRequest, Constant.tag_json_obj);*/
     }
 
     private void showpDialog() {
@@ -352,6 +365,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("images", mImagearray);
         bundle.putInt("position", position);
+        bundle.putInt("countvisibility", 0);
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
@@ -612,12 +626,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
 
     private void sendButtonStatus(String tcId){
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             String URL;
-            if(mainCAtId.equals("122"))
                 URL = Constant.TRENDING_API + "litc";
-            else
-                URL = Constant.EXHIBITION_API + "litc";
             Log.d("URL", URL);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
@@ -641,7 +651,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                         Log.d("Trending_api_response",strsuccess);
                                         //getTrendingData();
                                     } else {
-                                        Toast.makeText(getActivity(), jsonObject.getString("Message"), Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(getActivity(), "Please try after sometime.", Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e1) {
                                     e1.printStackTrace();
@@ -674,12 +684,13 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 }
             };
 
-            requestQueue.add(stringRequest);
+            //requestQueue.add(stringRequest);
         } catch (JSONException e) {
             e.printStackTrace();
 
         }
-
+        /*stringRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        PretStreet.getInstance().addToRequestQueue(stringRequest, Constant.tag_json_obj);*/
     }
 
     private class ArticlePagerAdapter extends PagerAdapter{
@@ -721,7 +732,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
             }else {
                 Glide.with(mContext)
                         .load(mResources.get(position))
-                        .centerCrop().into(imageView);
+                        .fitCenter()
+                        .into(imageView);
             }
 
             imageView.setOnClickListener(new View.OnClickListener() {

@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -49,6 +51,7 @@ import com.hit.pretstreet.pretstreet.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.ui.SelectLocation;
+import com.hit.pretstreet.pretstreet.ui.StoreLocationMapScreen;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,11 +77,13 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
     ArrayList<TrendingItems> list;
     ExhibitionAdapter adapter;
 
-    private LinearLayout ll_header;
+    private FrameLayout ll_header;
+    private NestedScrollView nsv_header;
     private ImageView img_icon_menu, img_notification, img_filter, img_search, img_expand,img_back;
-    private TextView txt_location, txt_cat_name;
-    private boolean loading = true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private TextView txt_location, txt_cat_name, txt_recent;
+    private boolean loading = true, first = true;
+    int visibleItemCount;
+    int offset=0, pagecount =0;
 
     @Nullable
     @Override
@@ -93,9 +98,11 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
 
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
+        list = new ArrayList<>();
 
-        ll_header= (LinearLayout) view.findViewById(R.id.ll_header);
+        ll_header= (FrameLayout) view.findViewById(R.id.ll_header);
         rv_trending = (RecyclerView) view.findViewById(R.id.rv_trending);
+        nsv_header = (NestedScrollView) view.findViewById(R.id.nsv_header);
 
         img_icon_menu = (ImageView) view.findViewById(R.id.img_icon_menu);
         img_notification = (ImageView) view.findViewById(R.id.img_notification);
@@ -106,8 +113,10 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
 
         txt_location = (TextView) view.findViewById(R.id.txt_location);
         txt_cat_name = (TextView) view.findViewById(R.id.txt_cat_name);
+        txt_recent = (TextView) view.findViewById(R.id.txt_recent);
         txt_location.setTypeface(font);
         txt_cat_name.setTypeface(font);
+        txt_recent.setTypeface(font);
         txt_cat_name.setText(name);
 
         txt_location.setOnClickListener(this);
@@ -127,24 +136,20 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
         rv_trending.setLayoutManager(mLayoutManager);
         rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.trending_grey), 5.0f));
 
-        rv_trending.addOnScrollListener(new RecyclerView.OnScrollListener()
-        {
+        nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
-                if(dy > 0) //check for scroll down
-                {
-                    visibleItemCount = mLayoutManager.getChildCount();
-                    totalItemCount = mLayoutManager.getItemCount();
-                    pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    if (scrollY > oldScrollY) {
+                        visibleItemCount = mLayoutManager.getChildCount();
 
-                    if (loading)
-                    {
-                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
-                        {
-                            loading = false;
-                            Log.v("...", "Last Item Wow !");
-                            //Do pagination.. i.e. fetch new data
+                        int visibleItemCount = mLayoutManager.getChildCount();
+                        final int lastItem = mLayoutManager.findFirstVisibleItemPosition() + visibleItemCount;
+
+                        if (lastItem == mLayoutManager.getItemCount() ) {
+                            if(!loading)
+                                if(offset<pagecount)
+                                    getData();
                         }
                     }
                 }
@@ -169,52 +174,51 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             String URL ;
-                URL = Constant.EXHIBITION_API + "ftc";
+            URL = Constant.EXHIBITION_API + "ftc";
+            loading = true;
 
-            list = new ArrayList<>();
-            Log.d("URL", URL);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
-            jsonBody.put("Limit", Constant.LIMIT);
-            jsonBody.put("Offset", 1);
+            jsonBody.put("Limit",5);
+            jsonBody.put("Offset", ++offset);
             jsonBody.put("ApiKey", Constant.API);
             final String requestBody = jsonBody.toString();
-
-            showpDialog();
+            Log.d("URL", URL+"offset "+offset);
+            if(first) {
+                showpDialog();
+            }
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.d("Trending_api_response", String.valueOf(response));
+                            Log.d("Exhibition_api_response", String.valueOf(response));
                             try {
                                 JSONObject jsonObject =  new JSONObject(response);
                                 boolean responseSuccess = false;
                                 String strsuccess;
                                 try {
                                     strsuccess = jsonObject.getString("Status");
+                                    pagecount = jsonObject.getInt("PageCount");
                                     if (strsuccess.equals("1")) {
-                                        Log.d("Trending_api_response",strsuccess);
                                         responseSuccess = true;
                                         JSONArray jsonArray = null;
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                                                jsonArray = jsonObject.getJSONArray("ExhibitionContent");
+                                            jsonArray = jsonObject.getJSONArray("ExhibitionContent");
 
                                             TrendingItems item;
                                             if (list == null)
                                                 list = new ArrayList<>();
-                                            else
-                                                list.clear();
                                             for (int i = 0; i < jsonArray.length(); i++) {
                                                 JSONObject trendingContent = jsonArray.getJSONObject(i);
                                                 item = new TrendingItems();
                                                 item.setId(trendingContent.getString("tcId"));
-                                                item.setStoreLink(trendingContent.getString("Storelink"));
-                                                item.setLogoImage(trendingContent.getString("LogoImage"));
+                                                item.setLatitude(trendingContent.getString("Latitude"));
+                                                item.setLongitude(trendingContent.getString("Longitude"));
                                                 item.setTitle(trendingContent.getString("Title"));
                                                 item.setArticle(trendingContent.getString("Article"));
                                                 item.setLike((trendingContent.getInt("CustomerLike")+""));
-                                                item.setStoreName(trendingContent.getString("Storename"));
+                                                //item.setStoreName(trendingContent.getString("Storename"));
 
                                                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageArray");
                                                 ArrayList imagearray = new ArrayList();
@@ -236,6 +240,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                                                 list.add(item);
                                             }
                                         }
+                                        loading = false;
                                     } else {
                                         //Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_SHORT).show();
                                         responseSuccess = false;
@@ -245,18 +250,22 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                                     responseSuccess = false;
                                 }
                                 if (responseSuccess && list.size()>0) {
-                                        adapter = new ExhibitionAdapter(getActivity(), list);
-                                        rv_trending.setAdapter(adapter);
+                                    adapter = new ExhibitionAdapter(getActivity(), list);
+                                    rv_trending.setAdapter(adapter);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            if(first)
+                                first = false;
                             hidepDialog();
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.d("Trending_api_error", error.toString());
+                    if(first)
+                        first = false;
                     hidepDialog();
                 }
             }) {
@@ -346,13 +355,13 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("images", mImagearray);
         bundle.putInt("position", position);
+        bundle.putInt("countvisibility", 0);
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
         newFragment.setArguments(bundle);
         newFragment.show(ft, "slideshow");
     }
-
 
     private class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.ViewHolder>{
 
@@ -384,10 +393,6 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                     //.placeholder(R.mipmap.ic_launcher)
                     .into(holder.iv_banner);
 
-            String udata = trendingItems.getStoreName();
-            SpannableString content = new SpannableString(udata);
-            content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
-
             if(trendingItems.getLike().equals("0")){
                 button01pos = 0;
                 holder.img_like.setImageResource(R.drawable.grey_heart);
@@ -414,7 +419,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
 
             View view;
             int viewType;
-            ImageView img_like, img_share, iv_banner;
+            ImageView img_like, img_share, img_map, iv_banner;
             TextView txt_description, txt_heading, txt_date;
 
             public ViewHolder(View itemView, int viewType) {
@@ -426,6 +431,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
 
                 img_like = (ImageView) itemView.findViewById(R.id.iv_like);
                 img_share = (ImageView) itemView.findViewById(R.id.iv_share);
+                img_map = (ImageView) itemView.findViewById(R.id.iv_map);
                 iv_banner = (ImageView) itemView.findViewById(R.id.iv_banner);
                 txt_description = (TextView) itemView.findViewById(R.id.txt_description);
                 txt_heading = (TextView) itemView.findViewById(R.id.txt_heading);
@@ -438,7 +444,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                 img_like.setOnClickListener(this);
                 img_share.setOnClickListener(this);
                 iv_banner.setOnClickListener(this);
-
+                img_map.setOnClickListener(this);
 
             }
 
@@ -459,9 +465,24 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                     case R.id.iv_share:
                         shareTextUrl();
                         break;
-                    case R.id.txt_shopname:
-                        if(!list.get(getAdapterPosition()).getStoreLink().equals("0"))
-                            openStoreDetails();
+                    case R.id.iv_map:
+
+                        Log.d("location","location "+ list.get(getAdapterPosition()).getLatitude());
+                        Log.d("location","location "+ list.get(getAdapterPosition()).getLongitude());
+                        if (list.get(getAdapterPosition()).getLatitude().equals("") ||
+                                list.get(getAdapterPosition()).getLongitude().equals("")) {
+                            Toast.makeText(getActivity(), "Location not Found", Toast.LENGTH_SHORT).show();
+                        } else {
+                            clickLogTracking("map",list.get(getAdapterPosition()).getId());
+                            Intent i = new Intent(getActivity(), StoreLocationMapScreen.class);
+                            Bundle b = new Bundle();
+                            b.putString("name", list.get(getAdapterPosition()).getTitle());
+                            b.putString("address", list.get(getAdapterPosition()).getArticle());
+                            b.putDouble("lat", Double.parseDouble(list.get(getAdapterPosition()).getLatitude()));
+                            b.putDouble("long", Double.parseDouble(list.get(getAdapterPosition()).getLongitude()));
+                            i.putExtras(b);
+                            startActivity(i);
+                        }
                         break;
                     case R.id.iv_banner:
                         StoreDetailFragment.ProductImageItem productImageItem = new StoreDetailFragment.ProductImageItem();
@@ -473,43 +494,6 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                     default:
                         break;
                 }
-            }
-
-            private void openStoreDetails(){
-                int position = getAdapterPosition();
-                clickLogTracking("storeview", list.get(getAdapterPosition()).getStoreLink());
-                Fragment f1 = new StoreDetailFragment();
-                Bundle b1 = new Bundle();
-                b1.putString("cat_id", list.get(getAdapterPosition()).getStoreLink());
-                b1.putString("cat_name", "");
-                b1.putInt("position", position);
-                f1.setArguments(b1);
-                FragmentTransaction t1 = getFragmentManager().beginTransaction();
-                t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                t1.add(R.id.frame_container, f1);
-//                    t1.replace(R.id.frame_container, f1);
-                t1.addToBackStack(null);
-                t1.commit();
-            }
-
-            private void clickLogTracking(String event, String storeId) {
-                String urlJson = Constant.FASHION_API + "route=trackinglogs&action=" + event + "&user_id="
-                        + PreferenceServices.getInstance().geUsertId() + "&pid=" + storeId;
-                Log.e("URL: ", urlJson);
-                final ArrayList<HashMap<String, String>> list = new ArrayList<>();
-                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJson, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(final JSONObject response) {
-                        Log.e("Volley", response.toString());
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d("Volley", "Error: " + error.getMessage());
-                    }
-                });
-                jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
             }
 
             private void shareTextUrl() {
@@ -527,16 +511,31 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
         }
     }
 
-
+    private void clickLogTracking(String event, String storeId) {
+        String urlJson = Constant.FASHION_API + "route=trackinglogs&action=" + event + "&user_id="
+                + PreferenceServices.getInstance().geUsertId() + "&pid=" + storeId;
+        Log.e("URL: ", urlJson);
+        final ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJson, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(final JSONObject response) {
+                Log.e("Volley", response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Volley", "Error: " + error.getMessage());
+            }
+        });
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
+    }
 
     private void sendButtonStatus(String tcId){
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             String URL;
-            if(mainCAtId.equals("122"))
-                URL = Constant.TRENDING_API + "litc";
-            else
-                URL = Constant.EXHIBITION_API + "litc";
+            URL = Constant.EXHIBITION_API + "litc";
             Log.d("URL", URL);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());

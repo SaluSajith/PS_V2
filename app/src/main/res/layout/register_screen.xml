@@ -57,7 +57,7 @@
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="2sp"
-                    android:layout_marginTop="15sp"
+                    android:layout_marginTop="17sp"
                     android:layout_weight="1"
                     android:background="@drawable/facebook"
                     android:padding="5sp" />
@@ -75,7 +75,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-25dp"
+                android:layout_marginTop="-28dp"
                 android:src="@drawable/tagline" />
 
         </LinearLayout>
@@ -83,7 +83,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-37sp"
+            android:layout_marginTop="-40sp"
             android:alpha="0.9"
             android:background="@drawable/sign_up_base"
             android:orientation="vertical"
@@ -97,6 +97,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="-10sp"
                 android:layout_marginTop="25dp"
+                android:text="Test"
                 android:background="@drawable/email"
                 android:hint="name:"
                 android:inputType="textCapWords"
@@ -135,6 +136,7 @@
                     android:layout_weight="8"
                     android:background="@drawable/mobile"
                     android:hint="mobile no"
+                    android:text="7045916117"
                     android:inputType="number"
                     android:padding="10sp"
                     android:singleLine="true"
@@ -148,11 +150,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="-13sp"
+                android:layout_marginTop="-16sp"
                 android:background="@drawable/email"
                 android:hint="email id:"
                 android:inputType="textEmailAddress"
                 android:padding="10sp"
+                android:text="test@gmai.com"
                 android:singleLine="true"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:textColor="@android:color/black"
@@ -164,9 +167,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="10sp"
-                android:layout_marginTop="-8sp"
+                android:layout_marginTop="-9sp"
                 android:background="@drawable/password"
                 android:hint="password"
+                android:text="12345678"
                 android:inputType="textPassword"
                 android:padding="10sp"
                 android:singleLine="true"
@@ -223,7 +227,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="-75sp"
-            android:background="@drawable/bottom_fade"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -247,7 +250,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="2sp"
-                    android:text="Conditions of use"
+                    android:text="Terms of Service"
                     android:textColor="@android:color/white"
                     android:textSize="10sp" />
 

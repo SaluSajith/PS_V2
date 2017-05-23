@@ -159,10 +159,19 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
-                    /*if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY) {
-
-                    }*/
                     if (scrollY > oldScrollY) {
+                        visibleItemCount = mManager.getChildCount();
+
+                        int visibleItemCount = mManager.getChildCount();
+                        final int lastItem = mManager.findFirstVisibleItemPosition() + visibleItemCount;
+
+                        if (lastItem == mManager.getItemCount() ) {
+                            if(!requestCalled)
+                                Log.d("hitserver", "hitserver");
+                                    getStoreList_distancewise(LLSelectedID, false);
+                        }
+                    }
+                    /*if (scrollY > oldScrollY) {
                         visibleItemCount = mManager.getChildCount();
                         totalItemCount = mManager.getItemCount();
                         pastVisiblesItems = mManager.findFirstVisibleItemPosition();
@@ -171,7 +180,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                         final int lastItem = mManager.findFirstVisibleItemPosition() + visibleItemCount;
                         System.out.println("log lastItem "+lastItem+" "+(mManager.getItemCount() ));
                         if (lastItem == mManager.getItemCount() ) {
-                            System.out.println("log pageCount "+pageCount+" totalPages "+totalPages);
+
                             if (pageCount < totalPages) {
                                 if (!requestCalled) {
                                     requestCalled = true;
@@ -180,12 +189,13 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                     } else if (femaleClick) {
                                         //SortStoreListByMenWomen("female", false);
                                     } else {
+                                        System.out.println("log pageCount "+pageCount+" totalPages "+totalPages);
                                         getStoreList_distancewise(LLSelectedID, false);
                                     }
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
             }
         });
@@ -393,7 +403,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                             hashMap.put("area", jsonObject.getString("area"));
                                             list.add(hashMap);
                                         }
-                                        requestCalled = false;
                                         if (first) {
                                             hidepDialog();
                                         }
@@ -410,7 +419,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                                 Toast.makeText(getActivity(), "Something went wrong. Please try again later.", Toast.LENGTH_SHORT).show();
                                             }
                                         }
-
+                                        requestCalled = false;
                                     } else {
                                         responseSuccess = false;
                                     }
@@ -430,7 +439,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     hidepDialog();
-
+                    requestCalled = false;
                     if (first) {
                         hidepDialog();
                     }

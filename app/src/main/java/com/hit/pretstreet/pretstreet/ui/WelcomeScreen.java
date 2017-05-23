@@ -86,7 +86,7 @@ public class WelcomeScreen extends ActivityManagePermission implements View.OnCl
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
         init();
-        getFixedImages("header");
+        //getFixedImages("header");
         //getAppKeyHash();
         btn_sign_up.setOnClickListener(this);
         btn_login.setOnClickListener(this);

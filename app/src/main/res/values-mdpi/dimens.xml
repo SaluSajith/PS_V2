@@ -34,7 +34,7 @@
 
     <dimen name="subcategory_margintop">-30dp</dimen>
     <dimen name="subcategory_inner_margintop">-25dp</dimen>
-    <dimen name="trending_margintop">-30dp</dimen>
+    <dimen name="trending_margintop">-20dp</dimen>
     <dimen name="header_marginbottom">14dp</dimen>
     <dimen name="margin_custom_row">17dp</dimen>
     <dimen name="margin_top_custom_row">13dp</dimen>

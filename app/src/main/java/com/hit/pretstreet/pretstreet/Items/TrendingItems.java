@@ -12,6 +12,7 @@ public class TrendingItems implements Serializable {
 
     String id, storeLink, logoImage, title, article, articledate;
     String like, storeName;
+    String latitude, longitude;
     ArrayList<String> imagearray = new ArrayList<>();
 
     public String getId() {
@@ -86,4 +87,19 @@ public class TrendingItems implements Serializable {
         this.imagearray = imagearray;
     }
 
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
 }

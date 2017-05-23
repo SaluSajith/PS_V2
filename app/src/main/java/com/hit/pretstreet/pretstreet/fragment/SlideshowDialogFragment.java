@@ -57,6 +57,9 @@ public class SlideshowDialogFragment extends DialogFragment {
 
         images = getArguments().getParcelableArrayList("images");
         selectedPosition = getArguments().getInt("position");
+        int countvisibility = getArguments().getInt("countvisibility");
+        if(countvisibility==0)
+            lblCount.setVisibility(View.INVISIBLE);
 
 //        Log.e(TAG, "position: " + selectedPosition);
 //        Log.e(TAG, "images size: " + images.size());

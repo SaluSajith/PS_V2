@@ -415,7 +415,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
             ll_main_cat.setVisibility(View.GONE);
         }
-
+        getMainCategoryList();
         // set saved data of the sub catrgoty list
         SavedSubCatList = PreferenceServices.getInstance().getHomeSubCatList();
         if (SavedSubCatList.length() > 1) {
@@ -464,7 +464,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             rl_sub_cat1.setVisibility(View.GONE);
             getSubCategory();
         }
-        getMainCategoryList();
+
         return rootView;
     }
 
@@ -505,7 +505,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         super.onPause();
         /*jsonObjReqMain.cancel();
         jsonObjReqSub.cancel();*/
-        stringReqMain.cancel();
+        try {
+            stringReqMain.cancel();
+        }catch (Exception e){}
     }
 
     @Override
@@ -575,6 +577,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     }
                                     PreferenceServices.instance().saveHomeMainCatList(response.toString());
                                     if (response.toString().equalsIgnoreCase(SavedMAinCaTList)) {
+
                                     } else {
                                         ll_main_cat.removeAllViews();
                                         for (int i = 0; i < list.size(); i++) {
@@ -804,7 +807,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     String serverVersion = jsonObject.getString("AndroidVersion");
                                     String curVersion = info.versionCode + "";
                                     if(!serverVersion.equals(curVersion));
-                                        //showUpdateDialog();
+                                        showUpdateDialog();
 
 
                                 } else {
@@ -871,8 +874,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        stringReqMain.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        PretStreet.getInstance().addToRequestQueue(stringReqMain, Constant.tag_json_obj);
+        /*stringReqMain.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        PretStreet.getInstance().addToRequestQueue(stringReqMain, Constant.tag_json_obj);*/
     }
 
     private void getSubCategory(){

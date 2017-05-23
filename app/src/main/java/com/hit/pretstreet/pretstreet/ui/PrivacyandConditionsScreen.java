@@ -64,8 +64,8 @@ public class PrivacyandConditionsScreen extends Activity {
     private void fetchContentData() {
         String urlJsonObj = null;
         if (screen.equalsIgnoreCase("conditions")) {
-            txt_cat.setText("Conditions of use");
-            urlJsonObj = Constant.FASHION_API + "route=conditions";
+            txt_cat.setText("Terms of Service");
+            urlJsonObj = Constant.FASHION_API + "route=terms";
         } else if (screen.equalsIgnoreCase("privacy")) {
             txt_cat.setText("Privacy Notice");
             urlJsonObj = Constant.FASHION_API + "route=privacy";

@@ -21,7 +21,7 @@ public class IncomingSms extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        Toast.makeText(context, "ON RECEIVE BROADCAST", Toast.LENGTH_LONG).show();
         // Retrieves a map of extended data from the intent.
         final Bundle bundle = intent.getExtras();
         try {

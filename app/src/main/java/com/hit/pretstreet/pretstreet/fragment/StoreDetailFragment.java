@@ -418,6 +418,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                                         Bundle bundle = new Bundle();
                                         bundle.putParcelableArrayList("images", returnObjimage);
                                         bundle.putInt("position", finalJ);
+                                        bundle.putInt("countvisibility", 1);
 
                                         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                                         SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
