@@ -32,7 +32,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <Button
@@ -40,7 +40,7 @@
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2sp"
-                android:layout_marginTop="17sp"
+                android:layout_marginTop="15sp"
                 android:layout_weight="1"
                 android:background="@drawable/sign_up"
                 android:padding="5sp" />
@@ -51,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2sp"
                 android:layout_weight="1"
+                android:layout_marginTop="@dimen/welcome_margintop"
                 android:background="@drawable/login"
                 android:padding="5sp" />
 
@@ -59,7 +60,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
+            android:paddingBottom="3dp"
             android:layout_marginTop="-27sp"
             android:orientation="horizontal">
 
@@ -78,7 +79,7 @@
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2sp"
-                android:layout_marginTop="-2dp"
+                android:layout_marginTop="@dimen/welcome_margintop"
                 android:layout_weight="1"
                 android:background="@drawable/google"
                 android:padding="5sp" />

@@ -5,8 +5,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -22,18 +27,17 @@ import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,15 +59,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.Items.CategoryItem;
-import com.hit.pretstreet.pretstreet.Items.TrendingItems;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
-import com.hit.pretstreet.pretstreet.ui.OnLoadMoreListener;
-import com.hit.pretstreet.pretstreet.ui.SelectLocation;
 import com.hit.pretstreet.pretstreet.ui.SimpleDividerItemDecoration;
 import com.hit.pretstreet.pretstreet.ui.StoreLocationMapScreen;
 
@@ -72,11 +75,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -103,13 +102,11 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     String LLSelectedID = "";
 
     private String lat = "", lng = "";
-    boolean maleClick, femaleClick;
     int pageCount, totalPages;
     public static int selectedPosition;
     static boolean requestCalled = false;
+    static boolean loadmore = true;
     ArrayList<HashMap<String, String>> list;
-
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     @Nullable
     @Override
@@ -156,49 +153,27 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         list_store.setNestedScrollingEnabled(false);
 
         nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
                     if (scrollY > oldScrollY) {
-                        visibleItemCount = mManager.getChildCount();
 
-                        int visibleItemCount = mManager.getChildCount();
-                        final int lastItem = mManager.findFirstVisibleItemPosition() + visibleItemCount;
-
-                        if (lastItem == mManager.getItemCount() ) {
-                            if(!requestCalled)
-                                Log.d("hitserver", "hitserver");
-                                    getStoreList_distancewise(LLSelectedID, false);
-                        }
-                    }
-                    /*if (scrollY > oldScrollY) {
-                        visibleItemCount = mManager.getChildCount();
-                        totalItemCount = mManager.getItemCount();
-                        pastVisiblesItems = mManager.findFirstVisibleItemPosition();
-
-                        int visibleItemCount = mManager.getChildCount();
-                        final int lastItem = mManager.findFirstVisibleItemPosition() + visibleItemCount;
-                        System.out.println("log lastItem "+lastItem+" "+(mManager.getItemCount() ));
-                        if (lastItem == mManager.getItemCount() ) {
-
-                            if (pageCount < totalPages) {
-                                if (!requestCalled) {
-                                    requestCalled = true;
-                                    if (maleClick) {
-                                        //SortStoreListByMenWomen("male", false);
-                                    } else if (femaleClick) {
-                                        //SortStoreListByMenWomen("female", false);
-                                    } else {
-                                        System.out.println("log pageCount "+pageCount+" totalPages "+totalPages);
-                                        getStoreList_distancewise(LLSelectedID, false);
-                                    }
-                                }
+                        if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                            Log.i("hitserver", "BOTTOM SCROLL");
+                            if(!requestCalled){
+                                requestCalled = true;
+                                if(loadmore)
+                                getStoreList_distancewise(LLSelectedID, false);
                             }
                         }
-                    }*/
+
+
+                    }
                 }
             }
         });
+
 
         /**inflate header view of the list starts.**/
         LayoutInflater inflaterHeader = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -348,7 +323,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             String URL = Constant.INDEX_PATH + "getCategoryStores";
-            list = new ArrayList<>();
             Log.d("URL", URL + " "+ PreferenceServices.getInstance().geUsertId()+" "+mainCatId +" "+sub_catId +" "+lat +" "+lng);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
@@ -409,7 +383,8 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
 
                                         if (responseSuccess) {
                                             if (first) {
-                                                storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity(), R.layout.row_list_store1, list);
+                                                storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity()
+                                                        , R.layout.row_list_store1, list);
                                                 list_store.setAdapter(storeList_recyclerAdapter);
                                             } else
                                                 storeList_recyclerAdapter.notifyDataSetChanged();
@@ -422,6 +397,8 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                         requestCalled = false;
                                     } else {
                                         responseSuccess = false;
+                                        loadmore = false;
+                                        storeList_recyclerAdapter.notifyDataSetChanged();
                                     }
                                 } catch (JSONException e1) {
                                     e1.printStackTrace();
@@ -607,16 +584,21 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         @Override
         public void onBindViewHolder(final ShopsHolder holder, final int position) {
 
-            /* Log.d("requestCalled", mItems.get(position)+" "+mItems.size());
-           if(position == mItems.size()-1) {
+            if(holder.matrix==null) {
+                holder.matrix = holder.img_store_photo.getImageMatrix();
+                holder.matrix.postScale(2,2);
+            }
+            else;
+            if(position == mItems.size()-1) {
                 if (pageCount < totalPages) {
-                    if(requestCalled)
+                    if(loadmore)
                     holder.ll_progress.setVisibility(View.VISIBLE);
+                    else holder.ll_progress.setVisibility(View.GONE);
                 }
                 else
                     holder.ll_progress.setVisibility(View.GONE);
             }
-            else*/
+            else
                 holder.ll_progress.setVisibility(View.GONE);
 
             holder.txt_storename.setTypeface(font);
@@ -647,23 +629,20 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 holder.tv_margintop.setLayoutParams(relativeParams);
                 holder.tv_margintop.requestLayout();
             }
+
             Glide.with(CategoryWiseStoreListFragment.this)
-                    .load(mItems.get(position).get("thumb"))
+                    .load(list.get(position).get("thumb"))
                     .asBitmap()
                     .fitCenter()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL) //use this to cache
                     .into(new BitmapImageViewTarget(holder.img_store_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
-
                             Bitmap croppedBmp = Bitmap.createBitmap(resource);
-                            final Matrix matrix = holder.img_store_photo.getImageMatrix();
-                            matrix.postScale(2, 2);
-                            holder.img_store_photo.setImageMatrix(matrix);
+                            holder.img_store_photo.setImageMatrix(holder.matrix);
                             holder.img_store_photo.setImageBitmap(croppedBmp);
-
                         }
                     });
+
 
             if (mItems.get(position).get("wishlist").equalsIgnoreCase("notin")) {
                 holder.img_follow_unfollow.setText("Follow");
@@ -746,6 +725,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
             TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, tv_margintop;
             LinearLayout ll_progress;
+            Matrix matrix;
 
             public ShopsHolder(View itemView) {
                 super(itemView);

@@ -79,4 +79,7 @@
     <dimen name="distanceactivesort_img_height">105dp</dimen>
     <dimen name="back_img_width">25dp</dimen>
     <dimen name="back_img_height">25dp</dimen>
+
+    <dimen name="welcome_margintop">0dp</dimen>
+    <dimen name="google_margintop">2dp</dimen>
 </resources>

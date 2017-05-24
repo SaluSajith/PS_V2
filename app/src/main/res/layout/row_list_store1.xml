@@ -144,8 +144,8 @@
             android:layout_weight="0.5"
             android:orientation="horizontal"
             android:rotation="-5"
-            android:layout_marginTop="-7dp"
-            android:layout_marginBottom="-7dp"
+            android:layout_marginTop="-4dp"
+            android:layout_marginBottom="-4dp"
             android:background="@color/white"
             android:id="@+id/ll_icons">
 
@@ -158,8 +158,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginBottom="@dimen/padding_xlarge"
+                android:layout_marginTop="@dimen/padding_xlarge"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@color/white"

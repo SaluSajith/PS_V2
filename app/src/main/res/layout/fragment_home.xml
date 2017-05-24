@@ -130,22 +130,14 @@
                 android:orientation="vertical"
                 android:visibility="visible" />
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_main_cat"
-                android:orientation="horizontal"
-                android:layout_marginTop="-45dp"
-                android:id="@+id/ll_exhibitions"></LinearLayout>
-
             <LinearLayout
                 android:id="@+id/rl_sub_cat1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_image_height"
+                android:layout_marginTop="-45dp"
                 android:orientation="vertical"
-                android:layout_below="@id/ll_exhibitions"
-                android:layout_marginBottom="30dp"
+                android:layout_below="@id/ll_main_cat"
+                android:layout_marginBottom="28dp"
                 android:gravity="center_vertical"
                 android:background="@drawable/categories"
                 android:visibility="visible">

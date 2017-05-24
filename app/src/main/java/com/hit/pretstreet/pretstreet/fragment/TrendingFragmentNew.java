@@ -138,6 +138,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv_trending.setLayoutManager(mLayoutManager);
         rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.trending_grey), 5.0f));
+        rv_trending.setNestedScrollingEnabled(false);
 
         nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -154,6 +155,13 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                 if(offset<pagecount)
                                     getData();
                         }
+
+                        /*if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                            Log.i("hitserver", "BOTTOM SCROLL");
+                            if(!requestCalled)
+                                getStoreList_distancewise(LLSelectedID, false);
+                        }*/
+
                     }
                 }
             }

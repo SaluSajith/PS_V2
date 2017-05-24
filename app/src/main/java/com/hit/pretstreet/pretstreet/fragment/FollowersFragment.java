@@ -298,12 +298,12 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                     .into(new BitmapImageViewTarget(img_photo) {
                         @Override
                         protected void setResource(Bitmap resource) {
-                            Bitmap mask;
+                            /*Bitmap mask;
                             if (position % 2 == 0) {
                                 mask = BitmapFactory.decodeResource(getResources(), R.drawable.followers_img_2);
                             } else {
                                 mask = BitmapFactory.decodeResource(getResources(), R.drawable.followers_img_1);
-                            }
+                            }*/
                             /*Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
                             Canvas mCanvas = new Canvas(result);
                             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);

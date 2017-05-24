@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ImageView img_notification, img_search, img_expand, img_back;
     public TextView txt_location;
     private TextView txt_user_name, txt_shoes, txt_bags, txt_accessories;
-    private LinearLayout ll_main_cat, ll_bags, ll_shoes, ll_accesories, ll_exhibitions;
+    private LinearLayout ll_main_cat, ll_bags, ll_shoes, ll_accesories;
     private LinearLayout  rl_sub_cat1;
     private String parentID, SavedMAinCaTList, SavedSubCatList;
     private StringRequest stringReqMain;
@@ -97,7 +97,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         /*ll_eyewear = (LinearLayout) rootView.findViewById(R.id.ll_eyewear);
         ll_watches = (LinearLayout) rootView.findViewById(R.id.ll_watches);*/
         ll_accesories = (LinearLayout) rootView.findViewById(R.id.ll_accesories);
-        ll_exhibitions = (LinearLayout) rootView.findViewById(R.id.ll_exhibitions);
 
         rl_sub_cat1 = (LinearLayout) rootView.findViewById(R.id.rl_sub_cat1);
 
@@ -403,14 +402,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 });
                 ll_main_cat.addView(view);
-                /*if(i==4){
-                    ll_exhibitions.removeAllViews();
-
-                    LayoutInflater inf = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    View view1;
-                        view1 = inf.inflate(R.layout.row_sub_cat_list2, null);
-                    ll_exhibitions.addView(view1);
-                }*/
             }
         } else {
             ll_main_cat.setVisibility(View.GONE);
@@ -515,6 +506,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         txt_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         txt_user_name.setText("Hi, " + PreferenceServices.getInstance().geUsertName());
+        hidepDialog();
     }
 
     private void getMainCategoryList() {
@@ -809,16 +801,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     if(!serverVersion.equals(curVersion));
                                         showUpdateDialog();
 
-
                                 } else {
                                     if (SavedMAinCaTList.length() > 1) {
                                     } else {
                                         Toast.makeText(getActivity(), "Server not responding Please try again...", Toast.LENGTH_SHORT).show();
                                     }
-                                }
-                                if (SavedMAinCaTList.length() > 1) {
-                                } else {
-                                    hidepDialog();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -833,7 +820,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     VolleyLog.e("Volley", "Error: " + error.getMessage());
                     if (SavedMAinCaTList.length() > 1) {
                     } else {
-                        hidepDialog();
                         String message = null;
                         if (error instanceof NetworkError) {
                             message = "Cannot connect to Internet...Please check your connection!";

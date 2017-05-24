@@ -42,12 +42,15 @@ import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -78,6 +81,7 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
     private LinearLayout rl_fixed_top;
     private Typeface font;
     private ProgressDialog pDialog;
+    String strOtp, strUserEmail;
 
     String strEmail, strPassword, facebookId, strName, strGender, googleImageUrl, firstname, strlocation,
             lastname, googleId, strSocialId, strSocialType, strProfilePic, baseImage, headerImage;
@@ -185,8 +189,9 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
                     Toast.makeText(this, "Please Enter a Valid Email Id", Toast.LENGTH_SHORT).show();
                     edt_email.requestFocus();
                 } else {
-                    forgotPasswordJSON(text);
-                    //}
+                    //forgotPasswordJSON(text);
+                    strUserEmail = edt_email.getText().toString();
+                    sendOtpRequest(text);
                 }
                 break;
 
@@ -200,7 +205,7 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.popup_otp_screen, null);
         ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
-        EditText edt_otp = (EditText) view.findViewById(R.id.edt_otp);
+        final EditText edt_otp = (EditText) view.findViewById(R.id.edt_otp);
         ImageView btn_send = (ImageView) view.findViewById(R.id.btn_send);
 
         edt_otp.setTypeface(font);
@@ -230,9 +235,18 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupDialog.dismiss();
-                // json calling for varify otp from server if success then this function call
-                showChangePassword();
+                if (edt_otp.getText().toString().length() < 1) {
+                    Toast.makeText(getApplicationContext(), "Enter OTP value", Toast.LENGTH_SHORT).show();
+                    edt_otp.requestFocus();
+                }
+                else {
+                    popupDialog.dismiss();
+                    if (strOtp.equals(edt_otp.getText().toString())) {
+                        showChangePassword();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Wrong OTP", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
 
@@ -243,8 +257,8 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.popup_change_password, null);
         ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
-        EditText edt_new = (EditText) view.findViewById(R.id.edt_new);
-        EditText edt_confirm = (EditText) view.findViewById(R.id.edt_confirm);
+        final EditText edt_new = (EditText) view.findViewById(R.id.edt_new);
+        final EditText edt_confirm = (EditText) view.findViewById(R.id.edt_confirm);
         ImageView btn_send = (ImageView) view.findViewById(R.id.btn_send);
 
         edt_new.setTypeface(font);
@@ -275,8 +289,22 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupDialog.dismiss();
-                // json calling for change password from server
+                if (edt_new.getText().toString().length() < 1) {
+                    Toast.makeText(getApplicationContext(), "Enter password", Toast.LENGTH_SHORT).show();
+                    edt_new.requestFocus();
+                }
+                else if(edt_confirm.getText().toString().length() < 1) {
+                    Toast.makeText(getApplicationContext(), "Enter confirm password", Toast.LENGTH_SHORT).show();
+                    edt_confirm.requestFocus();
+                }
+                else if(!edt_new.getText().toString().equals(edt_confirm.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Passwords doesn't match", Toast.LENGTH_SHORT).show();
+                    edt_confirm.requestFocus();
+                }
+                else {
+                    popupDialog.dismiss();
+                    sendResetPassword(strUserEmail, edt_confirm.getText().toString());
+                }
 
             }
         });
@@ -293,10 +321,11 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
                 String strsuccess, message;
                 try {
                     strsuccess = response.getString("status");
-                    if (strsuccess.equalsIgnoreCase("success")) {
+                    if (strsuccess.equalsIgnoreCase("true")) {
+                        edt_email.setText("");
                         message = response.getString("message");
                         Toast.makeText(ForgotPasswordScreen.this, message, Toast.LENGTH_LONG).show();
-                        ForgotPasswordScreen.this.finish();
+                        finish();
                     } else {
                         message = response.getString("message");
                         Toast.makeText(ForgotPasswordScreen.this, message, Toast.LENGTH_LONG).show();
@@ -492,5 +521,140 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
         });
         jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
+    }
+
+
+
+    private void sendOtpRequest(String email){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            String URL;
+            URL = Constant.TRENDING_API + "otpForgotpasswordGenerate";
+            Log.d("URL", URL);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("UserEmail",email);
+            jsonBody.put("ApiKey", Constant.API);
+            final String requestBody = jsonBody.toString();
+
+            showpDialog();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("OTP_api_response", String.valueOf(response));
+                            try {
+                                JSONObject jsonObject =  new JSONObject(response);
+                                String strsuccess;
+                                try {
+                                    strsuccess = jsonObject.getString("Status");
+                                    if (strsuccess.equals("1")) {
+                                        strOtp = jsonObject.getString("OTP");
+                                        Toast.makeText(getApplicationContext(), jsonObject.getString("Message"), Toast.LENGTH_SHORT).show();
+                                        showOTPScreem();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), jsonObject.getString("Message"), Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            hidepDialog();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hidepDialog();
+                    Log.d("Like_api_error", error.toString());
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+            };
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void sendResetPassword(String email, String password){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            String URL;
+            URL = Constant.TRENDING_API + "setnewpassword";
+            Log.d("URL", URL);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("UserPassword",password);
+            jsonBody.put("UserEmail",email);
+            jsonBody.put("ApiKey", Constant.API);
+            final String requestBody = jsonBody.toString();
+
+            showpDialog();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("Resetpassword_api_response", String.valueOf(response));
+                            try {
+                                JSONObject jsonObject =  new JSONObject(response);
+                                String strsuccess;
+                                try {
+                                    strsuccess = jsonObject.getString("Status");
+                                    if (strsuccess.equals("1")) {
+                                        Toast.makeText(getApplicationContext(), jsonObject.getString("Message"), Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), jsonObject.getString("Message"), Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            hidepDialog();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hidepDialog();
+                    Log.d("Like_api_error", error.toString());
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+            };
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

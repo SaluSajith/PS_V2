@@ -43,13 +43,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="-35dp"
-            android:background="@drawable/blackpatch"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:paddingTop="3dp"
                 android:orientation="horizontal">
 
                 <Button
@@ -68,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2sp"
                     android:layout_weight="1"
+                    android:layout_marginTop="@dimen/google_margintop"
                     android:background="@drawable/google"
                     android:padding="5sp" />
             </LinearLayout>
@@ -97,7 +97,6 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="-10sp"
                 android:layout_marginTop="25dp"
-                android:text="Test"
                 android:background="@drawable/email"
                 android:hint="name:"
                 android:inputType="textCapWords"
@@ -136,7 +135,6 @@
                     android:layout_weight="8"
                     android:background="@drawable/mobile"
                     android:hint="mobile no"
-                    android:text="7045916117"
                     android:inputType="number"
                     android:padding="10sp"
                     android:singleLine="true"
@@ -155,7 +153,6 @@
                 android:hint="email id:"
                 android:inputType="textEmailAddress"
                 android:padding="10sp"
-                android:text="test@gmai.com"
                 android:singleLine="true"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:textColor="@android:color/black"
@@ -170,7 +167,6 @@
                 android:layout_marginTop="-9sp"
                 android:background="@drawable/password"
                 android:hint="password"
-                android:text="12345678"
                 android:inputType="textPassword"
                 android:padding="10sp"
                 android:singleLine="true"

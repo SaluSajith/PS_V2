@@ -14,7 +14,7 @@
     <dimen name="padding_xxxlarge">20dp</dimen>
     <dimen name="padding_huge">30dp</dimen>
 
-    <dimen name="margin_xxlarge">18dp</dimen>//
+    <dimen name="margin_xxlarge">20dp</dimen>//
 
     <dimen name="button_radius_standard">10dp</dimen>
     <dimen name="button_radius_small">5dp</dimen>
@@ -81,5 +81,8 @@
     <dimen name="countrycode_img_height">170dp</dimen>
     <dimen name="distanceactivesort_img_width">239dp</dimen>
     <dimen name="distanceactivesort_img_height">158dp</dimen>
+
+    <dimen name="welcome_margintop">0dp</dimen>
+    <dimen name="google_margintop">2dp</dimen>
 
 </resources>

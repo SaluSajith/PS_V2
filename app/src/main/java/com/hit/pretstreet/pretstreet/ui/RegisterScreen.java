@@ -608,17 +608,21 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupDialog.dismiss();
-
-                if(otpValue.equals(edt_otp.getText().toString())) {
-                    String email = edt_email.getText().toString().trim();
-                    String firstname = edt_name.getText().toString().trim();
-                    String password = edt_password.getText().toString();
-                    String mobile = edt_number.getText().toString().trim();
-                    registerUserInformation(firstname, mobile, email, password);
+                if (edt_otp.getText().toString().length() < 1) {
+                    Toast.makeText(getApplicationContext(), "Enter OTP value", Toast.LENGTH_SHORT).show();
+                    edt_otp.requestFocus();
                 }
-                else{
-                    Toast.makeText(getApplicationContext(), "Wrong OTP", Toast.LENGTH_SHORT).show();
+                else {
+                    popupDialog.dismiss();
+                    if (otpValue.equals(edt_otp.getText().toString())) {
+                        String email = edt_email.getText().toString().trim();
+                        String firstname = edt_name.getText().toString().trim();
+                        String password = edt_password.getText().toString();
+                        String mobile = edt_number.getText().toString().trim();
+                        registerUserInformation(firstname, mobile, email, password);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Wrong OTP", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

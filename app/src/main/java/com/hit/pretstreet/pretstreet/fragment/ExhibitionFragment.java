@@ -135,6 +135,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv_trending.setLayoutManager(mLayoutManager);
         rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.trending_grey), 5.0f));
+        rv_trending.setNestedScrollingEnabled(false);
 
         nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -249,9 +250,15 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                                     e1.printStackTrace();
                                     responseSuccess = false;
                                 }
-                                if (responseSuccess && list.size()>0) {
+                                if (responseSuccess && list.size()>0 && first) {
                                     adapter = new ExhibitionAdapter(getActivity(), list);
                                     rv_trending.setAdapter(adapter);
+                                }
+                                else if(responseSuccess && list.size()>0 ){
+                                    adapter.notifyDataSetChanged();
+                                }
+                                else{
+                                    Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

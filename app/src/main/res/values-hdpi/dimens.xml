@@ -86,4 +86,7 @@
     <dimen name="countrycode_img_height">85dp</dimen>
     <dimen name="distanceactivesort_img_width">119dp</dimen>
     <dimen name="distanceactivesort_img_height">79dp</dimen>
+
+    <dimen name="welcome_margintop">0dp</dimen>
+    <dimen name="google_margintop">2dp</dimen>
 </resources>

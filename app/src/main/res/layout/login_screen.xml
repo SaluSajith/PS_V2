@@ -51,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
+                android:layout_marginTop="@dimen/google_margintop"
                 android:background="@drawable/google"
                 android:padding="5dp" />
 
