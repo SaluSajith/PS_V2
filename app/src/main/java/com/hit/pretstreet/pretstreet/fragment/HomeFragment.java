@@ -19,7 +19,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -146,8 +145,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         img_notification.setOnClickListener(this);
         img_search.setOnClickListener(this);
         img_expand.setOnClickListener(this);
-        img_back.setOnClickListener(this);
-        //img_back.setVisibility(View.GONE);
+        img_back.setVisibility(View.GONE);
 
         // rl_location_search.bringToFront();
         ll_top.bringToFront();
@@ -809,8 +807,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     }
                                     String serverVersion = jsonObject.getString("AndroidVersion");
                                     String curVersion = info.versionCode + "";
-                                    if(!serverVersion.equals(curVersion));
-                                    showUpdateScreem();
+                                    if(!serverVersion.equals(curVersion)) {
+                                        showUpdateScreem();
+                                    }
 
                                 } else {
                                     if (SavedMAinCaTList.length() > 1) {
@@ -1034,10 +1033,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.txt_location:
                 startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
-                break;
-
-            case R.id.img_back:
-                getActivity().onBackPressed();
                 break;
 
             case R.id.img_expand:
