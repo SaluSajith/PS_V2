@@ -6,6 +6,7 @@
     android:focusableInTouchMode="true"
     android:clipToPadding="false"
     android:paddingBottom="50dp"
+    android:scrollbars="none"
     android:background="@drawable/base">
 
     <RelativeLayout
@@ -86,7 +87,7 @@
                         android:layout_marginLeft="5sp"
                         android:layout_marginTop="15sp"
                         android:background="@drawable/email"
-                        android:hint="name"
+                        android:hint="Name"
                         android:padding="10sp"
                         android:singleLine="true"
                         android:textAppearance="@android:style/TextAppearance.Small"
@@ -101,7 +102,7 @@
                         android:layout_marginLeft="5sp"
                         android:layout_marginTop="-5dp"
                         android:background="@drawable/password"
-                        android:hint="email"
+                        android:hint="Email"
                         android:inputType="textEmailAddress"
                         android:padding="10sp"
                         android:singleLine="true"
@@ -117,7 +118,7 @@
                         android:layout_marginLeft="5sp"
                         android:layout_marginTop="-12sp"
                         android:background="@drawable/email"
-                        android:hint="mobile no."
+                        android:hint="Mobile no."
                         android:inputType="number"
                         android:padding="10sp"
                         android:singleLine="true"

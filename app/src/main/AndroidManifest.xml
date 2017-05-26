@@ -123,7 +123,8 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC9zfZnqFROGAy0BfV0jWVazvzcr5il8ds" />
+            android:value="AIzaSyD3xZ0gey4QDckVaIlkFSz9UtkjHqOTTIY" />
+            <!--android:value="AIzaSyC9zfZnqFROGAy0BfV0jWVazvzcr5il8ds" />-->
         <!-- android:value="AIzaSyC5oAbU5rMUtQ7-IyutXsqmXAX_K-c_kSc" /> -->
 
         <activity android:name=".ui.WebViewActivity" />

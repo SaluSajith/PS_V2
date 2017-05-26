@@ -6,17 +6,10 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,7 +22,6 @@ import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,15 +53,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.Items.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
-import com.hit.pretstreet.pretstreet.ui.SelectLocation;
 import com.hit.pretstreet.pretstreet.ui.StoreLocationMapScreen;
 
 import org.json.JSONArray;
@@ -194,6 +183,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
+        return rootView;
+    }
+
+    private void getRecentSearch(){
+
         ArrayList<HashMap<String, String>> list = helper.fetchSearchList();
         if (list.isEmpty()) {
         } else {
@@ -212,13 +207,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 }
             }
         }
-        return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        getRecentSearch();
     }
 
     private void showDropDownSearchResult(final String newText) {
@@ -259,13 +253,16 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     e1.printStackTrace();
                     responseSuccess = false;
                 }
+
                 if (responseSuccess) {
                     if (list.isEmpty()) {
                         result = new String[]{"no result found"};
                         if (searchAdapter == null) {
                             searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
                             img_searchAuto.setAdapter(searchAdapter);
-                        } else searchAdapter.notifyDataSetChanged();
+                        } else {
+                            searchAdapter.notifyDataSetChanged();
+                        }
                     } else {
                         searchResult = new String[list.size()];
                         searchAddress = new String[list.size()];
@@ -277,11 +274,16 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                             searchID[i] = list.get(i).get("id");
                             result[i] = searchResult[i] + ", " + searchAddress[i];
                         }
+                        searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
+                        img_searchAuto.setAdapter(searchAdapter);
+                       /*
                         if(searchAdapter == null) {
                             searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
                             img_searchAuto.setAdapter(searchAdapter);
-                        }else
+                        }else {
+                            Log.d("result ", "searchAdapter list notifyDataSetChanged");
                             searchAdapter.notifyDataSetChanged();
+                        }*/
                         img_searchAuto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -289,6 +291,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                                     if(result[position].trim().equalsIgnoreCase("no result found"))
                                         return;
                                 helper.saveSearches(searchID[position], searchResult[position], searchAddress[position]);
+                                getRecentSearch();
                                 searchLogTracking(searchResult[position]);
                                 Fragment f1 = new StoreDetailFragment();
                                 Bundle b1 = new Bundle();
@@ -537,12 +540,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             else
                 viewHolder.ll_store.setBackgroundResource(R.drawable.password);
 
-
+            int margin = (int) getResources().getDimension(R.dimen.searchpage_topmargin);
             if (position == 0) {
                 LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
-                relativeParams.setMargins(40, 100, 0, 0);
+                relativeParams.setMargins(40, 70, 0, 0);
                 viewHolder.txt_store_name.setLayoutParams(relativeParams);
                 viewHolder.txt_store_name.requestLayout();
             }
@@ -603,6 +606,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ImageView img_store_photo, img_call, img_map, img_address, img_sale, img_new_arrival;
             TextView txt_storename, txt_address, txt_folleowercount, img_follow_unfollow, tv_margintop, line;
+            LinearLayout ll_progress ;
             LayoutInflater inflater = LayoutInflater.from(context);
             if (position % 2 == 0) {
                 convertView = inflater.inflate(R.layout.row_list_store1, parent, false);
@@ -621,6 +625,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             txt_address = (TextView) convertView.findViewById(R.id.txt_address);
             txt_folleowercount = (TextView) convertView.findViewById(R.id.txt_folleowercount);
             line = (TextView) convertView.findViewById(R.id.line);
+            ll_progress = (LinearLayout) convertView.findViewById(R.id.ll_progress);
+            ll_progress.setVisibility(View.GONE);
             txt_storename.setTypeface(font);
             txt_address.setTypeface(fontM);
             txt_folleowercount.setTypeface(font);

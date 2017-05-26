@@ -253,7 +253,7 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                 LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
                 int margintop = 0, valueInPixels;
                 if (list.get(i).getCat_name().length()>10&&list.get(i).getCat_name().length()<20) {
-                    margintop = 5;
+                    margintop = 6;
                     if (i % 2 == 0) {
                         valueInPixels = (int) getResources().getDimension(R.dimen.padding_large) - margintop;
                     } else {
@@ -528,6 +528,21 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                             rl_dd.setLayoutParams(relativeParams);
                             rl_dd.requestLayout();
 
+                            LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
+                            int margintop = 0, valueInPixels;
+                            if (list.get(i).getCat_name().length()>10&&list.get(i).getCat_name().length()<20) {
+                                margintop = 6;
+                                if (i % 2 == 0) {
+                                    valueInPixels = (int) getResources().getDimension(R.dimen.padding_large) - margintop;
+                                } else {
+                                    valueInPixels = (int) getResources().getDimension(R.dimen.margin_top_custom_row) - margintop;
+                                }
+                                lp.setMargins(0, valueInPixels, 0, 0);
+                            } else if(list.get(i).getCat_name().length()>20&&list.get(i).getCat_name().length()<60){
+                                lp.setMargins(0, -3, 0, 0);
+                            }
+                            else;
+                            txt_cat_name.setLayoutParams(lp);
                             txt_cat_name.setText(list.get(i).getCat_name());
 
                             DisplayMetrics displaymetrics = new DisplayMetrics();

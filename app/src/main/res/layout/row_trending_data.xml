@@ -29,7 +29,7 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager_article"
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
+                android:layout_height="@dimen/pager_height"
                 android:fitsSystemWindows="true"
                 tools:listitem="@layout/image_slider_item" />
         </FrameLayout>
@@ -86,7 +86,8 @@
             android:orientation="horizontal"
             android:layout_marginLeft="@dimen/padding_xlarge"
             android:layout_marginRight="@dimen/padding_xlarge"
-            android:layout_marginTop="@dimen/padding_small">
+            android:layout_marginTop="@dimen/padding_small"
+            android:layout_marginBottom="@dimen/padding_small">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -133,8 +134,8 @@
                     android:id="@+id/iv_like"
                     android:layout_marginBottom="@dimen/padding_small"/>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/share_icon"
                     android:id="@+id/iv_share"
                     android:layout_marginBottom="@dimen/padding_large"/>

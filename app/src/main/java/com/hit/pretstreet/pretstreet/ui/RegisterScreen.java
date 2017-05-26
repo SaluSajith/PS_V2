@@ -19,6 +19,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -280,9 +281,11 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         Log.e("mobile=", selectedArea + mobile);
         //http://doctronics.co.in/fashionapp/customercreates.php?email=test94@test3.com&firstname=testing&password=12345678&mobile=96547238
         String urlJsonObj;
+        String deviceId = Settings.System.getString(getApplicationContext().getContentResolver(),Settings.System.ANDROID_ID);
+
         try {
             urlJsonObj = Constant.REGISTRATION_URL + "email=" + email + "&firstname=" + URLEncoder.encode(firstname, "UTF-8")
-                    + "&password=" + password + "&mobile=" + mobile;
+                    + "&password=" + password + "&mobile=" + mobile + "&device=1" + "&deviceid=" + deviceId;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             urlJsonObj = Constant.FASHION_API;
@@ -423,11 +426,12 @@ public class RegisterScreen extends ActivityManagePermission implements View.OnC
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        }//kLCVcfX3aRtVVfkyC+PAFnnr1X8=
         String url;
+        String deviceId = Settings.System.getString(getApplicationContext().getContentResolver(),Settings.System.ANDROID_ID);
         try {
             url = Constant.FASHION_API + "route=social_login&email=" + strEmail + "&social_id=" + strSocialId + "&social_type=" + strSocialType
-                    + "&fname=" + URLEncoder.encode(strName, "UTF-8") + "&profile_pic=" + strProfilePic;
+                    + "&fname=" + URLEncoder.encode(strName, "UTF-8") + "&profile_pic=" + strProfilePic + "&device=1" + "&deviceid=" + deviceId;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             url = Constant.FASHION_API;

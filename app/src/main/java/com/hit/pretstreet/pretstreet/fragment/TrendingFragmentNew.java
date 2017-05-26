@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -139,6 +140,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         rv_trending.setLayoutManager(mLayoutManager);
         rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.trending_grey), 5.0f));
         rv_trending.setNestedScrollingEnabled(false);
+        rv_trending.getItemAnimator().setChangeDuration(0);
 
         nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -166,6 +168,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 }
             }
         });
+        getData();
 
         ll_header.bringToFront();
 
@@ -176,7 +179,6 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
     public void onResume() {
         super.onResume();
         txt_location.setText(PreferenceServices.getInstance().getCurrentLocation());
-        getData();
     }
 
     private void getData() {
@@ -254,20 +256,21 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                                         }
                                         loading = false;
                                     } else {
-                                        //Toast.makeText(getActivity(), response.getString("message"), Toast.LENGTH_SHORT).show();
                                         responseSuccess = false;
                                     }
                                 } catch (JSONException e1) {
                                     e1.printStackTrace();
                                     responseSuccess = false;
                                 }
-                                if (responseSuccess && list.size()>0) {
-                                    //if (adapter == null) {
-
+                                if (responseSuccess && list.size()>0 && first) {
                                     adapter = new TrendingAdapter(getActivity(), list);
                                     rv_trending.setAdapter(adapter);
-                                    // } else
-                                    //     adapter.notifyDataSetChanged();
+                                }
+                                else if(responseSuccess && list.size()>0 ){
+                                    adapter.notifyDataSetChanged();
+                                }
+                                else{
+                                    Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -634,8 +637,8 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
 
     private void sendButtonStatus(String tcId){
         try {
-            String URL;
-                URL = Constant.TRENDING_API + "litc";
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            String URL = Constant.TRENDING_API + "litc";
             Log.d("URL", URL);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
@@ -692,7 +695,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 }
             };
 
-            //requestQueue.add(stringRequest);
+            requestQueue.add(stringRequest);
         } catch (JSONException e) {
             e.printStackTrace();
 

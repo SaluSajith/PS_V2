@@ -36,7 +36,7 @@
                     android:text="Recent"
                     android:rotation="-4"
                     android:id="@+id/txt_recent"
-                    android:layout_marginBottom="@dimen/padding_standard"
+                    android:layout_marginBottom="@dimen/padding_xsmall"
                     android:layout_marginRight="@dimen/padding_xlarge"
                     style="@style/Base.TextAppearance.AppCompat.Medium"/>
 

@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.util.Log;
@@ -332,10 +333,11 @@ public class LoginScreen extends ActivityManagePermission implements View.OnClic
             e.printStackTrace();
         }
         String url;
+        String deviceId = Settings.System.getString(getApplicationContext().getContentResolver(),Settings.System.ANDROID_ID);
         try {
             //strProfilePic = URLEncoder.encode("https://graph.facebook.com/" + strSocialId + "/picture?type=large", "UTF-8");
             url = Constant.FASHION_API + "route=social_login&email=" + strEmail + "&social_id=" + strSocialId + "&social_type=" + strSocialType
-                    + "&fname=" + URLEncoder.encode(strName, "UTF-8") + "&profile_pic=" + strProfilePic;
+                    + "&fname=" + URLEncoder.encode(strName, "UTF-8") + "&profile_pic=" + strProfilePic+ "&device=1" + "&deviceid=" + deviceId;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             url = Constant.FASHION_API;

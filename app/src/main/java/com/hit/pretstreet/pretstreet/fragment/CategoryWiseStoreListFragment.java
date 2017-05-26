@@ -164,7 +164,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             if(!requestCalled){
                                 requestCalled = true;
                                 if(loadmore)
-                                getStoreList_distancewise(LLSelectedID, false);
+                                    getStoreList_distancewise(LLSelectedID, false);
                             }
                         }
 
@@ -380,7 +380,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                         if (first) {
                                             hidepDialog();
                                         }
-
+                                        if(list.size()==0){
+                                            Toast.makeText(getActivity(), "No data available!", Toast.LENGTH_SHORT).show();
+                                        }
                                         if (responseSuccess) {
                                             if (first) {
                                                 storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity()
@@ -592,7 +594,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             if(position == mItems.size()-1) {
                 if (pageCount < totalPages) {
                     if(loadmore)
-                    holder.ll_progress.setVisibility(View.VISIBLE);
+                        holder.ll_progress.setVisibility(View.VISIBLE);
                     else holder.ll_progress.setVisibility(View.GONE);
                 }
                 else

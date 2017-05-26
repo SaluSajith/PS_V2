@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.fragment;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,21 +10,30 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -136,7 +146,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         img_notification.setOnClickListener(this);
         img_search.setOnClickListener(this);
         img_expand.setOnClickListener(this);
-        img_back.setVisibility(View.GONE);
+        img_back.setOnClickListener(this);
+        //img_back.setVisibility(View.GONE);
 
         // rl_location_search.bringToFront();
         ll_top.bringToFront();
@@ -799,7 +810,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     String serverVersion = jsonObject.getString("AndroidVersion");
                                     String curVersion = info.versionCode + "";
                                     if(!serverVersion.equals(curVersion));
-                                        showUpdateDialog();
+                                    showUpdateScreem();
 
                                 } else {
                                     if (SavedMAinCaTList.length() > 1) {
@@ -1025,6 +1036,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
                 break;
 
+            case R.id.img_back:
+                getActivity().onBackPressed();
+                break;
+
             case R.id.img_expand:
                 startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
                 break;
@@ -1081,4 +1096,48 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         alertDialog.setCancelable(false);
         alertDialog.show();
     }
+
+
+
+    public void showUpdateScreem() {
+
+        final Dialog popupDialog = new Dialog(getActivity());
+        LayoutInflater li = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = li.inflate(R.layout.popup_update, null);
+        final TextView edt_otp = (TextView) view.findViewById(R.id.edt_otp);
+        Button btn_send = (Button) view.findViewById(R.id.btn_send);
+
+        edt_otp.setTypeface(font);
+        btn_send.setTypeface(font);
+
+        popupDialog.setCanceledOnTouchOutside(false);
+        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
+        rl.setPadding(0, 0, 0, 0);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, 0, 0);
+        rl.setLayoutParams(lp);
+        popupDialog.setContentView(view);
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        popupDialog.getWindow().setAttributes(params);
+        popupDialog.setCancelable(false);
+        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+        popupDialog.show();
+
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
+                            ("market://details?id=com.hit.pretstreet.pretstreet")));
+                    popupDialog.dismiss();
+                }
+                catch (Exception e){}
+            }
+        });
+
+    }
+
 }

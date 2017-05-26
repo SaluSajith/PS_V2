@@ -17,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
@@ -310,59 +311,6 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
         });
     }
 
-    private void forgotPasswordJSON(String email) {
-        String urlJsonObj = Constant.FASHION_API + "route=forgot_password" + "&user_email=" + email;
-        showpDialog();
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, urlJsonObj,
-                null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.e("Volley", response.toString());
-                String strsuccess, message;
-                try {
-                    strsuccess = response.getString("status");
-                    if (strsuccess.equalsIgnoreCase("true")) {
-                        edt_email.setText("");
-                        message = response.getString("message");
-                        Toast.makeText(ForgotPasswordScreen.this, message, Toast.LENGTH_LONG).show();
-                        finish();
-                    } else {
-                        message = response.getString("message");
-                        Toast.makeText(ForgotPasswordScreen.this, message, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-                hidepDialog();
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("Volley", "Error: " + error.getMessage());
-                hidepDialog();
-                String message = null;
-                if (error instanceof NetworkError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof ServerError) {
-                    message = "The server could not be found. Please try again after some time!!";
-                } else if (error instanceof AuthFailureError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof ParseError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof NoConnectionError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof TimeoutError) {
-                    message = "Connection TimeOut! Please check your internet connection.";
-                }
-                Toast.makeText(ForgotPasswordScreen.this, message, Toast.LENGTH_SHORT).show();
-            }
-        });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        PretStreet.getInstance().addToRequestQueue(jsonObjReq);
-    }
-
     private void getFacebookLogin() {
         JSONObject jObject;
         try {
@@ -452,9 +400,10 @@ public class ForgotPasswordScreen extends ActivityManagePermission implements Vi
             e.printStackTrace();
         }
         String url;
+        String deviceId = Settings.System.getString(getApplicationContext().getContentResolver(),Settings.System.ANDROID_ID);
         try {
             url = Constant.FASHION_API + "route=social_login&email=" + strEmail + "&social_id=" + strSocialId + "&social_type=" + strSocialType
-                    + "&fname=" + URLEncoder.encode(strName, "UTF-8") + "&profile_pic=" + strProfilePic;
+                    + "&fname=" + URLEncoder.encode(strName, "UTF-8") + "&profile_pic=" + strProfilePic + "&device=1" + "&deviceid=" + deviceId;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             url = Constant.FASHION_API;

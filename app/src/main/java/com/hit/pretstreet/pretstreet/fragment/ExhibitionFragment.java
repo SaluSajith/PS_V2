@@ -136,6 +136,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
         rv_trending.setLayoutManager(mLayoutManager);
         rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.trending_grey), 5.0f));
         rv_trending.setNestedScrollingEnabled(false);
+        rv_trending.getItemAnimator().setChangeDuration(0);
 
         nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -156,7 +157,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                 }
             }
         });
-
+        getData();
         ll_header.bringToFront();
 
         return view;
@@ -168,7 +169,6 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         txt_location.setText(PreferenceServices.getInstance().getCurrentLocation());
-        getData();
     }
 
     private void getData() {
@@ -180,7 +180,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
 
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", PreferenceServices.getInstance().geUsertId());
-            jsonBody.put("Limit",5);
+            jsonBody.put("Limit",Constant.LIMIT);
             jsonBody.put("Offset", ++offset);
             jsonBody.put("ApiKey", Constant.API);
             final String requestBody = jsonBody.toString();

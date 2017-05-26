@@ -84,16 +84,16 @@ public class About_TnCFragment extends Fragment {
     private void fetchContentData() {
         String urlJsonObj = null;
         if (screen.equalsIgnoreCase("conditions")) {
-            txt_cat.setText("Conditions of use");
+            txt_cat.setText("CONDITIONS OF USE");
             urlJsonObj = Constant.FASHION_API + "route=conditions";
         } else if (screen.equalsIgnoreCase("privacy")) {
-            txt_cat.setText("Privacy Notice");
+            txt_cat.setText("PRIVACY NOTICE");
             urlJsonObj = Constant.FASHION_API + "route=privacy";
         } else if (screen.equalsIgnoreCase("aboutus")) {
-            txt_cat.setText("About us");
+            txt_cat.setText("ABOUT US");
             urlJsonObj = Constant.FASHION_API + "route=about";
         } else if (screen.equalsIgnoreCase("terms")) {
-            txt_cat.setText("Terms of Services");
+            txt_cat.setText("TERMS OF SERVICES");
             urlJsonObj = Constant.FASHION_API + "route=terms";
         } else {
             txt_cat.setText("LICENSES");

@@ -1,6 +1,7 @@
 package com.hit.pretstreet.pretstreet.ui;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ public class ArticleActivity extends AppCompatActivity {
     WebView wv_article;
     TextView txt_storename;
     Button btn_back;
+    private Typeface font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,9 @@ public class ArticleActivity extends AppCompatActivity {
         final String mimeType = "text/html";
         final String encoding = "UTF-8";
         String html = intent.getStringExtra("articleData");
+
+        font = Typeface.createFromAsset(getApplicationContext().getAssets(), "RedVelvet-Regular.otf");
+        txt_storename.setTypeface(font);
         /*String html = "<br /><br />Read the handouts please for tomorrow.<br /><br /><!--homework help homework" +
                 "help help with homework homework assignments elementary school high school middle school" +
                 "// --><font color='#60c000' size='4'><strong>Please!</strong></font>" +

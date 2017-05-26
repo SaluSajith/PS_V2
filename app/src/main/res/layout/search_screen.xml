@@ -118,7 +118,6 @@
             android:layout_marginTop="10dp"
             android:headerDividersEnabled="false"
             android:divider="@color/yellow"
-            android:layout_below="@+id/ll"
             android:dividerHeight="5dp"
             android:visibility="visible" />
 
@@ -126,10 +125,9 @@
             android:id="@+id/list_recentsearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="55dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginBottom="28dp"
+            android:layout_marginTop="10dp"
             android:headerDividersEnabled="false"
-            android:layout_below="@+id/ll"
             android:divider="@color/transparent"
             android:visibility="visible" />
     </FrameLayout>

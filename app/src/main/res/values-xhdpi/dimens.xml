@@ -14,7 +14,7 @@
     <dimen name="padding_xxxlarge">20dp</dimen>
     <dimen name="padding_huge">30dp</dimen>
 
-    <dimen name="margin_xxlarge">18dp</dimen>//
+    <dimen name="margin_xxlarge">16dp</dimen>//
 
     <dimen name="button_radius_standard">10dp</dimen>
     <dimen name="button_radius_small">5dp</dimen>
@@ -40,7 +40,7 @@
     <dimen name="margin_top_custom_row">11dp</dimen>
 
     <dimen name="margin_top_difference">10dp</dimen>
-    <dimen name="text_margintop">20dp</dimen>
+    <dimen name="text_margintop">10dp</dimen>
 
     <!-- <dimen name="home_image_height">658dp</dimen>-->
     <dimen name="home_image_height">280dp</dimen>
@@ -82,4 +82,6 @@
 
     <dimen name="welcome_margintop">0dp</dimen>
     <dimen name="google_margintop">2dp</dimen>
+    <dimen name="pager_height">250dp</dimen>
+    <dimen name="searchpage_topmargin">60dp</dimen>
 </resources>
