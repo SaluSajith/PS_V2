@@ -26,7 +26,7 @@
                 android:id="@+id/ll_header"
                 android:background="@color/yellow">
 
-                <include layout="@layout/header_withlabel"></include>
+                <include layout="@layout/header_trending"></include>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

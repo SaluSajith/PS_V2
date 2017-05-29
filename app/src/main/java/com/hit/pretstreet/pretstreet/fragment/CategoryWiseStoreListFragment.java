@@ -158,7 +158,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
                     if (scrollY > oldScrollY) {
-
                         if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                             Log.i("hitserver", "BOTTOM SCROLL");
                             if(!requestCalled){
@@ -166,9 +165,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                 if(loadmore)
                                     getStoreList_distancewise(LLSelectedID, false);
                             }
+                            if(!loadmore)
+                                Toast.makeText(getActivity(), "No more stores available!", Toast.LENGTH_SHORT).show();
                         }
-
-
                     }
                 }
             }
@@ -400,6 +399,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                     } else {
                                         responseSuccess = false;
                                         loadmore = false;
+                                        Toast.makeText(getActivity(), "No more stores available!", Toast.LENGTH_SHORT).show();
                                         storeList_recyclerAdapter.notifyDataSetChanged();
                                     }
                                 } catch (JSONException e1) {

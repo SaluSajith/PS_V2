@@ -60,7 +60,6 @@ public class SplashScreen extends Activity {
         }
         getSplashImage();
 
-        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
     }
 
     private void getSplashImage() {

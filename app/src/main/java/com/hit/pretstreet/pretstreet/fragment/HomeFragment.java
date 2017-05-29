@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         img_notification.setOnClickListener(this);
         img_search.setOnClickListener(this);
         img_expand.setOnClickListener(this);
-        img_back.setVisibility(View.GONE);
+        img_back.setOnClickListener(this);
 
         // rl_location_search.bringToFront();
         ll_top.bringToFront();
@@ -750,8 +750,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                                 @Override
                                                 public void onClick(View v) {
                                                     Log.d("category_id ",list.get(finalI1).get("category_id"));
-                                                    if (list.get(finalI1).get("category_id").equalsIgnoreCase("3")||
-                                                            list.get(finalI1).get("category_id").equals("122")) {
+                                                    if (list.get(finalI1).get("category_id").equalsIgnoreCase("3")) {
                                                         Fragment f3 = new TrendingFragmentNew();
                                                         Bundle b3 = new Bundle();
                                                         b3.putString("main_cat_id", list.get(finalI1).get("category_id"));
@@ -763,7 +762,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                                         t3.add(R.id.frame_container, f3);
                                                         t3.addToBackStack(null);
                                                         t3.commit();
-                                                    }else if (list.get(finalI1).get("category_id").equalsIgnoreCase("104")) {
+                                                    }
+                                                    else if(list.get(finalI1).get("category_id").equals("122")){
+                                                        Fragment f3 = new ExhibitionFragment();
+                                                        Bundle b3 = new Bundle();
+                                                        b3.putString("main_cat_id", list.get(finalI1).get("category_id"));
+                                                        b3.putString("main_cat_name", list.get(finalI1).get("name"));
+                                                        b3.putString("image", list.get(finalI1).get("image"));
+                                                        f3.setArguments(b3);
+                                                        FragmentTransaction t3 = getFragmentManager().beginTransaction();
+                                                        t3.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                                                        t3.add(R.id.frame_container, f3);
+                                                        t3.addToBackStack(null);
+                                                        t3.commit();
+                                                    }
+                                                    else if (list.get(finalI1).get("category_id").equalsIgnoreCase("104")) {
                                                         Fragment f1 = new CategoryWiseStoreListFragment();
                                                         Bundle b1 = new Bundle();
                                                         b1.putString("main_cat_id", list.get(finalI1).get("category_id"));
@@ -810,7 +823,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     if(!serverVersion.equals(curVersion)) {
                                         showUpdateScreem();
                                     }
-
                                 } else {
                                     if (SavedMAinCaTList.length() > 1) {
                                     } else {
@@ -893,32 +905,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-            if (SavedSubCatList.length() > 1) {
-            } else {
-                rl_sub_cat1.setVisibility(View.VISIBLE);
+        if (SavedSubCatList.length() > 1) {
+        } else {
+            rl_sub_cat1.setVisibility(View.VISIBLE);
+        }
+        PreferenceServices.instance().saveHomeSubCatList(response.toString());
+        for (int i = 0; i < listsubcat.size(); i++) {
+            if (listsubcat.get(i).getId().equalsIgnoreCase("112")) {
+                ll_bags.setTag(listsubcat.get(i).getId());
+                txt_bags.setText(listsubcat.get(i).getCat_name());
             }
-            PreferenceServices.instance().saveHomeSubCatList(response.toString());
-            for (int i = 0; i < listsubcat.size(); i++) {
-                if (listsubcat.get(i).getId().equalsIgnoreCase("112")) {
-                    ll_bags.setTag(listsubcat.get(i).getId());
-                    txt_bags.setText(listsubcat.get(i).getCat_name());
-                }
-                if (listsubcat.get(i).getId().equalsIgnoreCase("111")) {
-                    ll_shoes.setTag(listsubcat.get(i).getId());
-                    txt_shoes.setText(listsubcat.get(i).getCat_name());
-                }
-                if (listsubcat.get(i).getId().equalsIgnoreCase("113")) {
-                    //ll_eyewear.setTag(listsubcat.get(i).getId());
-                    //txt_eyewear.setText(listsubcat.get(i).getCat_name());
-                }
-                if (listsubcat.get(i).getId().equalsIgnoreCase("110")) {
-                    //ll_watches.setTag(listsubcat.get(i).getId());
-                    // txt_watches.setText(listsubcat.get(i).getCat_name());
-                }
-                if (listsubcat.get(i).getId().equalsIgnoreCase("114")) {
-                    ll_accesories.setTag(listsubcat.get(i).getId());
-                    txt_accessories.setText(listsubcat.get(i).getCat_name());
-                }
+            if (listsubcat.get(i).getId().equalsIgnoreCase("111")) {
+                ll_shoes.setTag(listsubcat.get(i).getId());
+                txt_shoes.setText(listsubcat.get(i).getCat_name());
+            }
+            if (listsubcat.get(i).getId().equalsIgnoreCase("113")) {
+                //ll_eyewear.setTag(listsubcat.get(i).getId());
+                //txt_eyewear.setText(listsubcat.get(i).getCat_name());
+            }
+            if (listsubcat.get(i).getId().equalsIgnoreCase("110")) {
+                //ll_watches.setTag(listsubcat.get(i).getId());
+                // txt_watches.setText(listsubcat.get(i).getCat_name());
+            }
+            if (listsubcat.get(i).getId().equalsIgnoreCase("114")) {
+                ll_accesories.setTag(listsubcat.get(i).getId());
+                txt_accessories.setText(listsubcat.get(i).getCat_name());
+            }
         }
     }
 
@@ -1037,6 +1049,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.img_expand:
                 startActivity(new Intent(getActivity(), SelectLocation.class).putExtra("location", "default"));
+                break;
+
+            case R.id.img_back:
+                getActivity().onBackPressed();
                 break;
 
             case R.id.img_notification:

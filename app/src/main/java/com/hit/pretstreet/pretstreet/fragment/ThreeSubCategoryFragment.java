@@ -259,11 +259,20 @@ public class ThreeSubCategoryFragment extends Fragment implements View.OnClickLi
                     } else {
                         valueInPixels = (int) getResources().getDimension(R.dimen.margin_top_custom_row) - margintop;
                     }
-                    lp.setMargins(0, valueInPixels, 0, 0);
+                    lp.setMargins(0, valueInPixels, -3, 0);
                 } else if(list.get(i).getCat_name().length()>20&&list.get(i).getCat_name().length()<60){
-                    lp.setMargins(0, -3, 0, 0);
+                    lp.setMargins(0, -3, -3, 0);
                 }
-                else;
+                else if(list.get(i).getCat_name().length()<10){
+                    margintop = -3;
+                    if (i % 2 == 0) {
+                        valueInPixels = (int) getResources().getDimension(R.dimen.padding_large) - margintop;
+                    } else {
+                        valueInPixels = (int) getResources().getDimension(R.dimen.margin_top_custom_row) - margintop;
+                    }
+                    lp.setMargins(0, valueInPixels, -3, 0);
+                }
+
                 txt_cat_name.setLayoutParams(lp);
                 txt_cat_name.setText(list.get(i).getCat_name());
 

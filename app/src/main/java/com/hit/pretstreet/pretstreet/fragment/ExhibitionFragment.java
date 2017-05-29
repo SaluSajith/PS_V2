@@ -184,7 +184,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
             jsonBody.put("Offset", ++offset);
             jsonBody.put("ApiKey", Constant.API);
             final String requestBody = jsonBody.toString();
-            Log.d("URL", URL+"offset "+offset);
+            Log.d("URL_exh", URL+"offset "+offset);
             if(first) {
                 showpDialog();
             }
