@@ -113,6 +113,7 @@ public class SplashScreen extends Activity {
                         startActivity(new Intent(getApplicationContext(), DefaultLocation.class));
                     } else {
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        //startActivity(new Intent(getApplicationContext(), TestActivity.class));
                     }
                     SplashScreen.this.finish();
                 }

@@ -7,9 +7,10 @@
     <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:src="@drawable/yellow_patch_trending"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:layout_alignParentBottom="true"/>
 
     <RelativeLayout
         android:id="@+id/rl_AppBar"

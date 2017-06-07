@@ -116,8 +116,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().findFragmentById(R.id.frame_container) instanceof HomeFragment) {
-            if (doubleBackToExitPressedOnce)
+            if (doubleBackToExitPressedOnce) {
+                try {
+                   android.os.Process.killProcess(android.os.Process.myPid());
+                }catch (Exception e){}
                 finish();
+            }
             Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
             doubleBackToExitPressedOnce = true;
             new Handler().postDelayed(new Runnable() {

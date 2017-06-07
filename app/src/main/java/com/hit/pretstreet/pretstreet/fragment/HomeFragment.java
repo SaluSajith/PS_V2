@@ -1081,35 +1081,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void showUpdateDialog(){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("A New Update is Available");
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
-                            ("market://details?id=com.hit.pretstreet.pretstreet")));
-                    dialog.dismiss();
-                }
-                catch (Exception e){}
-            }
-        });
-        /*builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });*/
-
-        builder.setCancelable(false);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.setCancelable(false);
-        alertDialog.show();
-    }
-
-
-
     public void showUpdateScreem() {
 
         final Dialog popupDialog = new Dialog(getActivity());

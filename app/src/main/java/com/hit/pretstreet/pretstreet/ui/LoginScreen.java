@@ -332,6 +332,7 @@ public class LoginScreen extends ActivityManagePermission implements View.OnClic
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
         String url;
         String deviceId = Settings.System.getString(getApplicationContext().getContentResolver(),Settings.System.ANDROID_ID);
         try {

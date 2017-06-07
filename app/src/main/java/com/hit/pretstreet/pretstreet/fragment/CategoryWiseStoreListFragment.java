@@ -59,9 +59,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.ImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.hit.pretstreet.pretstreet.Constant;
 import com.hit.pretstreet.pretstreet.Items.CategoryItem;
 import com.hit.pretstreet.pretstreet.PreferenceServices;
@@ -102,10 +106,10 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
     String LLSelectedID = "";
 
     private String lat = "", lng = "";
-    int pageCount, totalPages;
+    int pageCount=0, totalPages;
     public static int selectedPosition;
-    static boolean requestCalled = false;
-    static boolean loadmore = true;
+    boolean requestCalled = false;
+    boolean loadmore = true;
     ArrayList<HashMap<String, String>> list;
 
     @Nullable
@@ -252,6 +256,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 txtname[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        loadmore = true;
                         list_store.setAdapter(null);
                         LLSelectedID = catId[finalI];
                         pageCount = 0;
@@ -341,9 +346,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             try {
                                 JSONObject jsonObjectAll =  new JSONObject(response);
                                 boolean responseSuccess = false;
-                                String strsuccess;
                                 try {
-                                    strsuccess = jsonObjectAll.getString("Status");
                                     JSONObject jsonContent = jsonObjectAll.getJSONObject("Content");
                                     if (jsonContent.getString("success").equals("true")) {
 
@@ -356,6 +359,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                             }
                                         }
                                         JSONArray jsonArray = new JSONArray(jsonContent.getString("stores"));
+
                                         for (int i = 0; i < jsonArray.length(); i++) {
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                                             HashMap<String, String> hashMap = new HashMap<>();
@@ -387,7 +391,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                                                 storeList_recyclerAdapter = new StoreList_RecyclerAdapter(getActivity()
                                                         , R.layout.row_list_store1, list);
                                                 list_store.setAdapter(storeList_recyclerAdapter);
-                                            } else
+                                            }  else
                                                 storeList_recyclerAdapter.notifyDataSetChanged();
 
                                         } else {
@@ -622,6 +626,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             } else {
                 holder.txt_folleowercount.setText(Html.fromHtml(strFollowCount));
             }
+
             if (position == 0) {
                 LinearLayout.LayoutParams relativeParams =
                         new LinearLayout.LayoutParams(
@@ -632,8 +637,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                 holder.tv_margintop.requestLayout();
             }
 
+            Log.e("image", mItems.get(position).get("thumb") + "");
             Glide.with(CategoryWiseStoreListFragment.this)
-                    .load(list.get(position).get("thumb"))
+                    .load(mItems.get(position).get("thumb"))
                     .asBitmap()
                     .fitCenter()
                     .into(new BitmapImageViewTarget(holder.img_store_photo) {
@@ -644,7 +650,6 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                             holder.img_store_photo.setImageBitmap(croppedBmp);
                         }
                     });
-
 
             if (mItems.get(position).get("wishlist").equalsIgnoreCase("notin")) {
                 holder.img_follow_unfollow.setText("Follow");
@@ -973,6 +978,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
         }
 
         public void showAddress(String address) {
+
             final Dialog popupDialog = new Dialog(context);
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = li.inflate(R.layout.popup_phone_number, null);

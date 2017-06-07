@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -80,7 +81,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
     ArrayList<TrendingItems> list;
     TrendingAdapter adapter;
 
-    private FrameLayout  ll_header;
+    private FrameLayout ll_header;
     private NestedScrollView nsv_header;
     private ImageView img_icon_menu, img_notification, img_filter, img_search, img_expand,img_back;
     private TextView txt_location, txt_cat_name, txt_recent;
@@ -391,6 +392,7 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
         int button01pos = 0;
         ArticlePagerAdapter mAdapter;
         int dotsCount = 0;
+        private int mLastPosition;
 
         public TrendingAdapter(Context context, ArrayList<TrendingItems> list) {
             this.context = context;
@@ -539,6 +541,17 @@ public class TrendingFragmentNew extends Fragment implements View.OnClickListene
                 txt_shopname.setOnClickListener(this);
                 iv_banner.setOnClickListener(this);
 
+                float initialTranslation = (mLastPosition <= getAdapterPosition() ? 500f : -500f);
+
+                itemView.setTranslationY(initialTranslation);
+                itemView.animate()
+                        .setInterpolator(new DecelerateInterpolator(1.0f))
+                        .translationY(0f)
+                        .setDuration(300l)
+                        .setListener(null);
+
+                // Keep track of the last position we loaded
+                mLastPosition = getAdapterPosition();
             }
 
             @Override

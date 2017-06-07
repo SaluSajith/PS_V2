@@ -25,6 +25,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -155,6 +158,11 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                         }
                     }
                 }
+
+                /*int position = mLayoutManager.getPosition(v);
+                int top = nsv_header.getScrollY(); // Increases when scrolling up ^
+                int newTop = (int) (top * .5f);
+                mLayoutManager.getChildAt(position).setTranslationY(newTop < 0 ? 0 : newTop);*/
             }
         });
         getData();
@@ -428,6 +436,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
             int viewType;
             ImageView img_like, img_share, img_map, iv_banner;
             TextView txt_description, txt_heading, txt_date;
+            private int mLastPosition;
 
             public ViewHolder(View itemView, int viewType) {
                 super(itemView);
@@ -452,6 +461,15 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                 img_share.setOnClickListener(this);
                 iv_banner.setOnClickListener(this);
                 img_map.setOnClickListener(this);
+
+                float initialTranslation = (mLastPosition <= getAdapterPosition() ? 500f : -500f);
+                itemView.setTranslationY(initialTranslation);
+                itemView.animate()
+                        .setInterpolator(new DecelerateInterpolator(1.0f))
+                        .translationY(0f)
+                        .setDuration(300l)
+                        .setListener(null);
+                mLastPosition = getAdapterPosition();
 
             }
 

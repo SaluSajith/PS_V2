@@ -90,13 +90,14 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     SearchView.SearchAutoComplete img_searchAuto;
     ArrayList<HashMap<String, String>> list;
     int pageCount, totalPages;
-    boolean requestCalled;
-    String submitQuery, baseImage;
+    String submitQuery;
     private Typeface font, fontM;
     private ProgressDialog pDialog;
     JsonObjectRequest jsonObjReqSearch;
     private DatabaseHelper helper;
     private DisplayMetrics dm;
+    boolean requestCalled = false;
+    boolean requestCalled_autosearch = false;
 
     @Nullable
     @Override
@@ -157,9 +158,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 } else if (newText.length() == 4) {
                     showDropDownSearchResult(newText);
                 } else */
-                if (newText.length() > 2) {
-                    showDropDownSearchResult(newText.trim());
+                if (newText.length() > 0) {
+                    if(!requestCalled_autosearch) {
+                        requestCalled_autosearch = true;
+                        showDropDownSearchResult(newText.trim());
+                    }
                 }
+                else;
                 return false;
             }
         });
@@ -196,7 +201,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 int count = helper.fetchPlacesCount();
                 Log.e("count:", count + "");
                 if (count > 5) {
-                    helper.deleteFirstRow();
+                    helper.deleteLastRow();
                 } else {
                     Collections.reverse(list);
                     list_search.setVisibility(View.INVISIBLE);
@@ -253,60 +258,64 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     e1.printStackTrace();
                     responseSuccess = false;
                 }
-
+                requestCalled_autosearch = false;
                 if (responseSuccess) {
-                    if (list.isEmpty()) {
-                        result = new String[]{"no result found"};
-                        if (searchAdapter == null) {
+                    try {
+                        if (list.isEmpty()) {
+                            result = new String[]{"no result found"};
+                            if (searchAdapter == null) {
+                                searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
+                                img_searchAuto.setAdapter(searchAdapter);
+                            } else {
+                                searchAdapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            searchResult = new String[list.size()];
+                            searchAddress = new String[list.size()];
+                            result = new String[list.size()];
+                            searchID = new String[list.size()];
+                            for (int i = 0; i < list.size(); i++) {
+                                searchResult[i] = list.get(i).get("name");
+                                searchAddress[i] = list.get(i).get("address");
+                                searchID[i] = list.get(i).get("id");
+                                result[i] = searchResult[i] + ", " + searchAddress[i];
+                            }
                             searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
                             img_searchAuto.setAdapter(searchAdapter);
-                        } else {
-                            searchAdapter.notifyDataSetChanged();
-                        }
-                    } else {
-                        searchResult = new String[list.size()];
-                        searchAddress = new String[list.size()];
-                        result = new String[list.size()];
-                        searchID = new String[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            searchResult[i] = list.get(i).get("name");
-                            searchAddress[i] = list.get(i).get("address");
-                            searchID[i] = list.get(i).get("id");
-                            result[i] = searchResult[i] + ", " + searchAddress[i];
-                        }
-                        searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
-                        img_searchAuto.setAdapter(searchAdapter);
-                       /*
-                        if(searchAdapter == null) {
+
+                        /*if(searchAdapter == null) {
+                            Log.d("result ", "searchAdapter setAdapter");
                             searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
                             img_searchAuto.setAdapter(searchAdapter);
                         }else {
                             Log.d("result ", "searchAdapter list notifyDataSetChanged");
                             searchAdapter.notifyDataSetChanged();
                         }*/
-                        img_searchAuto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                if(position==0)
-                                    if(result[position].trim().equalsIgnoreCase("no result found"))
-                                        return;
-                                helper.saveSearches(searchID[position], searchResult[position], searchAddress[position]);
-                                getRecentSearch();
-                                searchLogTracking(searchResult[position]);
-                                Fragment f1 = new StoreDetailFragment();
-                                Bundle b1 = new Bundle();
-                                b1.putString("cat_id", searchID[position]);
-                                b1.putString("cat_name", searchResult[position]);
-                                f1.setArguments(b1);
-                                FragmentTransaction t1 = getFragmentManager().beginTransaction();
-                                t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                                t1.add(R.id.frame_container, f1);
-                                //t1.replace(R.id.frame_container, f1);
-                                t1.addToBackStack(null);
-                                t1.commit();
-                            }
-                        });
+                            img_searchAuto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if (position == 0)
+                                        if (result[position].trim().equalsIgnoreCase("no result found"))
+                                            return;
+                                    helper.saveSearches(searchID[position], searchResult[position], searchAddress[position]);
+                                    getRecentSearch();
+                                    searchLogTracking(searchResult[position]);
+                                    Fragment f1 = new StoreDetailFragment();
+                                    Bundle b1 = new Bundle();
+                                    b1.putString("cat_id", searchID[position]);
+                                    b1.putString("cat_name", searchResult[position]);
+                                    f1.setArguments(b1);
+                                    FragmentTransaction t1 = getFragmentManager().beginTransaction();
+                                    t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                                    t1.add(R.id.frame_container, f1);
+                                    //t1.replace(R.id.frame_container, f1);
+                                    t1.addToBackStack(null);
+                                    t1.commit();
+                                }
+                            });
+                        }
                     }
+                    catch (Exception e){}
                 }
 //                hidepDialog();
             }

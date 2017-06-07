@@ -24,6 +24,7 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.telephony.PhoneStateListener;
@@ -172,6 +173,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         txt_website_value.setTypeface(fontM);
         txt_information.setTypeface(font);
         txt_information.setPaintFlags(txt_information.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        txt_description.setPaintFlags(txt_description.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         txt_timing.setTypeface(font);
         txt_opentime.setTypeface(font);
         txt_closetime.setTypeface(font);
@@ -183,6 +185,8 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
         dMetric = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dMetric);
 
+        txt_description.setText("About "+ name);
+        txt_information.setVisibility(View.GONE);
         txt_store_name.setText(name);
         img_icon_menu.setOnClickListener(this);
         img_address.setOnClickListener(this);
@@ -275,7 +279,7 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                     if (list.isEmpty()) {
                         Toast.makeText(getActivity(), "Server not responding Please try again...", Toast.LENGTH_SHORT).show();
                     } else {
-                        txt_information.setVisibility(View.VISIBLE);
+                        //txt_information.setVisibility(View.VISIBLE);
                         txt_description.setVisibility(View.VISIBLE);
                         txt_timing.setVisibility(View.VISIBLE);
                         txt_to.setVisibility(View.VISIBLE);
@@ -534,8 +538,10 @@ public class StoreDetailFragment extends FragmentManagePermission implements Vie
                 FragmentTransaction t1 = getFragmentManager().beginTransaction();
                 t1.hide(getFragmentManager().findFragmentById(R.id.frame_container));
                 t1.add(R.id.frame_container, f1);
+                //t1.disallowAddToBackStack();
                 t1.addToBackStack(null);
                 t1.commit();
+
                 break;
 
             case R.id.img_call:

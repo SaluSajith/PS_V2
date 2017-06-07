@@ -17,12 +17,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
     <supports-screens
-        android:smallScreens="false"
-        android:normalScreens="true"
         android:largeScreens="true"
-        android:xlargeScreens="true"/>
+        android:normalScreens="true"
+        android:smallScreens="false"
+        android:xlargeScreens="true" />
 
     <application
         android:name=".PretStreet"
@@ -32,7 +33,7 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name="com.hit.pretstreet.pretstreet.Items.IncomingSms">
+        <receiver android:name=".Items.IncomingSms">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -124,14 +125,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD3xZ0gey4QDckVaIlkFSz9UtkjHqOTTIY" />
-            <!--android:value="AIzaSyC9zfZnqFROGAy0BfV0jWVazvzcr5il8ds" />-->
+        <!-- android:value="AIzaSyC9zfZnqFROGAy0BfV0jWVazvzcr5il8ds" /> -->
         <!-- android:value="AIzaSyC5oAbU5rMUtQ7-IyutXsqmXAX_K-c_kSc" /> -->
 
         <activity android:name=".ui.WebViewActivity" />
         <activity
             android:name=".facebook.GoogleLoginActivity"
             android:theme="@style/Theme.AppCompat.Translucent" />
-        <activity android:name=".ui.ArticleActivity"></activity>
+        <activity android:name=".ui.ArticleActivity" />
     </application>
 
 </manifest>

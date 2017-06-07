@@ -93,10 +93,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return i;
     }
 
-    public void deleteFirstRow() {
+    public void deleteLastRow() {
         db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_RECENT_SEARCH_STORE, null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
+        if (cursor.moveToLast()) {
             String rowId = cursor.getString(cursor.getColumnIndex(KEY_STORE_ID));
             db.delete(TABLE_RECENT_SEARCH_STORE, KEY_STORE_ID + "=?", new String[]{rowId});
         }
