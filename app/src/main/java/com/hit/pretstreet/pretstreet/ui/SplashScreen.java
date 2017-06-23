@@ -39,7 +39,7 @@ public class SplashScreen extends Activity {
     private static int DURATION;
     private Handler splashHandler;
     private static final int SPLASH_DURATION_END = 1000;
-    private String savedImage;
+    //private String savedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +52,11 @@ public class SplashScreen extends Activity {
         DURATION = Integer.valueOf(getString(R.string.splash_duration));
         splashHandler.postDelayed(mChangeSplash, DURATION);
         splashHandler.postDelayed(mEndSplash, SPLASH_DURATION_END);
-        savedImage = PreferenceServices.getInstance().getSplashScreen();
-        if (savedImage.equalsIgnoreCase("")) {
-            img_splash.setImageDrawable(getResources().getDrawable(R.drawable.splash));
-        } else {
-            Glide.with(getApplicationContext()).load(savedImage).into(img_splash);
-        }
-        getSplashImage();
+        //savedImage = PreferenceServices.getInstance().getSplashScreen();
+
+        img_splash.setImageDrawable(getResources().getDrawable(R.drawable.splash));
+
+        //getSplashImage();
 
     }
 

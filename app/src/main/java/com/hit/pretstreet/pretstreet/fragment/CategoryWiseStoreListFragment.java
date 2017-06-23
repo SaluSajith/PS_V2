@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -235,7 +236,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     txtnameAll[i].setVisibility(View.GONE);
                 }
                 if (mainCatId.equalsIgnoreCase(subCatId)) {
-                    txtnameAll[i].setTextColor(getResources().getColor(R.color.black));
+                    txtnameAll[i].setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                     LLSelectedID = subCatId;
                     pageCount = 0;
                     txtnameAll[i].hasFocusable();
@@ -243,7 +244,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     getStoreList_distancewise(subCatId, true);
                 }
                 if (subCatId.equalsIgnoreCase(catId[i])) {
-                    txtname[i].setTextColor(getResources().getColor(R.color.black));
+                    txtname[i].setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                     LLSelectedID = catId[i];
                     pageCount = 0;
                     txtname[i].hasFocusable();
@@ -267,10 +268,10 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                         getStoreList_distancewise(catId[finalI], true);
                         for (int k = 0; k < listCategory.size(); k++) {
                             if (finalI == k) {
-                                txtname[finalI].setTextColor(getResources().getColor(R.color.black));
+                                txtname[finalI].setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                             } else {
-                                txtname[k].setTextColor(getResources().getColor(R.color.dark_gray));
-                                txtnameAll[0].setTextColor(getResources().getColor(R.color.dark_gray));
+                                txtname[k].setTextColor(ContextCompat.getColor(getActivity(), R.color.dark_gray));
+                                txtnameAll[0].setTextColor(ContextCompat.getColor(getActivity(), R.color.dark_gray));
                             }
                         }
                     }
@@ -280,9 +281,9 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
                     public void onClick(View v) {
                         list_store.setAdapter(null);
                         for (int i = 0; i < listCategory.size(); i++) {
-                            txtname[i].setTextColor(getResources().getColor(R.color.dark_gray));
+                            txtname[i].setTextColor(ContextCompat.getColor(getActivity(), R.color.dark_gray));
                         }
-                        txtnameAll[finalI].setTextColor(getResources().getColor(R.color.black));
+                        txtnameAll[finalI].setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                         LLSelectedID = mainCatId;
                         pageCount = 0;
                         if (isFrom.equalsIgnoreCase("SubCategory")) {
@@ -300,7 +301,7 @@ public class CategoryWiseStoreListFragment extends Fragment implements View.OnCl
             View view = infl.inflate(R.layout.row_catwise_cat, null);
             txtname = new TextView[1];
             txtname[0] = (TextView) view.findViewById(R.id.name);
-            txtname[0].setTextColor(getResources().getColor(R.color.black));
+            txtname[0].setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
             txtname[0].setTypeface(font);
             txtname[0].setText("ALL");
             ll_category.addView(view);

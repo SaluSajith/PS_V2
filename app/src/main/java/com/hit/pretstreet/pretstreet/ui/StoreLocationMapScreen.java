@@ -40,7 +40,7 @@ public class StoreLocationMapScreen extends FragmentActivity {
     private FrameLayout mapContainer;
     private MapFragment mapFragment;
     private GoogleMap mMap;
-    private String storeLocation, currentLocation;
+    private String storeLocation;//, currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +57,8 @@ public class StoreLocationMapScreen extends FragmentActivity {
         longitute = b.getDouble("long");
         txt_cat.setText(address);
 
-        currentLocation = PreferenceServices.getInstance().getCurrentLocation();
-        Log.e("Current location:", currentLocation);
+        /*currentLocation = PreferenceServices.getInstance().getCurrentLocation();
+        Log.e("Current location:", currentLocation);*/
 
         FragmentManager fm = getFragmentManager();
         mapFragment = MapFragment.newInstance();

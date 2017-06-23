@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -35,10 +36,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -137,7 +144,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv_trending.setLayoutManager(mLayoutManager);
-        rv_trending.addItemDecoration(new DividerDecoration(getActivity(), getResources().getColor(R.color.trending_grey), 5.0f));
+        rv_trending.addItemDecoration(new DividerDecoration(getActivity(), ContextCompat.getColor(getActivity(), R.color.trending_grey), 5.0f));
         rv_trending.setNestedScrollingEnabled(false);
         rv_trending.getItemAnimator().setChangeDuration(0);
 
@@ -146,16 +153,18 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
                     if (scrollY > oldScrollY) {
-                        visibleItemCount = mLayoutManager.getChildCount();
+                        try {
+                            visibleItemCount = mLayoutManager.getChildCount();
 
-                        int visibleItemCount = mLayoutManager.getChildCount();
-                        final int lastItem = mLayoutManager.findFirstVisibleItemPosition() + visibleItemCount;
+                            int visibleItemCount = mLayoutManager.getChildCount();
+                            final int lastItem = mLayoutManager.findFirstVisibleItemPosition() + visibleItemCount;
 
-                        if (lastItem == mLayoutManager.getItemCount() ) {
-                            if(!loading)
-                                if(offset<pagecount)
-                                    getData();
-                        }
+                            if (lastItem == mLayoutManager.getItemCount()) {
+                                if (!loading)
+                                    if (offset < pagecount)
+                                        getData();
+                            }
+                        }catch (Exception e){Log.d("e", e+"");}
                     }
                 }
 
@@ -282,6 +291,23 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                     if(first)
                         first = false;
                     hidepDialog();
+                    VolleyLog.d("Volley", "Error: " + error.getMessage());
+//                hidepDialog();
+                    String message = null;
+                    if (error instanceof NetworkError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                    } else if (error instanceof AuthFailureError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                    } else if (error instanceof NoConnectionError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                    } else if (error instanceof TimeoutError) {
+                        message = "Connection TimeOut! Please check your internet connection.";
+                    }
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
@@ -462,15 +488,18 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                 iv_banner.setOnClickListener(this);
                 img_map.setOnClickListener(this);
 
-                float initialTranslation = (mLastPosition <= getAdapterPosition() ? 500f : -500f);
-                itemView.setTranslationY(initialTranslation);
-                itemView.animate()
-                        .setInterpolator(new DecelerateInterpolator(1.0f))
-                        .translationY(0f)
-                        .setDuration(300l)
-                        .setListener(null);
-                mLastPosition = getAdapterPosition();
-
+                try {
+                    float initialTranslation = (mLastPosition <= getAdapterPosition() ? 500f : -500f);
+                    itemView.setTranslationY(initialTranslation);
+                    itemView.animate()
+                            .setInterpolator(new DecelerateInterpolator(1.0f))
+                            .translationY(0f)
+                            .setDuration(300l)
+                            .setListener(null);
+                    mLastPosition = getAdapterPosition();
+                }catch (Exception e){
+                    Log.e("Exception", e+"");
+                }
             }
 
             @Override
@@ -481,7 +510,7 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                         if (button01pos == 0) {
                             img_like.setImageResource(R.drawable.red_heart);
                             button01pos = 1;
-                        } else if (button01pos == 1) {
+                        } else {
                             img_like.setImageResource(R.drawable.grey_heart);
                             button01pos = 0;
                         }
@@ -599,6 +628,23 @@ public class ExhibitionFragment extends Fragment implements View.OnClickListener
                 public void onErrorResponse(VolleyError error) {
                     hidepDialog();
                     Log.d("Like_api_error", error.toString());
+                    VolleyLog.d("Volley", "Error: " + error.getMessage());
+//                hidepDialog();
+                    String message = null;
+                    if (error instanceof NetworkError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                    } else if (error instanceof AuthFailureError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                    } else if (error instanceof NoConnectionError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                    } else if (error instanceof TimeoutError) {
+                        message = "Connection TimeOut! Please check your internet connection.";
+                    }
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override

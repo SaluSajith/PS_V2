@@ -141,7 +141,8 @@ public class DefaultLocation extends ActivityManagePermission implements View.On
             if (resultList==null) {
                 Toast.makeText(getApplicationContext(), "something going wrong or Internet not available", Toast.LENGTH_SHORT).show();
             } else {
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, android.R.id.text1, resultList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(),
+                        android.R.layout.simple_list_item_1, android.R.id.text1, resultList);
                 placeList.setAdapter(adapter);
                 placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -165,7 +166,7 @@ public class DefaultLocation extends ActivityManagePermission implements View.On
                 Address location = address.get(0);
                 latitude = String.valueOf(location.getLatitude());
                 longitude = String.valueOf(location.getLongitude());
-                Log.e("Address: ", latitude + ", " + longitude);
+                Log.e("Address: ", latitude + ", " + longitude + " " + strAddress);
                 helper.saveLocation(strAddress);
                 String parts[] = new String[0];
                 if (strAddress.contains(",")) {

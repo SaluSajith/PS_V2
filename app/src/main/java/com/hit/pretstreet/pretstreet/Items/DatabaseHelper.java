@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,6 +62,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public long saveSearches(String sid, String sname, String address) {
         db = this.getWritableDatabase();
+
+        Cursor c = db.rawQuery("SELECT  * FROM RECENT_SEARCH_STORE where STORE_ID = " + sid , null);
+        int i = c.getCount();
+        if(i!=0) {
+            while (c.moveToNext()) {
+                String rowId = c.getString(c.getColumnIndex(KEY_STORE_ID));
+                db.delete(TABLE_RECENT_SEARCH_STORE, KEY_STORE_ID + "=?", new String[]{rowId});
+            }
+        }
         values = new ContentValues();
         values.put(KEY_STORE_ID, sid);
         values.put(KEY_STORE_NAME, sname);
@@ -96,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteLastRow() {
         db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_RECENT_SEARCH_STORE, null, null, null, null, null, null);
-        if (cursor.moveToLast()) {
+        if (cursor.moveToFirst()) {
             String rowId = cursor.getString(cursor.getColumnIndex(KEY_STORE_ID));
             db.delete(TABLE_RECENT_SEARCH_STORE, KEY_STORE_ID + "=?", new String[]{rowId});
         }
@@ -105,6 +115,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public long saveLocation(String loc) {
         db = this.getWritableDatabase();
+
+        Cursor c = db.rawQuery("SELECT  * FROM RECENT_SEARCH_LOCATION where LOCATION_NAME = '" + loc +"'", null);
+        int i = c.getCount();
+        if(i!=0) {
+            while (c.moveToNext()) {
+                String rowId = c.getString(c.getColumnIndex(KEY_LOCATION_NAME));
+                db.delete(TABLE_RECENT_SEARCH_LOCATION, KEY_LOCATION_NAME + "=?", new String[]{rowId});
+            }
+        }
+
         values = new ContentValues();
         values.put(KEY_LOCATION_NAME, loc);
         long l = db.insert(TABLE_RECENT_SEARCH_LOCATION, null, values);

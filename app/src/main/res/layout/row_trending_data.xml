@@ -128,14 +128,14 @@
                 android:layout_gravity="center">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="30dp"
+                    android:layout_width="23dp"
+                    android:layout_height="27dp"
                     android:src="@drawable/grey_heart"
                     android:id="@+id/iv_like"
                     android:layout_marginBottom="@dimen/padding_small"/>
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
                     android:src="@drawable/share_icon"
                     android:id="@+id/iv_share"
                     android:layout_marginBottom="@dimen/padding_large"/>

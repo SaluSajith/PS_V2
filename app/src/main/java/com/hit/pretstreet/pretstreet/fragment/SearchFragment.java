@@ -81,7 +81,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private ListView list_search, list_recentsearch;
     private SearchListAdapter searchListAdapter;
     private StoreListAdapter storeListAdapter;
-    ArrayAdapter<String> dropDownAdapter;
 
     String[] searchResult, searchID, searchAddress, result;
 
@@ -97,7 +96,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private DatabaseHelper helper;
     private DisplayMetrics dm;
     boolean requestCalled = false;
-    boolean requestCalled_autosearch = false;
 
     @Nullable
     @Override
@@ -122,14 +120,14 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         searchview = (SearchView) rootView.findViewById(R.id.searchview);
         img_searchAuto = (SearchView.SearchAutoComplete) searchview.findViewById(R.id.search_src_text);
-        img_searchAuto.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.black));
-        img_searchAuto.setHint(" Search PretStreet App");
+        img_searchAuto.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.dark_gray));
+        img_searchAuto.setHint("Search for shops, designers or brands..");
         img_searchAuto.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(getActivity().SEARCH_SERVICE);
         searchview.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
-        txt_search.setText("SEARCH FOR:");
+        txt_search.setText("SEARCH FOR :");
         txt_search.setTypeface(font);
         txt_recentsearches.setTypeface(font);
 
@@ -153,16 +151,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-               /* if (newText.length() == 2) {
-                    showDropDownSearchResult(newText);
-                } else if (newText.length() == 4) {
-                    showDropDownSearchResult(newText);
-                } else */
-                if (newText.length() > 0) {
-                    if(!requestCalled_autosearch) {
-                        requestCalled_autosearch = true;
-                        showDropDownSearchResult(newText.trim());
-                    }
+                if (newText.length() > 1) {
+                    showDropDownSearchResult(newText.trim());
+                    /*if(!requestCalled_autosearch) {
+                        requestCalled_autosearch = true;*/
+                        //showDropDownSearchResult(newText.trim());
+                    //}
                 }
                 else;
                 return false;
@@ -193,24 +187,18 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getRecentSearch(){
-
-        ArrayList<HashMap<String, String>> list = helper.fetchSearchList();
-        if (list.isEmpty()) {
+        ArrayList<HashMap<String, String>> list = null;
+        int count = helper.fetchPlacesCount();
+        if (count==0) {
         } else {
-            for (int i = 0; i < list.size(); i++) {
-                int count = helper.fetchPlacesCount();
-                Log.e("count:", count + "");
-                if (count > 5) {
-                    helper.deleteLastRow();
-                } else {
-                    Collections.reverse(list);
-                    list_search.setVisibility(View.INVISIBLE);
-                    list_recentsearch.setVisibility(View.VISIBLE);
-                    searchListAdapter = new SearchListAdapter(getActivity(), R.layout.row_search, list);
-                    list_recentsearch.setAdapter(searchListAdapter);
-                    break;
-                }
-            }
+            if (count > 5)
+                helper.deleteLastRow();
+            list = helper.fetchSearchList();
+            Collections.reverse(list);
+            list_search.setVisibility(View.INVISIBLE);
+            list_recentsearch.setVisibility(View.VISIBLE);
+            searchListAdapter = new SearchListAdapter(getActivity(), R.layout.row_search, list);
+            list_recentsearch.setAdapter(searchListAdapter);
         }
     }
 
@@ -236,7 +224,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             public void onResponse(final JSONObject response) {
                 Log.e("search dropdown", response.toString());
                 boolean responseSuccess = false;
-                String strsuccess, category;
+                String strsuccess;
                 try {
                     strsuccess = response.getString("success");
                     if (strsuccess.equals("true")) {
@@ -258,7 +246,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     e1.printStackTrace();
                     responseSuccess = false;
                 }
-                requestCalled_autosearch = false;
                 if (responseSuccess) {
                     try {
                         if (list.isEmpty()) {
@@ -272,7 +259,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                         } else {
                             searchResult = new String[list.size()];
                             searchAddress = new String[list.size()];
-                            result = new String[list.size()];
+                            String[] result = new String[list.size()];
                             searchID = new String[list.size()];
                             for (int i = 0; i < list.size(); i++) {
                                 searchResult[i] = list.get(i).get("name");
@@ -282,21 +269,21 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                             }
                             searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
                             img_searchAuto.setAdapter(searchAdapter);
-
+                            img_searchAuto.performClick();
                         /*if(searchAdapter == null) {
-                            Log.d("result ", "searchAdapter setAdapter");
                             searchAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, result);
                             img_searchAuto.setAdapter(searchAdapter);
+                            Log.d("result ", "searchAdapter setAdapter");
                         }else {
-                            Log.d("result ", "searchAdapter list notifyDataSetChanged");
                             searchAdapter.notifyDataSetChanged();
+                            Log.d("result ", "searchAdapter list notifyDataSetChanged");
                         }*/
                             img_searchAuto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     if (position == 0)
-                                        if (result[position].trim().equalsIgnoreCase("no result found"))
-                                            return;
+                                       /* if (result[position].trim().equalsIgnoreCase("no result found"))
+                                            return;*/
                                     helper.saveSearches(searchID[position], searchResult[position], searchAddress[position]);
                                     getRecentSearch();
                                     searchLogTracking(searchResult[position]);
@@ -311,6 +298,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                                     //t1.replace(R.id.frame_container, f1);
                                     t1.addToBackStack(null);
                                     t1.commit();
+                                    Log.e("position", searchID[position] +searchResult[position] );
+                                    img_searchAuto.setText("");
                                 }
                             });
                         }
@@ -575,6 +564,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     t1.add(R.id.frame_container, f1);
                     t1.addToBackStack(null);
                     t1.commit();
+                    Log.e("position convertView",  mItems.get(position).get("id"));
+                    img_searchAuto.setText("");
                 }
             });
 
@@ -767,6 +758,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     t1.add(R.id.frame_container, f1);
                     t1.addToBackStack(null);
                     t1.commit();
+                    Log.e("position convertView",  mItems.get(position).get("id"));
+                    img_searchAuto.setText("");
                 }
             });
             return convertView;

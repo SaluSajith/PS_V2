@@ -135,7 +135,7 @@ public class FollowersFragment extends Fragment implements View.OnClickListener 
                 }
                 if (responseSuccess) {
                     if (list.isEmpty()) {
-                        Toast.makeText(getActivity(), "You have no Followers", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Follow your favourite stores to avail exciting offers!", Toast.LENGTH_LONG).show();
                     } else {
                         followersListAdapter = new FollowersListAdapter(getActivity(), R.layout.row_followers1, list);
                         list_notification.setAdapter(followersListAdapter);
