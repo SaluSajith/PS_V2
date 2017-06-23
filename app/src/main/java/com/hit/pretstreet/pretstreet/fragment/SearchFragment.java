@@ -259,7 +259,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                         } else {
                             searchResult = new String[list.size()];
                             searchAddress = new String[list.size()];
-                            String[] result = new String[list.size()];
+                            final String[] result = new String[list.size()];
                             searchID = new String[list.size()];
                             for (int i = 0; i < list.size(); i++) {
                                 searchResult[i] = list.get(i).get("name");
@@ -282,8 +282,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     if (position == 0)
-                                       /* if (result[position].trim().equalsIgnoreCase("no result found"))
-                                            return;*/
+                                        if (result[position].trim().equalsIgnoreCase("no result found"))
+                                            return;
                                     helper.saveSearches(searchID[position], searchResult[position], searchAddress[position]);
                                     getRecentSearch();
                                     searchLogTracking(searchResult[position]);
