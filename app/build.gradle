@@ -8,9 +8,9 @@ android {
         applicationId "com.hit.pretstreet.pretstreet"
         minSdkVersion 15
         targetSdkVersion 23
-        versionName '1.4.4'
+        versionName '1.4.5'
         multiDexEnabled true
-        versionCode 9
+        versionCode 10
     }
     buildTypes {
         release {
