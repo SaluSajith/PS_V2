@@ -27,29 +27,10 @@ public class Constant {
     public static final String API = "Mpjdfanknavfrnefjndjbf";
     public static final String LIMIT = "10";
     public static final String TAG = "Pretstreetv2";
-
-    public static boolean isValidEmail(CharSequence target) {
-        if (target == null) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
-    }
-
-    public static void hide_keyboard(Activity activity) {
-        if (activity != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            View view = activity.getCurrentFocus();
-            if (view == null) {
-                view = new View(activity);
-            }
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
+    public static final int TIMEOUT_LIMIT = 15000;
 
     public static int notificationID = 0;
     public static int marketImageheight = 0;
-    public static String tag_json_obj = "json_obj_req";
     public static String subCategories = "{\n" +
             "    \"success\": true,\n" +
             "    \"parent_id\": \"109\",\n" +
@@ -68,7 +49,7 @@ public class Constant {
             "        \"image\": \"http:\\/\\/52.77.174.143\\/admin\\/media\\/catalog\\/category\\/accessesories_bg_1.png\"\n" +
             "    }]\n" +
             "}";
-    public static String deviceType;
+    public static String deviceType = "1";
     public static Bitmap imageupload;
 
     public static class Config {

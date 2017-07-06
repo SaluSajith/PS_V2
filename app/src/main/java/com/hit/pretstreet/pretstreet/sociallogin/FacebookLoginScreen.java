@@ -91,7 +91,6 @@ public class FacebookLoginScreen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
@@ -102,7 +101,6 @@ public class FacebookLoginScreen extends Activity {
 
                     @Override
                     public void onSuccess(LoginResult result) {
-                        // TODO Auto-generated method stub
                         if (AccessToken.getCurrentAccessToken() != null) {
                             GraphRequest request = GraphRequest.newMeRequest(
                                     result.getAccessToken(),
@@ -110,7 +108,6 @@ public class FacebookLoginScreen extends Activity {
                                         @Override
                                         public void onCompleted(JSONObject object,
                                                                 GraphResponse response) {
-                                            // TODO Auto-generated method stub
                                             Log.v("Response", response.toString());
                                             readResponse(object);
                                         }
@@ -124,7 +121,6 @@ public class FacebookLoginScreen extends Activity {
 
                     @Override
                     public void onError(FacebookException error) {
-                        // TODO Auto-generated method stub
                         Log.e("FbError", error.getMessage());
                         if (pendingAction != PendingAction.NONE && error instanceof FacebookAuthorizationException) {
                             pendingAction = PendingAction.NONE;
@@ -133,7 +129,6 @@ public class FacebookLoginScreen extends Activity {
 
                     @Override
                     public void onCancel() {
-                        // TODO Auto-generated method stub
                         Log.e("FbError", String.valueOf(FACEBOOK_LOGIN_RESULT_CODE_FAILURE));
                         FacebookLoginScreen.this.setResult(FACEBOOK_LOGIN_RESULT_CODE_FAILURE);
                         FacebookLoginScreen.this.finish();
@@ -211,7 +206,6 @@ public class FacebookLoginScreen extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
 
         callbackManager.onActivityResult(requestCode, resultCode, data);

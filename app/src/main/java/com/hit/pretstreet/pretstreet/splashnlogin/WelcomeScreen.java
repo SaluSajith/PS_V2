@@ -5,40 +5,25 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Button;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
-import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
+import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
+import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
 import com.hit.pretstreet.pretstreet.sociallogin.GoogleLoginActivity;
-import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.ActivityManagePermission;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,12 +32,11 @@ import butterknife.OnClick;
 /**
  * Created by hit on 10/3/16.
  */
-public class WelcomeScreen extends ActivityManagePermission{
+public class WelcomeScreen extends AbstractBaseAppCompatActivity implements ApiListenerInterface{
 
     @BindView(R.id.btn_sign_up) Button btn_sign_up;
     private ProgressDialog pDialog;
-
-    String strEmail, strName, strSocialId, strSocialType, strProfilePic;
+    JsonRequestController jsonRequestController;
 
     private static final int FACEBOOK_LOGIN_REQUEST_CODE = 1;
     private static final int GOOGLE_LOGIN_REQUEST_CODE = 2;
@@ -64,11 +48,19 @@ public class WelcomeScreen extends ActivityManagePermission{
         init();
     }
 
+    @Override
+    protected void setUpController() {
+        jsonRequestController = new JsonRequestController(this);
+    }
+
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
+
+        Log.d("deviceid",PretStreet.getDeviceId());
+
     }
 
     private void showpDialog() {
@@ -126,7 +118,10 @@ public class WelcomeScreen extends ActivityManagePermission{
             JSONObject responseJSON = new JSONObject(stringJSON);
             if(responseJSON!=null) {
                 JSONObject responseObject = responseJSON;
-                LoginController.getFacebookLoginData(responseObject);
+                JSONObject resultJson = LoginController.getFacebookLoginData(responseObject);
+                //TODO :  api call
+                showpDialog();
+                jsonRequestController.test();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -134,8 +129,10 @@ public class WelcomeScreen extends ActivityManagePermission{
     }
 
     private void getGoogleResponse(GoogleSignInAccount signInAccount) {
-       LoginController.getGoogleLoginDetails(signInAccount);
-        getCheckFBLogin();
+        JSONObject resultJson = LoginController.getGoogleLoginDetails(signInAccount);
+        //TODO :  api call
+        jsonRequestController.test();
+        // getCheckFBLogin();
     }
 
     @Override
@@ -169,89 +166,45 @@ public class WelcomeScreen extends ActivityManagePermission{
         }
     }
 
-    private void getCheckFBLogin() {
-        showpDialog();
+    @Override
+    public void onResponse(JSONObject response) {
+        Log.e("Volley", response.toString());
+        /*boolean responseSuccess = false;
+        String userId = null, strSuccess = null;
         try {
-            strSocialId = URLEncoder.encode(strSocialId, "UTF-8");
-            strSocialType = URLEncoder.encode(strSocialType, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println("\n");
+            strSuccess = response.getString("success");
+            if (strSuccess.equals("false")) {
+                responseSuccess = false;
+            } else {
+                responseSuccess = true;
+                userId = response.getString("user_id");
+            }
+        } catch (JSONException e1) {
+            e1.printStackTrace();
         }
-
-        String url;
-        String deviceId = Settings.System.getString(getApplicationContext().getContentResolver(), Settings.System.ANDROID_ID);
-        try {
-            //strProfilePic = URLEncoder.encode("https://graph.facebook.com/" + strSocialId + "/picture?type=large", "UTF-8");
-            url = Constant.FASHION_API + "route=social_login&email=" + strEmail + "&social_id=" + strSocialId + "&social_type=" + strSocialType
-                    + "&fname=" + URLEncoder.encode(strName, "UTF-8") + "&profile_pic=" + strProfilePic+ "&device=1" + "&deviceid=" + deviceId;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            url = Constant.FASHION_API;
-        }
-        Log.e("URL Details: ", url);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,
-                null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(final JSONObject response) {
-                Log.e("Volley", response.toString());
-                boolean responseSuccess = false;
-                String userId = null, strSuccess = null;
-                try {
-                    System.out.println("\n");
-                    strSuccess = response.getString("success");
-                    if (strSuccess.equals("false")) {
-                        responseSuccess = false;
-                    } else {
-                        responseSuccess = true;
-                        userId = response.getString("user_id");
-                    }
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
-                }
-                if (responseSuccess) {
-                    hidepDialog();
-                    PreferenceServices.instance().saveUserId(userId);
-                    PreferenceServices.instance().saveLoginType("Social");
-                    /*if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
+        if (responseSuccess) {
+            hidepDialog();
+            PreferenceServices.instance().saveUserId(userId);
+            PreferenceServices.instance().saveLoginType("Social");
+                    *//*if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
                             || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
                         startActivity(new Intent(getApplicationContext(), DefaultLocation.class));
                     } else {
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                    }*/
-                    finish();
-                } else {
-                    hidepDialog();
-                    Snackbar.make( getWindow().getDecorView().getRootView(), "Facebook Login Failed.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+                    }*//*
+            finish();
+        } else {
+            hidepDialog();
+            Snackbar.make( getWindow().getDecorView().getRootView(), "Facebook Login Failed.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }*/
+    }
 
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Volley", "Error: " + error.getMessage());
-                hidepDialog();
-                String message = null;
-                if (error instanceof NetworkError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof ServerError) {
-                    message = "The server could not be found. Please try again after some time!!";
-                } else if (error instanceof AuthFailureError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof ParseError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof NoConnectionError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof TimeoutError) {
-                    message = "Connection TimeOut! Please check your internet connection.";
-                }
-                Snackbar.make( getWindow().getDecorView().getRootView(), message, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        PretStreet.getInstance().addToRequestQueue(jsonObjReq, Constant.tag_json_obj);
+    @Override
+    public void onError(String error) {
+        hidepDialog();
+        Snackbar.make( getWindow().getDecorView().getRootView(), error, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 }

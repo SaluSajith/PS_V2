@@ -5,32 +5,32 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 import com.hit.pretstreet.pretstreet.R;
 
-
 /**
- * Created by User on 29/6/17.
+ * Created by User on 7/6/2017.
  */
 
-public class TextViewPret extends AppCompatTextView {
+public class EdittextPret extends AppCompatEditText {
 
     private static final String defaultFontName = "MERRIWEATHER-REGULAR.TTF";
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public TextViewPret(Context context, AttributeSet attrs, int defStyle) {
+    public EdittextPret(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
 
-    public TextViewPret(Context context, AttributeSet attrs) {
+    public EdittextPret(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public TextViewPret(Context context) {
+    public EdittextPret(Context context) {
         super(context);
         init(context, null);
     }
@@ -50,5 +50,3 @@ public class TextViewPret extends AppCompatTextView {
         }
     }
 }
-
-

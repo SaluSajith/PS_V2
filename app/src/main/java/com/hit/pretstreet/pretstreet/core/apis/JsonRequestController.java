@@ -1,6 +1,7 @@
 package com.hit.pretstreet.pretstreet.core.apis;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
@@ -14,7 +15,9 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.hit.pretstreet.pretstreet.PretStreet;
+import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeScreen;
 
 import org.json.JSONObject;
 
@@ -26,15 +29,22 @@ import java.util.Map;
  * Created by User on 7/5/2017.
  */
 
-public class JsonRequestListener {
+public class JsonRequestController {
 
     private String tag_json_obj = "jobj_req";
+    private String tag_str_obj = "string_req";
     RequestQueue mRequestQueue;
     String requestBody;
+    ApiListenerInterface listenerInterface;
+    StringRequest stringRequest;
+
+    public JsonRequestController(ApiListenerInterface listenerInterface){
+        this.listenerInterface = listenerInterface;
+    }
     /**
      * Making json object request
      * */
-    private void makeJsonObjReq() {
+    public void makeJsonObjReq(JSONObject jsonObject) {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 "URL", null,
@@ -42,6 +52,7 @@ public class JsonRequestListener {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        listenerInterface.onResponse(response);
                     }
                 }, new Response.ErrorListener() {
 
@@ -62,6 +73,7 @@ public class JsonRequestListener {
                 } else if (error instanceof TimeoutError) {
                     message = "Connection TimeOut! Please check your internet connection.";
                 }
+                listenerInterface.onError(message);
             }
         }) {
 
@@ -95,9 +107,12 @@ public class JsonRequestListener {
         // ApplicationController.getInstance().getRequestQueue().cancelAll(tag_json_obj);
     }
 
-    private void sendRequest(){
+    public void test(){
+        listenerInterface.onError("gettingdata");
+    }
+    public void sendRequest(JSONObject jsonObject){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "URL",
+        stringRequest = new StringRequest(Request.Method.POST, "URL",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -139,7 +154,10 @@ public class JsonRequestListener {
                 }
             }
         };
-        mRequestQueue.add(stringRequest);
+        //mRequestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(Constant.TIMEOUT_LIMIT,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        PretStreet.getInstance().addToRequestQueue(stringRequest, tag_str_obj);
     }
 
 }

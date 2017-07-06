@@ -13,12 +13,12 @@ import com.hit.pretstreet.pretstreet.R;
 
 
 /**
- * Created by vrinda venugopal on 29/9/16.
+ * Created by User on 29/6/17.
  */
 
 public class ButtonPret extends AppCompatButton {
 
-    private static final String defaultFontName = "segoe_ui_reg.ttf";
+    private static final String defaultFontName = "MERRIWEATHER-REGULAR.TTF";
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ButtonPret(Context context, AttributeSet attrs, int defStyle) {

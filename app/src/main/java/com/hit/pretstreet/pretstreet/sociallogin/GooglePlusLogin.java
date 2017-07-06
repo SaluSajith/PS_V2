@@ -83,7 +83,6 @@ public class GooglePlusLogin extends Activity implements ConnectionCallbacks, On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode != RESULT_OK) {
