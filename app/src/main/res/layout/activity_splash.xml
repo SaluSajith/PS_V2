@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/base">
+
+    <RelativeLayout
+        android:id="@+id/rl_fixed_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/fixed_top"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:rotation="-3"
+            android:src="@drawable/logo" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_fixed_top"
+        android:layout_marginTop="-35dp"
+        android:background="@drawable/blackpatch"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2sp"
+                android:layout_marginTop="15sp"
+                android:layout_weight="1"
+                android:background="@drawable/sign_up"/>
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2sp"
+                android:layout_marginTop="@dimen/welcome_margintop"
+                android:layout_weight="1"
+                android:background="@drawable/login"
+                android:padding="5sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:layout_marginTop="-15sp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_facebook"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2sp"
+                android:layout_marginTop="15sp"
+                android:layout_weight="1"
+                android:background="@drawable/facebook"
+                android:padding="5sp"/>
+
+            <Button
+                android:id="@+id/btn_google"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2sp"
+                android:layout_marginTop="@dimen/welcome_margintop"
+                android:layout_weight="1"
+                android:background="@drawable/google"
+                android:padding="5sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:text="Offers"
+    android:textColor="@color/dark_gray"
+    android:id="@+id/tv_nav_item"
+    android:padding="@dimen/padding_large"
+    app:pret_typeface="@string/font_merriweather_light"
+    tools:context="com.hit.pretstreet.pretstreet.navigation.HomeActivity">
+
+</com.hit.pretstreet.pretstreet.core.customview.TextViewPret>

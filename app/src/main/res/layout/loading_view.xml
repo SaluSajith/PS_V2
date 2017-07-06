@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+    
+    <com.hit.pretstreet.pretstreet.core.customview.HiveProgressView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        app:hive_animDuration="5000"
+        app:hive_color="@color/yellow"
+        app:hive_cornerRadius="20"
+        app:hive_maxAlpha="100"
+        app:hive_rainbow="true"
+        app:hive_shrink="true" />
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:id="@+id/loading_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/loading"
+        android:textColor="@color/dark_gray"
+        app:pret_typeface="@string/font_merriweather_regular"
+        style="@style/textview_normal"/>
+
+</LinearLayout>

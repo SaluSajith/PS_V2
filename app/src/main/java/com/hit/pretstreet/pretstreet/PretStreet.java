@@ -1,6 +1,7 @@
 package com.hit.pretstreet.pretstreet;
 
 import android.app.Application;
+import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
@@ -51,4 +52,10 @@ public class PretStreet extends MultiDexApplication {
         }
     }
 
+    public static String getDeviceId() {
+        String mDeviceId = "";
+        mDeviceId = Settings.Secure.getString(mInstance.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        return mDeviceId;
+    }
 }

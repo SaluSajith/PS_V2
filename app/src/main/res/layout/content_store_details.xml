@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_small"
+        android:background="@color/yellow_indicator"
+        android:paddingBottom="24dp"/>
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/textview_heading"
+        android:maxLines="3"
+        android:gravity="center"
+        android:inputType="textMultiLine|textCapCharacters"
+        android:text="TANISHQ Showroom Gurgav Area"
+        app:pret_typeface="@string/font_merriweather_regular"
+        android:id="@+id/tv_storename"
+        android:padding="@dimen/padding_standard"/>
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/textview_normal"
+        android:textAllCaps="true"
+        android:text="andheri (west), mumbai"
+        android:id="@+id/tv_location"
+        app:pret_typeface="@string/font_merriweather_light"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/textview_normal"
+            android:text="Open now"
+            android:layout_marginRight="0dp"
+            android:textColor="@color/green"
+            app:pret_typeface="@string/font_merriweather_light"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/textview_normal"
+            android:layout_marginLeft="0dp"
+            android:text=" - 11 AM to 9.30 PM"
+            app:pret_typeface="@string/font_merriweather_light"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_standard"
+        android:gravity="center">
+
+        <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/follow"
+            android:textAllCaps="false"
+            android:background="@drawable/yellow_border"
+            android:textColor="@color/dark_gray"
+            android:id="@+id/btn_follow"
+            android:minHeight="30dp"
+            android:minWidth="60dp"
+            app:pret_typeface="@string/font_merriweather_regular" />
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/textview_normal"
+            android:text="254 followers"
+            android:id="@+id/tv_folowerscount"
+            app:pret_typeface="@string/font_merriweather_regular"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:gravity="center">
+
+        <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/logo1" />
+
+        <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/logo1" />
+
+        <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/logo1" />
+    </LinearLayout>
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/textview_normal"
+        android:text="254 followers"
+        android:id="@+id/tv_info"
+        android:gravity="left"
+        android:layout_marginBottom="@dimen/padding_large"
+        app:pret_typeface="@string/font_merriweather_regular"/>
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/textview_normal"
+        android:text="254 followers"
+        android:gravity="left"
+        android:id="@+id/tv_products"
+        app:pret_typeface="@string/font_merriweather_regular"/>
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/textview_normal"
+        android:text="Testimonials"
+        android:id="@+id/tv_testimonials_heading"
+        android:layout_margin="@dimen/padding_large"
+        android:textSize="@dimen/textsize_large"
+        app:pret_typeface="@string/font_merriweather_bold"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_gravity="bottom"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingEnd="@dimen/padding_xhuge"
+        android:paddingLeft="@dimen/padding_xhuge"
+        android:paddingRight="@dimen/padding_xhuge"
+        android:paddingStart="@dimen/padding_xhuge" />
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow_indicator"
+        style="@style/textview_normal"
+        android:text="  Photos  "
+        android:paddingBottom="@dimen/padding_standard"
+        android:paddingTop="@dimen/padding_standard"
+        android:paddingLeft="860dp"
+        android:paddingRight="@dimen/padding_huge"
+        android:id="@+id/tv_testimonials_heading"
+        android:layout_margin="0dp"
+        android:textSize="@dimen/textsize_xlarge"
+        app:pret_typeface="@string/font_redvelvet_regular"/>
+
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="562dp"></View>
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/textview_normal"
+        android:text="254 followers"
+        android:gravity="left"
+        android:id="@+id/tv_imgsrc"
+        android:layout_marginBottom="@dimen/padding_large"
+        app:pret_typeface="@string/font_merriweather_regular"/>
+    <!--
+        <com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/lv_storeimages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>-->
+</LinearLayout>
