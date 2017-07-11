@@ -19,6 +19,33 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="follow">follow</string>
     <string name="loading">Loading..Please wait.</string>
+    <string name="title_activity_login">Sign in</string>
 
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!--Welcome page textx-->
+    <string name="signup">sign up</string>
+    <string name="login">login</string>
+    <string name="facebook">facebook</string>
+    <string name="google">google</string>
+    <string name="mobile">Mobile number:</string>
+    <string name="firstname">first name:</string>
+    <string name="lastname">last name:</string>
+    <string name="mobilenumbr">mobile no:</string>
+    <string name="email">email id:</string>
+    <string name="password">password:</string>
+    <string name="signup_mobile">sign up with your mobile number</string>
+    <string name="alreadyhaveaccount">already have an account here?</string>
 
 </resources>

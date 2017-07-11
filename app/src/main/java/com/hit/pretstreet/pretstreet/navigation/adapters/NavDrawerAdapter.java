@@ -16,7 +16,6 @@ import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
  * Created by User on 6/27/2017.
  */
 
-
 public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.MyViewHolder> {
 
     private final Context context;

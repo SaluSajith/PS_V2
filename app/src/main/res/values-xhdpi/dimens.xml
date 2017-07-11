@@ -54,4 +54,10 @@
 
     <dimen name="headeryellow_height">91dp</dimen>
     <dimen name="headeryellow_width">748dp</dimen>
+
+    <!-- Login Screens-->
+    <dimen name="buttons_height">100dp</dimen>
+    <dimen name="buttons_topmargin">25dp</dimen>
+    <dimen name="buttons_layouttopmargin">-33dp</dimen>
+    <dimen name="buttons_layoutheight">220dp</dimen>
 </resources>

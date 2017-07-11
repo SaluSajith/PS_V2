@@ -1,51 +1,60 @@
 package com.hit.pretstreet.pretstreet.splashnlogin;
 
-import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
-import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
-import com.hit.pretstreet.pretstreet.sociallogin.GoogleLoginActivity;
-import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
+import com.hit.pretstreet.pretstreet.splashnlogin.fragments.LoginFragment;
+import com.hit.pretstreet.pretstreet.splashnlogin.fragments.SignupFragment;
+import com.hit.pretstreet.pretstreet.splashnlogin.fragments.WelcomeFragment;
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by hit on 10/3/16.
  */
-public class WelcomeScreen extends AbstractBaseAppCompatActivity implements ApiListenerInterface{
+public class WelcomeScreen extends AbstractBaseAppCompatActivity implements ApiListenerInterface, ButtonClickCallback{
 
-    @BindView(R.id.btn_sign_up) Button btn_sign_up;
-    private ProgressDialog pDialog;
-    JsonRequestController jsonRequestController;
-
+    private static final int WELCOME_FRAGMENT = 0;
+    private static final int LOGIN_FRAGMENT = 1;
+    private static final int SIGNUP_FRAGMENT = 2;
+    private static final int FORGETPASSWORD_FRAGMENT = 3;
     private static final int FACEBOOK_LOGIN_REQUEST_CODE = 1;
     private static final int GOOGLE_LOGIN_REQUEST_CODE = 2;
+    private static final int SIGNUP_CLICK_CODE = 1;
+    private static final int LOGIN_CLICK_CODE = 2;
+    private int currentFragment = 0;
+
+    @BindView(R.id.content) FrameLayout fl_content;
+    @BindView(R.id.nsv_header)NestedScrollView nsv_header;
+
+    JsonRequestController jsonRequestController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         init();
+        changeFragment(new WelcomeFragment(), false);
     }
 
     @Override
@@ -56,62 +65,41 @@ public class WelcomeScreen extends AbstractBaseAppCompatActivity implements ApiL
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
-
-        Log.d("deviceid",PretStreet.getDeviceId());
 
     }
 
-    private void showpDialog() {
-        if (!pDialog.isShowing()) {
-            pDialog.show();
-            pDialog.setContentView(R.layout.loading_view);
-            pDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+    private void changeFragment(Fragment fragment, boolean addBackstack) {
+
+        FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
+        for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+            fm.popBackStack();
         }
-    }
-
-    private void hidepDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
-
-    @OnClick(R.id.btn_sign_up)
-    public void onSignupPressed() {
-    }
-
-    @OnClick(R.id.btn_login)
-    public void onLoginPressed() {
-    }
-
-    @OnClick(R.id.btn_facebook)
-    public void onFacebookPressed() {
-        Intent facebookLoginIntent = new Intent(WelcomeScreen.this, FacebookLoginScreen.class);
-        facebookLoginIntent.putExtra("cat", "Login");
-        facebookLoginIntent.putExtra("Type", "FirstLogin");
-        startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
-    }
-
-    @OnClick(R.id.btn_google)
-    public void onGooglePressed() {
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.GET_ACCOUNTS)
-                == PackageManager.PERMISSION_GRANTED) {
-            Intent googleLoginIntent = new Intent(WelcomeScreen.this, GoogleLoginActivity.class);
-            startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
-        } else {
-            askCompactPermission(Manifest.permission.GET_ACCOUNTS, new PermissionResult() {
-                @Override
-                public void permissionGranted() {
-                    Intent googleLoginIntent = new Intent(WelcomeScreen.this, GoogleLoginActivity.class);
-                    startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
-                }
-
-                @Override
-                public void permissionDenied() {
-                }
-            });
+        fl_content.removeAllViews();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
+        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        ft.replace(R.id.content, fragment);
+        if (addBackstack) {
+            ft.addToBackStack(null);
         }
+        ft.commit();
     }
+
+
+    /*@Override
+    public void onBackPressed() {
+        if (currentFragment == FORGETPASSWORD_FRAGMENT) {
+            currentFragment = WELCOME_FRAGMENT;
+            changeFragment(new WelcomeFragment(), false);
+        } else if (currentFragment == SIGNUP_FRAGMENT) {
+            currentFragment = WELCOME_FRAGMENT;
+            changeFragment(new WelcomeFragment(), false);
+        } else if (currentFragment == LOGIN_FRAGMENT) {
+            currentFragment = WELCOME_FRAGMENT;
+            changeFragment(new WelcomeFragment(), false);
+        } else if (currentFragment == WELCOME_FRAGMENT) {
+            finish();
+        }
+    }*/
 
     private void setupSocialLogin(String stringJSON){
         try {
@@ -120,7 +108,7 @@ public class WelcomeScreen extends AbstractBaseAppCompatActivity implements ApiL
                 JSONObject responseObject = responseJSON;
                 JSONObject resultJson = LoginController.getFacebookLoginData(responseObject);
                 //TODO :  api call
-                showpDialog();
+                this.showProgressDialog(getResources().getString(R.string.loading));
                 jsonRequestController.test();
             }
         } catch (JSONException e) {
@@ -203,8 +191,20 @@ public class WelcomeScreen extends AbstractBaseAppCompatActivity implements ApiL
 
     @Override
     public void onError(String error) {
-        hidepDialog();
+        this.destroyDialog();
         Snackbar.make( getWindow().getDecorView().getRootView(), error, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+    }
+
+    @Override
+    public void buttonClick(int id) {
+        if(id == SIGNUP_CLICK_CODE){
+            currentFragment = SIGNUP_FRAGMENT;
+            changeFragment(new SignupFragment(), true);
+        }
+        else if(id == LOGIN_CLICK_CODE){
+            currentFragment = SIGNUP_FRAGMENT;
+            changeFragment(new LoginFragment(), true);
+        }
     }
 }

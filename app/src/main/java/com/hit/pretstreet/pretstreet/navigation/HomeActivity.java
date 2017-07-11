@@ -112,7 +112,8 @@ public class HomeActivity extends AppCompatActivity
     public void menuOnClick(String id) {
         String itemId = id;
         Toast.makeText(HomeActivity.this, id, Toast.LENGTH_SHORT).show();
-
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         switch (itemId) {
             case "nav_about":
                 Intent intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);

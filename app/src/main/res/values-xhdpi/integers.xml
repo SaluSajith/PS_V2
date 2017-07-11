@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="rotation">0</integer>
+    <integer name="rotation1">0</integer>
+    <integer name="rotation_text">-5</integer>
+    <integer name="rotation_accountalready">6</integer>
+</resources>

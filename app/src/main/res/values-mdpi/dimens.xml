@@ -55,4 +55,13 @@
     <dimen name="headeryellow_height">60dp</dimen>
     <dimen name="headeryellow_width">480dp</dimen>
 
+    <!-- Login Screens-->
+    <dimen name="buttons_height">100dp</dimen>
+    <dimen name="buttons_topmargin">25dp</dimen>
+    <dimen name="buttons_layouttopmargin">-33dp</dimen>
+    <dimen name="rotation_socialtext">@integer/rotation_text</dimen>
+    <dimen name="rotation_alreadyaccount">@integer/rotation_accountalready</dimen>
+    <dimen name="buttons_layoutheight">220dp</dimen>
+    <dimen name="rotation_layout">@integer/rotation</dimen>
+    <dimen name="rotation_layout1">@integer/rotation1</dimen>
 </resources>

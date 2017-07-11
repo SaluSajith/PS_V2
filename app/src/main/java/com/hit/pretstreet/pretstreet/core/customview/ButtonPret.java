@@ -42,7 +42,7 @@ public class ButtonPret extends AppCompatButton {
             String fontName = a.getString(R.styleable.CustomStyle_pret_typeface);
             try {
                 if (fontName == null) fontName = defaultFontName;
-                Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/" + fontName);
+                Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "" + fontName);
                 setTypeface(myTypeface);
             } catch (Exception e) {
                 e.printStackTrace();

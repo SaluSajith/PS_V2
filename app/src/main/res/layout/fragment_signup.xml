@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:layout_marginTop="0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/buttons_height"
+        android:paddingBottom="3dp"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/buttons"
+        android:orientation="horizontal"
+        android:id="@+id/ll_sociallogins">
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/buttons_topmargin"
+            android:rotation="@dimen/rotation_socialtext"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+                android:id="@+id/btn_facebook"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/facebook"
+                style="@style/button_welcome"
+                app:pret_typeface="@string/font_merriweather_regular"
+                android:padding="5sp"/>
+
+            <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+                android:id="@+id/btn_google"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/google"
+                style="@style/button_welcome"
+                app:pret_typeface="@string/font_merriweather_regular"
+                android:padding="5sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/loginbanner"
+        android:layout_marginTop="-30sp"
+        android:rotation="@dimen/rotation_layout">
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:id="@+id/tv_heading"
+            style="@style/heading_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:rotation="@dimen/rotation_socialtext"
+            android:text="@string/signup_mobile" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-25dp"
+        android:background="@drawable/signupbg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_marginRight="-1dp"
+        android:layout_marginLeft="-1dp"
+        android:rotation="@dimen/rotation_layout1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/phonebg"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+                android:id="@+id/edt_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/edittext_white_normal"
+                android:hint="@string/firstname"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-25dp"
+            android:background="@drawable/namebg"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+                android:id="@+id/edt_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/edittext_white_normal"
+                android:hint="@string/lastname"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-25dp"
+            android:orientation="horizontal"
+            android:background="@drawable/numberbg"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+                android:id="@+id/edt_lastname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                style="@style/edittext_white_normal"
+                android:text="+91"
+                android:focusable="false" />
+
+            <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+                android:id="@+id/edt_mobile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/edittext_white_normal"
+                android:hint="@string/mobilenumbr"
+                android:inputType="phone" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-25dp"
+            android:background="@drawable/namebg"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/edittext_white_normal"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-25dp"
+            android:background="@drawable/phonebg"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/edittext_white_normal"
+                android:hint="@string/password"
+                android:inputType="textPassword"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/alreadyaccount"
+        android:layout_marginTop="-25sp"
+        android:rotation="@dimen/rotation_layout">
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:id="@+id/tv_heading"
+            style="@style/heading_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:rotation="@dimen/rotation_alreadyaccount"
+            android:text="@string/alreadyhaveaccount" />
+    </LinearLayout>
+
+    <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+        android:id="@+id/btn_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup"
+        style="@style/button_standard"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="-75sp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_pretstreet_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="85sp"
+            android:padding="2sp"
+            android:text="By creating an account you agree to Pretstreet App"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/txt_conditon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2sp"
+                android:text="Terms of Service"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+
+            <!-- <TextView
+                 android:id="@+id/txt_and"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="3sp"
+                 android:padding="2sp"
+                 android:text=" and "
+                 android:textColor="@android:color/white"
+                 android:textSize="10sp" />
+
+             <TextView
+                 android:id="@+id/txt_privacy"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="3sp"
+                 android:padding="2sp"
+                 android:text="Privacy Notice."
+                 android:textColor="@android:color/white"
+                 android:textSize="10sp" />-->
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

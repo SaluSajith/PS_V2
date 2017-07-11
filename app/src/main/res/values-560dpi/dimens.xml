@@ -25,7 +25,7 @@
     <dimen name="textsize_large">14sp</dimen>
     <dimen name="textsize_xlarge">17sp</dimen>
     <dimen name="textsize_xxlarge">20sp</dimen>
-    <dimen name="textsize_xxxlarge">24sp</dimen>
+    <dimen name="textsize_xxxlarge">30sp</dimen>
 
     <dimen name="divider_space_small">2dp</dimen>
     <dimen name="divider_space_standard">5dp</dimen>
@@ -54,4 +54,10 @@
 
     <dimen name="headeryellow_height">181dp</dimen>
     <dimen name="headeryellow_width">1440dp</dimen>
+
+    <!-- Login Screens-->
+    <dimen name="buttons_height">100dp</dimen>
+    <dimen name="buttons_topmargin">25dp</dimen>
+    <dimen name="buttons_layouttopmargin">-33dp</dimen>
+    <dimen name="buttons_layoutheight">220dp</dimen>
 </resources>

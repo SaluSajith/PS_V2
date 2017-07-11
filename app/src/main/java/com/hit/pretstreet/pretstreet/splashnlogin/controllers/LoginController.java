@@ -1,11 +1,6 @@
 package com.hit.pretstreet.pretstreet.splashnlogin.controllers;
 
-import android.app.Application;
 import android.content.Context;
-import android.provider.Settings;
-import android.text.TextUtils;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.hit.pretstreet.pretstreet.PretStreet;
