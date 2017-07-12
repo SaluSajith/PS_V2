@@ -36,6 +36,9 @@ public class Utility {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
         }
     }
+    public static boolean validCellPhone(String number){
+        return android.util.Patterns.PHONE.matcher(number).matches();
+    }
 
     public static void hide_keyboard(Activity activity) {
         if (activity != null) {

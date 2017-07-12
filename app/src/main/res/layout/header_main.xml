@@ -29,15 +29,42 @@
                 android:src="@drawable/fixed_top"
                 android:scaleType="centerCrop"/>
 
-            <ImageView
-                android:layout_width="@dimen/headeryellow_width"
-                android:layout_height="@dimen/headeryellow_height"
-                android:id="@+id/iv_bottom"
-                android:scaleType="fitEnd"
-                android:src="@drawable/headeryellow"
-                android:layout_marginBottom="-1dp"
-                android:layout_alignParentBottom="true"/>
+                <ImageView
+                    android:layout_width="@dimen/headeryellow_width"
+                    android:layout_height="@dimen/headeryellow_height"
+                    android:id="@+id/iv_bottom"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/headeryellow"
+                    android:layout_marginBottom="-1dp"
+                    android:layout_alignParentBottom="true"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:rotation="-4"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/textsize_large">
+
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mumbai"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginStart="9dp" />
+
+                <ImageView
+                    android:id="@+id/img_expand"
+                    android:layout_width="@dimen/textsize_xlarge"
+                    android:layout_height="@dimen/textsize_xlarge"
+                    android:src="@drawable/ic_expand"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
@@ -109,6 +136,8 @@
                 android:layout_gravity="top"
                 app:nbMaxTextLength="2"
                 app:nbTextColor="@color/white"
+                app:nbTextSize="@dimen/textsize_small"
+                app:nbBackground="@color/transparent"
                 android:layout_alignTop="@+id/imageView2"
                 android:layout_alignRight="@+id/linearLayout"
                 android:layout_alignEnd="@+id/linearLayout" />

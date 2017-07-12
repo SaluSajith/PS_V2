@@ -67,4 +67,11 @@
     <dimen name="buttons_layoutheight">220dp</dimen>
     <dimen name="rotation_layout">@integer/rotation</dimen>
     <dimen name="rotation_layout1">@integer/rotation1</dimen>
+
+
+
+
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

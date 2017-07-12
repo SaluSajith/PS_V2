@@ -105,7 +105,6 @@
             android:name=".sociallogin.GoogleLoginActivity"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity android:name=".ui.ArticleActivity" />
-
         <activity
             android:name=".navigation.HomeActivity"
             android:screenOrientation="portrait" />
@@ -148,6 +147,7 @@
         <activity android:name=".storedetails.StoreDetailsActivity"></activity>
         -->
 
+        <activity android:name=".navigationitems.NavigationItemsActivity"></activity>
     </application>
 
 </manifest>

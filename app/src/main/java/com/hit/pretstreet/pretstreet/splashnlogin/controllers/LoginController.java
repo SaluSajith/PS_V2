@@ -83,6 +83,46 @@ public class LoginController {
         return jsonBody;
     }
 
+    public static JSONObject getNormalLoginDetails(String phone) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("social_id", "");
+            jsonBody.put("social_type", "");
+            jsonBody.put("profile_pic", "");
+            jsonBody.put("email", "");
+            jsonBody.put("fname", "");
+            jsonBody.put("lname", "");
+            jsonBody.put("gender", "");
+            jsonBody.put("device", "1");
+            jsonBody.put("deviceid", PretStreet.getDeviceId());
+
+        } catch (JSONException e) {
+        } catch (Exception e) {}
+
+        return jsonBody;
+    }
+
+    public static void validateLoginFields(EdittextPret et_number) {
+        String message = "Fields cannot be empty";
+        EdittextPret edittextPret = new EdittextPret(context);
+
+        String number = et_number.getText().toString();
+        if (number.length() < 1) {
+            edittextPret = et_number;
+            message = "Fields cannot be empty";
+            loginCallbackInterface.validateCallback(edittextPret, message);
+            return;
+        }  else if (!Utility.validCellPhone(number)) {
+            edittextPret = et_number;
+            message = "Invalid phone number";
+            loginCallbackInterface.validateCallback(edittextPret, message);
+            return;
+        } else {
+            //TODO login
+            loginCallbackInterface.validationSuccess(number);
+        }
+    }
     public static void validateTokenFields(EdittextPret et_name, EdittextPret et_pass) {
         String message = "Fields cannot be empty";
         EdittextPret edittextPret = new EdittextPret(context);

@@ -18,13 +18,13 @@
         android:contentDescription="hh"
         android:src="@drawable/nb_badge_bg"/>
 
-    <TextView
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
         android:id="@+id/tv_badge_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor="@color/white"
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:layout_gravity="top|center_horizontal"
+        android:gravity="top|center_horizontal"
         android:maxLines="1"
         tools:text="1" />
 

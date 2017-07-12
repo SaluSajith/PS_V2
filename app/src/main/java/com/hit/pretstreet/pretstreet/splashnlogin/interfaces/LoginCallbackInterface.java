@@ -10,4 +10,5 @@ import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 
 public interface LoginCallbackInterface {
     void validateCallback(EdittextPret editText, String message);
+    void validationSuccess(String phonenumber);
 }

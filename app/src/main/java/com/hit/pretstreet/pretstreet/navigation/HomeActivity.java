@@ -1,11 +1,8 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,6 +21,7 @@ import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.navigation.adapters.NavDrawerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
+import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 
 public class HomeActivity extends AppCompatActivity
@@ -122,6 +120,8 @@ public class HomeActivity extends AppCompatActivity
             case "nav_account":
                 break;
             case "nav_addstore":
+                intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
+                startActivity(intent);
                 break;
             case "nav_contact":
                 break;

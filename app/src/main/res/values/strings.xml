@@ -42,10 +42,14 @@
     <string name="mobile">Mobile number:</string>
     <string name="firstname">first name:</string>
     <string name="lastname">last name:</string>
+    <string name="storename">store name:</string>
+    <string name="contactname">contact person name:</string>
+    <string name="landline">landline no::</string>
+    <string name="location">location:</string>
+    <string name="about">about store:</string>
     <string name="mobilenumbr">mobile no:</string>
     <string name="email">email id:</string>
     <string name="password">password:</string>
     <string name="signup_mobile">sign up with your mobile number</string>
     <string name="alreadyhaveaccount">already have an account here?</string>
-
 </resources>

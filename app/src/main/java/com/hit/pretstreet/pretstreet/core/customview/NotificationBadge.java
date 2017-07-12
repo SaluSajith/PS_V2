@@ -28,7 +28,7 @@ public class NotificationBadge extends FrameLayout {
 
     private FrameLayout mContainer;
     private ImageView mIvBadgeBg;
-    private TextView mTvBadgeText;
+    private TextViewPret mTvBadgeText;
     private int mBadgeTextColor = DEFAULT_TEXT_COLOR;
     private float mBadgeTextSize = dpToPx(DEFAULT_TEXT_SIZE);
     private int mAnimationDuration = DEFAULT_ANIMATION_DURATION;
@@ -49,7 +49,7 @@ public class NotificationBadge extends FrameLayout {
         inflater.inflate(R.layout.notification_badge, this, true);
         mContainer = (FrameLayout) findViewById(R.id.fl_container);
         mIvBadgeBg = (ImageView) findViewById(R.id.iv_badge_bg);
-        mTvBadgeText = (TextView) findViewById(R.id.tv_badge_text);
+        mTvBadgeText = (TextViewPret) findViewById(R.id.tv_badge_text);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs, R.styleable.NotificationBadge, 0, 0);

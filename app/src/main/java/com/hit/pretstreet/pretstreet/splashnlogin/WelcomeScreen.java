@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
+import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
@@ -22,6 +23,7 @@ import com.hit.pretstreet.pretstreet.splashnlogin.fragments.LoginFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.fragments.SignupFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.fragments.WelcomeFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,8 +34,10 @@ import butterknife.ButterKnife;
 /**
  * Created by hit on 10/3/16.
  */
-public class WelcomeScreen extends AbstractBaseAppCompatActivity implements ApiListenerInterface, ButtonClickCallback{
+public class WelcomeScreen extends AbstractBaseAppCompatActivity implements
+        ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface{
 
+    private int currentFragment = 0;
     private static final int WELCOME_FRAGMENT = 0;
     private static final int LOGIN_FRAGMENT = 1;
     private static final int SIGNUP_FRAGMENT = 2;
@@ -42,7 +46,6 @@ public class WelcomeScreen extends AbstractBaseAppCompatActivity implements ApiL
     private static final int GOOGLE_LOGIN_REQUEST_CODE = 2;
     private static final int SIGNUP_CLICK_CODE = 1;
     private static final int LOGIN_CLICK_CODE = 2;
-    private int currentFragment = 0;
 
     @BindView(R.id.content) FrameLayout fl_content;
     @BindView(R.id.nsv_header)NestedScrollView nsv_header;
@@ -206,5 +209,18 @@ public class WelcomeScreen extends AbstractBaseAppCompatActivity implements ApiL
             currentFragment = SIGNUP_FRAGMENT;
             changeFragment(new LoginFragment(), true);
         }
+    }
+
+    @Override
+    public void validateCallback(EdittextPret editText, String message) {
+
+    }
+
+    @Override
+    public void validationSuccess(String phonenumber) {
+        JSONObject resultJson = LoginController.getNormalLoginDetails(phonenumber);
+        //TODO :  api call
+        this.showProgressDialog(getResources().getString(R.string.loading));
+        jsonRequestController.test();
     }
 }

@@ -19,7 +19,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/textsize_small"
+        android:layout_margin="@dimen/padding_xsmall">
 
         <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
             android:layout_width="35dp"
@@ -30,30 +32,40 @@
             android:layout_gravity="center"/>
 
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
             android:layout_weight="1"
+            android:layout_height="match_parent"
             android:id="@+id/tv_profile"
             android:text="@string/app_name"
             android:maxLines="2"
             style="@style/textview_white_normal"
             app:pret_typeface="@string/font_redvelvet_regular"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/notification"
-            android:id="@+id/iv_notification"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/padding_standard"/>
-        
-        <com.hit.pretstreet.pretstreet.core.customview.NotificationBadge
-            android:id="@+id/badge"
-            android:layout_width="wrap_content"
-            android:layout_height="28dp"
-            app:nbTextColor="@color/white"
-            android:layout_marginLeft="-30dp"
-            android:layout_gravity="top"
-            app:nbMaxTextLength="2"/>
+        <RelativeLayout
+            android:layout_width="35dp"
+            android:layout_height="35dp">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/notification"
+                android:id="@+id/iv_notification"
+                android:scaleType="fitEnd"
+                android:layout_gravity="right"/>
+
+            <com.hit.pretstreet.pretstreet.core.customview.NotificationBadge
+                android:id="@+id/badge"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                app:nbTextColor="@color/white"
+                app:nbTextSize="@dimen/textsize_small"
+                app:nbBackground="@color/transparent"
+                app:nbMaxTextLength="2"
+                android:layout_marginRight="@dimen/padding_standard"
+                android:layout_gravity="top|end"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
