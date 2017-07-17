@@ -64,4 +64,12 @@
     <dimen name="buttons_layoutheight">220dp</dimen>
     <dimen name="rotation_layout">@integer/rotation</dimen>
     <dimen name="rotation_layout1">@integer/rotation1</dimen>
+
+    <!--Inner Pages-->
+    <dimen name="addstore_height">400dp</dimen>
+    <dimen name="addstore_row_height">70dp</dimen>
+    <dimen name="margin_top">-15dp</dimen>
+
+    <dimen name="changepass_height">270dp</dimen>
+    <dimen name="myaccount_height">350dp</dimen>
 </resources>

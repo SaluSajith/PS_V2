@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/contactus_height"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:layout_marginRight="-1dp"
+            android:layout_marginLeft="-1dp"
+            android:background="@drawable/changepasswordbg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/messageboxbg"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/padding_xxxlarge"
+                android:layout_marginBottom="@dimen/padding_xxxlarge">
+
+                <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+                    android:id="@+id/edt_currentpass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/edittext_white_normal"
+                    android:hint="@string/message"
+                    android:inputType="textImeMultiLine"
+                    android:maxLines="4"/>
+            </LinearLayout>
+        </LinearLayout>
+        <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+            android:id="@+id/btn_submit"
+            android:layout_width="@dimen/submitbtn_width"
+            android:layout_height="@dimen/submitbtn_height"
+            android:text="@string/submit"
+            style="@style/button_standard"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+</LinearLayout>

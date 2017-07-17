@@ -9,6 +9,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="rateus">Rate Us on Playstore</string>
 
     <string name="font_merriweather_light">MERRIWEATHER LIGHT_0.TTF</string>
     <string name="font_merriweather_bold">MERRIWEATHER-BOLD.TTF</string>
@@ -42,6 +43,11 @@
     <string name="mobile">Mobile number:</string>
     <string name="firstname">first name:</string>
     <string name="lastname">last name:</string>
+    <string name="password">password:</string>
+    <string name="signup_mobile">sign up with your mobile number</string>
+    <string name="alreadyhaveaccount">already have an account here?</string>
+
+    <!--add store-->
     <string name="storename">store name:</string>
     <string name="contactname">contact person name:</string>
     <string name="landline">landline no::</string>
@@ -49,7 +55,20 @@
     <string name="about">about store:</string>
     <string name="mobilenumbr">mobile no:</string>
     <string name="email">email id:</string>
-    <string name="password">password:</string>
-    <string name="signup_mobile">sign up with your mobile number</string>
-    <string name="alreadyhaveaccount">already have an account here?</string>
+    <string name="submit">Submit</string>
+
+    <!--changepassword-->
+    <string name="currentpass">current password:</string>
+    <string name="newpass">new password:</string>
+    <string name="confirm">confirm new password:</string>
+
+    <!--contactus-->
+    <string name="message">message:</string>
+
+    <!--myaccount-->
+    <string name="dob">date of birth:</string>
+
+    <!--otp screen-->
+    <string name="send">send</string>
+
 </resources>

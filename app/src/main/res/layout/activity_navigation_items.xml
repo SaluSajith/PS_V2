@@ -19,8 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:descendantFocusability="blocksDescendants">
+            android:orientation="vertical">
 
             <include layout="@layout/header_inner_pages"></include>
             <FrameLayout
@@ -28,11 +27,10 @@
                 android:layout_height="match_parent"
                 android:id="@+id/content"
                 android:layout_marginTop="@dimen/content_overlapmargin">
-                <include layout="@layout/fragment_addstore"></include>
+                <include layout="@layout/fragment_changepassword"></include>
             </FrameLayout>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
 
 </android.support.design.widget.CoordinatorLayout>

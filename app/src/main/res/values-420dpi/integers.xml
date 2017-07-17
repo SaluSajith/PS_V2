@@ -4,4 +4,6 @@
     <integer name="rotation1">0</integer>
     <integer name="rotation_text">-5</integer>
     <integer name="rotation_accountalready">5</integer>
+    <integer name="rotation_catname">-5</integer>
+    <integer name="rotation_catname_long">-6</integer>
 </resources>

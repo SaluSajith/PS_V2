@@ -22,10 +22,12 @@ public class Utility {
         return result;
     }
 
-    public static void setListLayoutManager(RecyclerView recyclerView, Context context){
+    public static LinearLayoutManager setListLayoutManager(RecyclerView recyclerView, Context context){
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
+
+        return llm;
     }
 
 
@@ -37,17 +39,30 @@ public class Utility {
         }
     }
     public static boolean validCellPhone(String number){
-        return android.util.Patterns.PHONE.matcher(number).matches();
+        boolean status = false;
+        if(android.util.Patterns.PHONE.matcher(number).matches()) {
+            if (number.length() == 10)
+                status = true;
+            else status = false;
+        }else
+            status = false;
+        return status;
     }
 
     public static void hide_keyboard(Activity activity) {
-        if (activity != null) {
+        // Check if no view has focus:
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+        /*if (activity != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
             View view = activity.getCurrentFocus();
             if (view == null) {
                 view = new View(activity);
             }
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        }*/
     }
 }

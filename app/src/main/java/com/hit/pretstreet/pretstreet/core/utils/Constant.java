@@ -13,18 +13,20 @@ public class Constant {
     public static final String GOOGLE_API_KEY = "AIzaSyCAq0CP83saVHVc93LDs_m3xUdpFna0c2c";
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
-    //public static final String COMMON_URL = "http://doctronics.co.in/fashionapp/";
-    public static final String COMMON_URL = "http://52.77.174.143/admin/";
-    public static final String REGISTRATION_URL = COMMON_URL + "customercreates.php?";
-    public static final String LOGIN_URL = COMMON_URL + "customerlogin.php?";
-    public static final String FASHION_API = COMMON_URL + "fashion_api.php?";
+    //public static final String COMMON_URL = "http://52.77.174.143/admin/";
+    public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/customer/";
+    public static final String REGISTRATION_OTP_URL = COMMON_URL + "customerregistergenerateOtp";
+    public static final String REGISTRATION_URL = COMMON_URL + "customerregister";
+    public static final String LOGIN_OTP_URL = COMMON_URL + "customerlogingenerateOtp";
+    public static final String LOGIN_URL = COMMON_URL + "customerloginbyMobile";
+    public static final String SOCIAL_LOGIN_URL = COMMON_URL + "customerloginbySocial";
 
     //updated after 5/9/2017
     public static final String TRENDING_API = COMMON_URL + "index.php/trendingpage/mobileapp/";
     public static final String EXHIBITION_API = COMMON_URL + "index.php/exhibitionpage/mobileapp/";
     public static final String INDEX_PATH = COMMON_URL + "index.php/trendingpage/mobileapp/";
 
-    public static final String API = "Mpjdfanknavfrnefjndjbf";
+    public static final String API = "MAPcabpnPawmassmjrc";
     public static final String LIMIT = "10";
     public static final String TAG = "Pretstreetv2";
     public static final int TIMEOUT_LIMIT = 15000;

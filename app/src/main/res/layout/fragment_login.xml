@@ -87,7 +87,8 @@
                 android:layout_height="wrap_content"
                 style="@style/edittext_white_normal"
                 android:hint="@string/mobile"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:ems="10"/>
         </LinearLayout>
 
     </LinearLayout>

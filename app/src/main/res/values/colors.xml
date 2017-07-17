@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="dark_gray">#757779</color>
+    <color name="light_gray">#b4b7ba</color>
     <color name="menu_bg">#1c1c1c</color>
     <color name="yellow">#ffffdf5d</color>
     <color name="yellow_trans">#ffffdf5d</color>
@@ -18,6 +19,6 @@
     <color name="transparent">#00000000</color>
     <color name="trans_yellow">#bbffdf5d</color>
     <color name="trans_grey">#5b5d5e</color>
-    <color name="trending_grey">#cacaca</color>
+    <color name="trending_grey">#eaeaea</color>
 
 </resources>

@@ -25,20 +25,34 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/nav_header_home" />
+            <include layout="@layout/nav_header_home"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_nav"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:choiceMode="singleChoice"
-                android:divider="@color/white"
-                android:dividerHeight="0dp"
+                android:backgroundTint="@color/transparent"
+                android:layout_marginTop="@dimen/padding_xxxlarge"
                 android:listSelector="@drawable/navbarclick"
-                android:textColor="#424242"/>
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rateus"
+                android:id="@+id/tv_rateus"
+                style="@style/textview_normal"
+                android:gravity="start"
+                android:padding="@dimen/padding_xlarge"
+                android:layout_marginLeft="@dimen/padding_huge">
+
+            </com.hit.pretstreet.pretstreet.core.customview.TextViewPret>
         </LinearLayout>
+
     </android.support.design.widget.NavigationView>
-    <!--app:layout="@layout/nav_row_text"
+    <!--app:layout="@layout/row_nav_text"
     app:menu="@menu/activity_main_drawer"-->
 </android.support.v4.widget.DrawerLayout>

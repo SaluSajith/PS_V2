@@ -55,10 +55,11 @@
                     android:text="Mumbai"
                     android:textColor="@color/black"
                     android:layout_marginLeft="9dp"
-                    android:layout_marginStart="9dp" />
+                    android:layout_marginStart="9dp"
+                    android:id="@+id/tv_location"/>
 
                 <ImageView
-                    android:id="@+id/img_expand"
+                    android:id="@+id/iv_location"
                     android:layout_width="@dimen/textsize_xlarge"
                     android:layout_height="@dimen/textsize_xlarge"
                     android:src="@drawable/ic_expand"
@@ -92,7 +93,7 @@
                     android:id="@+id/iv_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_margin="@dimen/padding_standard"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/menu"/>
 
@@ -101,6 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="-10dp"
                     app:srcCompat="@drawable/logo1" />
 

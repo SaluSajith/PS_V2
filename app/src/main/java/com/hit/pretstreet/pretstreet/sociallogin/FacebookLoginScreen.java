@@ -194,7 +194,7 @@ public class FacebookLoginScreen extends Activity {
             FacebookLoginScreen.this.setResult(FACEBOOK_LOGIN_RESULT_CODE_FAILURE);
             FacebookLoginScreen.this.finish();
         } else {
-            /*WelcomeScreen welcomeScreen = new WelcomeScreen();
+            /*WelcomeActivity welcomeScreen = new WelcomeActivity();
             welcomeScreen.setupSocialLogin(responseObject);*/
             Intent intent = getIntent();
             intent.putExtra("responsejson", responseObject.toString());

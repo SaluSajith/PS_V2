@@ -8,8 +8,11 @@
     android:text="Offers"
     android:textColor="@color/dark_gray"
     android:id="@+id/tv_nav_item"
-    android:padding="@dimen/padding_large"
-    app:pret_typeface="@string/font_merriweather_light"
+    app:pret_typeface="@string/font_merriweather_regular"
+    android:textSize="@dimen/textsize_xlarge"
+    android:padding="@dimen/padding_xlarge"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
     tools:context="com.hit.pretstreet.pretstreet.navigation.HomeActivity">
 
 </com.hit.pretstreet.pretstreet.core.customview.TextViewPret>

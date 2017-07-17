@@ -13,13 +13,13 @@
         android:visibility="gone" />
     
     <com.hit.pretstreet.pretstreet.core.customview.HiveProgressView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        app:hive_animDuration="5000"
+        app:hive_animDuration="2000"
         app:hive_color="@color/yellow"
-        app:hive_cornerRadius="20"
-        app:hive_maxAlpha="100"
+        app:hive_cornerRadius="5"
+        app:hive_maxAlpha="255"
         app:hive_rainbow="true"
         app:hive_shrink="true" />
 
@@ -31,6 +31,7 @@
         android:text="@string/loading"
         android:textColor="@color/dark_gray"
         app:pret_typeface="@string/font_merriweather_regular"
-        style="@style/textview_normal"/>
+        style="@style/textview_normal"
+        android:visibility="gone"/>
 
 </LinearLayout>

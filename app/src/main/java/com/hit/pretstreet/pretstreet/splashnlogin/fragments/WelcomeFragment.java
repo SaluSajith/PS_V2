@@ -17,7 +17,7 @@ import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
 import com.hit.pretstreet.pretstreet.sociallogin.GoogleLoginActivity;
-import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeScreen;
+import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 
 import butterknife.ButterKnife;
@@ -26,7 +26,7 @@ import butterknife.OnClick;
  * Created by User on 7/10/2017.
  */
 
-public class WelcomeFragment extends AbstractBaseFragment<WelcomeScreen> {
+public class WelcomeFragment extends AbstractBaseFragment<WelcomeActivity> {
 
     private static final int FACEBOOK_LOGIN_REQUEST_CODE = 1;
     private static final int GOOGLE_LOGIN_REQUEST_CODE = 2;
@@ -72,7 +72,7 @@ public class WelcomeFragment extends AbstractBaseFragment<WelcomeScreen> {
         Intent facebookLoginIntent = new Intent(getActivity(), FacebookLoginScreen.class);
         facebookLoginIntent.putExtra("cat", "Login");
         facebookLoginIntent.putExtra("Type", "FirstLogin");
-        startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
+        getActivity().startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
     }
 
     @OnClick(R.id.btn_google)
@@ -80,13 +80,13 @@ public class WelcomeFragment extends AbstractBaseFragment<WelcomeScreen> {
         if (ContextCompat.checkSelfPermission(PretStreet.getInstance(), Manifest.permission.GET_ACCOUNTS)
                 == PackageManager.PERMISSION_GRANTED) {
             Intent googleLoginIntent = new Intent(getActivity(), GoogleLoginActivity.class);
-            startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
+            getActivity().startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
         } else {
             askCompactPermission(Manifest.permission.GET_ACCOUNTS, new PermissionResult() {
                 @Override
                 public void permissionGranted() {
                     Intent googleLoginIntent = new Intent(getActivity(), GoogleLoginActivity.class);
-                    startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
+                    getActivity().startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
                 }
 
                 @Override

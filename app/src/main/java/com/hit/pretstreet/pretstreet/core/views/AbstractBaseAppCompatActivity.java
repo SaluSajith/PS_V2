@@ -19,6 +19,7 @@ import android.util.Log;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.PageState;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
+import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
 
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
     }
 
     public void displaySnackBar(String message) {
+        Utility.hide_keyboard(this);
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
     }
 
@@ -126,11 +128,11 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         if (!pDialog.isShowing()) {
             pDialog.show();
             pDialog.setContentView(R.layout.loading_view);
-            pDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            //pDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         }
     }
 
-    public void destroyDialog() {
+    public void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
@@ -138,7 +140,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        destroyDialog();
+        hideDialog();
     }
 
     @Override

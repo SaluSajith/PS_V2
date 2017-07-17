@@ -61,17 +61,24 @@
     <dimen name="buttons_height">100dp</dimen>
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
-    <dimen name="content_overlapmargin">-35dp</dimen>
+    <dimen name="content_overlapmargin">-40dp</dimen>
     <dimen name="rotation_socialtext">@integer/rotation_text</dimen>
     <dimen name="rotation_alreadyaccount">@integer/rotation_accountalready</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>
     <dimen name="rotation_layout">@integer/rotation</dimen>
     <dimen name="rotation_layout1">@integer/rotation1</dimen>
+    <dimen name="rotation_categorytext">@integer/rotation_catname</dimen>
 
+    <!--Inner Pages-->
+    <dimen name="addstore_height">560dp</dimen>
+    <dimen name="addstore_row_height">90dp</dimen>
+    <dimen name="margin_top">-25dp</dimen>
 
+    <dimen name="changepass_height">320dp</dimen>
+    <dimen name="submitbtn_height">50dp</dimen>
+    <dimen name="submitbtn_width">110dp</dimen>
 
+    <dimen name="contactus_height">250dp</dimen>
+    <dimen name="myaccount_height">430dp</dimen>
 
-    <dimen name="app_bar_height">180dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
 </resources>

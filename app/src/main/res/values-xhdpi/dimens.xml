@@ -60,4 +60,12 @@
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>
+
+    <!--Inner Pages-->
+    <dimen name="addstore_height">580dp</dimen>
+    <dimen name="addstore_row_height">90dp</dimen>
+    <dimen name="margin_top">-25dp</dimen>
+
+    <dimen name="changepass_height">320dp</dimen>
+    <dimen name="myaccount_height">430dp</dimen>
 </resources>
