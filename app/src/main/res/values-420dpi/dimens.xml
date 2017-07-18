@@ -80,5 +80,6 @@
 
     <dimen name="contactus_height">250dp</dimen>
     <dimen name="myaccount_height">430dp</dimen>
+    <dimen name="about_height">670dp</dimen>
 
 </resources>

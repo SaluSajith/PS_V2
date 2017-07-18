@@ -23,6 +23,7 @@ import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
+import com.hit.pretstreet.pretstreet.navigationitems.fragments.AboutFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.AccountFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.AddStoreFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.ChangePasswordFragment;
@@ -49,6 +50,10 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     private static final int ABOUT_FRAGMENT = 2;
     private static final int ADDSTORE_FRAGMENT = 3;
     private static final int CONTACTUS_FRAGMENT = 4;
+    private static final int FEEDBACK_FRAGMENT = 5;
+    private static final int ABOUTUS_FRAGMENT = 6;
+    private static final int PRIVACY_FRAGMENT = 7;
+    private static final int TERMS_FRAGMENT = 8;
 
     JsonRequestController jsonRequestController;
 
@@ -71,45 +76,68 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
-        fl_content.bringToFront();
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        setupFragment();
-    }
+        fl_content.bringToFront();
 
-    private void setupFragment(){
         Intent intent = getIntent();
         int fragmentId = intent.getIntExtra("fragment", 0);
+        setupFragment(fragmentId, false);
+    }
+
+    private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
             case ACCOUNT_FRAGMENT:
                 tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("MY PROFILE");
-                changeFragment(new AccountFragment(), false);
+                changeFragment(new AccountFragment(), b);
                 break;
             case FOLLOWING_FRAGMENT:
                 tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("Following");
-                changeFragment(new ChangePasswordFragment(), false);
+                changeFragment(new ChangePasswordFragment(), b);
                 break;
             case ADDSTORE_FRAGMENT:
                 tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("Add Store");
-                changeFragment(new AddStoreFragment(), false);
+                changeFragment(new AddStoreFragment(), b);
                 break;
             case ABOUT_FRAGMENT:
                 tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname_long));
                 tv_cat_name.setText("About Pretstreet");
+                changeFragment(new AboutFragment(), b);
                 break;
             case CONTACTUS_FRAGMENT:
                 tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("Contact Us");
-                changeFragment(new ContactUsFragment(), false);
+                changeFragment(new ContactUsFragment(), b);
+                break;
+            case FEEDBACK_FRAGMENT:
+                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
+                tv_cat_name.setText("Feedback");
+                changeFragment(new ContactUsFragment(), b);
+                break;
+            case ABOUTUS_FRAGMENT:
+                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname_long));
+                tv_cat_name.setText("About Pretstreet");
+                changeFragment(new AboutFragment(), b);
+                break;
+            case PRIVACY_FRAGMENT:
+                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
+                tv_cat_name.setText("Contact Us");
+                changeFragment(new ContactUsFragment(), b);
+                break;
+            case TERMS_FRAGMENT:
+                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
+                tv_cat_name.setText("Feedback");
+                changeFragment(new ContactUsFragment(), b);
                 break;
             default:
                 break;
@@ -146,7 +174,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
 
     @Override
     public void buttonClick(int id) {
-
+        setupFragment(CONTACTUS_FRAGMENT, true);
     }
 
     @Override

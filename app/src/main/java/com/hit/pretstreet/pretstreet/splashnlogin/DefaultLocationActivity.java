@@ -17,14 +17,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
-import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.helpers.testimonials.DatabaseHelper;
-import com.hit.pretstreet.pretstreet.core.helpers.testimonials.GPSTracker;
+import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
+import com.hit.pretstreet.pretstreet.core.helpers.GPSTracker;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;

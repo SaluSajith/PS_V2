@@ -1,4 +1,4 @@
-package com.hit.pretstreet.pretstreet.core.helpers.testimonials;
+package com.hit.pretstreet.pretstreet.core.helpers;
 
 import android.content.ContentValues;
 import android.content.Context;

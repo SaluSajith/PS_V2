@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/content"
                 android:layout_marginTop="@dimen/content_overlapmargin">
-                <include layout="@layout/fragment_changepassword"></include>
+                <include layout="@layout/fragment_about"></include>
             </FrameLayout>
         </LinearLayout>
 

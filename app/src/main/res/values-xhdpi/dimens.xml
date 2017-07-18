@@ -68,4 +68,5 @@
 
     <dimen name="changepass_height">320dp</dimen>
     <dimen name="myaccount_height">430dp</dimen>
+    <dimen name="about_height">650dp</dimen>
 </resources>

@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hit.pretstreet.pretstreet.R;
-import com.hit.pretstreet.pretstreet.core.helpers.testimonials.UIThreadHandler;
+import com.hit.pretstreet.pretstreet.core.helpers.UIThreadHandler;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
 
 import java.util.ArrayList;

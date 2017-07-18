@@ -16,8 +16,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.helpers.testimonials.ShadowTransformer;
-import com.hit.pretstreet.pretstreet.core.helpers.testimonials.CardFragmentPagerAdapter;
+import com.hit.pretstreet.pretstreet.core.helpers.ShadowTransformer;
+import com.hit.pretstreet.pretstreet.core.helpers.CardFragmentPagerAdapter;
 
 public class StoreDetailsActivity extends AppCompatActivity{
 

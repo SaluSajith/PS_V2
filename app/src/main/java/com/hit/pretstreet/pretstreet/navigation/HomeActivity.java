@@ -49,7 +49,11 @@ public class HomeActivity extends AppCompatActivity
     private static final int ABOUT_FRAGMENT = 2;
     private static final int ADDSTORE_FRAGMENT = 3;
     private static final int CONTACTUS_FRAGMENT = 4;
-    private static final int HOME_FRAGMENT = 5;
+    private static final int FEEDBACK_FRAGMENT = 5;
+    private static final int ABOUTUS_FRAGMENT = 6;
+    private static final int PRIVACY_FRAGMENT = 7;
+    private static final int TERMS_FRAGMENT = 8;
+    private static final int HOME_FRAGMENT = 20;
 
     @BindView(R.id.tv_location) TextViewPret tv_location;
     @BindView(R.id.iv_location) ImageView iv_location;
@@ -129,14 +133,18 @@ public class HomeActivity extends AppCompatActivity
         tv_rateus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String appPackageName = getApplicationContext().getPackageName();
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                }
+                rateUs();
             }
         });
+    }
+
+    private void rateUs(){
+        final String appPackageName = getApplicationContext().getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
     @Override

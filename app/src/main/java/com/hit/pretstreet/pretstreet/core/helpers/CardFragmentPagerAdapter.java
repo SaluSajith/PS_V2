@@ -1,4 +1,4 @@
-package com.hit.pretstreet.pretstreet.core.helpers.testimonials;
+package com.hit.pretstreet.pretstreet.core.helpers;
 
 /**
  * Created by User on 6/30/2017.
