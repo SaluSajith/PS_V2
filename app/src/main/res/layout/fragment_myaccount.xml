@@ -12,6 +12,11 @@
         android:layout_marginRight="-1dp"
         android:layout_marginLeft="-1dp">
 
+        <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/profilepic"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/addstore_row_height"

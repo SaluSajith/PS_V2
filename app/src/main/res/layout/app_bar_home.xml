@@ -20,25 +20,26 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/content_main">
-            </FrameLayout>
-            <LinearLayout
+            android:layout_height="match_parent"
+            >
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:clipChildren="true">
 
-                <include layout="@layout/header_main"></include>
+                <include layout="@layout/header_main"
+                    android:id="@+id/includedlayout"></include>
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/content"
-                    android:layout_marginTop="@dimen/content_overlapmargin">
+                    android:layout_marginTop="@dimen/content_overlapmargin"
+                    android:layout_below="@+id/includedlayout"
+                    android:background="@drawable/base">
                 </FrameLayout>
-            </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
 

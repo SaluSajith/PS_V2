@@ -60,6 +60,8 @@
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>
+    <dimen name="content_overlapmargin">-10dp</dimen>
+    <dimen name="content_overlapmargin_activity">-40dp</dimen>
 
     <!--Inner Pages-->
     <dimen name="addstore_height">600dp</dimen>
@@ -67,6 +69,8 @@
     <dimen name="margin_top">-25dp</dimen>
 
     <dimen name="changepass_height">350dp</dimen>
-    <dimen name="myaccount_height">450dp</dimen>
+    <dimen name="myaccount_height">550dp</dimen>
     <dimen name="about_height">670dp</dimen>
+
+    <dimen name="header_margin">25dp</dimen>
 </resources>

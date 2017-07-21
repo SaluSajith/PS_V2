@@ -95,47 +95,38 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
             case ACCOUNT_FRAGMENT:
-                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("MY PROFILE");
                 changeFragment(new AccountFragment(), b);
                 break;
             case FOLLOWING_FRAGMENT:
-                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("Following");
                 changeFragment(new ChangePasswordFragment(), b);
                 break;
             case ADDSTORE_FRAGMENT:
-                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("Add Store");
                 changeFragment(new AddStoreFragment(), b);
                 break;
             case ABOUT_FRAGMENT:
-                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname_long));
                 tv_cat_name.setText("About Pretstreet");
                 changeFragment(new AboutFragment(), b);
                 break;
             case CONTACTUS_FRAGMENT:
-                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("Contact Us");
                 changeFragment(new ContactUsFragment(), b);
                 break;
             case FEEDBACK_FRAGMENT:
-                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("Feedback");
                 changeFragment(new ContactUsFragment(), b);
                 break;
             case ABOUTUS_FRAGMENT:
-                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname_long));
                 tv_cat_name.setText("About Pretstreet");
                 changeFragment(new AboutFragment(), b);
                 break;
             case PRIVACY_FRAGMENT:
-                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("Contact Us");
                 changeFragment(new ContactUsFragment(), b);
                 break;
             case TERMS_FRAGMENT:
-                tv_cat_name.setRotation(getResources().getInteger(R.integer.rotation_catname));
                 tv_cat_name.setText("Feedback");
                 changeFragment(new ContactUsFragment(), b);
                 break;

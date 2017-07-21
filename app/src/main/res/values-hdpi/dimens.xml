@@ -1,4 +1,5 @@
 <resources>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
 
     <!--hdpi = 1.5 * mdpi
@@ -67,7 +68,8 @@
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>
-    <dimen name="content_overlapmargin">-40dp</dimen>
+    <dimen name="content_overlapmargin">0dp</dimen>
+    <dimen name="content_overlapmargin_activity">-40dp</dimen>
 
     <!--Inner Pages-->
     <dimen name="addstore_height">450dp</dimen>
@@ -79,6 +81,8 @@
     <dimen name="submitbtn_width">110dp</dimen>
 
     <dimen name="contactus_height">250dp</dimen>
-    <dimen name="myaccount_height">350dp</dimen>
+    <dimen name="myaccount_height">470dp</dimen>
     <dimen name="about_height">570dp</dimen>
+
+    <dimen name="header_margin">20dp</dimen>
 </resources>

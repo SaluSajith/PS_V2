@@ -60,8 +60,8 @@ public class LoginController {
                 jsonBody.put("gender", "");
             }
             jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("device", "1");
-            jsonBody.put("deviceid", PretStreet.getDeviceId());
+            jsonBody.put("DeviceType", "1");
+            jsonBody.put("DeviceId", PretStreet.getDeviceId());
 
         } catch (JSONException e) {
         } catch (Exception e) {
@@ -83,8 +83,8 @@ public class LoginController {
             jsonBody.put("LastName", account.getFamilyName());
             jsonBody.put("ApiKey", Constant.API);
             jsonBody.put("gender", "");
-            jsonBody.put("device", "1");
-            jsonBody.put("deviceid", PretStreet.getDeviceId());
+            jsonBody.put("DeviceType", "1");
+            jsonBody.put("DeviceId", PretStreet.getDeviceId());
 
         } catch (JSONException e) {
         } catch (Exception e) {}
@@ -99,12 +99,12 @@ public class LoginController {
             jsonBody.put("FirstName", loginSession.getFname());
             jsonBody.put("LastName", loginSession.getLname());
             jsonBody.put("UserEmail", loginSession.getEmail());
-            jsonBody.put("Mobile", loginSession.getMobile());
+            jsonBody.put("UserMobile", loginSession.getMobile());
             jsonBody.put("UserPassword", loginSession.getPassword());
             jsonBody.put("Gender", 1);
             jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("device", "1");
-            jsonBody.put("deviceid", PretStreet.getDeviceId());
+            jsonBody.put("DeviceType", "1");
+            jsonBody.put("DeviceId", PretStreet.getDeviceId());
 
         } catch (JSONException e) {
         } catch (Exception e) {}
@@ -123,8 +123,8 @@ public class LoginController {
             jsonBody.put("fname", "");
             jsonBody.put("lname", "");
             jsonBody.put("gender", "");
-            jsonBody.put("device", "1");
-            jsonBody.put("deviceid", PretStreet.getDeviceId());
+            jsonBody.put("DeviceType", "1");
+            jsonBody.put("DeviceId", PretStreet.getDeviceId());
 
         } catch (JSONException e) {
         } catch (Exception e) {}
@@ -140,8 +140,8 @@ public class LoginController {
             jsonBody.put("UserMobile", phone);
             jsonBody.put("UserEmail", email);
             jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("device", "1");
-            jsonBody.put("deviceid", PretStreet.getDeviceId());
+            jsonBody.put("DeviceType", "1");
+            jsonBody.put("DeviceId", PretStreet.getDeviceId());
 
         } catch (JSONException e) {
         } catch (Exception e) {}

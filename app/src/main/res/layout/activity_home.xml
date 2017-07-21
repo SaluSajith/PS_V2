@@ -33,6 +33,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:choiceMode="singleChoice"
+                android:overScrollMode="never"
                 android:backgroundTint="@color/transparent"
                 android:layout_marginTop="@dimen/padding_xxxlarge"
                 android:listSelector="@drawable/navbarclick"

@@ -3,6 +3,7 @@ package com.hit.pretstreet.pretstreet.navigation;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,26 +22,39 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
+import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.core.customview.NotificationBadge;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
+import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.adapters.NavDrawerAdapter;
+import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
+import com.hit.pretstreet.pretstreet.navigationitems.fragments.AccountFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
+
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NavigationClick {
+public class HomeActivity extends AbstractBaseAppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, NavigationClick, ApiListenerInterface {
 
     //TODO put same in NavigationItemsActivity as well
     private int selectedFragment = 0;
@@ -56,20 +70,38 @@ public class HomeActivity extends AppCompatActivity
     private static final int HOME_FRAGMENT = 20;
 
     @BindView(R.id.tv_location) TextViewPret tv_location;
-    @BindView(R.id.iv_location) ImageView iv_location;
-
     NavDrawerAdapter navDrawerAdapter;
+    JsonRequestController jsonRequestController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        ButterKnife.bind(this, toolbar);
+        init();
+    }
+
+    @Override
+    protected void setUpController() {
+        jsonRequestController = new JsonRequestController(this);
+    }
+
+    private void init() {
+        PreferenceServices.init(this);
+
+        View includedlayout =  findViewById(R.id.includedlayout);
+        includedlayout.bringToFront();
+        Toolbar toolbar = (Toolbar) includedlayout.findViewById(R.id.toolbar);
+        ButterKnife.bind(this, includedlayout);
+
+        //TextViewPret tv_location = (TextViewPret) includedlayout.findViewById(R.id.tv_location);
+        tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
+        setupDrawer(includedlayout);
+        changeFragment(new HomeFragment(), false);
+
         //setSupportActionBar(toolbar);
         //toolbar.setPadding(0, Utility.getStatusBarHeight(HomeActivity.this), 0, 0);
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +110,9 @@ public class HomeActivity extends AppCompatActivity
             }
         });*/
 
+    }
+
+    private void setupDrawer(View toolbar){
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, null, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -128,6 +163,7 @@ public class HomeActivity extends AppCompatActivity
         NotificationBadge badge_home = (NotificationBadge)toolbar.findViewById(R.id.badge);
         badge_home.setNumber(10);
         badge_home.bringToFront();
+
 
         TextViewPret tv_rateus = (TextViewPret) drawer.findViewById(R.id.tv_rateus);
         tv_rateus.setOnClickListener(new View.OnClickListener() {
@@ -227,7 +263,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
 
-    private void changeFragment(Fragment fragment, boolean addBackstack, int content) {
+    private void changeFragment(Fragment fragment, boolean addBackstack) {
 
         FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
         for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
@@ -237,15 +273,20 @@ public class HomeActivity extends AppCompatActivity
         fl_content.removeAllViews();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
         ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        if(content==HOME_FRAGMENT)
-            ft.add(R.id.content, fragment);
-        else {
-            fl_content.removeAllViews();
-            ft.replace(R.id.content_main, fragment);
-        }
+        ft.add(R.id.content, fragment);
         if (addBackstack) {
             ft.addToBackStack(null);
         }
         ft.commit();
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+
+    }
+
+    @Override
+    public void onError(String error) {
+
     }
 }

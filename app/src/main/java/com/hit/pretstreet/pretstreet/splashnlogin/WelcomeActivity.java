@@ -279,7 +279,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     private void setupSession(JSONObject response, String loginType, String pic){
 
-        String strsuccess, userId;
         try {
             JSONObject object = response.getJSONObject("Data");
             PreferenceServices.instance().saveUserId(object.getString("UserId"));
@@ -287,13 +286,13 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
             LoginSession loginSession = new LoginSession();
             loginSession.setRegid(object.getString("UserId"));
-            loginSession.setProfile_pic(mProfilePic);
-            //loginSession.setFname(object.getString("UserName"));
-            //loginSession.setEmail(object.getString("UserEmail"));
+            loginSession.setProfile_pic(pic);
+            loginSession.setFname(object.getString("UserFirstname"));
+            loginSession.setLname(object.getString("UserLastname"));
+            loginSession.setEmail(object.getString("UserEmail"));
 
-                /*loginSession.setMobile(object.getString("Mobile"));
-                loginSession.setPassword(object.getString("UserPassword"));
-                loginSession.setGender(object.getString("Gender"));*/
+            loginSession.setMobile(object.getString("UserMobile"));
+            loginSession.setProfile_pic(object.getString("UserProfilePicture"));
             SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
             sharedPreferencesHelper.createLoginSession(loginSession);
 

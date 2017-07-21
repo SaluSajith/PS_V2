@@ -61,6 +61,7 @@
     <dimen name="buttons_height">100dp</dimen>
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
+    <dimen name="content_overlapmargin_activity">-40dp</dimen>
     <dimen name="content_overlapmargin">-40dp</dimen>
     <dimen name="rotation_socialtext">@integer/rotation_text</dimen>
     <dimen name="rotation_alreadyaccount">@integer/rotation_accountalready</dimen>
@@ -79,7 +80,9 @@
     <dimen name="submitbtn_width">110dp</dimen>
 
     <dimen name="contactus_height">250dp</dimen>
-    <dimen name="myaccount_height">430dp</dimen>
+    <dimen name="myaccount_height">550dp</dimen>
     <dimen name="about_height">670dp</dimen>
+
+    <dimen name="header_margin">20dp</dimen>
 
 </resources>

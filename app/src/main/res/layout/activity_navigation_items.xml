@@ -14,7 +14,9 @@
         tools:context="com.pretstreet.myapplication.ScrollingActivity"
         tools:showIn="@layout/activity_scrolling"
         android:background="@drawable/base"
-        android:id="@+id/nsv_header">
+        android:id="@+id/nsv_header"
+        android:fadingEdge="none"
+        android:overScrollMode="ifContentScrolls">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,8 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/content"
-                android:layout_marginTop="@dimen/content_overlapmargin">
-                <include layout="@layout/fragment_about"></include>
+                android:layout_marginTop="@dimen/content_overlapmargin_activity">
+                <include layout="@layout/fragment_changepassword"></include>
             </FrameLayout>
         </LinearLayout>
 

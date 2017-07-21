@@ -24,7 +24,6 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.MyVi
 
     public NavDrawerAdapter(Context context, NavDrawerItem [] data, NavigationClick navigationClick) {
         this.context = context;
-        Log.d("testing", data[0].getName()+" "+data.length);
         this.data = data;
         this.navigationClick = navigationClick;
     }
@@ -39,7 +38,6 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         NavDrawerItem navDrawerItem = data[position];
-        Log.d("testing", navDrawerItem.getName());
         holder.tv_nav_item.setText(navDrawerItem.getName());
     }
 
