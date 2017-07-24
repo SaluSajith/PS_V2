@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_dd"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/brand2">
+    <ImageView
+        android:id="@+id/img_cat_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:rotation="5.5"
+        android:layout_marginTop="@dimen/margin_custom_row"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginRight="-20dp"
+        android:id="@+id/view_seperator"
+        android:background="@drawable/yellow_rectangle"></View>
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:id="@+id/txt_cat_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/yellow_rectangle"
+        android:padding="8sp"
+        android:gravity="center"
+        android:rotation="5.5"
+        android:lines="1"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="Exhibitions"
+        android:textAllCaps="true"
+        android:layout_marginLeft="-3dp"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:textColor="@color/dark_gray"
+        app:pret_typeface="@string/font_redvelvet_regular"/>
+
+</RelativeLayout>

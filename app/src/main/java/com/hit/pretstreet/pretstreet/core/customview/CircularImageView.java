@@ -68,13 +68,14 @@ public class CircularImageView extends android.support.v7.widget.AppCompatImageV
         if (attributes.getBoolean(R.styleable.CircularImageView_civ_border, true)) {
             float defaultBorderSize = DEFAULT_BORDER_WIDTH * getContext().getResources().getDisplayMetrics().density;
             setBorderWidth(attributes.getDimension(R.styleable.CircularImageView_civ_border_width, defaultBorderSize));
-            setBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.WHITE));
+            setBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.TRANSPARENT));
         }
 
         // Init Shadow
         if (attributes.getBoolean(R.styleable.CircularImageView_civ_shadow, false)) {
             shadowRadius = DEFAULT_SHADOW_RADIUS;
-            drawShadow(attributes.getFloat(R.styleable.CircularImageView_civ_shadow_radius, shadowRadius), attributes.getColor(R.styleable.CircularImageView_civ_shadow_color, shadowColor));
+            drawShadow(attributes.getFloat(R.styleable.CircularImageView_civ_shadow_radius, shadowRadius),
+                    attributes.getColor(R.styleable.CircularImageView_civ_shadow_color, shadowColor));
         }
     }
     //endregion

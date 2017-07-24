@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,18 +36,25 @@ import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.core.customview.NotificationBadge;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.adapters.NavDrawerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
+import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
+import com.hit.pretstreet.pretstreet.navigation.models.HomeSubCategory;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.AccountFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
@@ -54,7 +62,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeActivity extends AbstractBaseAppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NavigationClick, ApiListenerInterface {
+        implements NavigationView.OnNavigationItemSelectedListener, NavigationClick, ApiListenerInterface, HomeTrapeClick {
 
     //TODO put same in NavigationItemsActivity as well
     private int selectedFragment = 0;
@@ -90,26 +98,24 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
         View includedlayout =  findViewById(R.id.includedlayout);
         includedlayout.bringToFront();
-        Toolbar toolbar = (Toolbar) includedlayout.findViewById(R.id.toolbar);
         ButterKnife.bind(this, includedlayout);
 
-        //TextViewPret tv_location = (TextViewPret) includedlayout.findViewById(R.id.tv_location);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
-        changeFragment(new HomeFragment(), false);
+        String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+       /* if (SavedMAinCaTList.length() > 1) {
+            changeFragment(new HomeFragment(), false);
+        }
+        else {*/
+        getHomePage();
+        // }
 
-        //setSupportActionBar(toolbar);
-        //toolbar.setPadding(0, Utility.getStatusBarHeight(HomeActivity.this), 0, 0);
+    }
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
+    private void getHomePage(){
+        JSONObject resultJson = LoginController.getHomePageJson();
+        this.showProgressDialog(getResources().getString(R.string.loading));
+        jsonRequestController.sendRequest(this, resultJson, Constant.HOMEPAGE_URL);
     }
 
     private void setupDrawer(View toolbar){
@@ -164,7 +170,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         badge_home.setNumber(10);
         badge_home.bringToFront();
 
-
+        TextViewPret tv_profile = (TextViewPret) navigationView.findViewById(R.id.tv_profile);
         TextViewPret tv_rateus = (TextViewPret) drawer.findViewById(R.id.tv_rateus);
         tv_rateus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +178,14 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 rateUs();
             }
         });
+
+        if (PreferenceServices.getInstance().geUsertName().equalsIgnoreCase("")) {
+            //TODO : get Username Api
+            tv_profile.setText("");
+        }
+        else{
+            tv_profile.setText(PreferenceServices.getInstance().geUsertName());
+        }
     }
 
     private void rateUs(){
@@ -282,11 +296,41 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     @Override
     public void onResponse(JSONObject response) {
-
+        this.hideDialog();
+        handleResponse(response);
     }
 
     @Override
     public void onError(String error) {
+        this.hideDialog();
+        displaySnackBar( error);
+    }
 
+
+    private void handleResponse(JSONObject response){
+        String strsuccess = null;
+        try {
+            String url = response.getString("URL");
+            strsuccess = response.getString("Status");
+            if (strsuccess.equals("1")) {
+                //displaySnackBar(response.getString("CustomerMessage"));
+                switch (url){
+                    case Constant.HOMEPAGE_URL:
+                        PreferenceServices.instance().saveHomeMainCatList(response.toString());
+                        changeFragment(new HomeFragment(), false);
+                        break;
+                    default: break;
+                }
+            } else {
+                displaySnackBar(response.getString("Message"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onTrapeClick(HomeCatItems homeCatItems) {
+        displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
     }
 }

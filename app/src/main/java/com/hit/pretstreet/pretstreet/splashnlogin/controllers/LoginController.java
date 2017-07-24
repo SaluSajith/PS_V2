@@ -149,6 +149,20 @@ public class LoginController {
         return jsonBody;
     }
 
+    public static JSONObject getHomePageJson() {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("ApiKey", Constant.API);
+            jsonBody.put("DeviceType", "1");
+            jsonBody.put("DeviceId", PretStreet.getDeviceId());
+
+        } catch (JSONException e) {
+        } catch (Exception e) {}
+
+        return jsonBody;
+    }
+
     public static void validateLoginFields(EdittextPret et_number) {
         String message = "Fields cannot be empty";
         EdittextPret edittextPret ;

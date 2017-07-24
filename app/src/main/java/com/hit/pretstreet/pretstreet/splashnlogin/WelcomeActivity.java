@@ -163,7 +163,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        logMessage("resultCode "+ resultCode);
+        logMessage("resultCode ", resultCode+"");
 
         switch (requestCode) {
             case FACEBOOK_LOGIN_REQUEST_CODE:
@@ -281,20 +281,23 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
         try {
             JSONObject object = response.getJSONObject("Data");
-            PreferenceServices.instance().saveUserId(object.getString("UserId"));
-            PreferenceServices.instance().saveLoginType(loginType);
 
             LoginSession loginSession = new LoginSession();
             loginSession.setRegid(object.getString("UserId"));
             loginSession.setProfile_pic(pic);
-            loginSession.setFname(object.getString("UserFirstname"));
-            loginSession.setLname(object.getString("UserLastname"));
+            loginSession.setFname(object.getString("UserFirstName"));
+            loginSession.setLname(object.getString("UserLastName"));
             loginSession.setEmail(object.getString("UserEmail"));
 
             loginSession.setMobile(object.getString("UserMobile"));
-            loginSession.setProfile_pic(object.getString("UserProfilePicture"));
+            if(object.has("UserProfilePicture")) {
+                loginSession.setProfile_pic(object.getString("UserProfilePicture"));
+            }
             SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
             sharedPreferencesHelper.createLoginSession(loginSession);
+            PreferenceServices.instance().saveUserId(object.getString("UserId"));
+            PreferenceServices.instance().saveUserName(object.getString("UserFirstName")+" "+object.getString("UserLastname"));
+            PreferenceServices.instance().saveLoginType(loginType);
 
             if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
                     || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
@@ -315,18 +318,18 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         public void run() {
             if (!isFinishing()) {
                 splashHandler.removeCallbacks(this);
-                if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
+                /*if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
                     changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
                 } else {
                     if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
                             || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
                         startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
-                    } else {
+                    } else {*/
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     }
-                    finish();
-                }
-            }
+                  /*   finish();
+               }
+            }*/
         }
     };
 

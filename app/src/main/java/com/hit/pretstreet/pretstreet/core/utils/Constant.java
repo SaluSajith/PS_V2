@@ -14,12 +14,13 @@ public class Constant {
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
     //public static final String COMMON_URL = "http://52.77.174.143/admin/";
-    public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/customer/";
-    public static final String REGISTRATION_OTP_URL = COMMON_URL + "customerregistergenerateOtp";
-    public static final String REGISTRATION_URL = COMMON_URL + "customerregister";
-    public static final String LOGIN_OTP_URL = COMMON_URL + "customerlogingenerateOtp";
-    public static final String LOGIN_URL = COMMON_URL + "customerloginbyMobile";
-    public static final String SOCIAL_LOGIN_URL = COMMON_URL + "customerloginbySocial";
+    public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
+    public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
+    public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
+    public static final String LOGIN_OTP_URL = COMMON_URL + "customer/customerlogingenerateOtp";
+    public static final String LOGIN_URL = COMMON_URL + "customer/customerloginbyMobile";
+    public static final String SOCIAL_LOGIN_URL = COMMON_URL + "customer/customerloginbySocial";
+    public static final String HOMEPAGE_URL = COMMON_URL + "homepage/homepage";
 
     //updated after 5/9/2017
     public static final String TRENDING_API = COMMON_URL + "index.php/trendingpage/mobileapp/";
@@ -31,30 +32,17 @@ public class Constant {
     public static final String TAG = "Pretstreetv2";
     public static final int TIMEOUT_LIMIT = 15000;
 
-    public static int notificationID = 0;
-    public static int marketImageheight = 0;
-    public static String subCategories = "{\n" +
-            "    \"success\": true,\n" +
-            "    \"parent_id\": \"109\",\n" +
-            "    \"parent_image\": \"http:\\/\\/52.77.174.143\\/admin\\/media\\/catalog\\/category\\/fixed_category.png\",\n" +
-            "    \"types\": [{\n" +
-            "        \"category_id\": \"112\",\n" +
-            "        \"name\": \"Bags\",\n" +
-            "        \"image\": \"http:\\/\\/52.77.174.143\\/admin\\/media\\/catalog\\/category\\/bags_bg_1.png\"\n" +
-            "    }, {\n" +
-            "        \"category_id\": \"111\",\n" +
-            "        \"name\": \"Shoes\",\n" +
-            "        \"image\": \"http:\\/\\/52.77.174.143\\/admin\\/media\\/catalog\\/category\\/shoes_bg_1.png\"\n" +
-            "    }, {\n" +
-            "        \"category_id\": \"114\",\n" +
-            "        \"name\": \"Accessories\",\n" +
-            "        \"image\": \"http:\\/\\/52.77.174.143\\/admin\\/media\\/catalog\\/category\\/accessesories_bg_1.png\"\n" +
-            "    }]\n" +
-            "}";
-    public static String deviceType = "1";
-    public static Bitmap imageupload;
+    //Pagetype constants
+    public static final String HOMEPAGE = "1";
+    public static final String SUBCATPAGE = "2";
+    public static final String STORELISTINGPAGE = "3";
+    public static final String STOREDETAILSPAGE = "5";
+    public static final String MULTISTOREPAGE = "6";
+    public static final String WEBPAGE = "7";
+    public static final String TRENDINGPAGE = "8";
+    public static final String ARTICLEPAGE = "9";
+    public static final String EXHIBITIONPAGE = "10";
+    public static final String EXARTICLEPAGE = "11";
+    public static final String FOLLOWINGPAGE = "12";
 
-    public static class Config {
-        public static final boolean DEVELOPER_MODE = false;
-    }
 }

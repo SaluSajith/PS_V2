@@ -71,8 +71,14 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
     }
 
-    public void logMessage(String message) {
-        Log.d("DEBUG", message);
+    public void logMessage(String title, String message) {
+        String key = "";
+        if(title.trim().length()==0){
+            key = "DEBUG";
+        }else{
+            key = title;
+        }
+        Log.d(key, message);
     }
 
     public void logError(String error) {

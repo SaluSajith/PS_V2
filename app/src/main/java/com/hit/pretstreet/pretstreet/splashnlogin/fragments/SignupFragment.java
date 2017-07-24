@@ -63,7 +63,6 @@ public class SignupFragment extends AbstractBaseFragment<WelcomeActivity> {
 
     @OnClick(R.id.btn_signup)
     public void onSignupPressed() {
-
         loginController.validateRegisterFields(edt_firstname, edt_lastname, edt_mobile, edt_email, edt_password);
     }
 
@@ -72,7 +71,7 @@ public class SignupFragment extends AbstractBaseFragment<WelcomeActivity> {
         Intent facebookLoginIntent = new Intent(getActivity(), FacebookLoginScreen.class);
         facebookLoginIntent.putExtra("cat", "Login");
         facebookLoginIntent.putExtra("Type", "FirstLogin");
-        startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
+        getActivity().startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
     }
 
     @OnClick(R.id.btn_google)
@@ -80,13 +79,13 @@ public class SignupFragment extends AbstractBaseFragment<WelcomeActivity> {
         if (ContextCompat.checkSelfPermission(PretStreet.getInstance(), Manifest.permission.GET_ACCOUNTS)
                 == PackageManager.PERMISSION_GRANTED) {
             Intent googleLoginIntent = new Intent(getActivity(), GoogleLoginActivity.class);
-            startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
+            getActivity().startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
         } else {
             askCompactPermission(Manifest.permission.GET_ACCOUNTS, new PermissionResult() {
                 @Override
                 public void permissionGranted() {
                     Intent googleLoginIntent = new Intent(getActivity(), GoogleLoginActivity.class);
-                    startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
+                    getActivity().startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
                 }
 
                 @Override

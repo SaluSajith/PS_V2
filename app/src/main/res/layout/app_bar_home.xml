@@ -6,43 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.hit.pretstreet.pretstreet.navigation.HomeActivity">
-
-    <android.support.design.widget.AppBarLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.AppCompat.Translucent"
-        android:background="@android:color/transparent"
-        app:elevation="0dp"
-        android:fitsSystemWindows="false"
-        app:contentInsetStart="0dp"
-        android:padding="0dp"
-        app:contentInsetStartWithNavigation="0dp">
-
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@drawable/base"
+        android:id="@+id/nsv_header">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:clipChildren="true">
-
                 <include layout="@layout/header_main"
-                    android:id="@+id/includedlayout"></include>
-
+                    android:id="@+id/includedlayout"></include>\
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/content"
                     android:layout_marginTop="@dimen/content_overlapmargin"
-                    android:layout_below="@+id/includedlayout"
-                    android:background="@drawable/base">
+                    android:layout_below="@+id/includedlayout">
                 </FrameLayout>
             </RelativeLayout>
         </RelativeLayout>
-
-
-    </android.support.design.widget.AppBarLayout>
-
+    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

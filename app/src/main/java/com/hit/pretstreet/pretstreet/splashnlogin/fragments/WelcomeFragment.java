@@ -30,6 +30,8 @@ public class WelcomeFragment extends AbstractBaseFragment<WelcomeActivity> {
 
     private static final int FACEBOOK_LOGIN_REQUEST_CODE = 1;
     private static final int GOOGLE_LOGIN_REQUEST_CODE = 2;
+    private static final int SIGNUP_CLICK = 1;
+    private static final int LOGIN_CLICK = 2;
 
     ButtonClickCallback buttonClickCallback;
 
@@ -53,18 +55,16 @@ public class WelcomeFragment extends AbstractBaseFragment<WelcomeActivity> {
     private void init(View view){
         ButterKnife.bind(this, view);
         PreferenceServices.init(getActivity());
-
     }
-
 
     @OnClick(R.id.btn_sign_up)
     public void onSignupPressed() {
-        buttonClickCallback.buttonClick(1);     /*1 : Signup*/
+        buttonClickCallback.buttonClick(SIGNUP_CLICK);
     }
 
     @OnClick(R.id.btn_login)
     public void onLoginPressed() {
-        buttonClickCallback.buttonClick(2);    /* 2 : Login*/
+        buttonClickCallback.buttonClick(LOGIN_CLICK);
     }
 
     @OnClick(R.id.btn_facebook)

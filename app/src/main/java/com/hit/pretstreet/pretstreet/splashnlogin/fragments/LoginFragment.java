@@ -57,13 +57,12 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
         loginController.validateLoginFields(edt_email_number);
     }
 
-
     @OnClick(R.id.btn_facebook)
     public void onFacebookPressed() {
         Intent facebookLoginIntent = new Intent(getActivity(), FacebookLoginScreen.class);
         facebookLoginIntent.putExtra("cat", "Login");
         facebookLoginIntent.putExtra("Type", "FirstLogin");
-        startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
+        getActivity().startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
     }
 
     @OnClick(R.id.btn_google)
@@ -71,13 +70,13 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
         if (ContextCompat.checkSelfPermission(PretStreet.getInstance(), Manifest.permission.GET_ACCOUNTS)
                 == PackageManager.PERMISSION_GRANTED) {
             Intent googleLoginIntent = new Intent(getActivity(), GoogleLoginActivity.class);
-            startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
+            getActivity().startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
         } else {
             askCompactPermission(Manifest.permission.GET_ACCOUNTS, new PermissionResult() {
                 @Override
                 public void permissionGranted() {
                     Intent googleLoginIntent = new Intent(getActivity(), GoogleLoginActivity.class);
-                    startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
+                    getActivity().startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
                 }
 
                 @Override
@@ -86,7 +85,8 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
             });
         }
     }
-    public void onValidationError(EdittextPret editText, String message){
+
+    public void onValidationError(EdittextPret editText, String message) {
         editText.setError(message);
     }
 }

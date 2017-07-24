@@ -66,7 +66,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        GoogleSignInAccount account = result.getSignInAccount();
+        Log.d(TAG, "handleSignInResult:" + account.getPhotoUrl());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();

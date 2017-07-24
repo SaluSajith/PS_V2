@@ -28,6 +28,5 @@ public class SplashFragment extends AbstractBaseFragment<WelcomeActivity> {
     private void init(View view){
         ButterKnife.bind(this, view);
         PreferenceServices.init(getActivity());
-
     }
 }
