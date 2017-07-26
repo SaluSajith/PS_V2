@@ -37,7 +37,6 @@
                 style="@style/textview_heading_yellow"
                 android:layout_marginBottom="20dp"
                 android:text="category name"
-                android:rotation="@integer/rotation_catname"
                 app:pret_typeface="@string/font_merriweather_bold"
                 android:layout_alignBottom="@+id/imageView5"
                 android:layout_alignLeft="@+id/linearLayout"
@@ -58,7 +57,7 @@
                 <ImageView
                     android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/back"/>

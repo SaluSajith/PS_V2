@@ -30,7 +30,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/content"
-                        android:layout_marginTop="@dimen/content_overlapmargin">
+                        android:layout_marginTop="@dimen/content_overlapmargin_splash">
+                        <include layout="@layout/fragment_signup"></include>
                     </FrameLayout>
                 </LinearLayout>
             </RelativeLayout>

@@ -63,6 +63,8 @@
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
     <dimen name="content_overlapmargin_activity">-40dp</dimen>
     <dimen name="content_overlapmargin">-40dp</dimen>
+    <dimen name="content_overlapmargin_hometrape">-40dp</dimen>
+    <dimen name="content_overlapmargin_splash">-40dp</dimen>
     <dimen name="rotation_socialtext">@integer/rotation_text</dimen>
     <dimen name="rotation_alreadyaccount">@integer/rotation_accountalready</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>

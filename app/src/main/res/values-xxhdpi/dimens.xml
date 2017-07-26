@@ -8,10 +8,10 @@
     <dimen name="padding_xsmall">3dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_standard">5dp</dimen>
-    <dimen name="padding_large">8dp</dimen>//
-    <dimen name="padding_xlarge">14dp</dimen>//
-    <dimen name="padding_xxlarge">12dp</dimen>//
-    <dimen name="padding_xxxlarge">20dp</dimen>
+    <dimen name="padding_large">10dp</dimen>
+    <dimen name="padding_xlarge">15dp</dimen>
+    <dimen name="padding_xxlarge">20dp</dimen>
+    <dimen name="padding_xxxlarge">25dp</dimen>
     <dimen name="padding_huge">30dp</dimen>
     <dimen name="padding_xhuge">45dp</dimen>
 

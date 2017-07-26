@@ -149,7 +149,9 @@
         -->
 
         <activity android:name=".navigationitems.NavigationItemsActivity" />
-        <activity android:name=".splashnlogin.DefaultLocationActivity"></activity>
+        <activity android:name=".splashnlogin.DefaultLocationActivity" />
+        <activity android:name=".subcategory.SubCatActivity" />
+        <activity android:name=".subcategory.StoreListingActivity"></activity>
     </application>
 
 </manifest>

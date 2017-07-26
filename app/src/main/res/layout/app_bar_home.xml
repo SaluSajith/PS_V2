@@ -11,7 +11,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@drawable/base"
-        android:id="@+id/nsv_header">
+        android:id="@+id/nsv_header"
+        android:overScrollMode="never">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -20,8 +21,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:clipChildren="true">
-                <include layout="@layout/header_main"
-                    android:id="@+id/includedlayout"></include>\
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -29,6 +28,8 @@
                     android:layout_marginTop="@dimen/content_overlapmargin"
                     android:layout_below="@+id/includedlayout">
                 </FrameLayout>
+                <include layout="@layout/header_main"
+                    android:id="@+id/includedlayout"></include>\
             </RelativeLayout>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

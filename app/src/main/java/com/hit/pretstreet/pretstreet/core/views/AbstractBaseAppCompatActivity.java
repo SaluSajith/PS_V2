@@ -15,6 +15,7 @@ import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.os.Handler;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.PageState;
@@ -37,6 +38,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
     private PermissionResult permissionResult;
     private String permissionsAsk[];
 
+    private static int DURATION = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
     }
 
-    public void logMessage(String title, String message) {
+    public void displayLogMessage(String title, String message) {
         String key = "";
         if(title.trim().length()==0){
             key = "DEBUG";

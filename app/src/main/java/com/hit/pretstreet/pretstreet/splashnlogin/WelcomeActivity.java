@@ -163,7 +163,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        logMessage("resultCode ", resultCode+"");
+        displayLogMessage("resultCode ", resultCode+"");
 
         switch (requestCode) {
             case FACEBOOK_LOGIN_REQUEST_CODE:
@@ -296,16 +296,20 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
             sharedPreferencesHelper.createLoginSession(loginSession);
             PreferenceServices.instance().saveUserId(object.getString("UserId"));
-            PreferenceServices.instance().saveUserName(object.getString("UserFirstName")+" "+object.getString("UserLastname"));
+            PreferenceServices.instance().saveUserName(object.getString("UserFirstName")+" "+object.getString("UserLastName"));
             PreferenceServices.instance().saveLoginType(loginType);
-
-            if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
-                    || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
-                startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
-            } else {
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-            }
-            finish();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
+                            || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
+                        startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    }
+                    finish();
+                }
+            }, 2000);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -318,18 +322,18 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         public void run() {
             if (!isFinishing()) {
                 splashHandler.removeCallbacks(this);
-                /*if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
+                if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
                     changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
                 } else {
                     if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
                             || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
                         startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
-                    } else {*/
+                    } else {
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     }
-                  /*   finish();
+                     finish();
                }
-            }*/
+            }
         }
     };
 

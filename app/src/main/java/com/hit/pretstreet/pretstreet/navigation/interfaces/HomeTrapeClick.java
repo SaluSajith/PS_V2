@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation.interfaces;
 
+import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 
 /**
@@ -7,5 +8,5 @@ import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
  */
 
 public interface HomeTrapeClick {
-    void onTrapeClick(HomeCatItems homeCatItems);
+    void onTrapeClick(HomeCatContentData catContentData, String title);
 }

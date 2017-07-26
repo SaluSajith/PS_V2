@@ -10,9 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/padding_xxlarge"/>
 
-       <!-- <ImageView
+        <!--<ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/pager_height"
             android:id="@+id/img1"/>

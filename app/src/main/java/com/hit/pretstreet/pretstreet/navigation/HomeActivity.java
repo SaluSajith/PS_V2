@@ -3,7 +3,6 @@ package com.hit.pretstreet.pretstreet.navigation;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,24 +11,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -44,15 +34,13 @@ import com.hit.pretstreet.pretstreet.navigation.adapters.NavDrawerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
-import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
-import com.hit.pretstreet.pretstreet.navigation.models.HomeSubCategory;
+import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
-import com.hit.pretstreet.pretstreet.navigationitems.fragments.AccountFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
+import com.hit.pretstreet.pretstreet.subcategory.SubCatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,7 +85,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         PreferenceServices.init(this);
 
         View includedlayout =  findViewById(R.id.includedlayout);
-        includedlayout.bringToFront();
+        //includedlayout.bringToFront();
         ButterKnife.bind(this, includedlayout);
 
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
@@ -224,7 +212,10 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
         switch (itemId) {
             case "nav_home":
-
+                String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+                if (SavedMAinCaTList.length() > 1)
+                    changeFragment(new HomeFragment(), false);
+                else getHomePage();
                 break;
             case "nav_account":
                 selectedFragment = ACCOUNT_FRAGMENT;
@@ -330,7 +321,18 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     @Override
-    public void onTrapeClick(HomeCatItems homeCatItems) {
-        displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
+    public void onTrapeClick(HomeCatContentData catContentData, String title) {
+        displayLogMessage("", catContentData.getHomeSubCategoryArrayList().size()+"");
+        if(catContentData.getHomeSubCategoryArrayList().size()>0) {
+            //displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
+            Intent intent = new Intent(this, SubCatActivity.class);
+            intent.putExtra("mHomeCatItems", catContentData);
+            intent.putExtra("mTitle", title);
+            startActivity(intent);
+        }
+        else{
+            displaySnackBar("move to shoplist");
+            //TODO shoplist
+        }
     }
 }

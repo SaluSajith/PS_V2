@@ -1,12 +1,16 @@
 package com.hit.pretstreet.pretstreet.navigation.models;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by User on 7/24/2017.
  */
 
-public class HomeContentData {
+public class HomeCatContentData implements Serializable{
     String CategoryId, CategoryName, Title, ImageSource, PageType, PageTypeId;
-    HomeSubCategory homeSubCategory;
+    ArrayList<HomeCatItems> homeSubCategoryArrayList;
+    HomeCatContentData homeCatContentData;
 
     public String getCategoryId() {
         return CategoryId;
@@ -56,11 +60,19 @@ public class HomeContentData {
         Title = title;
     }
 
-    public HomeSubCategory getHomeSubCategory() {
-        return homeSubCategory;
+    public ArrayList<HomeCatItems> getHomeSubCategoryArrayList() {
+        return homeSubCategoryArrayList;
     }
 
-    public void setHomeSubCategory(HomeSubCategory homeSubCategory) {
-        this.homeSubCategory = homeSubCategory;
+    public void setHomeSubCategoryArrayList(ArrayList<HomeCatItems> homeSubCategoryArrayList) {
+        this.homeSubCategoryArrayList = homeSubCategoryArrayList;
+    }
+
+    public HomeCatContentData getHomeCatContentData() {
+        return homeCatContentData;
+    }
+
+    public void setHomeCatContentData(HomeCatContentData homeCatContentData) {
+        this.homeCatContentData = homeCatContentData;
     }
 }

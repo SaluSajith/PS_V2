@@ -12,41 +12,32 @@ import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
-import com.hit.pretstreet.pretstreet.navigation.models.HomeContentData;
-import com.hit.pretstreet.pretstreet.navigation.models.HomeSubCategory;
+import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
-import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,55 +78,60 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
 
     private void init(){
         String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+        //loadHomeSample();
         loadHomePage(SavedMAinCaTList);
-        // loadHomeSample();
-
     }
+
 
     private void loadHomePage(String SavedMAinCaTList){
 
         if (SavedMAinCaTList.length() > 1) {
             ll_main_cat.setVisibility(View.VISIBLE);
             final ArrayList<HomeCatItems> list = new ArrayList<>();
-            JSONObject response = null;
-            try {
+            ArrayList<HomeCatContentData> subcatlist = new ArrayList<>();
 
-                response = new JSONObject(SavedMAinCaTList);
+            try {
+                JSONObject response = new JSONObject(SavedMAinCaTList);
                 JSONArray jsonArray = response.getJSONArray("Data");
                 HomeCatItems homeCatItems;
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    homeCatItems  = new HomeCatItems();
+
+                    homeCatItems = new HomeCatItems();
                     homeCatItems.setContentTypeId(jsonArray.getJSONObject(i).getString("ContentTypeId"));
                     homeCatItems.setContentType(jsonArray.getJSONObject(i).getString("ContentType"));
-                    HomeContentData homeContentData = null;
                     JSONObject object = jsonArray.getJSONObject(i).getJSONObject("ContentData");
-                    for(int j=0;j<object.length();j++){
-                        homeContentData = new HomeContentData();
-                        homeContentData.setCategoryId(object.getString("MainCategoryId"));
-                        homeContentData.setCategoryName(object.getString("CategoryName"));
-                        homeContentData.setImageSource(object.getString("ImageSource"));
-                        homeContentData.setPageTypeId(object.getString("PageTypeId"));
-                        HomeSubCategory homeSubCategory = null;
-                        if(object.has("SubCategory")) {
-                            JSONArray subcat = object.getJSONArray("SubCategory");
-                            for (int k = 0; k < subcat.length(); k++) {
-                                homeSubCategory = new HomeSubCategory();
-                                homeSubCategory.setContentTypeId(subcat.getJSONObject(k).getString("ContentTypeId"));
-                                homeSubCategory.setContentType(subcat.getJSONObject(k).getString("ContentType"));
-                                HomeContentData contentData = new HomeContentData();
-                                JSONObject content = subcat.getJSONObject(k).getJSONObject("ContentData");
-                                contentData.setPageTypeId(content.getString("PageTypeId"));
-                                contentData.setImageSource(content.getString("ImageSource"));
-                                contentData.setCategoryId(content.getString("CategoryId"));
-                                contentData.setCategoryName(content.getString("CategoryName"));
-                                homeSubCategory.setContentData(contentData);
-                            }
-                            homeContentData.setHomeSubCategory(homeSubCategory);
+
+                    HomeCatContentData homeContentData = new HomeCatContentData();
+                    homeContentData.setCategoryId(object.getString("MainCategoryId"));
+                    homeContentData.setCategoryName(object.getString("CategoryName"));
+                    homeContentData.setImageSource(object.getString("ImageSource"));
+                    homeContentData.setPageTypeId(object.getString("PageTypeId"));
+
+                    HomeCatItems homeSubCategory = null;
+                    ArrayList<HomeCatItems> homeSubCategoriesArray = new ArrayList<>();
+                    if (object.has("SubCategory")) {
+                        JSONArray subcat = object.getJSONArray("SubCategory");
+                        for (int k = 0; k < subcat.length(); k++) {
+                            homeSubCategory = new HomeCatItems();
+                            homeSubCategory.setContentTypeId(subcat.getJSONObject(k).getString("ContentTypeId"));
+                            homeSubCategory.setContentType(subcat.getJSONObject(k).getString("ContentType"));
+
+                            JSONObject content = subcat.getJSONObject(k).getJSONObject("ContentData");
+                            HomeCatContentData contentData = new HomeCatContentData();
+                            contentData.setPageTypeId(content.getString("PageTypeId"));
+                            contentData.setImageSource(content.getString("ImageSource"));
+                            contentData.setCategoryId(content.getString("CategoryId"));
+                            contentData.setCategoryName(content.getString("CategoryName"));
+
+                            homeSubCategory.setHomeContentData(contentData);
+                            homeSubCategoriesArray.add(homeSubCategory);
                         }
-                        else{
-                            homeContentData.setHomeSubCategory(homeSubCategory);
-                        }
-                    }
+                        homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
+                    } else
+                        homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
+
+                    subcatlist.add(homeContentData);
+                    homeCatItems.setContentDataArrayList(subcatlist);
                     homeCatItems.setHomeContentData(homeContentData);
                     list.add(homeCatItems);
                 }
@@ -143,6 +139,7 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }
+
             ll_main_cat.removeAllViews();
             for (int i = 0; i < list.size(); i++) {
                 LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -160,16 +157,19 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                 LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 if(i!=0) {
-                    relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin), 0, 0);
+                    relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin_hometrape), 0, 0);
                 }
                 rl_dd.setLayoutParams(relativeParams);
                 rl_dd.requestLayout();
-                HomeContentData homeContentData = list.get(i).getHomeContentData();
+                final HomeCatContentData homeContentData = list.get(i).getHomeContentData();
                 txt_cat_name.setText(homeContentData.getCategoryName());
                 txt_cat_name.getBackground().setFilterBitmap(true);
 
                 Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.brand1);
-                Bitmap mask2 = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
+                Matrix matrix = new Matrix();
+                matrix.preScale(-1.0f, 1.0f);
+                Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
+
                 final int finalI = i;
                 if (finalI % 2 == 0) {
                     loadImage(homeContentData.getImageSource(), mImageView, mask1);
@@ -177,11 +177,11 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                     loadImage(homeContentData.getImageSource(), mImageView, mask2);
                 }
 
-                final int finalI1 = i;
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        buttonClickCallback.onTrapeClick(list.get(finalI1));
+                        buttonClickCallback.onTrapeClick(homeContentData,
+                                list.get(finalI).getHomeContentData().getCategoryName());
                     }
                 });
                 ll_main_cat.addView(view);
@@ -191,8 +191,10 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
         }
     }
 
+/*
+
     private void loadHomeSample(){
-        /*pager_banner.setOnPageChangeListener(this);
+        pager_banner.setOnPageChangeListener(this);
 
         ArrayList imagearray = new ArrayList();
         imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/Creative-for-article-1-final.jpg");
@@ -210,9 +212,10 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
         pager_banner.setAdapter(mAdapter);
         img1.bringToFront();
         loadImage("http://nuuneoi.com/uploads/source/playstore/cover.jpg", img2, mask1);
-        loadImage("http://nuuneoi.com/uploads/source/playstore/cover.jpg", img3, mask2);*/
+        loadImage("http://nuuneoi.com/uploads/source/playstore/cover.jpg", img3, mask2);
 
     }
+*/
 
     private void loadImage(String url, final ImageView imageView, final Bitmap mask){
 
@@ -253,7 +256,8 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                         mCanvas.drawBitmap(mask, 0, 0, paint);
                         paint.setXfermode(null);
                         imageView.setImageBitmap(result);
-                        switch (getResources().getDisplayMetrics().densityDpi) {
+                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                        /*switch (getResources().getDisplayMetrics().densityDpi) {
                             case DisplayMetrics.DENSITY_MEDIUM:
                                 imageView.setScaleType(ImageView.ScaleType.CENTER);
                                 break;
@@ -263,8 +267,7 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                             default:
                                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                                 break;
-                        }
-
+                        }*/
                     }
                 });
     }

@@ -164,8 +164,8 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + Constant.API_KEY_BROWSER);
-            sb.append("&components=country:in|country:ae");
-            sb.append(TYPE_CITIES);
+            sb.append("&components=country:in");//|country:ae");
+            //sb.append(TYPE_CITIES);
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
             URL url = new URL(sb.toString());
             //System.out.println("URL: " + url);

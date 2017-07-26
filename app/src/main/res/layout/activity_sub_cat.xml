@@ -14,25 +14,26 @@
         tools:context="com.pretstreet.myapplication.ScrollingActivity"
         tools:showIn="@layout/activity_scrolling"
         android:background="@drawable/base"
-        android:id="@+id/nsv_header">
+        android:id="@+id/nsv_header"
+        android:overScrollMode="never">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:descendantFocusability="blocksDescendants">
+            android:orientation="vertical">
 
-            <include layout="@layout/header_inner_pages"></include>
+            <include layout="@layout/header_subcat"
+                android:id="@+id/ll_header"></include>
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/content"
-                android:layout_marginTop="@dimen/content_overlapmargin">
-
+                android:layout_marginTop="@dimen/content_overlapmargin"
+                android:layout_below="@+id/ll_header">
             </FrameLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
 
 </android.support.design.widget.CoordinatorLayout>
