@@ -54,7 +54,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     StoreList_RecyclerAdapter storeList_recyclerAdapter;
     TextViewPret[] txtname;
 
-    int pageCount=0, totalPages;
+    int pageCount=0, totalPages, total;
     public static int selectedPosition;
     boolean requestCalled = false;
     boolean loadmore = true;
