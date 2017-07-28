@@ -53,7 +53,9 @@ public class JsonRequestController {
                         try {
                             JSONObject object = new JSONObject(response);
                             object.put("URL", url);
+                            if(object.getString("Status").equalsIgnoreCase("1"))
                             listenerInterface.onResponse(object);
+                            else listenerInterface.onError(object.getString("CustomerMessage"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

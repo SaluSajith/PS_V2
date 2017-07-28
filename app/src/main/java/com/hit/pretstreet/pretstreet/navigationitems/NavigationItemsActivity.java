@@ -1,17 +1,13 @@
 package com.hit.pretstreet.pretstreet.navigationitems;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,9 +25,6 @@ import com.hit.pretstreet.pretstreet.navigationitems.fragments.AddStoreFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.ChangePasswordFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.ContactUsFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
-import com.hit.pretstreet.pretstreet.splashnlogin.fragments.LoginFragment;
-import com.hit.pretstreet.pretstreet.splashnlogin.fragments.SignupFragment;
-import com.hit.pretstreet.pretstreet.splashnlogin.fragments.WelcomeFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;

@@ -66,17 +66,17 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> {
 
     private void init() {
 
-        HomeCatContentData catContentData = (HomeCatContentData) getActivity().getIntent().getExtras().getSerializable("mHomeCatItems");
+        HomeCatContentData catContentData = (HomeCatContentData) getActivity().getIntent()
+                .getExtras().getSerializable("mHomeCatItems");
         loadSubCatPage(catContentData);
 
     }
 
-    private void loadSubCatPage(HomeCatContentData catContentData) {
+    private void loadSubCatPage(final HomeCatContentData catContentData) {
 
         ll_main_cat.setVisibility(View.VISIBLE);
         ll_main_cat.removeAllViews();
         ArrayList<HomeCatItems> homeSubCategories = catContentData.getHomeSubCategoryArrayList();
-        Log.e("size", homeSubCategories.size()+" "+homeSubCategories);
         for (int i = 0; i < homeSubCategories.size(); i++) {
 
             LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -99,12 +99,15 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> {
             rl_dd.setLayoutParams(relativeParams);
             rl_dd.requestLayout();
 
-            HomeCatContentData contentData = homeSubCategories.get(i).getHomeContentData();
+            final HomeCatContentData contentData = homeSubCategories.get(i).getHomeContentData();
             txt_cat_name.setText(contentData.getCategoryName());
             txt_cat_name.getBackground().setFilterBitmap(true);
 
             Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.brand1);
-            Bitmap mask2 = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
+            Matrix matrix = new Matrix();
+            matrix.preScale(-1.0f, 1.0f);
+            Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
+
             final int finalI = i;
             if (finalI % 2 == 0) {
                 loadImage(contentData.getImageSource(), mImageView, mask1);
@@ -116,6 +119,8 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), StoreListingActivity.class);
+                    intent.putExtra("contentData", catContentData);
+                    intent.putExtra("mTitle", contentData.getCategoryName());
                     startActivity(intent);
                 }
             });

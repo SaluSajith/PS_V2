@@ -58,7 +58,9 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
-    private static final String TYPE_SENSOR = "&types=(cities)";
+    private static final String TYPE_COUNTRIES = "&components=country:in|country:ae";
+    private static final String TYPE_SENSOR = "&types=(cities)";//,sublocality
+    String types = "cities|sublocality";
     private static final String TYPE_CITIES = "&sensor=false&types=(cities)";
 
     @Override
@@ -164,8 +166,8 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + Constant.API_KEY_BROWSER);
-            sb.append("&components=country:in");//|country:ae");
-            //sb.append(TYPE_CITIES);
+            sb.append(TYPE_COUNTRIES);//|country:ae");
+            sb.append("&sensor=false&types=(cities)");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
             URL url = new URL(sb.toString());
             //System.out.println("URL: " + url);

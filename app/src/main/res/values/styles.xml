@@ -67,6 +67,16 @@
         <item name="android:padding">@dimen/padding_xsmall</item>
         <item name="android:capitalize">words</item>
     </style>
+    <style name="textview_title">
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/textsize_xlarge</item>
+        <item name="android:padding">@dimen/padding_xsmall</item>
+        <item name="android:capitalize">words</item>
+    </style>
     <style name="textview_small">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
@@ -101,28 +111,32 @@
     </style>
 
     <style name="textview_yellow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/yellow_indicator</item>
         <item name="android:gravity">center</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:background">@color/black</item>
         <item name="android:textSize">@dimen/textsize_large</item>
-        <item name="android:paddingLeft">@dimen/padding_xlarge</item>
-        <item name="android:paddingRight">@dimen/padding_xlarge</item>
+        <item name="android:paddingLeft">@dimen/padding_standard</item>
+        <item name="android:paddingRight">@dimen/padding_standard</item>
         <item name="android:paddingTop">@dimen/padding_xsmall</item>
         <item name="android:paddingBottom">@dimen/padding_xsmall</item>
         <item name="android:capitalize">words</item>
     </style>
 
     <style name="textview_black">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:gravity">center</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:background">@color/yellow_indicator</item>
         <item name="android:textSize">@dimen/textsize_large</item>
-        <item name="android:paddingLeft">@dimen/padding_xlarge</item>
-        <item name="android:paddingRight">@dimen/padding_xlarge</item>
+        <item name="android:paddingLeft">@dimen/padding_standard</item>
+        <item name="android:paddingRight">@dimen/padding_standard</item>
         <item name="android:paddingTop">@dimen/padding_xsmall</item>
         <item name="android:paddingBottom">@dimen/padding_xsmall</item>
         <item name="android:capitalize">words</item>

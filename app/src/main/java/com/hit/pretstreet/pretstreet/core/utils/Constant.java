@@ -21,6 +21,7 @@ public class Constant {
     public static final String LOGIN_URL = COMMON_URL + "customer/customerloginbyMobile";
     public static final String SOCIAL_LOGIN_URL = COMMON_URL + "customer/customerloginbySocial";
     public static final String HOMEPAGE_URL = COMMON_URL + "homepage/homepage";
+    public static final String STORELISTING_URL = COMMON_URL + "store/storelisting/";
 
     //updated after 5/9/2017
     public static final String TRENDING_API = COMMON_URL + "index.php/trendingpage/mobileapp/";
@@ -28,7 +29,7 @@ public class Constant {
     public static final String INDEX_PATH = COMMON_URL + "index.php/trendingpage/mobileapp/";
 
     public static final String API = "MAPcabpnPawmassmjrc";
-    public static final String LIMIT = "10";
+    public static final String LIMIT = "20";
     public static final String TAG = "Pretstreetv2";
     public static final int TIMEOUT_LIMIT = 15000;
 
