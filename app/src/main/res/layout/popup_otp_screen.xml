@@ -32,8 +32,8 @@
 
     <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
         android:id="@+id/btn_send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/submitbtn_width"
+        android:layout_height="@dimen/submitbtn_height"
         android:text="@string/send"
         style="@style/button_standard"
         android:layout_below="@+id/edt_otp"

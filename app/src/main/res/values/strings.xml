@@ -18,7 +18,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="follow">follow</string>
+    <string name="follow">   Follow   </string>
     <string name="loading">Loading..Please wait.</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -70,5 +70,13 @@
 
     <!--otp screen-->
     <string name="send">send</string>
+
+    <!--store details-->
+    <string name="book">Book Appointment</string>
+    <string name="book_btn">Book</string>
+
+    <string name="title_activity_fullscreen_gallery">FullscreenGalleryActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

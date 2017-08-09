@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by hit on 17/3/16.
+ * Created by User on 20/07/2017.
  */
 public class PreferenceServices {
     public static final String LOGIN_STATUS = "loginStatus";

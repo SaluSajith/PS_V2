@@ -1,19 +1,25 @@
 package com.hit.pretstreet.pretstreet.core.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.hit.pretstreet.pretstreet.PretStreet;
+import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
- * Created by hit on 14/3/16.
+ * Created by User on 14/3/16.
  */
 public class Constant {
 
     public static final String GOOGLE_API_KEY = "AIzaSyCAq0CP83saVHVc93LDs_m3xUdpFna0c2c";
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
-    //public static final String COMMON_URL = "http://52.77.174.143/admin/";
     public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
@@ -22,11 +28,17 @@ public class Constant {
     public static final String SOCIAL_LOGIN_URL = COMMON_URL + "customer/customerloginbySocial";
     public static final String HOMEPAGE_URL = COMMON_URL + "homepage/homepage";
     public static final String STORELISTING_URL = COMMON_URL + "store/storelisting/";
+    public static final String UPDATEFOLLOWSTATUS_URL = COMMON_URL + "store/followStore/";
+    public static final String STOREDETAILS_URL = COMMON_URL + "store/storedetails/";
+    public static final String TRENDING_URL = COMMON_URL + "store/trending/";
+    public static final String EXHIBITION_URL = COMMON_URL + "store/exhibition/";
+    public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "store/exhibitionArticle";
+    public static final String TRENDINGARTICLE_URL = COMMON_URL + "store/trendingArticle";
+    public static final String MULTISTORE_URL = COMMON_URL + "store/multistorelisting";
 
     //updated after 5/9/2017
-    public static final String TRENDING_API = COMMON_URL + "index.php/trendingpage/mobileapp/";
-    public static final String EXHIBITION_API = COMMON_URL + "index.php/exhibitionpage/mobileapp/";
-    public static final String INDEX_PATH = COMMON_URL + "index.php/trendingpage/mobileapp/";
+
+    public static final String INDEX_PATH = COMMON_URL + "store/trendingArticle";
 
     public static final String API = "MAPcabpnPawmassmjrc";
     public static final String LIMIT = "20";
@@ -45,5 +57,57 @@ public class Constant {
     public static final String EXHIBITIONPAGE = "10";
     public static final String EXARTICLEPAGE = "11";
     public static final String FOLLOWINGPAGE = "12";
+
+    //Clicktype constants
+    public static final String HOMEPAGELINK = "1";
+    public static final String CATEGORYLINK = "2";
+    public static final String SUBCATLINK = "3";
+    public static final String SHIPBUPROLINK = "5";
+    public static final String SHOPBYMOODLINK = "6";
+    public static final String BANNER = "7";
+    public static final String SLIDER = "9";
+    public static final String MALLS = "10";
+    public static final String STORELISTINGLINK = "11";
+    public static final String STOREDETAILS = "12";
+    public static final String CALLLINK = "14";
+    public static final String CALLEDLINK = "15";
+    public static final String VIEWADDRESSLINK = "16";
+    public static final String VIEWONMAPLINK = "17";
+    public static final String ABOUTLINK = "18";
+    public static final String TRENDINGLISTLINK = "19";
+    public static final String TRENDARTICLELINK = "20";
+    public static final String EXHIBITIONLINK = "21";
+    public static final String EXHIBITIONARTICLELINK = "22";
+    public static final String MULTILINK = "23";
+    public static final String AUTOSEARCHLINK = "24";
+    public static final String SEARCHLISTLINK = "25";
+    public static final String FOLLOWLINK = "27";
+
+    //Constants
+    public static final String PRE_PAGE_KEY = "pagetype";
+    public static final String CLICKTYPE_KEY = "clicktype";
+    public static final String PARCEL_KEY = "data";
+    public static final String POSITION_KEY = "position";
+
+    public static JSONObject addConstants(JSONObject jsonObject, Context context){
+
+        JSONObject jsonBody = jsonObject;
+        try {
+            jsonBody.put("Latitude", PreferenceServices.getInstance().getLatitute());
+            jsonBody.put("Longitude", PreferenceServices.getInstance().getLongitute());
+            jsonBody.put("ApiKey", Constant.API);
+            jsonBody.put("DeviceType", "1");
+            jsonBody.put("DeviceId", PretStreet.getDeviceId());
+
+            SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
+            LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
+            jsonBody.put("UserId", loginSession.getRegid());
+            jsonBody.put("SessionId", loginSession.getSessionid());
+
+        } catch (JSONException e) {
+        } catch (Exception e) {}
+
+        return jsonBody;
+    }
 
 }

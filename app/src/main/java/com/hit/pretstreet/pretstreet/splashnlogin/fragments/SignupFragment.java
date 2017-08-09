@@ -15,7 +15,7 @@ import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
-import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
+import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
 import com.hit.pretstreet.pretstreet.sociallogin.GoogleLoginActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;

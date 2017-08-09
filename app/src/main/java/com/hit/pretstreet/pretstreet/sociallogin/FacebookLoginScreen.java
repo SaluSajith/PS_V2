@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by hit on 1/1/10.
+ * Created by User on 20/07/2017.
  */
 public class FacebookLoginScreen extends Activity {
     public static final int FACEBOOK_LOGIN_RESULT_CODE_SUCCESS = 1;

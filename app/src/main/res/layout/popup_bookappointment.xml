@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popup_bundle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:alpha="0.7"
+    android:background="@android:color/black">
+
+    <RelativeLayout
+        android:id="@+id/rl_AppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:padding="5dp">
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:id="@+id/txt_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            style="@style/textview_title"
+            android:text="Book Appointment"
+            android:textColor="@color/dark_gray"
+            app:pret_typeface="@string/font_merriweather_bold"/>
+
+        <ImageView
+            android:id="@+id/img_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_close" />
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:id="@+id/txt_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:padding="5dp"
+            android:text="Close"
+            android:textColor="@color/dark_gray"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/popup_bundle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/rl_AppBar"
+        android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+        <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+            android:id="@+id/edt_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select date"
+            android:editable="false"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@android:color/white"
+            android:drawableRight="@drawable/ic_date_range"
+            android:textColorHint="@android:color/white" />
+
+        <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+            android:id="@+id/edt_remarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/edittext_white_normal"
+            android:layout_below="@+id/edt_date"
+            android:hint="Remarks"
+            android:padding="10dp"
+            android:gravity="left"
+            android:lines="4"
+            android:inputType="textImeMultiLine"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+            android:id="@+id/btn_send"
+            android:layout_width="@dimen/submitbtn_width"
+            android:layout_height="@dimen/submitbtn_height"
+            android:text="@string/book_btn"
+            style="@style/button_standard"
+            android:layout_below="@+id/edt_remarks"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/buttonbg"
+            android:padding="5dp" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

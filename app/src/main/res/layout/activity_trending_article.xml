@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.pretstreet.myapplication.ScrollingActivity">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/white"
+        android:id="@+id/nsv_header"
+        android:overScrollMode="never">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:id="@+id/txt_name"
+                    style="@style/textview_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="@dimen/padding_xxlarge"
+                    android:gravity="left"
+                    android:maxLines="2"
+                    android:text="Z Studio"
+                    app:pret_typeface="@string/font_merriweather_bold" />
+
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:id="@+id/txt_description"
+                    style="@style/textview_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="left"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:text="Text"
+                    android:visibility="gone"
+                    app:pret_typeface="@string/font_merriweather_light" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_trendingarticle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_name" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <ImageView
+        android:id="@+id/ib_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp" />
+
+</android.support.design.widget.CoordinatorLayout>

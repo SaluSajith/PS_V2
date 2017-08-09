@@ -37,37 +37,40 @@
                 android:id="@+id/tv_margintop"
                 android:visibility="gone"
                 app:pret_typeface="@string/font_merriweather_regular"/>
-            <RelativeLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:orientation="horizontal"
                 android:id="@+id/rl_sale_arrival">
 
-                <ImageView
-                    android:id="@+id/img_new_arrival"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/img_offer"
-                    android:visibility="gone"/>
-
-                <ImageView
+                <ImageButton
                     android:id="@+id/img_sale"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:visibility="gone" />
-                <ImageView
-                    android:id="@+id/img_offer"
-                    android:layout_toRightOf="@+id/img_sale"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:visibility="gone" />
+                    android:visibility="visible"
+                    android:background="@drawable/sale"
+                    android:layout_marginTop="@dimen/padding_small"/>
 
-            </RelativeLayout>
+                <ImageButton
+                    android:id="@+id/img_offer"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:background="@drawable/offer"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_marginTop="@dimen/padding_small"/>
+                <ImageButton
+                    android:id="@+id/img_newarrival"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:background="@drawable/new_arrival"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_marginTop="@dimen/padding_small"/>
+
+            </LinearLayout>
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                 android:id="@+id/txt_storename"
@@ -75,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:text="Armani Jeans"
+                android:layout_marginTop="@dimen/padding_small"
                 style="@style/textview_title"
                 app:pret_typeface="@string/font_merriweather_regular"/>
 
@@ -106,25 +110,24 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.7"
-                    android:orientation="vertical">
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                         android:id="@+id/txt_folleowercount"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:text="46"
                         android:gravity="center_horizontal|bottom"
                         app:pret_typeface="@string/font_merriweather_light"/>
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight=".6"
                         android:text="followers"
-                        style="@style/textview_small"
-                        android:textSize="8dp"
-                        android:layout_margin="0dp"
-                        android:padding="0dp"
-                        android:layout_gravity=""
+                        android:textSize="6dp"
                         app:pret_typeface="@string/font_merriweather_light"/>
                 </LinearLayout>
 
@@ -147,17 +150,17 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
+        <ImageView
             android:id="@+id/line1"
-            android:layout_width="5dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/yellow"/>
+            android:background="@drawable/line_down"/>
         <ImageView
             android:layout_width="140dp"
             android:layout_height="120dp"
             android:scaleType="centerCrop"
-            android:layout_marginLeft="-10dp"
-            android:visibility="invisible"
+            android:layout_marginLeft="-20dp"
+            android:visibility="visible"
             android:clickable="false" />
 
     </LinearLayout>

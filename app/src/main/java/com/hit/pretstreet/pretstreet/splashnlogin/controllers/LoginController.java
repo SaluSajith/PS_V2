@@ -6,14 +6,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
+import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
+import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * Created by User on 7/4/2017.
@@ -58,9 +63,8 @@ public class LoginController {
             } else {
                 jsonBody.put("gender", "");
             }
-            jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("DeviceType", "1");
-            jsonBody.put("DeviceId", PretStreet.getDeviceId());
+
+            jsonBody = Constant.addConstants(jsonBody, context);
 
         } catch (JSONException e) {
         } catch (Exception e) {
@@ -80,10 +84,8 @@ public class LoginController {
             jsonBody.put("UserEmail", account.getEmail());
             jsonBody.put("FirstName", account.getGivenName());
             jsonBody.put("LastName", account.getFamilyName());
-            jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("gender", "");
-            jsonBody.put("DeviceType", "1");
-            jsonBody.put("DeviceId", PretStreet.getDeviceId());
+
+            jsonBody = Constant.addConstants(jsonBody, context);
 
         } catch (JSONException e) {
         } catch (Exception e) {}
@@ -99,11 +101,9 @@ public class LoginController {
             jsonBody.put("LastName", loginSession.getLname());
             jsonBody.put("UserEmail", loginSession.getEmail());
             jsonBody.put("UserMobile", loginSession.getMobile());
-            jsonBody.put("UserPassword", loginSession.getPassword());
-            jsonBody.put("Gender", 1);
-            jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("DeviceType", "1");
-            jsonBody.put("DeviceId", PretStreet.getDeviceId());
+            jsonBody.put("UserSession", loginSession.getSessionid());
+
+            jsonBody = Constant.addConstants(jsonBody, context);
 
         } catch (JSONException e) {
         } catch (Exception e) {}
@@ -138,9 +138,8 @@ public class LoginController {
         try {
             jsonBody.put("UserMobile", phone);
             jsonBody.put("UserEmail", email);
-            jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("DeviceType", "1");
-            jsonBody.put("DeviceId", PretStreet.getDeviceId());
+
+            jsonBody = Constant.addConstants(jsonBody, context);
 
         } catch (JSONException e) {
         } catch (Exception e) {}
@@ -148,13 +147,14 @@ public class LoginController {
         return jsonBody;
     }
 
-    public static JSONObject getHomePageJson() {
+    public static JSONObject getHomePageJson(String pageid) {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("DeviceType", "1");
-            jsonBody.put("DeviceId", PretStreet.getDeviceId());
+            jsonBody.put("PreviousPageTypeId", pageid);
+            jsonBody.put("ClickTypeId", "");
+
+            jsonBody = Constant.addConstants(jsonBody, context);
 
         } catch (JSONException e) {
         } catch (Exception e) {}
@@ -233,8 +233,68 @@ public class LoginController {
             loginSession.setLname(lname);
             loginSession.setMobile(mobile);
             loginSession.setEmail(email);
-            loginSession.setPassword(password);
             loginCallbackInterface.validationSuccess(loginSession);
         }
+    }
+
+    public static ArrayList<HomeCatItems> getHomeContent(String SavedMAinCaTList){
+        final ArrayList<HomeCatItems> list = new ArrayList<>();
+        ArrayList<HomeCatContentData> subcatlist = new ArrayList<>();
+
+
+        try {
+            JSONObject response = new JSONObject(SavedMAinCaTList);
+            JSONArray jsonArray = response.getJSONArray("Data");
+            HomeCatItems homeCatItems;
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                homeCatItems = new HomeCatItems();
+                homeCatItems.setContentTypeId(jsonArray.getJSONObject(i).getString("ContentTypeId"));
+                homeCatItems.setContentType(jsonArray.getJSONObject(i).getString("ContentType"));
+                JSONObject object = jsonArray.getJSONObject(i).getJSONObject("ContentData");
+
+                HomeCatContentData homeContentData = new HomeCatContentData();
+                homeContentData.setCategoryId(object.getString("MainCategoryId"));
+                homeContentData.setCategoryName(object.getString("CategoryName"));
+                homeContentData.setImageSource(object.getString("ImageSource"));
+                homeContentData.setPageTypeId(object.getString("PageTypeId"));
+
+                HomeCatItems homeSubCategory = null;
+                ArrayList<HomeCatItems> homeSubCategoriesArray = new ArrayList<>();
+                if (object.has("SubCategory")) {
+                    JSONArray subcat = object.getJSONArray("SubCategory");
+                    for (int k = 0; k < subcat.length(); k++) {
+                        homeSubCategory = new HomeCatItems();
+                        homeSubCategory.setContentTypeId(subcat.getJSONObject(k).getString("ContentTypeId"));
+                        homeSubCategory.setContentType(subcat.getJSONObject(k).getString("ContentType"));
+
+                        JSONObject content = subcat.getJSONObject(k).getJSONObject("ContentData");
+                        HomeCatContentData contentData = new HomeCatContentData();
+                        contentData.setPageTypeId(content.getString("PageTypeId"));
+                        contentData.setImageSource(content.getString("ImageSource"));
+                        contentData.setCategoryId(content.getString("CategoryId"));
+                        contentData.setMainCatId(object.getString("MainCategoryId"));
+                                            /*getting main catid*/
+
+                        contentData.setCategoryName(content.getString("CategoryName"));
+
+                        homeSubCategory.setHomeContentData(contentData);
+                        homeSubCategoriesArray.add(homeSubCategory);
+                    }
+                    homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
+                } else
+                    homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
+
+                subcatlist.add(homeContentData);
+                homeCatItems.setContentDataArrayList(subcatlist);
+                homeCatItems.setHomeContentData(homeContentData);
+                list.add(homeCatItems);
+            }
+
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+
+        return list;
     }
 }

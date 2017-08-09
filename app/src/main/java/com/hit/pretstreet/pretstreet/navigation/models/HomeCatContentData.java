@@ -8,9 +8,8 @@ import java.util.ArrayList;
  */
 
 public class HomeCatContentData implements Serializable{
-    String CategoryId, CategoryName, Title, ImageSource, PageType, PageTypeId;
+    String CategoryId, CategoryName, Title, ImageSource, PageType, PageTypeId, MainCatId;
     ArrayList<HomeCatItems> homeSubCategoryArrayList;
-    HomeCatContentData homeCatContentData;
 
     public String getCategoryId() {
         return CategoryId;
@@ -60,19 +59,19 @@ public class HomeCatContentData implements Serializable{
         Title = title;
     }
 
+    public String getMainCatId() {
+        return MainCatId;
+    }
+
+    public void setMainCatId(String mainCatId) {
+        MainCatId = mainCatId;
+    }
+
     public ArrayList<HomeCatItems> getHomeSubCategoryArrayList() {
         return homeSubCategoryArrayList;
     }
 
     public void setHomeSubCategoryArrayList(ArrayList<HomeCatItems> homeSubCategoryArrayList) {
         this.homeSubCategoryArrayList = homeSubCategoryArrayList;
-    }
-
-    public HomeCatContentData getHomeCatContentData() {
-        return homeCatContentData;
-    }
-
-    public void setHomeCatContentData(HomeCatContentData homeCatContentData) {
-        this.homeCatContentData = homeCatContentData;
     }
 }

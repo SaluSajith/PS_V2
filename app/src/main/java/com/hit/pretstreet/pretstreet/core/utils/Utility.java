@@ -26,7 +26,7 @@ public class Utility {
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-
+        recyclerView.setNestedScrollingEnabled(false);
         return llm;
     }
 

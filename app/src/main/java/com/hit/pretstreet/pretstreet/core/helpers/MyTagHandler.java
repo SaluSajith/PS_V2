@@ -6,7 +6,7 @@ import android.text.Html;
 import org.xml.sax.XMLReader;
 
 /**
- * Created by hit on 3/11/15.
+ * Created by User on 20/07/2017.
  */
 public class MyTagHandler implements Html.TagHandler {
 

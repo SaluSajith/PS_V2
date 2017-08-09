@@ -25,7 +25,7 @@ import com.hit.pretstreet.pretstreet.core.helpers.GPSTracker;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.marshmallowpermissions.marshmallowpermissions.PermissionResult;
+import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 
 import org.json.JSONArray;
@@ -167,7 +167,8 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + Constant.API_KEY_BROWSER);
             sb.append(TYPE_COUNTRIES);//|country:ae");
-            sb.append("&sensor=false&types=(cities)");
+            //sb.append("&sensor=false&types=(cities)");
+            sb.append("&sensor=false");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
             URL url = new URL(sb.toString());
             //System.out.println("URL: " + url);

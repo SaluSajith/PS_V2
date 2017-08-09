@@ -51,11 +51,14 @@ public class JsonRequestController {
                     public void onResponse(String response) {
                         Log.d("Response", response);
                         try {
-                            JSONObject object = new JSONObject(response);
-                            object.put("URL", url);
-                            if(object.getString("Status").equalsIgnoreCase("1"))
-                            listenerInterface.onResponse(object);
-                            else listenerInterface.onError(object.getString("CustomerMessage"));
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                                JSONObject object = new JSONObject(response);
+                                object.put("URL", url);
+                                if (object.getString("Status").equalsIgnoreCase("1"))
+                                    listenerInterface.onResponse(object);
+                                else listenerInterface.onError(object.getString("CustomerMessage"));
+                            }
+                            else listenerInterface.onError("Your phone doesn't support this app");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

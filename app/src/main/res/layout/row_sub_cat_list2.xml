@@ -14,7 +14,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:rotation="4.5"
+        android:rotation="4.3"
         android:layout_marginTop="@dimen/padding_xlarge"
         android:layout_marginLeft="-20dp"
         android:layout_marginRight="-20dp"
@@ -28,7 +28,7 @@
         android:background="@drawable/yellow_rectangle"
         android:padding="8sp"
         android:gravity="center"
-        android:rotation="5.5"
+        android:rotation="4.3"
         android:lines="1"
         android:maxLines="1"
         android:ellipsize="end"

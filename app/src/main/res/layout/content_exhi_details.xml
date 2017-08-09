@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_small"
+            android:background="@color/yellow_indicator"
+            android:paddingBottom="24dp"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textview_heading"
+            android:maxLines="3"
+            android:gravity="center"
+            android:inputType="textMultiLine|textCapCharacters"
+            android:text="TANISHQ Showroom Gurgav Area"
+            app:pret_typeface="@string/font_merriweather_regular"
+            android:id="@+id/tv_storename"
+            android:padding="@dimen/padding_standard"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textview_normal"
+            android:text="andheri (west), mumbai"
+            android:id="@+id/tv_location"
+            app:pret_typeface="@string/font_merriweather_light"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/textview_normal"
+                android:text="Open now"
+                android:layout_marginRight="0dp"
+                android:textColor="@color/green"
+                android:id="@+id/tv_openstatus"
+                app:pret_typeface="@string/font_merriweather_light"/>
+
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/textview_normal"
+                android:layout_marginLeft="0dp"
+                android:id="@+id/tv_time"
+                android:text=" - 11 AM to 9.30 PM"
+                app:pret_typeface="@string/font_merriweather_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/padding_standard"
+                android:gravity="center"
+                android:id="@+id/ll_call"
+                android:layout_gravity="center">
+
+                <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="@dimen/padding_large"
+                    android:src="@drawable/logo1" />
+
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/textview_normal"
+                    android:text="Call"
+                    android:lines="2"
+                    android:id="@+id/tv_folowerscount"
+                    app:pret_typeface="@string/font_merriweather_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/padding_standard"
+                android:gravity="center"
+                android:id="@+id/ll_address"
+                android:layout_gravity="center">
+
+                <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="@dimen/padding_large"
+                    android:src="@drawable/logo1" />
+
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/textview_normal"
+                    android:text="Address"
+                    android:lines="2"
+                    android:id="@+id/tv_folowerscount"
+                    app:pret_typeface="@string/font_merriweather_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/padding_standard"
+                android:gravity="center"
+                android:id="@+id/ll_getdirec"
+                android:layout_gravity="center">
+
+                <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="@dimen/padding_large"
+                    android:src="@drawable/logo1" />
+
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/textview_normal"
+                    android:text="Get \nDirections"
+                    android:lines="2"
+                    android:id="@+id/tv_folowerscount"
+                    android:gravity="center"
+                    app:pret_typeface="@string/font_merriweather_regular"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:id="@+id/textViewPret"
+                style="@style/textview_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_large"
+                android:layout_marginRight="0dp"
+                android:gravity="left"
+                android:text="About:"
+                app:pret_typeface="@string/font_merriweather_bold" />
+
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/textview_normal"
+                android:text="254 followers"
+                android:id="@+id/tv_about"
+                android:gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="@dimen/padding_large"
+                android:textColor="@color/yellow_indicator"
+                app:pret_typeface="@string/font_merriweather_regular"/>
+        </LinearLayout>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textview_normal"
+            android:text="254 followers"
+            android:id="@+id/tv_product"
+            android:gravity="left"
+            android:layout_marginBottom="@dimen/padding_large"
+            app:pret_typeface="@string/font_merriweather_regular"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textview_normal"
+            android:text="Opening Hours:"
+            android:layout_marginBottom="@dimen/padding_standard"
+            android:padding="@dimen/padding_large"
+            android:gravity="left"
+            android:textSize="@dimen/textsize_large"
+            app:pret_typeface="@string/font_merriweather_bold"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textview_small"
+            android:id="@+id/tv_openinghrs"
+            android:padding="@dimen/padding_large"
+            android:gravity="left"
+            android:layout_marginBottom="@dimen/padding_standard"
+            app:pret_typeface="@string/font_merriweather_light"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow_indicator"
+            style="@style/textview_normal"
+            android:text="  Photos  "
+            android:paddingBottom="@dimen/padding_standard"
+            android:paddingTop="@dimen/padding_standard"
+            android:paddingLeft="860dp"
+            android:paddingRight="@dimen/padding_huge"
+            android:id="@+id/tv_testimonials_heading"
+            android:layout_margin="0dp"
+            android:textSize="@dimen/textsize_xlarge"
+            app:pret_typeface="@string/font_redvelvet_regular"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rv_images"
+            android:layout_marginLeft="-2dp"
+            android:layout_marginRight="-2dp"
+            android:nestedScrollingEnabled="false"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textview_normal"
+            android:text="254 followers"
+            android:gravity="left"
+            android:id="@+id/tv_imgsrc"
+            android:layout_marginBottom="@dimen/padding_xlarge"
+            app:pret_typeface="@string/font_merriweather_regular"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_new"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/padding_huge"
+        android:layout_marginRight="20dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/new_stamp" />
+    <ImageView
+        android:id="@+id/iv_offer"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="45dp"
+        app:srcCompat="@drawable/offer_stamp"
+        android:layout_alignTop="@+id/iv_new"
+        android:layout_alignLeft="@+id/iv_new"
+        android:visibility="invisible"
+        android:layout_alignStart="@+id/iv_new" />
+    <ImageView
+        android:id="@+id/iv_sale"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="24dp"
+        app:srcCompat="@drawable/sale_stamp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:layout_alignBottom="@+id/iv_offer"
+        android:layout_alignRight="@+id/iv_new"
+        android:visibility="invisible"
+        android:layout_alignEnd="@+id/iv_new" />
+</RelativeLayout>

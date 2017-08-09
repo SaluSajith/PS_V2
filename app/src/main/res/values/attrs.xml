@@ -7,26 +7,26 @@
     </declare-styleable>
 
     <declare-styleable name="CircularImageView">
-        <attr name="civ_border" format="boolean"/>
-        <attr name="civ_border_width" format="dimension"/>
-        <attr name="civ_border_color" format="color"/>
-        <attr name="civ_shadow" format="boolean"/>
-        <attr name="civ_shadow_color" format="color"/>
-        <attr name="civ_shadow_radius" format="float"/>
+        <attr name="civ_border" format="boolean" />
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_shadow" format="boolean" />
+        <attr name="civ_shadow_color" format="color" />
+        <attr name="civ_shadow_radius" format="float" />
     </declare-styleable>
 
     <declare-styleable name="CustomStyle">
-        <attr format="string" name="pret_typeface"/>
-        <attr format="integer" name="rating_count"/>
-        <attr format="integer" name="rating_size"/>
-        <attr format="integer" name="rating_progress"/>
-        <attr format="boolean" name="rating_selectable"/>
-        <attr format="integer" name="rating_selected_drawable"/>
-        <attr format="integer" name="rating_unselected_drawable"/>
+        <attr name="pret_typeface" format="string" />
+        <attr name="rating_count" format="integer" />
+        <attr name="rating_size" format="integer" />
+        <attr name="rating_progress" format="integer" />
+        <attr name="rating_selectable" format="boolean" />
+        <attr name="rating_selected_drawable" format="integer" />
+        <attr name="rating_unselected_drawable" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="NotificationBadge">
-        <attr name="nbTextSize" format="dimension"/>
+        <attr name="nbTextSize" format="dimension" />
         <attr name="nbTextColor" format="color" />
         <attr name="nbBackground" format="reference" />
         <attr name="nbAnimationEnabled" format="boolean" />
@@ -36,12 +36,21 @@
     </declare-styleable>
 
     <declare-styleable name="HiveProgressView">
-        <attr format="integer" name="hive_animDuration" />
-        <attr format="integer" name="hive_maxAlpha" />
-        <attr format="color" name="hive_color" />
-        <attr format="boolean" name="hive_rainbow" />
-        <attr format="integer" name="hive_cornerRadius" />
-        <attr format="boolean" name="hive_shrink" />
+        <attr name="hive_animDuration" format="integer" />
+        <attr name="hive_maxAlpha" format="integer" />
+        <attr name="hive_color" format="color" />
+        <attr name="hive_rainbow" format="boolean" />
+        <attr name="hive_cornerRadius" format="integer" />
+        <attr name="hive_shrink" format="boolean" />
+    </declare-styleable>
+
+    <!-- Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels. -->
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
 
 </resources>

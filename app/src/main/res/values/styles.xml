@@ -19,7 +19,7 @@
         <item name="colorAccent">@color/yellow_indicator</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/transparent</item>
     </style>
 
@@ -46,17 +46,19 @@
         <item name="android:paddingBottom">24dp</item>
         <item name="android:orientation">vertical</item>
     </style>
+
     <style name="textview_heading">
         <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/textsize_xxlarge</item>
+        <item name="android:textSize">@dimen/textsize_xxxlarge</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:padding">@dimen/padding_small</item>
         <item name="android:capitalize">words</item>
     </style>
+
     <style name="textview_normal">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
@@ -67,16 +69,18 @@
         <item name="android:padding">@dimen/padding_xsmall</item>
         <item name="android:capitalize">words</item>
     </style>
+
     <style name="textview_title">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/textsize_xlarge</item>
+        <item name="android:textSize">@dimen/textsize_xxlarge</item>
         <item name="android:padding">@dimen/padding_xsmall</item>
         <item name="android:capitalize">words</item>
     </style>
+
     <style name="textview_small">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
@@ -151,6 +155,7 @@
         <item name="android:rotation">0</item>
         <item name="android:background">@null</item>
     </style>
+
     <style name="button_standard">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:gravity">center</item>
@@ -174,6 +179,18 @@
         <item name="android:textSize">@dimen/textsize_large</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:background">@null</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme.NoActionBar">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>

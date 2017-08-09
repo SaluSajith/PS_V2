@@ -27,7 +27,7 @@ import com.hit.pretstreet.pretstreet.R;
 
 
 /**
- * Created by HIT on 13-Apr-16.
+ * Created by User on 20/07/2017.
  */
 public class GooglePlusLogin extends Activity implements ConnectionCallbacks, OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
 

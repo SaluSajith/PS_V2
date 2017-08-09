@@ -17,13 +17,12 @@
             android:orientation="vertical">
 
             <include layout="@layout/header_startingscreens"></include>
-            <FrameLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/product_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/content"
-                android:layout_marginTop="@dimen/content_overlapmargin">
-                <include layout="@layout/fragment_login"></include>
-            </FrameLayout>
+                android:orientation="vertical"
+                android:scrollbars="none" />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

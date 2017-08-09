@@ -22,6 +22,7 @@
             android:text="'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.' "
             android:id="@+id/tv_testimonial"
             android:maxLines="4"
+            android:lines="4"
             app:pret_typeface="@string/font_merriweather_light"/>
 
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
@@ -30,7 +31,7 @@
             style="@style/textview_normal"
             android:text="-Ms.Anitha Ramachandani"
             android:gravity="end"
-            android:id="@+id/tv_testimonial"
+            android:id="@+id/tv_testimonial_name"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:maxLines="1"
             app:pret_typeface="@string/font_merriweather_bold"/>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/light_gray"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_trending"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="-10dp"
+        android:visibility="visible"
+        android:headerDividersEnabled="false"
+        android:divider="@color/trending_grey"
+        android:nestedScrollingEnabled="false"/>-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_trending"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="none"/>
+</LinearLayout>

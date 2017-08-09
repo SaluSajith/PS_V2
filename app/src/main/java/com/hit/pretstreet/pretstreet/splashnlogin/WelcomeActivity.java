@@ -52,7 +52,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by hit on 10/3/16.
+ * Created by User on 20/07/2017.
  */
 public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface {
@@ -281,6 +281,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             loginSession.setFname(object.getString("UserFirstName"));
             loginSession.setLname(object.getString("UserLastName"));
             loginSession.setEmail(object.getString("UserEmail"));
+            loginSession.setSessionid(object.getString("UserSessionId"));
 
             loginSession.setMobile(object.getString("UserMobile"));
             if(object.has("UserProfilePicture")) {

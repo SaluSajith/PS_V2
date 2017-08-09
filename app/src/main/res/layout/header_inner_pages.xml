@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/fixed_top"
                 android:scaleType="centerCrop"
-                android:id="@+id/imageView5" />
+                android:id="@+id/iv_header" />
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                 android:id="@+id/tv_cat_name"
@@ -38,7 +38,7 @@
                 android:layout_marginBottom="20dp"
                 android:text="category name"
                 app:pret_typeface="@string/font_merriweather_bold"
-                android:layout_alignBottom="@+id/imageView5"
+                android:layout_alignBottom="@+id/iv_header"
                 android:layout_alignLeft="@+id/linearLayout"
                 android:layout_alignStart="@+id/linearLayout" />
 

@@ -32,6 +32,7 @@ public class SharedPreferencesHelper {
     public static final String KEY_SOCIALID = "social_id";
     public static final String KEY_SOCIALTYPE = "social_type";
     public static final String KEY_PIC = "profile_pic";
+    public static final String KEY_SESSION = "session_id";
 
     public SharedPreferencesHelper(Context mContext) {
         if (mContext != null)
@@ -130,6 +131,7 @@ public class SharedPreferencesHelper {
         editor.putString(KEY_SOCIALID, loginSession.getSocial_id());
         editor.putString(KEY_SOCIALTYPE, loginSession.getSocial_type());
         editor.putString(KEY_PIC, loginSession.getProfile_pic());
+        editor.putString(KEY_SESSION, loginSession.getSessionid());
 
         editor.commit();
     }
@@ -156,6 +158,7 @@ public class SharedPreferencesHelper {
         userDetails.setSocial_id(pref.getString(KEY_SOCIALID, null));
         userDetails.setSocial_type(pref.getString(KEY_SOCIALTYPE, null));
         userDetails.setProfile_pic(pref.getString(KEY_PIC, null));
+        userDetails.setSessionid(pref.getString(KEY_SESSION, null));
 
         return userDetails;
     }

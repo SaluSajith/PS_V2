@@ -26,12 +26,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,7 +57,6 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
     @BindView(R.id.ll_main_cat) LinearLayout ll_main_cat;
 
     HomeTrapeClick buttonClickCallback;
-
     //String SavedMAinCaTList, SavedSubCatList;
 
     @Override
@@ -86,59 +87,7 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
     private void loadHomePage(String SavedMAinCaTList){
 
         if (SavedMAinCaTList.length() > 1) {
-            ll_main_cat.setVisibility(View.VISIBLE);
-            final ArrayList<HomeCatItems> list = new ArrayList<>();
-            ArrayList<HomeCatContentData> subcatlist = new ArrayList<>();
-
-            try {
-                JSONObject response = new JSONObject(SavedMAinCaTList);
-                JSONArray jsonArray = response.getJSONArray("Data");
-                HomeCatItems homeCatItems;
-                for (int i = 0; i < jsonArray.length(); i++) {
-
-                    homeCatItems = new HomeCatItems();
-                    homeCatItems.setContentTypeId(jsonArray.getJSONObject(i).getString("ContentTypeId"));
-                    homeCatItems.setContentType(jsonArray.getJSONObject(i).getString("ContentType"));
-                    JSONObject object = jsonArray.getJSONObject(i).getJSONObject("ContentData");
-
-                    HomeCatContentData homeContentData = new HomeCatContentData();
-                    homeContentData.setCategoryId(object.getString("MainCategoryId"));
-                    homeContentData.setCategoryName(object.getString("CategoryName"));
-                    homeContentData.setImageSource(object.getString("ImageSource"));
-                    homeContentData.setPageTypeId(object.getString("PageTypeId"));
-
-                    HomeCatItems homeSubCategory = null;
-                    ArrayList<HomeCatItems> homeSubCategoriesArray = new ArrayList<>();
-                    if (object.has("SubCategory")) {
-                        JSONArray subcat = object.getJSONArray("SubCategory");
-                        for (int k = 0; k < subcat.length(); k++) {
-                            homeSubCategory = new HomeCatItems();
-                            homeSubCategory.setContentTypeId(subcat.getJSONObject(k).getString("ContentTypeId"));
-                            homeSubCategory.setContentType(subcat.getJSONObject(k).getString("ContentType"));
-
-                            JSONObject content = subcat.getJSONObject(k).getJSONObject("ContentData");
-                            HomeCatContentData contentData = new HomeCatContentData();
-                            contentData.setPageTypeId(content.getString("PageTypeId"));
-                            contentData.setImageSource(content.getString("ImageSource"));
-                            contentData.setCategoryId(content.getString("CategoryId"));
-                            contentData.setCategoryName(content.getString("CategoryName"));
-
-                            homeSubCategory.setHomeContentData(contentData);
-                            homeSubCategoriesArray.add(homeSubCategory);
-                        }
-                        homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
-                    } else
-                        homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
-
-                    subcatlist.add(homeContentData);
-                    homeCatItems.setContentDataArrayList(subcatlist);
-                    homeCatItems.setHomeContentData(homeContentData);
-                    list.add(homeCatItems);
-                }
-
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
+            final ArrayList<HomeCatItems> list = LoginController.getHomeContent(SavedMAinCaTList);
 
             ll_main_cat.removeAllViews();
             for (int i = 0; i < list.size(); i++) {
@@ -165,6 +114,9 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                 final HomeCatContentData homeContentData = list.get(i).getHomeContentData();
                 txt_cat_name.setText(homeContentData.getCategoryName());
                 txt_cat_name.getBackground().setFilterBitmap(true);
+                if(homeContentData.getPageTypeId().equals(Constant.TRENDINGPAGE)){
+                    txt_cat_name.setVisibility(View.GONE);
+                }
 
                 Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.brand1);
                 Matrix matrix = new Matrix();
@@ -187,6 +139,7 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                 });
                 ll_main_cat.addView(view);
             }
+            ll_main_cat.setVisibility(View.VISIBLE);
         } else {
             ll_main_cat.setVisibility(View.GONE);
         }
@@ -259,111 +212,6 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
-    }
-
-    private class ArticlePagerAdapter extends PagerAdapter {
-
-        private Context mContext;
-        private ArrayList<String> mResources;
-        private ArrayList<ProductImageItem > mImagearray;
-
-        public ArticlePagerAdapter(Context mContext, ArrayList<String> mResources) {
-            this.mContext = mContext;
-            this.mResources = mResources;
-            mImagearray = new ArrayList<>();
-
-            ProductImageItem productImageItem;
-            for(int i = 0;i<mResources.size();i++) {
-                productImageItem = new ProductImageItem();
-                productImageItem.setImage(mResources.get(i));
-                mImagearray.add(productImageItem);
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return mResources.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == ((LinearLayout) object);
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, final int position) {
-            final View itemView = LayoutInflater.from(mContext).inflate(R.layout.image_slider_item, container, false);
-
-            final ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
-            if((mResources.get(position)).length()==0){
-                imageView.setImageResource(R.mipmap.ic_launcher);
-            }else {
-                /*Bitmap mask;
-                mask = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
-                loadImage(mResources.get(position), imageView, mask);*/
-                Glide.with(mContext)
-                        .load(mResources.get(position))
-                        .fitCenter()
-                        .into(imageView);
-            }
-
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                }
-            });
-            container.addView(itemView);
-
-            return itemView;
-        }
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout) object);
-        }
-    }
-
-
-    public static class ProductImageItem implements Parcelable {
-        String image;
-
-        public ProductImageItem() {
-        }
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        protected ProductImageItem(Parcel in) {
-            image = in.readString();
-        }
-
-        public final Creator<ProductImageItem> CREATOR = new Creator<ProductImageItem>() {
-            @Override
-            public ProductImageItem createFromParcel(Parcel in) {
-                return new ProductImageItem(in);
-            }
-
-            @Override
-            public ProductImageItem[] newArray(int size) {
-                return new ProductImageItem[size];
-            }
-        };
-
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(image);
-        }
-
 
     }
 

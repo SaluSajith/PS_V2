@@ -37,10 +37,13 @@ import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
+import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
-import com.hit.pretstreet.pretstreet.subcategory.SubCatActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,11 +66,13 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     private static final int ABOUTUS_FRAGMENT = 6;
     private static final int PRIVACY_FRAGMENT = 7;
     private static final int TERMS_FRAGMENT = 8;
-    private static final int HOME_FRAGMENT = 20;
+    private static final int TRENDING_FRAGMENT = 10;
+    private static final int EXHIBITION_FRAGMENT = 11;
 
     @BindView(R.id.tv_location) TextViewPret tv_location;
     NavDrawerAdapter navDrawerAdapter;
     JsonRequestController jsonRequestController;
+    LoginController loginController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @Override
     protected void setUpController() {
         jsonRequestController = new JsonRequestController(this);
+        loginController = new LoginController(null, this);
     }
 
     private void init() {
@@ -101,7 +107,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     private void getHomePage(){
-        JSONObject resultJson = LoginController.getHomePageJson();
+        JSONObject resultJson = LoginController.getHomePageJson(Constant.HOMEPAGE);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.HOMEPAGE_URL);
     }
@@ -220,37 +226,50 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             case "nav_account":
                 selectedFragment = ACCOUNT_FRAGMENT;
                 Intent intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_following":
                 selectedFragment = FOLLOWING_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_addstore":
                 selectedFragment = ADDSTORE_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_about":
                 selectedFragment = ABOUT_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_contact":
                 selectedFragment = CONTACTUS_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "storedetails":
-                intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
+                intent = new Intent(HomeActivity.this, MultistoreActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
                 startActivity(intent);
                 break;
+            /*case "storedetails":
+                selectedFragment = TRENDING_FRAGMENT;
+                intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("fragment", selectedFragment);
+                startActivity(intent);
+                break;*/
             default:
                 break;
         }
@@ -323,16 +342,44 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @Override
     public void onTrapeClick(HomeCatContentData catContentData, String title) {
         displayLogMessage("", catContentData.getHomeSubCategoryArrayList().size()+"");
-        if(catContentData.getHomeSubCategoryArrayList().size()>0) {
-            //displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
-            Intent intent = new Intent(this, SubCatActivity.class);
-            intent.putExtra("mHomeCatItems", catContentData);
-            intent.putExtra("mTitle", title);
-            startActivity(intent);
+        String pageid = catContentData.getPageTypeId();
+        switch (pageid){
+            case Constant.SUBCATPAGE:
+                //displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
+                Intent intent = new Intent(this, SubCatActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("mHomeCatItems", catContentData);
+                intent.putExtra("mTitle", title);
+                startActivity(intent);
+                break;
+            case Constant.STORELISTINGPAGE:
+                intent = new Intent(getApplicationContext(), StoreListingActivity.class);
+                intent.putExtra("contentData", catContentData);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("mTitle", title);
+                startActivity(intent);
+                break;
+            case Constant.TRENDINGPAGE:
+                selectedFragment = TRENDING_FRAGMENT;
+                intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("fragment", selectedFragment);
+                startActivity(intent);
+                break;
+            case Constant.EXHIBITIONPAGE:
+                selectedFragment = EXHIBITION_FRAGMENT;
+                intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("fragment", selectedFragment);
+                startActivity(intent);
+                break;
+            case Constant.MULTISTOREPAGE:
+                intent = new Intent(HomeActivity.this, MultistoreActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                startActivity(intent);
+                break;
+            default: break;
         }
-        else{
-            displaySnackBar("move to shoplist");
-            //TODO shoplist
-        }
+
     }
 }
