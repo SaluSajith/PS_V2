@@ -54,14 +54,8 @@ public class SearchController {
                 storeListModel.setPageTypeId(jsonArray.getJSONObject(i).getString("PageTypeId"));
                 storeListModel.setId(jsonArray.getJSONObject(i).getString("Id"));
                 storeListModel.setTitle(jsonArray.getJSONObject(i).getString("Title"));
-                if(jsonArray.getJSONObject(i).getString("FollowingStatus").contains("0"))
-                    storeListModel.setFollowingStatus(false);
-                else
-                    storeListModel.setFollowingStatus(true);
-                if(jsonArray.getJSONObject(i).getString("OpenStatus").contains("0"))
-                    storeListModel.setOpenStatus(false);
-                else
-                    storeListModel.setOpenStatus(true);
+                storeListModel.setFollowingStatus(jsonArray.getJSONObject(i).getInt("FollowingStatus") == 0 ? false : true);
+                storeListModel.setOpenStatus(jsonArray.getJSONObject(i).getInt("OpenStatus") == 0 ? false : true);
                 storeListModel.setFollowingCount(jsonArray.getJSONObject(i).getString("FollowingCount"));
                 storeListModel.setLocation(jsonArray.getJSONObject(i).getString("Location"));
                 storeListModel.setImageSource(jsonArray.getJSONObject(i).getString("ImageSource"));
@@ -84,7 +78,7 @@ public class SearchController {
                 else{
                     storeListModel.setNewflag(false);
                 }
-                storeListModel.setBannerFlag(jsonArray.getJSONObject(i).getString("BannerFlag"));
+                storeListModel.setBannerFlag(jsonArray.getJSONObject(i).getInt("BannerFlag") == 0 ? false : true);
 
                 storeListModels.add(storeListModel);
             }

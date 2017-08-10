@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.storedetails.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
@@ -7,15 +8,23 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.customview.TouchImageView;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by User on 02/08/2017.
@@ -26,35 +35,25 @@ public class SlideshowDialogFragment extends DialogFragment {
     public SlideshowDialogFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment SlideshowDialogFragment.
-     */
+    @BindView(R.id.viewpager) ViewPager viewPager;
+    @BindView(R.id.lbl_count) TextViewPret lbl_count;
+    @BindView(R.id.iv_back) ImageView iv_back;
 
     private String TAG = SlideshowDialogFragment.class.getSimpleName();
     private ArrayList<String> imageModels;
-    private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
-    private TextView lblCount, lblTitle, lblDate;
     private int selectedPosition = 0;
 
     public static SlideshowDialogFragment newInstance() {
         SlideshowDialogFragment fragment = new SlideshowDialogFragment();
-
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_gallery_slideshow, container, false);
-        viewPager = (ViewPager) v.findViewById(R.id.viewpager);
-        lblCount = (TextView) v.findViewById(R.id.lbl_count);
+        ButterKnife.bind(this, v);
 
         imageModels = getArguments().getStringArrayList(Constant.PARCEL_KEY);
 
@@ -95,8 +94,13 @@ public class SlideshowDialogFragment extends DialogFragment {
         }
     };
 
+    @OnClick(R.id.iv_back)
+    public void onBackpressed() {
+        getActivity().onBackPressed();
+    }
+
     private void displayMetaInfo(int position) {
-        lblCount.setText((position + 1) + " of " + imageModels.size());
+        lbl_count.setText((position + 1) + " of " + imageModels.size());
 
 //        Image image = images.get(position);
 //        lblTitle.setText(image.getName());

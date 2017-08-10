@@ -67,8 +67,9 @@
                 app:nbMaxTextLength="2"
                 app:nbTextColor="@color/white"
                 app:nbTextSize="@dimen/textsize_small"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/iv_notification"
+                android:layout_alignEnd="@+id/iv_notification" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

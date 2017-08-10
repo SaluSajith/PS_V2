@@ -102,7 +102,6 @@
                 android:layout_gravity="center">
 
                 <ImageView
-                    android:id="@+id/iv_profile"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
@@ -114,7 +113,6 @@
                     style="@style/textview_normal"
                     android:text="Call"
                     android:lines="2"
-                    android:id="@+id/tv_folowerscount"
                     app:pret_typeface="@string/font_merriweather_regular"/>
             </LinearLayout>
 
@@ -128,7 +126,6 @@
                 android:layout_gravity="center">
 
                 <ImageView
-                    android:id="@+id/iv_profile"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
@@ -140,7 +137,6 @@
                     style="@style/textview_normal"
                     android:text="Address"
                     android:lines="2"
-                    android:id="@+id/tv_folowerscount"
                     app:pret_typeface="@string/font_merriweather_regular"/>
             </LinearLayout>
 
@@ -166,7 +162,6 @@
                     style="@style/textview_normal"
                     android:text="Get \nDirections"
                     android:lines="2"
-                    android:id="@+id/tv_folowerscount"
                     android:gravity="center"
                     app:pret_typeface="@string/font_merriweather_regular"/>
             </LinearLayout>
@@ -272,7 +267,6 @@
             android:background="@color/yellow_indicator"
             style="@style/textview_normal"
             android:text="  Photos  "
-            android:id="@+id/tv_testimonials_heading"
             android:layout_margin="0dp"
             android:textSize="@dimen/textsize_xlarge"
             app:pret_typeface="@string/font_redvelvet_regular"/>

@@ -27,9 +27,11 @@ import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.ChangePasswordFragment;
+import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -200,10 +202,14 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     }
 
     @Override
-    public void openTrendingArticle(TrendingItems trendingItems) {
-        Intent intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
-        intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-        startActivity(intent);
+    public void openTrendingArticle(TrendingItems trendingItems, String prePage) {
+        if(trendingItems.getBanner()){
+            openNext(trendingItems, prePage);
+        }else {
+            Intent intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
+            intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+            startActivity(intent);
+        }
     }
 
     public void openExhibitionDetails(TrendingItems trendingItems){
@@ -211,6 +217,56 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         intent.putExtra(Constant.PARCEL_KEY, trendingItems);
         intent.putExtra(Constant.PRE_PAGE_KEY, Constant.EXHIBITIONPAGE);
         startActivity(intent);
+    }
+
+    private void openNext(TrendingItems trendingItems, String prePage){
+        String pageid = trendingItems.getPagetypeid();
+        Intent intent;
+        switch (pageid){
+            /*case Constant.SUBCATPAGE:
+                //displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
+                Intent intent = new Intent(this, SubCatActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
+                intent.putExtra("mHomeCatItems", catContentData);
+                intent.putExtra("mTitle", title);
+                startActivity(intent);
+                break;
+            case Constant.STORELISTINGPAGE:
+                intent = new Intent(getApplicationContext(), StoreListingActivity.class);
+                intent.putExtra("contentData", catContentData);
+                intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
+                intent.putExtra("mTitle", title);
+                startActivity(intent);
+                break;
+            case Constant.TRENDINGPAGE:
+                selectedFragment = TRENDING_FRAGMENT;
+                intent = new Intent(HomeInnerActivity.this, HomeInnerActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
+                intent.putExtra("fragment", selectedFragment);
+                startActivity(intent);
+                break;
+            case Constant.EXHIBITIONPAGE:
+                selectedFragment = EXHIBITION_FRAGMENT;
+                intent = new Intent(HomeInnerActivity.this, HomeInnerActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
+                intent.putExtra("fragment", selectedFragment);
+                startActivity(intent);
+                break;*/
+            case Constant.MULTISTOREPAGE:
+                intent = new Intent(HomeInnerActivity.this, MultistoreActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
+                startActivity(intent);
+                break;
+            case Constant.STOREDETAILSPAGE:
+                StoreListModel storeListModel =  new StoreListModel();
+                storeListModel.setId(trendingItems.getId());
+                intent = new Intent(HomeInnerActivity.this, StoreDetailsActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(Constant.PARCEL_KEY, storeListModel);
+                startActivity(intent);
+                break;
+            default: break;
+        }
     }
 
 }

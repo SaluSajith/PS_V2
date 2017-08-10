@@ -168,7 +168,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
         tv_storename.setText(exhibitionDetailsModel.getStoreName());
         tv_location.setText(exhibitionDetailsModel.getAreaCity());
-        tv_openstatus.setText(exhibitionDetailsModel.getOpenStatus() == true ? "Closed" : "Open now");
+        tv_openstatus.setText(exhibitionDetailsModel.getOpenStatus() == false ? "Closed" : "Open now");
         tv_about.setText(exhibitionDetailsModel.getAbout());
         tv_time.setText(" - "+exhibitionDetailsModel.getTimingToday());
         String sourceString = "<b>" + "Product: " + "</b> " + exhibitionDetailsModel.getProducts();

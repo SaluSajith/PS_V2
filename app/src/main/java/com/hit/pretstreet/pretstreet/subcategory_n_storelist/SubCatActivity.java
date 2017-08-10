@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -38,7 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SubCatActivity extends AbstractBaseAppCompatActivity implements
-        ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface, SubCatTrapeClick {
+        ApiListenerInterface, ButtonClickCallback, SubCatTrapeClick {
 
     private static final int SUBCAT_FRAGMENT = 0;
 
@@ -47,6 +48,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
     @BindView(R.id.tv_location) TextViewPret tv_location;
     @BindView(R.id.ll_header) LinearLayout ll_header;
+    @BindView(R.id.hs_categories) HorizontalScrollView hs_categories;
 
     JsonRequestController jsonRequestController;
 
@@ -75,6 +77,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
             }
         });
         ll_header.bringToFront();
+        hs_categories.setVisibility(View.GONE);
 
         String title = getIntent().getStringExtra("mTitle");
         tv_cat_name.setText(title);
@@ -132,23 +135,6 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     }
 
     @Override
-    public void validateCallback(EdittextPret editText, String message, int type) {
-
-    }
-
-    @Override
-    public void validationSuccess(String phonenumber) {
-        JSONObject resultJson = LoginController.getNormalLoginDetails(null);
-        //TODO :  api call
-        this.showProgressDialog(getResources().getString(R.string.loading));
-    }
-
-    @Override
-    public void validationSuccess(LoginSession loginSession) {
-
-    }
-
-    @Override
     public void onTrapeClick(HomeCatItems homeSubCategory) {
 
     }
@@ -159,6 +145,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         intent.putExtra("contentData", homeCatContentData);
         intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SUBCATPAGE);
         intent.putExtra("mTitle", title);
+        intent.putExtra("mSubTitle", tv_cat_name.getText().toString());
         startActivity(intent);
     }
 }

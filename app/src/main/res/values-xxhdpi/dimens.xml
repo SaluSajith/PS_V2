@@ -60,7 +60,6 @@
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>
-    <dimen name="rotation_layout1">@integer/rotation1</dimen>
     <dimen name="content_overlapmargin">-50dp</dimen>
     <dimen name="content_overlapmargin_activity">-40dp</dimen>
 

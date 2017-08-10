@@ -1,6 +1,7 @@
 package com.hit.pretstreet.pretstreet.navigation.controllers;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
@@ -93,8 +94,8 @@ public class HomeFragmentController {
                 item.setLogoImage(trendingContent.getString("LogoImage"));
                 item.setTitle(trendingContent.getString("Title"));
                 item.setArticle(trendingContent.getString("ArticleShortDescription"));
-                item.setLike(trendingContent.getInt("CustomerLikeStatus") == 1 ? false : true);
-                item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? false : true);
+                item.setLike(trendingContent.getInt("CustomerLikeStatus") == 0 ? false : true);
+                item.setBanner(trendingContent.getInt("BannerFlag") == 0 ? false : true);
                 item.setStoreName(trendingContent.getString("Storename"));
 
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
@@ -148,8 +149,10 @@ public class HomeFragmentController {
                 item.setLogoImage(trendingContent.getString("LogoImage"));
                 item.setTitle(trendingContent.getString("Title"));
                 item.setArticle(trendingContent.getString("ArticleShortDescription"));
-                item.setLike(trendingContent.getInt("CustomerLikeStatus") == 1 ? false : true);
-                item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? false : true);
+                item.setLike(trendingContent.getInt("CustomerLikeStatus") == 1 ? true : false);
+                item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? true : false);
+                Log.e("Exception con", item.getBanner()+" ");
+                Log.e("Exception con like", item.getLike()+" ");
                 item.setStoreName(trendingContent.getString("Storename"));
 
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");

@@ -76,7 +76,7 @@ public class DetailsPageController {
             storeDetailsModel.setProducts(jsonObject.getString("Products"));
             storeDetailsModel.setImageSource(jsonObject.getString("ImageSource"));
             storeDetailsModel.setTimingToday(jsonObject.getString("TimingToday"));
-            storeDetailsModel.setOpenStatus(jsonObject.getInt("OpenStatus") == 0 ? true : false);
+            storeDetailsModel.setOpenStatus(jsonObject.getInt("OpenStatus") == 0 ? false : true);
 
             JSONArray jsonArray = jsonObject.getJSONArray("Timings");
             ArrayList listArray = new ArrayList();
@@ -146,7 +146,7 @@ public class DetailsPageController {
         boolean like = false;
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
-            like = (jsonObject.getInt("CustomerLikeStatus") == 0 ? true : false);
+            like = (jsonObject.getInt("CustomerLikeStatus") == 0 ? false : true);
 
         }catch (JSONException e1) {
             e1.printStackTrace();

@@ -97,8 +97,8 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
             switch (url){
                 case Constant.TRENDINGARTICLE_URL:
                     txt_name.setText(DetailsPageController.getTitle(response));
-                    ib_like.setTag(DetailsPageController.getLikeStatus(response) == true ? R.drawable.grey_heart : R.drawable.red_heart);
-                    ib_like.setImageResource(DetailsPageController.getLikeStatus(response) == true ? R.drawable.grey_heart : R.drawable.red_heart);
+                    ib_like.setTag(DetailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
+                    ib_like.setImageResource(DetailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
                     ArrayList<TrendingItems> trendingArticle = DetailsPageController.getTrendingArticle(response);
                     setupArticle(trendingArticle);
                     break;

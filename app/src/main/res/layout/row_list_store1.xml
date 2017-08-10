@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/img_store_photo"
         android:layout_width="140dp"
-        android:layout_height="120dp"
+        android:layout_height="130dp"
         android:layout_alignParentRight="true"
         android:scaleType="matrix"
         android:adjustViewBounds="true" />
@@ -26,10 +26,11 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="4.5"
             android:layout_margin="@dimen/padding_small"
             android:orientation="vertical"
+            android:layout_gravity="center"
             android:id="@+id/ll_sale_arrival">
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                 android:layout_width="wrap_content"
@@ -49,7 +50,7 @@
                     android:id="@+id/img_sale"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:background="@drawable/sale"
                     android:layout_marginTop="@dimen/padding_small"/>
 
@@ -57,8 +58,9 @@
                     android:id="@+id/img_offer"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:background="@drawable/offer"
+                    android:layout_marginLeft="@dimen/padding_small"
                     android:layout_marginTop="@dimen/padding_small"/>
                 <ImageButton
                     android:id="@+id/img_newarrival"
@@ -66,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:visibility="visible"
                     android:background="@drawable/new_arrival"
+                    android:layout_marginLeft="@dimen/padding_small"
                     android:layout_marginTop="@dimen/padding_small"/>
 
             </LinearLayout>
@@ -115,14 +118,14 @@
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                         android:id="@+id/txt_folleowercount"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="46"
                         android:gravity="center_horizontal|bottom"
                         app:pret_typeface="@string/font_merriweather_light"/>
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight=".6"
                         android:text="followers"
                         android:textSize="6dp"
@@ -144,18 +147,19 @@
                     android:layout_weight="1"
                     android:text="Close"
                     style="@style/textview_small"
+                    android:padding="0dp"
                     app:pret_typeface="@string/font_merriweather_light"/>
             </LinearLayout>
         </LinearLayout>
 
-            <ImageView
-                android:id="@+id/line1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/line_up"/>
+        <ImageView
+            android:id="@+id/line1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/line_up"/>
         <ImageView
             android:layout_width="140dp"
-            android:layout_height="120dp"
+            android:layout_height="130dp"
             android:scaleType="centerCrop"
             android:layout_marginLeft="-20dp"
             android:visibility="visible"
@@ -180,4 +184,11 @@
             android:layout_marginBottom="15dp"/>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_banner"
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:scaleType="matrix"
+        android:adjustViewBounds="true" />
 </RelativeLayout>

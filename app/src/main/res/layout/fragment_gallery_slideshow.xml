@@ -2,23 +2,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.hit.pretstreet.pretstreet.fragment.SlideshowDialogFragment">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <TextView
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
         android:id="@+id/lbl_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
-        android:layout_marginTop="20dp"
-        android:background="#77000000"
+        android:layout_marginTop="@dimen/padding_xxlarge"
+        android:layout_marginRight="@dimen/padding_large"
         android:padding="5dp"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textColor="@color/yellow_indicator"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="@dimen/padding_huge"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:scaleType="centerCrop"
+        android:id="@+id/iv_back"/>
 
 </FrameLayout>

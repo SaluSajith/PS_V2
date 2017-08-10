@@ -13,6 +13,6 @@ import java.util.ArrayList;
 public interface TrendingHolderInvoke {
     void shareUrl(String text);
     void likeInvoke(int trendingId);
-    void openTrendingArticle(TrendingItems trendingItems);
+    void openTrendingArticle(TrendingItems trendingItems, String prePage);
     void loadStoreDetails(int position, StoreListModel storeListModel);
 }

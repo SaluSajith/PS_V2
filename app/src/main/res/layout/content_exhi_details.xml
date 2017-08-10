@@ -89,7 +89,6 @@
                     style="@style/textview_normal"
                     android:text="Call"
                     android:lines="2"
-                    android:id="@+id/tv_folowerscount"
                     app:pret_typeface="@string/font_merriweather_regular"/>
             </LinearLayout>
 
@@ -103,7 +102,6 @@
                 android:layout_gravity="center">
 
                 <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
-                    android:id="@+id/iv_profile"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
@@ -115,7 +113,6 @@
                     style="@style/textview_normal"
                     android:text="Address"
                     android:lines="2"
-                    android:id="@+id/tv_folowerscount"
                     app:pret_typeface="@string/font_merriweather_regular"/>
             </LinearLayout>
 
@@ -129,7 +126,6 @@
                 android:layout_gravity="center">
 
                 <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
-                    android:id="@+id/iv_profile"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
@@ -141,7 +137,6 @@
                     style="@style/textview_normal"
                     android:text="Get \nDirections"
                     android:lines="2"
-                    android:id="@+id/tv_folowerscount"
                     android:gravity="center"
                     app:pret_typeface="@string/font_merriweather_regular"/>
             </LinearLayout>

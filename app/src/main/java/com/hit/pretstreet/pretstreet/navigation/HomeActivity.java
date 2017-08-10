@@ -44,6 +44,7 @@ import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterf
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,13 +98,10 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
         String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
-       /* if (SavedMAinCaTList.length() > 1) {
+        if (SavedMAinCaTList.length() > 1)
             changeFragment(new HomeFragment(), false);
-        }
-        else {*/
-        getHomePage();
-        // }
-
+        else
+            getHomePage();
     }
 
     private void getHomePage(){
@@ -375,6 +373,13 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 break;
             case Constant.MULTISTOREPAGE:
                 intent = new Intent(HomeActivity.this, MultistoreActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                startActivity(intent);
+                break;
+            case Constant.STOREDETAILSPAGE:
+                StoreListModel storeListModel =  new StoreListModel();
+                storeListModel.setId(catContentData.getMainCatId());
+                intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
                 startActivity(intent);
                 break;

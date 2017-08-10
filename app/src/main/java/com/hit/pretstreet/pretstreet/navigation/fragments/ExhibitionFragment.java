@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  * Created by User on 04/08/2017.
  */
 
-public class ExhibitionFragment extends AbstractBaseFragment<WelcomeActivity>
+public class ExhibitionFragment extends AbstractBaseFragment<HomeInnerActivity>
         implements TrendingCallback, ZoomedViewListener {
 
     @BindView(R.id.rv_trending)

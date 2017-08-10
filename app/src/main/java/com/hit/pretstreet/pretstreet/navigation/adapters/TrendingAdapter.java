@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,7 +25,12 @@ import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.navigation.fragments.ExhibitionFragment;
+import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
+import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
@@ -47,11 +53,13 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
     ArticlePagerAdapter mAdapter;
     private int mLastPosition;
     TrendingHolderInvoke trendingHolderInvoke;
+    private ZoomedViewListener zoomedViewListener;
 
-    public TrendingAdapter(Context context, ArrayList<TrendingItems> list) {
-        this.context = context;
+    public TrendingAdapter(Activity activity, TrendingFragment context, ArrayList<TrendingItems> list) {
+        this.context = activity;
         this.list = list;
-        this.trendingHolderInvoke = (TrendingHolderInvoke)context;
+        this.zoomedViewListener = (ZoomedViewListener) context;
+        this.trendingHolderInvoke = (TrendingHolderInvoke)activity;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -67,22 +75,33 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         TrendingItems trendingItems = list.get(position);
-        System.out.println("hksbgvkd"+trendingItems.getLike());
         holder.txt_date.setText(trendingItems.getArticledate());
         holder.txt_title.setText(trendingItems.getTitle());
         holder.txt_description.setText(trendingItems.getArticle());
 
-        if(trendingItems.getImagearray().size()==0){
+        if(trendingItems.getBanner()){
             holder.iv_banner.setVisibility(View.VISIBLE);
-            holder.iv_banner.setImageResource(R.mipmap.ic_launcher);
+            holder.article_images.setVisibility(View.GONE);
+            Glide.with(context)
+                    .load(trendingItems.getImagearray().get(0))
+                    .fitCenter()
+                    .into(holder.iv_banner);
         }
         else {
-            holder.iv_banner.setVisibility(View.INVISIBLE);
-            mAdapter = new ArticlePagerAdapter(context, trendingItems.getImagearray());
-            holder.article_images.setAdapter(mAdapter);
-            holder.article_images.setCurrentItem(0);
-            if(trendingItems.getImagearray().size()>1){
-                setUiPageViewController(holder, position);
+            switch (trendingItems.getImagearray().size()) {
+                case 0:
+                    holder.iv_banner.setVisibility(View.VISIBLE);
+                    holder.iv_banner.setImageResource(R.mipmap.ic_launcher);
+                    break;
+                default:
+                    holder.iv_banner.setVisibility(View.GONE);
+                    mAdapter = new ArticlePagerAdapter(context, trendingItems.getImagearray());
+                    holder.article_images.setAdapter(mAdapter);
+                    holder.article_images.setCurrentItem(0);
+                    if (trendingItems.getImagearray().size() > 1) {
+                        setUiPageViewController(holder, position);
+                    }
+                    break;
             }
         }
 
@@ -90,14 +109,13 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         SpannableString content = new SpannableString(udata);
         content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
         holder.txt_shopname.setText(content);
-        System.out.println("hks  bgvkd"+trendingItems.getLogoImage());
 
         //if(!trendingItems.getStoreLink().equals("0")){
-            Glide.with(context)
-                    .load(trendingItems.getLogoImage())
-                    .centerCrop()
-                    .placeholder(R.mipmap.ic_launcher)
-                    .into(holder.iv_profile);
+        Glide.with(context)
+                .load(trendingItems.getLogoImage())
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher)
+                .into(holder.iv_profile);
         /*//}
         //else{
             //holder.iv_profile.setImageResource(R.drawable.logo1);
@@ -106,8 +124,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         //}*/
 
         holder.iv_like.setImageResource(trendingItems.getLike() == true ?
-                R.drawable.grey_heart : R.drawable.red_heart);
-        holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.VISIBLE : View.GONE);
+                R.drawable.red_heart : R.drawable.grey_heart);
+        holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
     }
 
 
@@ -138,7 +156,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
     public int getItemViewType(int position) {
         return R.layout.row_trending;
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener, ViewPager.OnPageChangeListener {
@@ -193,36 +210,34 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
             TrendingItems trendingItems = list.get(getAdapterPosition());
             switch (viewId) {
                 case R.id.iv_like:
-                    /*if (button01pos == 0) {
-                        img_like.setImageResource(R.drawable.red_heart);
-                        button01pos = 1;
-                    } else if (button01pos == 1) {
-                        img_like.setImageResource(R.drawable.grey_heart);
-                        button01pos = 0;
-                    }*/
-                    //sendButtonStatus(list.get(getAdapterPosition()).getId());
-
                     trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()));
                     break;
                 case R.id.iv_share:
                     trendingHolderInvoke.shareUrl("null");
-                    //shareTextUrl();
                     break;
                 case R.id.txt_shopname:
-                    //if(!list.get(getAdapterPosition()).getStoreLink().equals("0")) {
-                        StoreListModel storeListModel = new StoreListModel();
-                        storeListModel.setId(trendingItems.getId());
-                        storeListModel.setTitle(trendingItems.getTitle());
-                        trendingHolderInvoke.loadStoreDetails(getAdapterPosition(),
-                                storeListModel);
-                    //}
-                        //openStoreDetails();
+                    StoreListModel storeListModel = new StoreListModel();
+                    storeListModel.setId(trendingItems.getId());
+                    storeListModel.setTitle(trendingItems.getTitle());
+                    trendingHolderInvoke.loadStoreDetails(getAdapterPosition(),
+                            storeListModel);
                     break;
                 case R.id.txt_description:
-                    trendingHolderInvoke.openTrendingArticle(trendingItems);
+                    trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
                     break;
                 case R.id.txt_title:
-                    trendingHolderInvoke.openTrendingArticle(trendingItems);
+                    trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
+                    break;
+                case R.id.iv_banner:
+                    if(trendingItems.getBanner()){
+                        trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
+                    }else {
+                        ProductImageItem productImageItem = new ProductImageItem();
+                        ArrayList<String> mImagearray = new ArrayList<>();
+                        //productImageItem.setImage(list.get(getAdapterPosition()).getImagearray().get(0));
+                        mImagearray.add(trendingItems.getImagearray().get(0));
+                        zoomedViewListener.onClicked(0, mImagearray);
+                    }
                     break;
                 default:
                     break;

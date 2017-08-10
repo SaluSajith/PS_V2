@@ -9,14 +9,14 @@ import java.io.Serializable;
 public class StoreListModel implements Serializable {
 
     String PageType, PageTypeId, Id, Title,
-            FollowingCount, Location, ImageSource, BannerFlag;
-    boolean Saleflag, Offerflag, Newflag, FollowingStatus, OpenStatus;
+            FollowingCount, Location, ImageSource;
+    boolean Saleflag, Offerflag, Newflag, FollowingStatus, OpenStatus, BannerFlag;
 
-    public String getBannerFlag() {
+    public Boolean getBannerFlag() {
         return BannerFlag;
     }
 
-    public void setBannerFlag(String bannerFlag) {
+    public void setBannerFlag(Boolean bannerFlag) {
         BannerFlag = bannerFlag;
     }
 

@@ -22,17 +22,19 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/iv_banner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"/>
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager_article"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/pager_height"
                 android:fitsSystemWindows="true"
                 tools:listitem="@layout/image_slider_item" />
+            <ImageView
+                android:id="@+id/iv_banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pager_height"
+                android:visibility="visible"
+                android:scaleType="center"
+                android:clickable="true"/>
         </FrameLayout>
 
         <LinearLayout

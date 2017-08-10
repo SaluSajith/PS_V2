@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/img_store_photo"
         android:layout_width="140dp"
-        android:layout_height="120dp"
+        android:layout_height="130dp"
         android:layout_alignParentRight="true"
         android:scaleType="matrix"
         android:adjustViewBounds="true" />
@@ -26,11 +26,12 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="4.5"
-            android:layout_margin="@dimen/padding_small"
             android:orientation="vertical"
-            android:id="@+id/ll_sale_arrival">
+            android:layout_gravity="center"
+            android:id="@+id/ll_sale_arrival"
+            android:layout_margin="@dimen/padding_small">
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,14 +118,14 @@
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                         android:id="@+id/txt_folleowercount"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="46"
                         android:gravity="center_horizontal|bottom"
                         app:pret_typeface="@string/font_merriweather_light"/>
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight=".6"
                         android:text="followers"
                         android:textSize="6dp"
@@ -146,6 +147,7 @@
                     android:layout_weight="1"
                     android:text="Close"
                     style="@style/textview_small"
+                    android:padding="0dp"
                     app:pret_typeface="@string/font_merriweather_light"/>
             </LinearLayout>
         </LinearLayout>
@@ -157,7 +159,7 @@
             android:background="@drawable/line_down"/>
         <ImageView
             android:layout_width="140dp"
-            android:layout_height="120dp"
+            android:layout_height="130dp"
             android:scaleType="centerCrop"
             android:layout_marginLeft="-20dp"
             android:visibility="visible"
@@ -180,6 +182,12 @@
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"/>
-
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_banner"
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:scaleType="matrix"
+        android:adjustViewBounds="true" />
 </RelativeLayout>

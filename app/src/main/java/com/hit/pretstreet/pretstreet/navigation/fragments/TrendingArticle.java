@@ -11,6 +11,7 @@ import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.adapters.TrendingAdapter;
+import com.hit.pretstreet.pretstreet.navigation.adapters.TrendingArticleAdapter;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
  * Created by User on 04/08/2017.
  */
 
-public class TrendingArticle extends AbstractBaseFragment<WelcomeActivity> implements TrendingCallback {
+public class TrendingArticle extends AbstractBaseFragment<HomeInnerActivity> implements TrendingCallback {
 
     @BindView(R.id.rv_trending)
     RecyclerView rv_trending;
@@ -41,14 +42,13 @@ public class TrendingArticle extends AbstractBaseFragment<WelcomeActivity> imple
         Utility.setListLayoutManager(rv_trending, getActivity());
         /*rv_trending.addItemDecoration(new DividerDecoration(getActivity(),
                 ContextCompat.getColor(getActivity(), R.color.trending_grey), 5.0f));*/
-
         ((HomeInnerActivity)getActivity()).getTrendinglist("");
 
     }
 
     @Override
     public void bindData(ArrayList<TrendingItems> trendingItems) {
-        TrendingAdapter adapter = new TrendingAdapter(getActivity(), trendingItems);
+        TrendingArticleAdapter adapter = new TrendingArticleAdapter(getActivity(), trendingItems);
         rv_trending.setAdapter(adapter);
     }
 }

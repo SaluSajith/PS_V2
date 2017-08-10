@@ -201,7 +201,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupDialog.show();
 
-        ButtonPret img_close = (ButtonPret) view.findViewById(R.id.img_close);
+        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

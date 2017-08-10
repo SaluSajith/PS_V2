@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.fragments.ExhibitionFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
@@ -75,8 +76,9 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                 .fitCenter()
                 //.placeholder(R.mipmap.ic_launcher)
                 .into(holder.iv_banner);
-        holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.grey_heart : R.drawable.red_heart);
-        holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.VISIBLE : View.GONE);
+        holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
+        holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
+        Log.e("Exception", trendingItems.getBanner()+" "+position+" ");
     }
 
     @Override
@@ -140,20 +142,25 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         @Override
         public void onClick(View view) {
             int viewId = view.getId();
+            TrendingItems trendingItems = list.get(getAdapterPosition());
             switch (viewId) {
                 case R.id.iv_like:
-                    trendingHolderInvoke.likeInvoke(Integer.parseInt(list.get(getAdapterPosition()).getId()));
+                    trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()));
                     break;
                 case R.id.iv_share:
                     trendingHolderInvoke.shareUrl("null");
                     //shareTextUrl();
                     break;
                 case R.id.iv_banner:
-                    ProductImageItem productImageItem = new ProductImageItem();
-                    ArrayList<String > mImagearray = new ArrayList<>();
-                    //productImageItem.setImage(list.get(getAdapterPosition()).getImagearray().get(0));
-                    mImagearray.add(list.get(getAdapterPosition()).getImagearray().get(0));
-                    zoomedViewListener.onClicked(0, mImagearray);
+                    if(trendingItems.getBanner()){
+                        trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.EXHIBITIONPAGE);
+                    }else {
+                        ProductImageItem productImageItem = new ProductImageItem();
+                        ArrayList<String> mImagearray = new ArrayList<>();
+                        //productImageItem.setImage(list.get(getAdapterPosition()).getImagearray().get(0));
+                        mImagearray.add(trendingItems.getImagearray().get(0));
+                        zoomedViewListener.onClicked(0, mImagearray);
+                    }
                     break;
                 default:
                     break;
