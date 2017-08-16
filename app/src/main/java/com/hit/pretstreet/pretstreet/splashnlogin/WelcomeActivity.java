@@ -241,7 +241,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             String url = response.getString("URL");
             strsuccess = response.getString("Status");
             if (strsuccess.equals("1")) {
-                displaySnackBar(response.getString("Message"));
+                displaySnackBar(response.getString("CustomerMessage"));
                 switch (url){
                     case Constant.REGISTRATION_OTP_URL:
                         otpValue = response.getJSONObject("Data").getString("OTP");
@@ -292,6 +292,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             PreferenceServices.instance().saveUserId(object.getString("UserId"));
             PreferenceServices.instance().saveUserName(object.getString("UserFirstName")+" "+object.getString("UserLastName"));
             PreferenceServices.instance().saveLoginType(loginType);
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -303,7 +304,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     }
                     finish();
                 }
-            }, 2000);
+            }, 1500);
 
         } catch (JSONException e) {
             e.printStackTrace();

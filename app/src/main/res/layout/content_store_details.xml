@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/rl_details"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +24,6 @@
             android:maxLines="3"
             android:gravity="center"
             android:inputType="textMultiLine|textCapCharacters"
-            android:text="TANISHQ Showroom Gurgav Area"
             app:pret_typeface="@string/font_merriweather_regular"
             android:id="@+id/tv_storename"
             android:padding="@dimen/padding_standard"/>
@@ -31,7 +32,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/textview_normal"
-            android:text="andheri (west), mumbai"
             android:id="@+id/tv_location"
             app:pret_typeface="@string/font_merriweather_light"/>
 
@@ -45,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/textview_normal"
-                android:text="Open now"
                 android:layout_marginRight="0dp"
                 android:textColor="@color/green"
                 android:id="@+id/tv_openstatus"
@@ -57,7 +56,6 @@
                 style="@style/textview_normal"
                 android:layout_marginLeft="0dp"
                 android:id="@+id/tv_time"
-                android:text=" - 11 AM to 9.30 PM"
                 app:pret_typeface="@string/font_merriweather_regular"/>
         </LinearLayout>
 
@@ -65,7 +63,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/textview_normal"
-            android:text="254 followers"
             android:id="@+id/tv_folowerscount"
             android:layout_gravity="center"
             app:pret_typeface="@string/font_merriweather_regular"/>
@@ -186,7 +183,7 @@
             android:orientation="horizontal">
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                android:id="@+id/textViewPret"
+                android:id="@+id/tv_about_heading"
                 style="@style/textview_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -200,10 +197,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/textview_normal"
-                android:text="254 followers"
                 android:id="@+id/tv_about"
                 android:gravity="left"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="0dp"
                 android:layout_marginBottom="@dimen/padding_large"
                 android:textColor="@color/yellow_indicator"
                 app:pret_typeface="@string/font_merriweather_regular"/>
@@ -213,7 +209,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/textview_normal"
-            android:text="254 followers"
             android:id="@+id/tv_product"
             android:gravity="left"
             android:layout_marginBottom="@dimen/padding_large"
@@ -239,14 +234,14 @@
             android:paddingLeft="@dimen/padding_xhuge"
             android:paddingRight="@dimen/padding_xhuge"
             android:paddingStart="@dimen/padding_xhuge" />
-
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/textview_normal"
             android:text="Opening Hours:"
             android:layout_marginBottom="@dimen/padding_standard"
-            android:padding="@dimen/padding_large"
+            android:paddingTop="@dimen/padding_large"
+            android:paddingBottom="@dimen/padding_large"
             android:gravity="left"
             android:textSize="@dimen/textsize_large"
             app:pret_typeface="@string/font_merriweather_bold"/>
@@ -256,7 +251,6 @@
             android:layout_height="wrap_content"
             style="@style/textview_small"
             android:id="@+id/tv_openinghrs"
-            android:padding="@dimen/padding_large"
             android:gravity="left"
             android:layout_marginBottom="@dimen/padding_standard"
             app:pret_typeface="@string/font_merriweather_light"/>
@@ -299,12 +293,14 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/padding_huge"
         android:layout_marginRight="20dp"
+        android:visibility="invisible"
         app:srcCompat="@drawable/new_stamp" />
     <ImageView
         android:id="@+id/iv_offer"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="45dp"
+        android:visibility="invisible"
         app:srcCompat="@drawable/offer_stamp"
         android:layout_alignTop="@+id/iv_new"
         android:layout_alignLeft="@+id/iv_new"
@@ -316,6 +312,7 @@
         android:layout_marginRight="24dp"
         app:srcCompat="@drawable/sale_stamp"
         android:layout_marginEnd="24dp"
+        android:visibility="invisible"
         android:layout_marginBottom="16dp"
         android:layout_alignBottom="@+id/iv_offer"
         android:layout_alignRight="@+id/iv_new"

@@ -6,7 +6,7 @@ package com.hit.pretstreet.pretstreet.splashnlogin.models;
 
 public class LoginSession {
 
-    private String regid, mobile, fname, lname, email, gender, social_id, social_type, profile_pic, sessionid;
+    private String regid, mobile, fname, lname, email, gender, social_id, social_type, profile_pic, sessionid, password;
 
     public String getEmail() {
         return email;
@@ -86,5 +86,13 @@ public class LoginSession {
 
     public String getSessionid() {
         return sessionid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

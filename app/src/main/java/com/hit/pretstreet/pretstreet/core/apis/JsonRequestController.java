@@ -41,7 +41,7 @@ public class JsonRequestController {
     }
 
     public void sendRequest(Activity activity, JSONObject jsonObject, final String url){
-        Utility.hide_keyboard(activity);
+        //Utility.hide_keyboard(activity);
 
         Log.d("URL", url + jsonObject+"");
         requestBody = jsonObject.toString();
@@ -57,6 +57,70 @@ public class JsonRequestController {
                                 if (object.getString("Status").equalsIgnoreCase("1"))
                                     listenerInterface.onResponse(object);
                                 else listenerInterface.onError(object.getString("CustomerMessage"));
+                            }
+                            else listenerInterface.onError("Your phone doesn't support this app");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Volley", "Error: " + error.getMessage());
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (error instanceof ServerError) {
+                    message = "Oops! Something went wrong. Please try again !!";         //after some time
+                    //message = "The server could not be found. Please try again after some time!!";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing error! Please try again!!";                       // after some time
+                } else if (error instanceof NoConnectionError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (error instanceof TimeoutError) {
+                    message = "Connection TimeOut! Please check your internet connection.";
+                }
+                listenerInterface.onError(message);
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(Constant.TIMEOUT_LIMIT,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        PretStreet.getInstance().addToRequestQueue(stringRequest, tag_str_obj);
+    }
+
+
+    public void sendRequestGoogle(Activity activity, JSONObject jsonObject, final String url){
+        //Utility.hide_keyboard(activity);
+
+        Log.d("URL", url + jsonObject+"");
+        requestBody = jsonObject.toString();
+        stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                        try {
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                                JSONObject object = new JSONObject(response);
+                                object.put("URL", url);
+                                    listenerInterface.onResponse(object);
                             }
                             else listenerInterface.onError("Your phone doesn't support this app");
                         } catch (JSONException e) {

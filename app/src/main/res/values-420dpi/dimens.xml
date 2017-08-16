@@ -52,7 +52,7 @@
     <dimen name="pager_height">270dp</dimen>
     <dimen name="searchpage_topmargin">60dp</dimen>
     <dimen name="nav_header_height">120dp</dimen>
-    <dimen name="detail_backdrop_height">256dp</dimen>
+    <dimen name="detail_backdrop_height">300dp</dimen>
 
     <dimen name="headeryellow_height">137dp</dimen>
     <dimen name="headeryellow_width">1080dp</dimen>
@@ -63,7 +63,7 @@
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
     <dimen name="content_overlapmargin_activity">-40dp</dimen>
     <dimen name="content_overlapmargin">-40dp</dimen>
-    <dimen name="content_overlapmargin_hometrape">-40dp</dimen>
+    <dimen name="content_overlapmargin_hometrape">-35dp</dimen>
     <dimen name="content_overlapmargin_splash">-40dp</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>
 
@@ -81,5 +81,11 @@
     <dimen name="about_height">670dp</dimen>
 
     <dimen name="header_margin">20dp</dimen>
+    <dimen name="horiscroll_margin">-33dp</dimen>
+
+    <dimen name="storelist_img_height">130dp</dimen>
+    <dimen name="storelist_img_width">140dp</dimen>
+    <dimen name="storelist_banner_height">150dp</dimen>
+    <dimen name="storelist_banner_height_firstrow">160dp</dimen>
 
 </resources>

@@ -27,6 +27,7 @@
         android:id="@+id/tv_name"
         style="@style/textview_title"
         android:textSize="@dimen/padding_xxxlarge"
+        android:text="cxvxvx"
         android:textColor="@color/white"
         android:layout_centerInParent="true"
         android:shadowColor="@color/black"

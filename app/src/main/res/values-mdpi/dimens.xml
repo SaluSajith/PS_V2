@@ -62,6 +62,7 @@
     <dimen name="buttons_layoutheight">220dp</dimen>
     <dimen name="content_overlapmargin">0dp</dimen>
     <dimen name="content_overlapmargin_activity">-40dp</dimen>
+    <dimen name="content_overlapmargin_hometrape">-40dp</dimen>
 
     <!--Inner Pages-->
     <dimen name="addstore_height">400dp</dimen>
@@ -73,4 +74,10 @@
     <dimen name="about_height">500dp</dimen>
 
     <dimen name="header_margin">30dp</dimen>
+    <dimen name="horiscroll_margin">-30dp</dimen>
+
+    <dimen name="storelist_img_height">90dp</dimen>
+    <dimen name="storelist_img_width">100dp</dimen>
+    <dimen name="storelist_banner_height">110dp</dimen>
+    <dimen name="storelist_banner_height_firstrow">140dp</dimen>
 </resources>

@@ -18,6 +18,7 @@ import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -51,10 +52,14 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
         View mRootView;
         int listViewItemType = getItemViewType(viewType);
         if (listViewItemType % 2 == 0) {
-            if(listViewItemType == 0)
-                mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store, parent, false);
-            else
+            if (!context.getClass().getSimpleName().equals(StoreListingActivity.class.getSimpleName()))
                 mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store1, parent, false);
+            else {
+                if (listViewItemType == 0)
+                    mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store, parent, false);
+                else
+                    mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store1, parent, false);
+            }
         } else {
             mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store2, parent, false);
         }
@@ -123,7 +128,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
                     }
                 });
 
-        holder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == false ?"Unfollow" : "Follow");
+        holder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == true ?"Unfollow" : "Follow");
         holder.tv_closeStatus.setText(storeListModel.getOpenStatus() == false ? "Closed" : "Open");
         holder.img_sale.setVisibility(storeListModel.getSaleflag() == false ? View.GONE : View.VISIBLE);
         holder.img_offer.setVisibility(storeListModel.getOfferflag() == false ? View.GONE : View.VISIBLE);
@@ -180,7 +185,11 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
                     textViewPret = (TextViewPret) view;
                     buttonClickCallback.updateFollowStatus(storeListModel.getId());
                     break;
+                case R.id.img_store_photo:
+                    buttonClickCallback.buttonClick(storeListModel);
                 case R.id.iv_banner:
+                    buttonClickCallback.buttonClick(storeListModel);
+                case R.id.txt_storename:
                     buttonClickCallback.buttonClick(storeListModel);
                     break;
                 default: break;
@@ -196,6 +205,6 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
     public static void updateFollowStatus(int status, String storeid) {
         textViewPret.setText(status == 1 ? "Unfollow" : "Follow");
         if(mItems.get(mPosition).getId().equals(storeid))
-            mItems.get(mPosition).setFollowingStatus(status == 0 ? true : false);
+            mItems.get(mPosition).setFollowingStatus(status == 0 ? false : true);
     }
 }

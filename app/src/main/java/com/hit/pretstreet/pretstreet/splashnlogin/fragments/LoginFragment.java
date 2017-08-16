@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
@@ -37,6 +38,7 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
 
     @BindView(R.id.tv_heading)TextViewPret tv_heading;
     @BindView(R.id.edt_email_number)EdittextPret edt_email_number;
+    @BindView(R.id.btn_login)ButtonPret btn_login;
 
     LoginController loginController;
     @Override
@@ -54,6 +56,7 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
 
     @OnClick(R.id.btn_login)
     public void onLoginPressed() {
+        btn_login.setEnabled(false);
         loginController.validateLoginFields(edt_email_number);
     }
 
@@ -87,6 +90,7 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
     }
 
     public void onValidationError(EdittextPret editText, String message) {
+        btn_login.setEnabled(true);
         editText.setError(message);
     }
 }

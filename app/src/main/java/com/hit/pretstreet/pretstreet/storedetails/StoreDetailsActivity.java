@@ -78,14 +78,15 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     @BindView(R.id.tv_book_app) TextViewPret tv_book_app;
     @BindView(R.id.tv_testimonials_heading) TextViewPret tv_testimonials_heading;
 
+    @BindView(R.id.tv_time) TextViewPret tv_time;
     @BindView(R.id.tv_storename) TextViewPret tv_storename;
     @BindView(R.id.tv_location) TextViewPret tv_location;
     @BindView(R.id.tv_openstatus) TextViewPret tv_openstatus;
-    @BindView(R.id.tv_time) TextViewPret tv_time;
     @BindView(R.id.tv_folowerscount) TextViewPret tv_folowerscount;
     @BindView(R.id.tv_openinghrs) TextViewPret tv_openinghrs;
 
     @BindView(R.id.rv_images) RecyclerView rv_images;
+    @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.btn_follow) ButtonPret btn_follow;
 
     @BindView(R.id.iv_sale) ImageView iv_sale;
@@ -127,6 +128,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager
                 (3, LinearLayoutManager.VERTICAL);
         rv_images.setLayoutManager(staggeredGridLayoutManager);
+        rv_images.setNestedScrollingEnabled(false);
 
         StoreListModel storeListModel = (StoreListModel)getIntent()
                 .getSerializableExtra(Constant.PARCEL_KEY);
@@ -180,10 +182,14 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         }
         sourceString = strTiming.toString();
         tv_openinghrs.setText(Html.fromHtml(sourceString));
+        if(storeDetailsModel.getArrayListTesti().size()>0)
         setupTestimonials(storeDetailsModel);
+        else{
+            viewPager.setVisibility(View.GONE);
+            tv_testimonials_heading.setVisibility(View.GONE);
+        }
         setupGallery(storeDetailsModel.getArrayListImages());
     }
-
 
     public void showBookPopup() {
 
@@ -252,8 +258,6 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private void setupTestimonials(StoreDetailsModel storeDetailsModel){
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         CardFragmentPagerAdapter pagerAdapter = new CardFragmentPagerAdapter(getSupportFragmentManager(), dpToPixels(1, this),
                 storeDetailsModel.getArrayListTesti());
         ShadowTransformer fragmentCardShadowTransformer = new ShadowTransformer(viewPager, pagerAdapter);

@@ -7,11 +7,13 @@ import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
@@ -80,7 +82,9 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     int pageCount=0, totalPages, total;
     public static int selectedPosition;
     boolean requestCalled = false;
-    boolean loadmore = true;
+    boolean loadmore = true, first = true;
+    String catTag = "";
+    ArrayList<StoreListModel> storeListModels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +96,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        storeListModels = new ArrayList<>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
@@ -113,11 +118,37 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
         /*Get shoplist details of selected category*/
         createScrollingHeader();
+        refreshListviewOnScrolling();
     }
 
-    private void getShoplist(String mCatid){
+    private void refreshListviewOnScrolling(){
+        nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    if (scrollY > oldScrollY) {
+                        if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                            if(!requestCalled){
+                                requestCalled = true;
+                                first = false;
+                                if(loadmore)
+                                    getShoplist(catTag, false);
+                            }
+                            if(!loadmore)
+                                displaySnackBar("No more stores available!");
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void getShoplist(String mCatid, boolean first){
+        loadmore = true;
         String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
-        JSONObject resultJson = SubCategoryController.getShoplistJson(mCatid, pageCount+"", "0", pageid);
+        JSONObject resultJson = SubCategoryController.getShoplistJson(mCatid, "1", ++pageCount+"", pageid);
+        if(first)
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, STORELISTING_URL);
     }
@@ -135,9 +166,9 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     }
     private void createScrollingHeader(){
 
-        HomeCatContentData catContentData = (HomeCatContentData) getIntent()
-                .getExtras().getSerializable("contentData");
-        final ArrayList<HomeCatItems> homeSubCategories = catContentData.getHomeSubCategoryArrayList();
+        /*HomeCatContentData catContentData = (HomeCatContentData) getIntent()
+                .getExtras().getSerializable("contentData");*/
+        final ArrayList<HomeCatItems> homeSubCategories = (ArrayList<HomeCatItems>) getIntent().getSerializableExtra("contentData");
         int index = 0;
 
         txtname = new TextViewPret[homeSubCategories.size()+1];
@@ -152,11 +183,9 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             HomeCatContentData contentData = homeSubCategories.get(0).getHomeContentData();
             txtname[0].setTag(contentData.getMainCatId());
         } else {
+            txtname[0].setTag(getIntent().getStringExtra("mCatId"));
             txtname[0].performClick();
-            txtname[0].setTag("");
-            ll_scroll.setVisibility(View.GONE);
         }
-
 
         for (HomeCatItems object: homeSubCategories) {
             index++;
@@ -191,8 +220,9 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             //displaySnackBar(response.getString("CustomerMessage"));
             switch (url){
                 case STORELISTING_URL:
-                    ArrayList<StoreListModel> storeListModels = SubCategoryController.getList(response);
-                    setAdapter(storeListModels);
+                    requestCalled = false;
+                    storeListModels.addAll(SubCategoryController.getList(response));
+                    setAdapter();
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
                     JSONObject object = response.getJSONObject("Data");
@@ -201,15 +231,19 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                     break;
                 default: break;
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        this.hideDialog();
     }
 
-    private void setAdapter(ArrayList<StoreListModel> storeListModels){
-        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(StoreListingActivity.this, storeListModels);
-        rv_storelist.setAdapter(storeList_recyclerAdapter);
+    private void setAdapter(){
+        if(first) {
+            storeList_recyclerAdapter = new StoreList_RecyclerAdapter(StoreListingActivity.this, storeListModels);
+            rv_storelist.setAdapter(storeList_recyclerAdapter);
+        }
+        else
+            storeList_recyclerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -220,19 +254,20 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @Override
     public void onResponse(JSONObject response) {
-        this.hideDialog();
         handleResponse(response);
+        //this.hideDialog();
     }
 
     @Override
     public void onError(String error) {
         this.hideDialog();
-        displaySnackBar( error);
+        loadmore = false;
+        requestCalled = false;
+        displaySnackBar(error);
     }
 
     @Override
     public void onClick(View v) {
-        System.out.println("mnbnm");
         for (int i=0;i<txtname.length;i++) {
             txtname[i].setBackgroundColor(ContextCompat.getColor(StoreListingActivity.this, R.color.transparent));
             txtname[i].setTextColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_indicator));
@@ -241,7 +276,10 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         textViewPret.setBackgroundColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_indicator));
         textViewPret.setTextColor(ContextCompat.getColor(StoreListingActivity.this, R.color.black));
 
-        getShoplist((String) textViewPret.getTag());
+        catTag = textViewPret.getTag().toString()+"";
+        pageCount = 0;
+        first = true;
+        getShoplist((String) textViewPret.getTag(), first);
     }
 
     @Override

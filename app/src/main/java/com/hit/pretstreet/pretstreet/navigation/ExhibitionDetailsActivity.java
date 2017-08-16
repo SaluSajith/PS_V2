@@ -75,6 +75,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     @BindView(R.id.tv_product) TextViewPret tv_product;
     @BindView(R.id.tv_about) TextViewPret tv_about;
+    @BindView(R.id.tv_about_heading) TextViewPret tv_about_heading;
     @BindView(R.id.tv_imgsrc) TextViewPret tv_imgsrc;
 
     @BindView(R.id.tv_storename) TextViewPret tv_storename;
@@ -92,6 +93,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     @BindView(R.id.iv_sale) ImageView iv_sale;
     @BindView(R.id.iv_offer) ImageView iv_offer;
     @BindView(R.id.iv_new) ImageView iv_new;
+    @BindView(R.id.ib_like)ImageView ib_like;
 
     @BindView(R.id.ll_call) LinearLayout ll_call;
     @BindView(R.id.ll_address) LinearLayout ll_address;
@@ -136,7 +138,6 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         mStoreId = trendingItems.getId();
         getShopDetails(mStoreId, clicktype, pagekey);
         setVisibility();
-        setupCollapsingHeader(trendingItems.getTitle());
     }
 
     private void setVisibility(){
@@ -148,6 +149,20 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         viewPager.setVisibility(View.GONE);
         tv_testimonials_heading.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
+        tv_about_heading.setText("Desc:");
+        tv_about.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+    }
+
+    @OnClick(R.id.ib_like)
+    public void onLikePressed() {
+        Integer resource = (Integer) ib_like.getTag();
+        if(resource == R.drawable.grey_heart) {
+            ib_like.setImageResource(R.drawable.red_heart);
+            ib_like.setTag(R.drawable.red_heart);
+        } else {
+            ib_like.setImageResource(R.drawable.grey_heart);
+            ib_like.setTag(R.drawable.grey_heart);
+        }
     }
 
     private void getShopDetails(String storeId, String clicktype, String pagekey){
@@ -166,6 +181,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     private void setupDetailsPage(StoreDetailsModel exhibitionDetailsModel){
 
+        setupCollapsingHeader(exhibitionDetailsModel.getStoreName());
         tv_storename.setText(exhibitionDetailsModel.getStoreName());
         tv_location.setText(exhibitionDetailsModel.getAreaCity());
         tv_openstatus.setText(exhibitionDetailsModel.getOpenStatus() == false ? "Closed" : "Open now");
@@ -197,7 +213,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         collapsingToolbar.setTitle(title);
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.transparent)); // transperent color = #00000000
         collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-        loadBackdrop();
+        loadBackdrop("");
     }
 
     private void setupGallery(ArrayList<String> arrayListImages){
@@ -205,7 +221,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         rv_images.setAdapter(storeList_recyclerAdapter);
     }
 
-    private void loadBackdrop() {
+    private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
         Glide.with(this).load(R.drawable.base).centerCrop().into(imageView);
     }
@@ -396,6 +412,8 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             switch (url){
                 case Constant.EXHIBITIONARTICLE_URL:
                     exhibitionDetailsModel = DetailsPageController.getExhibitionData(response);
+                    ib_like.setTag(exhibitionDetailsModel.getFollowingStatus() == false ? R.drawable.grey_heart : R.drawable.red_heart);
+                    ib_like.setImageResource(exhibitionDetailsModel.getFollowingStatus() == false ? R.drawable.grey_heart : R.drawable.red_heart);
                     setupDetailsPage(exhibitionDetailsModel);
                     break;
                 default: break;

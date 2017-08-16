@@ -27,11 +27,11 @@ public class SubCategoryController {
         this.context = context;
     }
 
-    public static JSONObject getShoplistJson(String catId, String offset, String filter, String prepage) {
+    public static JSONObject getShoplistJson(String catId, String filter, String offset, String prepage) {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("CategoryId", catId);
+            jsonBody.put("Id", catId);
             jsonBody.put("Limit", Constant.LIMIT);
             jsonBody.put("Offset", offset);
             jsonBody.put("Filter", filter);
@@ -50,7 +50,6 @@ public class SubCategoryController {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("CategoryId", "");
             jsonBody.put("PreviousPageTypeId", previouspageid);
             jsonBody.put("ClickTypeId", clicktype);
             jsonBody.put("StoreId", storeId);
@@ -74,8 +73,8 @@ public class SubCategoryController {
                 storeListModel.setPageTypeId(jsonArray.getJSONObject(i).getString("PageTypeId"));
                 storeListModel.setId(jsonArray.getJSONObject(i).getString("Id"));
                 storeListModel.setTitle(jsonArray.getJSONObject(i).getString("Title"));
-                storeListModel.setFollowingStatus(jsonArray.getJSONObject(i).getInt("FollowingStatus") == 0 ? false : true);
-                storeListModel.setOpenStatus(jsonArray.getJSONObject(i).getInt("OpenStatus") == 0 ? false : true);
+                storeListModel.setFollowingStatus(jsonArray.getJSONObject(i).getInt("FollowingStatus") == 1 ? false : true);
+                storeListModel.setOpenStatus(jsonArray.getJSONObject(i).getInt("OpenStatus") == 1 ? false : true);
                 storeListModel.setFollowingCount(jsonArray.getJSONObject(i).getString("FollowingCount"));
                 storeListModel.setLocation(jsonArray.getJSONObject(i).getString("Location"));
                 storeListModel.setImageSource(jsonArray.getJSONObject(i).getString("ImageSource"));

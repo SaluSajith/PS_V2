@@ -10,9 +10,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -34,10 +31,6 @@ import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -83,7 +76,6 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
         loadHomePage(SavedMAinCaTList);
     }
 
-
     private void loadHomePage(String SavedMAinCaTList){
 
         if (SavedMAinCaTList.length() > 1) {
@@ -106,7 +98,7 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                 LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 if(i!=0) {
-                    relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin), 0, 0);
+                    relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin_hometrape), 0, 0);
                 }
                 rl_dd.setLayoutParams(relativeParams);
                 rl_dd.requestLayout();
@@ -114,22 +106,39 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                 final HomeCatContentData homeContentData = list.get(i).getHomeContentData();
                 txt_cat_name.setText(homeContentData.getCategoryName());
                 txt_cat_name.getBackground().setFilterBitmap(true);
-                if(homeContentData.getPageTypeId().equals(Constant.TRENDINGPAGE)){
+                if(homeContentData.getPageTypeId().equals(Constant.TRENDINGPAGE))
                     txt_cat_name.setVisibility(View.GONE);
-                }
 
-                Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.brand1);
+                String catName = homeContentData.getCategoryName();
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
+                if(catName.length()>7&&catName.length()<15)
+                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 3, -3, 0);
+                else if(catName.length()>=15)
+                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 6, -3, 0);
+                txt_cat_name.setLayoutParams(lp);
+
+                Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
                 Matrix matrix = new Matrix();
                 matrix.preScale(-1.0f, 1.0f);
                 Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
+                Bitmap mask3 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_malls);
+                Bitmap mask4= Bitmap.createBitmap(mask3, 0, 0, mask3.getWidth(), mask3.getHeight(), matrix, true);
 
                 final int finalI = i;
-                if (finalI % 2 == 0) {
-                    loadImage(homeContentData.getImageSource(), mImageView, mask1);
-                } else{
-                    loadImage(homeContentData.getImageSource(), mImageView, mask2);
+                if(finalI == list.size()-1){
+                    if (finalI % 2 == 0) {
+                        loadImage(homeContentData.getImageSource(), mImageView, mask4);
+                    } else {
+                        loadImage(homeContentData.getImageSource(), mImageView, mask3);
+                    }
                 }
-
+                else {
+                    if (finalI % 2 == 0) {
+                        loadImage(homeContentData.getImageSource(), mImageView, mask1);
+                    } else {
+                        loadImage(homeContentData.getImageSource(), mImageView, mask2);
+                    }
+                }
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -230,7 +239,7 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
 
         ArticlePagerAdapter mAdapter = new ArticlePagerAdapter(getActivity(), imagearray);
 
-        Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.brand1);
+        Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
         Bitmap mask2 = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
 
         loadImage("http://nuuneoi.com/uploads/source/playstore/cover.jpg", img1, mask1);

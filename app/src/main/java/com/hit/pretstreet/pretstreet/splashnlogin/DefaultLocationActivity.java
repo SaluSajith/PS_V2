@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
+import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.helpers.GPSTracker;
@@ -34,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,7 +50,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GETLOCATION_URL;
+
+public class DefaultLocationActivity extends AbstractBaseAppCompatActivity implements ApiListenerInterface{
 
     @BindView(R.id.img_close) ImageView img_close;
     @BindView(R.id.edt_search) EdittextPret edt_search;
@@ -54,7 +60,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
 
     private double lat1, long1;
     private DatabaseHelper helper;
-    private String currentLocation, strSearch, strType, PageType, latitude, longitude;
+    private String currentLocation, strType, PageType, latitude, longitude;
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
@@ -62,6 +68,9 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
     private static final String TYPE_SENSOR = "&types=(cities)";//,sublocality
     String types = "cities|sublocality";
     private static final String TYPE_CITIES = "&sensor=false&types=(cities)";
+
+    JsonRequestController jsonRequestController;
+    String strSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +82,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
     private void init(){
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        jsonRequestController = new JsonRequestController(this);
         helper = new DatabaseHelper(getApplicationContext());
         edt_search.addTextChangedListener(new TextWatcher() {
 
@@ -97,6 +107,26 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
     }
     @Override
     protected void setUpController() {
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        try {
+            JSONArray results = response.getJSONArray("results");
+            JSONObject geometry = results.getJSONObject(0).getJSONObject("geometry");
+            JSONObject location = geometry.getJSONObject("location");
+            Address address = new Address(null);
+            address.setLatitude(Double.parseDouble(location.getString("lat")));
+            address.setLongitude(Double.parseDouble(location.getString("lng")));
+            saveNContinue(address, strSearch);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onError(String error) {
+
     }
 
     private class doInBackground extends AsyncTask<Void, Void, Boolean> {
@@ -132,31 +162,49 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity {
     }
 
     public void getLocationFromAddress(Context context, String strAddress) {
+        strSearch = strAddress;
         Geocoder coder = new Geocoder(context);
         List<Address> address;
         try {
             address = coder.getFromLocationName(strAddress, 5);
             if (address != null) {
                 Address location = address.get(0);
-                latitude = String.valueOf(location.getLatitude());
-                longitude = String.valueOf(location.getLongitude());
-                Log.e("Address: ", latitude + ", " + longitude + " " + strAddress);
-                helper.saveLocation(strAddress);
-                String parts[] = new String[0];
-                if (strAddress.contains(",")) {
-                    parts= strAddress.split(",");
-                    Log.e("Address", parts[0]);
-                }
-                displaySnackBar("Location set to " + parts[0]);
-                PreferenceServices.instance().saveCurrentLocation(parts[0]+"");
-                PreferenceServices.instance().saveLatitute(latitude + "");
-                PreferenceServices.instance().saveLongitute(longitude + "");
-                finish();
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                saveNContinue(location, strAddress);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            JSONObject jsonObject = new JSONObject();
+            try {
+                String query = URLEncoder.encode(strAddress, "utf-8");
+
+            String URL = GETLOCATION_URL + "&address="+query;
+            jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            //displaySnackBar("Something went wrong. Please try again later.");
         }
+    }
+
+    private void saveNContinue(Address location, String strAddress){
+        latitude = String.valueOf(location.getLatitude());
+        longitude = String.valueOf(location.getLongitude());
+        Log.e("Address: ", latitude + ", " + longitude + " " + strAddress);
+        helper.saveLocation(strAddress);
+        String parts[] = new String[0];
+        String place = "";
+        if (strAddress.contains(",")) {
+            parts= strAddress.split(",");
+            place = parts[0];
+            Log.e("Address", parts[0]);
+        }
+        else place = strAddress;
+        displaySnackBar("Location set to " + place);
+        PreferenceServices.instance().saveCurrentLocation(place+"");
+        PreferenceServices.instance().saveLatitute(latitude + "");
+        PreferenceServices.instance().saveLongitute(longitude + "");
+        finish();
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
     }
 
     public ArrayList<String> autocomplete(String input) {

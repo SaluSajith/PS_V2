@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/padding_small"
+        android:layout_marginBottom="@dimen/padding_small">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:id="@+id/txt_storename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="Guess"
+                android:layout_marginTop="@dimen/padding_small"
+                style="@style/textview_title"
+                android:textSize="@dimen/textsize_xlarge"
+                android:gravity="left"
+                android:inputType="textNoSuggestions"
+                app:pret_typeface="@string/font_merriweather_regular"/>
+
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:id="@+id/txt_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Bandra West, Mumbai"
+                style="@style/textview_small"
+                android:inputType="textNoSuggestions"
+                android:textSize="@dimen/textsize_small"
+                app:pret_typeface="@string/font_merriweather_light"/>
+        </LinearLayout>
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:id="@+id/txt_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="BRAND"
+            style="@style/textview_small"
+            android:layout_gravity="center"
+            android:inputType="textNoSuggestions|textCapCharacters"
+            android:textSize="@dimen/textsize_small"
+            app:pret_typeface="@string/font_merriweather_light"/>
+    </LinearLayout>
+
+</LinearLayout>

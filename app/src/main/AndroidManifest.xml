@@ -151,16 +151,37 @@
         <activity android:name=".storedetails.StoreDetailsActivity"></activity>
         -->
 
-        <activity android:name=".navigationitems.NavigationItemsActivity" />
-        <activity android:name=".splashnlogin.DefaultLocationActivity" />
-        <activity android:name=".subcategory_n_storelist.SubCatActivity" />
-        <activity android:name=".subcategory_n_storelist.StoreListingActivity" />
-        <activity android:name=".storedetails.FullscreenGalleryActivity" />
-        <activity android:name=".navigation.HomeInnerActivity" />
-        <activity android:name=".location.StoreLocationMapScreen" />
-        <activity android:name=".navigation.ExhibitionDetailsActivity" />
-        <activity android:name=".navigation.TrendingArticleActivity" />
-        <activity android:name=".search.MultistoreActivity"></activity>
+        <activity
+            android:name=".navigationitems.NavigationItemsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".splashnlogin.DefaultLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".subcategory_n_storelist.SubCatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".subcategory_n_storelist.StoreListingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".storedetails.FullscreenGalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigation.HomeInnerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".location.StoreLocationMapScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigation.ExhibitionDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigation.TrendingArticleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".search.MultistoreActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".search.SearchActivity"></activity>
     </application>
 
 </manifest>

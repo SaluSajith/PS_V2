@@ -23,7 +23,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
     private Context context;
     ArrayList<String> urls;
     ImageClickCallback imageClickCallback;
-    private String url[] = {
+    /*private String url[] = {
             "http://farm7.staticflickr.com/6101/6853156632_6374976d38_c.jpg",
             "http://farm8.staticflickr.com/7232/6913504132_a0fce67a0e_c.jpg",
             "http://farm5.staticflickr.com/4133/5096108108_df62764fcc_b.jpg",
@@ -50,7 +50,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
             "http://farm8.staticflickr.com/7243/7193236466_33a37765a4.jpg",
             "http://farm8.staticflickr.com/7251/7059629417_e0e96a4c46.jpg",
             "http://farm8.staticflickr.com/7084/6885444694_6272874cfc.jpg"
-    };
+    };*/
 
 
     public GalleryAdapter(Context context,ArrayList<String> urls) {
@@ -70,14 +70,14 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
     @Override
     public int getItemCount() {
         //return this.urls != null ? urls.size() : 0;
-        return url.length;
+        return urls.size();
     }
     @Override
     public void onBindViewHolder(final GalleryHolder holder, final int position) {
 
         holder.name.setText("");
         Glide.with(context)
-                .load(url[position])
+                .load(urls.get(position))
                // .load(urls.get(position))
                 .asBitmap()
                 .fitCenter()

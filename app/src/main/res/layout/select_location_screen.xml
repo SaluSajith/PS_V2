@@ -50,16 +50,19 @@
             android:layout_height="wrap_content"
             android:padding="10sp"
             android:text="Auto-detect current location"
+            android:layout_toRightOf="@+id/iv_locate"
             app:pret_typeface="@string/font_merriweather_regular"
             android:textColor="@color/black" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:padding="10sp"
-            android:src="@drawable/auto_detect" />
+            android:id="@+id/iv_locate"
+            android:src="@drawable/auto_detect"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 

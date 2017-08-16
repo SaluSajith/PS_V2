@@ -38,6 +38,7 @@ import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
+import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
@@ -52,6 +53,8 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 
 public class HomeActivity extends AbstractBaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NavigationClick, ApiListenerInterface, HomeTrapeClick {
@@ -98,9 +101,9 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
         String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
-        if (SavedMAinCaTList.length() > 1)
+        /*if (SavedMAinCaTList.length() > 1)
             changeFragment(new HomeFragment(), false);
-        else
+        else*/
             getHomePage();
     }
 
@@ -149,12 +152,21 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                     drawer.openDrawer(Gravity.LEFT);
             }
         });
-        LinearLayout ll_header = (LinearLayout) toolbar.findViewById(R.id.linearLayout);
-        ll_header.setOnClickListener(new View.OnClickListener() {
+        ImageView iv_logo = (ImageView) toolbar.findViewById(R.id.iv_logo);
+        iv_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!drawer.isHovered())
                     drawer.openDrawer(Gravity.LEFT);
+            }
+        });
+        ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
+        iv_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                startActivity(intent);
             }
         });
 
@@ -224,41 +236,41 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             case "nav_account":
                 selectedFragment = ACCOUNT_FRAGMENT;
                 Intent intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_following":
                 selectedFragment = FOLLOWING_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_addstore":
                 selectedFragment = ADDSTORE_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_about":
                 selectedFragment = ABOUT_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_contact":
                 selectedFragment = CONTACTUS_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "storedetails":
                 intent = new Intent(HomeActivity.this, MultistoreActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 startActivity(intent);
                 break;
             /*case "storedetails":
@@ -283,7 +295,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         Intent intent = new Intent(HomeActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }
-
 
     private void changeFragment(Fragment fragment, boolean addBackstack) {
 
@@ -327,6 +338,9 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                         PreferenceServices.instance().saveHomeMainCatList(response.toString());
                         changeFragment(new HomeFragment(), false);
                         break;
+                    case Constant.SUBCAT_URL:
+
+                        break;
                     default: break;
                 }
             } else {
@@ -339,48 +353,48 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     @Override
     public void onTrapeClick(HomeCatContentData catContentData, String title) {
-        displayLogMessage("", catContentData.getHomeSubCategoryArrayList().size()+"");
         String pageid = catContentData.getPageTypeId();
         switch (pageid){
             case Constant.SUBCATPAGE:
                 //displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
                 Intent intent = new Intent(this, SubCatActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
-                intent.putExtra("mHomeCatItems", catContentData);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("mSubCatId", catContentData.getCategoryId());
                 intent.putExtra("mTitle", title);
                 startActivity(intent);
                 break;
             case Constant.STORELISTINGPAGE:
                 intent = new Intent(getApplicationContext(), StoreListingActivity.class);
-                intent.putExtra("contentData", catContentData);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
-                intent.putExtra("mTitle", title);
+                intent.putExtra("contentData", catContentData.getHomeSubCategoryArrayList());
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("mCatId", catContentData.getCategoryId());
+                intent.putExtra("mSubTitle", title);
                 startActivity(intent);
                 break;
             case Constant.TRENDINGPAGE:
                 selectedFragment = TRENDING_FRAGMENT;
                 intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case Constant.EXHIBITIONPAGE:
                 selectedFragment = EXHIBITION_FRAGMENT;
                 intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case Constant.MULTISTOREPAGE:
                 intent = new Intent(HomeActivity.this, MultistoreActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 startActivity(intent);
                 break;
             case Constant.STOREDETAILSPAGE:
                 StoreListModel storeListModel =  new StoreListModel();
                 storeListModel.setId(catContentData.getMainCatId());
                 intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 startActivity(intent);
                 break;
             default: break;

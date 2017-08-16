@@ -22,6 +22,7 @@ import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
+import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
@@ -32,7 +33,10 @@ import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.fragments.SubCatFragment;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.SubCatTrapeClick;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +55,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     @BindView(R.id.hs_categories) HorizontalScrollView hs_categories;
 
     JsonRequestController jsonRequestController;
+    SubCatTrapeClick subCatTrapeClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,12 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         setupFragment(SUBCAT_FRAGMENT, false);
     }
 
+    public void getSubCAtPage(String catId){
+        JSONObject resultJson = LoginController.getSubCatPageJson(Constant.HOMEPAGE, catId);
+        this.showProgressDialog(getResources().getString(R.string.loading));
+        jsonRequestController.sendRequest(this, resultJson, Constant.SUBCAT_URL);
+    }
+
     @OnClick(R.id.tv_location)
     public void onTvLocationPressed() {
         Intent intent = new Intent(SubCatActivity.this, DefaultLocationActivity.class);
@@ -106,11 +117,27 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         ft.commit();
     }
 
+    private void handleResponse(JSONObject response){
+        try {
+            String url = response.getString("URL");
+                switch (url){
+                    case Constant.SUBCAT_URL:
+                        ArrayList<HomeCatItems> homeCatItemses = LoginController.getSubCatContent(response);
+                        subCatTrapeClick.onSubTrapeClick(homeCatItemses, "");
+                        break;
+                    default: break;
+                }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
             case SUBCAT_FRAGMENT:
-                changeFragment(new SubCatFragment(), b);
+                SubCatFragment fragment = new SubCatFragment();
+                subCatTrapeClick = fragment;
+                changeFragment(fragment, b);
                 break;
             default:
                 break;
@@ -119,8 +146,8 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void onResponse(JSONObject response) {
-        Log.e("Volley", response.toString());
-
+        this.hideDialog();
+        handleResponse(response);
     }
 
     @Override
@@ -135,14 +162,9 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     }
 
     @Override
-    public void onTrapeClick(HomeCatItems homeSubCategory) {
-
-    }
-
-    @Override
-    public void onSubTrapeClick(HomeCatContentData homeCatContentData, String title) {
+    public void onSubTrapeClick(ArrayList<HomeCatItems> homeCatItemses, String title) {
         Intent intent = new Intent(getApplicationContext(), StoreListingActivity.class);
-        intent.putExtra("contentData", homeCatContentData);
+        intent.putExtra("contentData", homeCatItemses);
         intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SUBCATPAGE);
         intent.putExtra("mTitle", title);
         intent.putExtra("mSubTitle", tv_cat_name.getText().toString());

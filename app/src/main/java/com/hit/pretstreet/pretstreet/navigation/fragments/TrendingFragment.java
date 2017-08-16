@@ -48,7 +48,7 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
 
     private void init(){
         Utility.setListLayoutManager(rv_trending, getActivity());
-        ((HomeInnerActivity)getActivity()).getTrendinglist("");
+        ((HomeInnerActivity)getActivity()).getTrendinglist("1");
 
     }
 

@@ -7,10 +7,10 @@
     <dimen name="padding_xxsmall">2dp</dimen>
     <dimen name="padding_xsmall">3dp</dimen>
     <dimen name="padding_small">4dp</dimen>
-    <dimen name="padding_standard">5dp</dimen>
+    <dimen name="padding_standard">4dp</dimen>
     <dimen name="padding_large">8dp</dimen>//
-    <dimen name="padding_xlarge">12dp</dimen>//
-    <dimen name="padding_xxlarge">12dp</dimen>//
+    <dimen name="padding_xlarge">13dp</dimen>//
+    <dimen name="padding_xxlarge">15dp</dimen>//
     <dimen name="padding_xxxlarge">20dp</dimen>
     <dimen name="padding_huge">30dp</dimen>
     <dimen name="padding_xhuge">45dp</dimen>
@@ -20,8 +20,8 @@
     <dimen name="button_radius_standard">10dp</dimen>
     <dimen name="button_radius_small">5dp</dimen>
 
-    <dimen name="textsize_small">10dp</dimen>
-    <dimen name="textsize_standard">12dp</dimen>
+    <dimen name="textsize_small">9dp</dimen>
+    <dimen name="textsize_standard">11dp</dimen>
     <dimen name="textsize_large">12dp</dimen>
     <dimen name="textsize_xlarge">16dp</dimen>
     <dimen name="textsize_xxlarge">20dp</dimen>
@@ -62,6 +62,7 @@
     <dimen name="buttons_layoutheight">220dp</dimen>
     <dimen name="content_overlapmargin">5dp</dimen>
     <dimen name="content_overlapmargin_activity">-40dp</dimen>
+    <dimen name="content_overlapmargin_hometrape">-30dp</dimen>
 
     <!--Inner Pages-->
     <dimen name="addstore_height">580dp</dimen>
@@ -73,4 +74,10 @@
     <dimen name="about_height">650dp</dimen>
 
     <dimen name="header_margin">20dp</dimen>
+    <dimen name="horiscroll_margin">-30dp</dimen>
+
+    <dimen name="storelist_img_height">110dp</dimen>
+    <dimen name="storelist_img_width">100dp</dimen>
+    <dimen name="storelist_banner_height">120dp</dimen>
+    <dimen name="storelist_banner_height_firstrow">150dp</dimen>
 </resources>

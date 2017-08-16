@@ -101,7 +101,7 @@ public class LoginController {
             jsonBody.put("LastName", loginSession.getLname());
             jsonBody.put("UserEmail", loginSession.getEmail());
             jsonBody.put("UserMobile", loginSession.getMobile());
-            jsonBody.put("UserSession", loginSession.getSessionid());
+            jsonBody.put("UserPassword", loginSession.getPassword());
 
             jsonBody = Constant.addConstants(jsonBody, context);
 
@@ -152,6 +152,23 @@ public class LoginController {
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("PreviousPageTypeId", pageid);
+            jsonBody.put("ClickTypeId", "");
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {}
+
+        return jsonBody;
+    }
+
+
+    public static JSONObject getSubCatPageJson(String prePageid, String catId) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("PreviousPageTypeId", prePageid);
+            jsonBody.put("CategoryId", catId);
             jsonBody.put("ClickTypeId", "");
 
             jsonBody = Constant.addConstants(jsonBody, context);
@@ -233,6 +250,7 @@ public class LoginController {
             loginSession.setLname(lname);
             loginSession.setMobile(mobile);
             loginSession.setEmail(email);
+            loginSession.setPassword(password);
             loginCallbackInterface.validationSuccess(loginSession);
         }
     }
@@ -284,6 +302,43 @@ public class LoginController {
                     homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
                 } else
                     homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
+
+                subcatlist.add(homeContentData);
+                homeCatItems.setContentDataArrayList(subcatlist);
+                homeCatItems.setHomeContentData(homeContentData);
+                list.add(homeCatItems);
+            }
+
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+
+        return list;
+    }
+
+
+    public static ArrayList<HomeCatItems> getSubCatContent(JSONObject mResponse){
+        final ArrayList<HomeCatItems> list = new ArrayList<>();
+        ArrayList<HomeCatContentData> subcatlist = new ArrayList<>();
+
+
+        try {
+            JSONObject response = mResponse;
+            JSONArray jsonArray = response.getJSONArray("Data");
+            HomeCatItems homeCatItems;
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                homeCatItems = new HomeCatItems();
+                homeCatItems.setContentTypeId(jsonArray.getJSONObject(i).getString("ContentTypeId"));
+                homeCatItems.setContentType(jsonArray.getJSONObject(i).getString("ContentType"));
+                JSONObject object = jsonArray.getJSONObject(i).getJSONObject("ContentData");
+
+                HomeCatContentData homeContentData = new HomeCatContentData();
+                homeContentData.setCategoryId(object.getString("SubCategoryId"));
+                homeContentData.setCategoryName(object.getString("CategoryName"));
+                homeContentData.setImageSource(object.getString("ImageSource"));
+                homeContentData.setPageTypeId(object.getString("PageTypeId"));
+                homeContentData.setTitle(object.getString("Title"));
 
                 subcatlist.add(homeContentData);
                 homeCatItems.setContentDataArrayList(subcatlist);

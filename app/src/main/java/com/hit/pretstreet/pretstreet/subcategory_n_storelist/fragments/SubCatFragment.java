@@ -2,7 +2,6 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,12 +22,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
+import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.SubCatTrapeClick;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ import butterknife.ButterKnife;
  * Created by User on 7/25/2017.
  */
 
-public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> {
+public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implements SubCatTrapeClick{
 
     @BindView(R.id.ll_main_cat) LinearLayout ll_main_cat;
 
@@ -65,18 +64,15 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> {
     }
 
     private void init() {
-
-        HomeCatContentData catContentData = (HomeCatContentData) getActivity().getIntent()
-                .getExtras().getSerializable("mHomeCatItems");
-        loadSubCatPage(catContentData);
-
+        String mCatId = getActivity().getIntent().getStringExtra("mSubCatId");
+        ((SubCatActivity)getActivity()).getSubCAtPage(mCatId);
     }
 
-    private void loadSubCatPage(final HomeCatContentData catContentData) {
+    private void loadSubCatPage(final ArrayList<HomeCatItems> homeCatItemses) {
 
         ll_main_cat.setVisibility(View.VISIBLE);
         ll_main_cat.removeAllViews();
-        ArrayList<HomeCatItems> homeSubCategories = catContentData.getHomeSubCategoryArrayList();
+        ArrayList<HomeCatItems> homeSubCategories = homeCatItemses;
         for (int i = 0; i < homeSubCategories.size(); i++) {
 
             LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -94,7 +90,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> {
             LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             if (i != 0) {
-                relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin), 0, 0);
+                relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin_hometrape), 0, 0);
             }
             rl_dd.setLayoutParams(relativeParams);
             rl_dd.requestLayout();
@@ -103,22 +99,41 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> {
             txt_cat_name.setText(contentData.getCategoryName());
             txt_cat_name.getBackground().setFilterBitmap(true);
 
-            Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.brand1);
+            String catName = contentData.getCategoryName();
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
+            if(catName.length()>7&&catName.length()<15)
+                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 6, -3, 0);
+            else if(catName.length()>=15)
+                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 8, -3, 0);
+            txt_cat_name.setLayoutParams(lp);
+
+            Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
             Matrix matrix = new Matrix();
             matrix.preScale(-1.0f, 1.0f);
             Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
+            Bitmap mask3 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_malls);
+            Bitmap mask4= Bitmap.createBitmap(mask3, 0, 0, mask3.getWidth(), mask3.getHeight(), matrix, true);
 
             final int finalI = i;
-            if (finalI % 2 == 0) {
-                loadImage(contentData.getImageSource(), mImageView, mask1);
-            } else {
-                loadImage(contentData.getImageSource(), mImageView, mask2);
+            if(finalI == homeSubCategories.size()-1){
+                if (finalI % 2 == 0) {
+                    loadImage(contentData.getImageSource(), mImageView, mask4);
+                } else {
+                    loadImage(contentData.getImageSource(), mImageView, mask3);
+                }
+            }
+            else {
+                if (finalI % 2 == 0) {
+                    loadImage(contentData.getImageSource(), mImageView, mask1);
+                } else {
+                    loadImage(contentData.getImageSource(), mImageView, mask2);
+                }
             }
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onTrapeClick.onSubTrapeClick(catContentData, contentData.getCategoryName());
+                    onTrapeClick.onSubTrapeClick(homeCatItemses, contentData.getCategoryName());
                 }
             });
             ll_main_cat.addView(view);
@@ -181,4 +196,8 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> {
                 });
     }
 
+    @Override
+    public void onSubTrapeClick(ArrayList<HomeCatItems> homeCatItemses, String title) {
+        loadSubCatPage(homeCatItemses);
+    }
 }

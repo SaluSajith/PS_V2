@@ -22,6 +22,12 @@
         app:hive_maxAlpha="255"
         app:hive_rainbow="true"
         app:hive_shrink="true" />
+<!--
+
+    <ProgressBar
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+-->
 
     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
         android:id="@+id/loading_tv"

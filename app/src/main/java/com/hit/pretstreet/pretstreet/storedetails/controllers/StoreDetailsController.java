@@ -37,7 +37,7 @@ public class StoreDetailsController {
         try {
             jsonBody.put("PreviousPageTypeId", prePage);
             jsonBody.put("ClickTypeId", "");
-            jsonBody.put("StoreId", storeId);
+            jsonBody.put("Id", storeId);
 
             jsonBody = Constant.addConstants(jsonBody, context);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,8 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible"
-        android:layout_marginTop="@dimen/padding_standard"/>
+        android:visibility="visible"><!--
+        <include layout="@layout/row_sub_cat_list1"></include>
+
+        <include layout="@layout/row_sub_cat_list2"></include>
+
+        <include layout="@layout/row_sub_cat_list1"></include>
+
+        <include layout="@layout/row_sub_cat_list2"></include>
+
+-->
+        </LinearLayout>
 
         <!--<ImageView
             android:layout_width="match_parent"

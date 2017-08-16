@@ -28,11 +28,11 @@ import butterknife.ButterKnife;
  * Created by User on 04/08/2017.
  */
 
-public class ExhibitionFragment extends AbstractBaseFragment<HomeInnerActivity>
+public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
         implements TrendingCallback, ZoomedViewListener {
 
-    @BindView(R.id.rv_trending)
-    RecyclerView rv_trending;
+    @BindView(R.id.rv_trending) RecyclerView rv_trending;
+
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
@@ -45,7 +45,7 @@ public class ExhibitionFragment extends AbstractBaseFragment<HomeInnerActivity>
         Utility.setListLayoutManager(rv_trending, getActivity());
         /*rv_trending.addItemDecoration(new DividerDecoration(getActivity(),
                 ContextCompat.getColor(getActivity(), R.color.trending_grey), 5.0f));*/
-        ((HomeInnerActivity)getActivity()).getExhibitionlist("");
+        ((HomeInnerActivity)getActivity()).getExhibitionlist("1");
 
     }
 

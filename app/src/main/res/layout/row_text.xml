@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hit.pretstreet.pretstreet.core.customview.TextViewPret android:id="@+id/txt_auto_detect"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10sp"
+    android:text="Auto-detect current location"
+    android:layout_toRightOf="@+id/iv_locate"
+    app:pret_typeface="@string/font_merriweather_regular"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PretStreetV2</string>
+    <string name="app_name">PretStreet2</string>
     <string name="splash_duration">5000</string>
     <string name="facebook_app_name">PretStreet</string>
     <string name="facebookapp_id">322404801527783</string>//112206959218432
@@ -75,8 +75,10 @@
     <string name="book">Book Appointment</string>
     <string name="book_btn">Book</string>
 
-    <string name="title_activity_fullscreen_gallery">FullscreenGalleryActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string-array name="cattype">
+        <item name="Product"></item>
+        <item name="Store"></item>
+    </string-array>
+    <string name="products">Product</string>
 
 </resources>

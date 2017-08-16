@@ -6,31 +6,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.hit.pretstreet.pretstreet.navigation.HomeActivity">
+
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nsv_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@drawable/base"
-        android:id="@+id/nsv_header"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:clipChildren="true">
+                android:clipChildren="true"
+                android:orientation="vertical">
+
                 <FrameLayout
+                    android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/content"
-                    android:layout_marginTop="@dimen/content_overlapmargin"
-                    android:background="@color/black"
-                    android:layout_below="@+id/includedlayout">
+                    android:layout_below="@+id/includedlayout"
+                    android:layout_marginTop="@dimen/content_overlapmargin_hometrape"
+                    android:background="@color/black">
+
+                    <include layout="@layout/fragment_home"></include>
                 </FrameLayout>
-                <include layout="@layout/header_main"
-                    android:id="@+id/includedlayout"></include>
+
+                <include
+                    android:id="@+id/includedlayout"
+                    layout="@layout/header_main"></include>
             </RelativeLayout>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

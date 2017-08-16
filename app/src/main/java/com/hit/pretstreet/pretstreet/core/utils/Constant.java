@@ -20,25 +20,30 @@ public class Constant {
     public static final String GOOGLE_API_KEY = "AIzaSyCAq0CP83saVHVc93LDs_m3xUdpFna0c2c";
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
-    public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
+    //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
+    public static final String COMMON_URL = "http://54.179.131.57/pretstreetvtwobeta/index.php/mobileapp/";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
     public static final String LOGIN_OTP_URL = COMMON_URL + "customer/customerlogingenerateOtp";
     public static final String LOGIN_URL = COMMON_URL + "customer/customerloginbyMobile";
     public static final String SOCIAL_LOGIN_URL = COMMON_URL + "customer/customerloginbySocial";
     public static final String HOMEPAGE_URL = COMMON_URL + "homepage/homepage";
+    public static final String SUBCAT_URL = COMMON_URL + "category/getSubCategory";
     public static final String STORELISTING_URL = COMMON_URL + "store/storelisting/";
     public static final String UPDATEFOLLOWSTATUS_URL = COMMON_URL + "store/followStore/";
     public static final String STOREDETAILS_URL = COMMON_URL + "store/storedetails/";
-    public static final String TRENDING_URL = COMMON_URL + "store/trending/";
-    public static final String EXHIBITION_URL = COMMON_URL + "store/exhibition/";
-    public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "store/exhibitionArticle";
-    public static final String TRENDINGARTICLE_URL = COMMON_URL + "store/trendingArticle";
+    public static final String TRENDING_URL = COMMON_URL + "trending/listing/";//
+    public static final String EXHIBITION_URL = COMMON_URL + "exhibition/listing/";//
+    public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "exhibition/article/";//
+    public static final String TRENDINGARTICLE_URL = COMMON_URL + "trending/article/";//
     public static final String MULTISTORE_URL = COMMON_URL + "store/multistorelisting";
+    public static final String AUTOSEARCH_URL = COMMON_URL + "category/autoSearch";
+    public static final String SEARCH_URL = COMMON_URL + "category/search";
 
     //updated after 5/9/2017
 
     public static final String INDEX_PATH = COMMON_URL + "store/trendingArticle";
+    public static final String GETLOCATION_URL = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true_or_false";
 
     public static final String API = "MAPcabpnPawmassmjrc";
     public static final String LIMIT = "20";
@@ -57,6 +62,7 @@ public class Constant {
     public static final String EXHIBITIONPAGE = "10";
     public static final String EXARTICLEPAGE = "11";
     public static final String FOLLOWINGPAGE = "12";
+    public static final String SEARCHPAGE = "14";
 
     //Clicktype constants
     public static final String HOMEPAGELINK = "1";
@@ -64,11 +70,11 @@ public class Constant {
     public static final String SUBCATLINK = "3";
     public static final String SHIPBUPROLINK = "5";
     public static final String SHOPBYMOODLINK = "6";
-    public static final String BANNER = "7";
-    public static final String SLIDER = "9";
-    public static final String MALLS = "10";
+    public static final String BANNERLINK = "7";
+    public static final String SLIDERLINK = "9";
+    public static final String MALLSLINK = "10";
     public static final String STORELISTINGLINK = "11";
-    public static final String STOREDETAILS = "12";
+    public static final String STOREDETAILSLINK = "12";
     public static final String CALLLINK = "14";
     public static final String CALLEDLINK = "15";
     public static final String VIEWADDRESSLINK = "16";
@@ -96,8 +102,8 @@ public class Constant {
             jsonBody.put("Latitude", PreferenceServices.getInstance().getLatitute());
             jsonBody.put("Longitude", PreferenceServices.getInstance().getLongitute());
             jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("DeviceType", "1");
             jsonBody.put("DeviceId", PretStreet.getDeviceId());
+            jsonBody.put("DeviceType", "1");
 
             SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
             LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
