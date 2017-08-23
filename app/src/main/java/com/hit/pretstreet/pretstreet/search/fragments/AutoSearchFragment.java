@@ -1,6 +1,7 @@
 package com.hit.pretstreet.pretstreet.search.fragments;
 
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
@@ -32,21 +35,33 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+
 /**
  * Created by User on 14/08/2017.
  */
 
-public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> implements SearchDataCallback{
+public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> implements SearchDataCallback, Spinner.OnItemSelectedListener{
 
     @BindView(R.id.sp_Type) Spinner sp_Type;
     @BindView(R.id.sp_CatType) Spinner sp_CatType;
     @BindView(R.id.edt_search) EdittextPret edt_search;
     @BindView(R.id.tv_heading) TextViewPret tv_heading;
+    @BindView(R.id.tv_heading_view) TextViewPret tv_heading_view;
     @BindView(R.id.rv_Search) RecyclerView rv_Search;
+    @BindView(R.id.rv_View) RecyclerView rv_View;
 
     private String mStrSearch;
-    ArrayList<SearchModel> mSearchModels;
-    private AutoSearchAdapter searchAdapter;
+    private ArrayList<SearchModel> mSearchModels;
+    private ArrayList<SearchModel> mViewModels;
+    private ArrayList<SearchModel> mCatModels;
+    private AutoSearchAdapter searchAdapter, viewAdapter;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((SearchActivity)getActivity()).getRecentPage(this, "5");//TODO
+    }
 
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,29 +73,60 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
 
     private void init(){
         setupTypeSpinner();
-        setupCatTypeSpinner();
+        mViewModels = new ArrayList<>();
         mSearchModels = new ArrayList<>();
+        mCatModels = new ArrayList<>();
+        viewAdapter = new AutoSearchAdapter(getActivity(), mViewModels);
+        searchAdapter = new AutoSearchAdapter(getActivity(), mSearchModels);
+        tv_heading.setVisibility(View.GONE);
+        tv_heading_view.setVisibility(View.GONE);
+        sp_Type.setOnItemSelectedListener(this);
+        sp_CatType.setOnItemSelectedListener(this);
         Utility.setListLayoutManager(rv_Search, getActivity());
+        Utility.setListLayoutManager(rv_View, getActivity());
 
         edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    //TODO change id
-                    tv_heading.setVisibility(View.GONE);
-                    ((SearchActivity)getActivity()).getSearchResult(mStrSearch, "5");
+                    try {
+                        if(mStrSearch.length()>=1)
+                        ((SearchActivity) getActivity()).openSearchResult(mStrSearch,
+                                mCatModels.get(sp_CatType.getSelectedItemPosition()).getId(),
+                                sp_Type.getSelectedItemPosition() + "");
+                    }catch (Exception e){}
                     return true;
                 }
                 return false;
+            }
+        });
+        edt_search.setDrawableClickListener(new EdittextPret.DrawableClickListener() {
+            public void onClick(DrawablePosition target) {
+                switch (target) {
+                    case RIGHT:
+                        try {
+                            if(mStrSearch.length()>=1)
+                        ((SearchActivity)getActivity()).openSearchResult(mStrSearch,
+                                mCatModels.get(sp_CatType.getSelectedItemPosition()).getId(),
+                                sp_Type.getSelectedItemPosition()+"");
+                        }catch (Exception e){}
+                        break;
+                    default:
+                        break;
+                }
             }
         });
 
         edt_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mStrSearch = s.toString();
-                //TODO change id
-                ((SearchActivity)getActivity()).getAutoSearch(mStrSearch, "5");
+                try {
+                    mStrSearch = s.toString();
+                    if(mStrSearch.length()>=1)
+                    ((SearchActivity) getActivity()).getAutoSearch(mStrSearch,
+                            mCatModels.get(sp_CatType.getSelectedItemPosition()).getId(),
+                            sp_Type.getSelectedItemPosition() + "");
+                }catch (Exception e){}
             }
             @Override
             public void afterTextChanged(Editable editable) {
@@ -88,21 +134,24 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                // TODO Auto-generated method stub
             }
         });
     }
 
-    private void setupCatTypeSpinner(){
+    private void setupCatTypeSpinner(ArrayList<SearchModel> catModels){
         List<String> list = new ArrayList<String>();
-        list.add("All"); //TODO
-        list.add("Designs");
-        list.add("Jewellery");
-        list.add("Brands");
+        for(SearchModel model : catModels){
+            list.add(model.getCategory());
+        }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.row_text, list);
         dataAdapter.setDropDownViewResource(R.layout.row_text);
         sp_CatType.setAdapter(dataAdapter);
+        String id = getActivity().getIntent().getStringExtra(ID_KEY);
+        for(int i=0;i<catModels.size();i++){
+            if(catModels.get(i).getId().equals(id))
+                sp_CatType.setSelection(i);
+        }
     }
 
     @OnClick(R.id.iv_back)
@@ -112,8 +161,8 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
 
     private void setupTypeSpinner(){
         List<String> list = new ArrayList<String>();
-        list.add("Products");
         list.add("Stores");
+        list.add("Products");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.row_text, list);
         dataAdapter.setDropDownViewResource(R.layout.row_text);
@@ -121,18 +170,50 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
     }
 
     @Override
-    public void setAutosearchList(ArrayList<SearchModel> searchModels) {
-        if(mSearchModels.size()==0) {
-            mSearchModels.clear();
-            mSearchModels.addAll(searchModels);
-            searchAdapter = new AutoSearchAdapter(getActivity(), searchModels);
-            rv_Search.setAdapter(searchAdapter);
-        }
-        else searchAdapter.notifyDataSetChanged();
+    public void setRecentsearchList(ArrayList<SearchModel> recentViewModels,
+                                    ArrayList<SearchModel> recentSearchModels,
+                                    ArrayList<SearchModel> catModels) {
+        if(recentSearchModels.size()>0)
+            tv_heading.setVisibility(View.VISIBLE);
+        if(recentViewModels.size()>0)
+            tv_heading_view.setVisibility(View.VISIBLE);
+        setupCatTypeSpinner(catModels);
+        mSearchModels.clear();
+        mSearchModels.addAll(recentSearchModels);
+        mViewModels.clear();
+        mViewModels.addAll(recentViewModels);
+        mCatModels.addAll(catModels);
+        rv_Search.setAdapter(searchAdapter);
+        rv_View.setAdapter(viewAdapter);
+        searchAdapter.notifyDataSetChanged();
+        viewAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void setSearchList(ArrayList<StoreListModel> searchModels) {
+    public void setAutosearchList(ArrayList<SearchModel> searchModels) {
+        mSearchModels.clear();
+        mSearchModels.addAll(searchModels);
+
+        tv_heading.setVisibility(View.GONE);
+        tv_heading_view.setVisibility(View.GONE);
+        rv_View.setVisibility(View.GONE);
+
+        rv_Search.setAdapter(searchAdapter);
+        searchAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setSearchList(ArrayList<StoreListModel> searchModels, boolean b) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        edt_search.setText("");
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

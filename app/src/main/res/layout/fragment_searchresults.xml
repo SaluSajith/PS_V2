@@ -4,42 +4,57 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/yellow"
-        android:padding="@dimen/padding_large"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_large">
 
         <ImageView
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_back"
-            android:layout_margin="@dimen/padding_small"/>
+            android:layout_margin="@dimen/padding_small"
+            app:srcCompat="@drawable/ic_back" />
 
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             style="@style/textview_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="left"
             android:text="SEARCH RESULTS"
-            app:pret_typeface="@string/font_merriweather_regular"/>
+            app:pret_typeface="@string/font_merriweather_regular" />
 
         <ImageView
-            android:id="@+id/imageButton"
+            android:id="@+id/iv_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/back"
-            android:layout_margin="@dimen/padding_small"/>
+            android:layout_margin="@dimen/padding_small"
+            app:srcCompat="@drawable/filter" />
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rv_Search"/>
+        android:layout_height="match_parent"
+        android:id="@+id/nsv_headerSearch"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/empty_view"
+                android:id="@+id/ll_empty"></include>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_Search"/>
+        </FrameLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

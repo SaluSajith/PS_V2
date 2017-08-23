@@ -128,7 +128,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/iv_notif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/padding_small"
@@ -147,7 +147,7 @@
                 app:nbTextColor="@color/white"
                 app:nbTextSize="@dimen/textsize_small"
                 app:nbBackground="@color/transparent"
-                android:layout_alignTop="@+id/imageView2"
+                android:layout_alignTop="@+id/iv_notif"
                 android:layout_alignRight="@+id/linearLayout"
                 android:layout_alignEnd="@+id/linearLayout" />
         </RelativeLayout>

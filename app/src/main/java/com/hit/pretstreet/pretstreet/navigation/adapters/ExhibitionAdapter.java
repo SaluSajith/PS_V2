@@ -47,9 +47,14 @@ import butterknife.ButterKnife;
 public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.ViewHolder>{
 
     Context context;
-    ArrayList<TrendingItems> list;
+    static int mPosition;
+    private static ImageView imageViewPret;
+    private static ArrayList<TrendingItems> list;
     private TrendingHolderInvoke trendingHolderInvoke;
     private ZoomedViewListener zoomedViewListener;
+
+    private static final int TRENDING_FRAGMENT = 10;
+    private static final int EXHIBITION_FRAGMENT = 11;
 
     public ExhibitionAdapter(Activity activity, ExhibitionFragment context, ArrayList<TrendingItems> list) {
         this.context = activity;
@@ -71,14 +76,16 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         holder.txt_shopname.setText(trendingItems.getTitle());
         holder.txt_description.setText(trendingItems.getArticle());
 
-        Glide.with(context)
-                .load(trendingItems.getImagearray().get(0))
-                .fitCenter()
-                //.placeholder(R.mipmap.ic_launcher)
-                .into(holder.iv_banner);
+        try {
+            Glide.with(context)
+                    .load(trendingItems.getImagearray().get(0))
+                    .fitCenter()
+                    //.placeholder(R.mipmap.ic_launcher)
+                    .into(holder.iv_banner);
+        }catch (Exception e){}
+
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
-        Log.e("Exception", trendingItems.getBanner()+" "+position+" ");
     }
 
     @Override
@@ -110,6 +117,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
             this.viewType = viewType;
+            imageViewPret =  new ImageView(context);
             ButterKnife.bind(this, itemView);
 
             iv_like.setOnClickListener(this);
@@ -134,9 +142,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                         .setDuration(300l)
                         .setListener(null);
                 mLastPosition = getAdapterPosition();
-            }catch (Exception e){
-                Log.e("Exception", e+"");
-            }
+            }catch (Exception e){ }
         }
 
         @Override
@@ -145,11 +151,16 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
             TrendingItems trendingItems = list.get(getAdapterPosition());
             switch (viewId) {
                 case R.id.iv_like:
-                    trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()));
+                    mPosition = getAdapterPosition();
+                    imageViewPret = (ImageView) view;
+                    trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
                     break;
                 case R.id.iv_share:
                     trendingHolderInvoke.shareUrl("null");
                     //shareTextUrl();
+                    break;
+                case R.id.txt_shopname:
+                    ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                     break;
                 case R.id.iv_banner:
                     if(trendingItems.getBanner()){
@@ -166,5 +177,12 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                     break;
             }
         }
+    }
+
+    public static void updateLikeStatus(int status, String storeid) {
+        imageViewPret.setImageResource(status == 1 ?
+                R.drawable.red_heart : R.drawable.grey_heart);
+        if(list.get(mPosition).getId().equals(storeid))
+            list.get(mPosition).setLike(status == 0 ? false : true);
     }
 }

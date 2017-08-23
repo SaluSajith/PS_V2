@@ -106,15 +106,19 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                 final HomeCatContentData homeContentData = list.get(i).getHomeContentData();
                 txt_cat_name.setText(homeContentData.getCategoryName());
                 txt_cat_name.getBackground().setFilterBitmap(true);
-                if(homeContentData.getPageTypeId().equals(Constant.TRENDINGPAGE))
+                if(homeContentData.getCategoryName().length()==0)
                     txt_cat_name.setVisibility(View.GONE);
 
                 String catName = homeContentData.getCategoryName();
                 RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
-                if(catName.length()>7&&catName.length()<15)
-                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 3, -3, 0);
+                if(catName.length()>3&&catName.length()<=6)
+                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) - 2, -3, 0);
+                else if(catName.length()>6&&catName.length()<=10)
+                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 0, -3, 0);
+                else if(catName.length()>10&&catName.length()<=15)
+                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 4, -3, 0);
                 else if(catName.length()>=15)
-                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 6, -3, 0);
+                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 7, -3, 0);
                 txt_cat_name.setLayoutParams(lp);
 
                 Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
@@ -126,18 +130,16 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
 
                 final int finalI = i;
                 if(finalI == list.size()-1){
-                    if (finalI % 2 == 0) {
+                    if (finalI % 2 == 0)
                         loadImage(homeContentData.getImageSource(), mImageView, mask4);
-                    } else {
+                    else
                         loadImage(homeContentData.getImageSource(), mImageView, mask3);
-                    }
                 }
                 else {
-                    if (finalI % 2 == 0) {
+                    if (finalI % 2 == 0)
                         loadImage(homeContentData.getImageSource(), mImageView, mask1);
-                    } else {
+                    else
                         loadImage(homeContentData.getImageSource(), mImageView, mask2);
-                    }
                 }
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -163,6 +165,7 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
 
         Glide.with(getActivity())
                 .load(url).asBitmap()
+                .placeholder(R.drawable.mask_home)
                 .centerCrop()
                 .into(new BitmapImageViewTarget(imageView) {
                     @Override

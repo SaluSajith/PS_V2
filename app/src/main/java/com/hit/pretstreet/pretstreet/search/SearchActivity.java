@@ -16,19 +16,21 @@ import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.search.controllers.SearchController;
 import com.hit.pretstreet.pretstreet.search.fragments.AutoSearchFragment;
 import com.hit.pretstreet.pretstreet.search.fragments.SearchResultsFragment;
+import com.hit.pretstreet.pretstreet.search.interfaces.RecentCallback;
 import com.hit.pretstreet.pretstreet.search.interfaces.SearchDataCallback;
 import com.hit.pretstreet.pretstreet.search.models.SearchModel;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.FilterActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.fragments.SubCatFragment;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,11 +40,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.AUTOSEARCH_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.RECENTSEARCH_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCH_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
 public class SearchActivity extends AbstractBaseAppCompatActivity
-        implements ApiListenerInterface, ButtonClickCallbackStoreList, ImageClickCallback {
+        implements ApiListenerInterface, ButtonClickCallbackStoreList, ImageClickCallback, RecentCallback {
 
     @BindView(R.id.fl_content) FrameLayout fl_content;
 
@@ -62,9 +70,18 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
 
-    JsonRequestController jsonRequestController;
-    SearchDataCallback searchDataCallback;
-    StoreList_RecyclerAdapter storeList_recyclerAdapter;
+    private JsonRequestController jsonRequestController;
+    private SearchController searchController;
+    private SubCategoryController subCategoryController;
+    private SearchDataCallback searchDataCallback;
+    private StoreList_RecyclerAdapter storeList_recyclerAdapter;
+    private SearchResultsFragment searchFragment;
+
+    private ArrayList<FilterDataModel> dataModel;
+    private JSONArray arrayFilter;
+
+    private String mStrSearch = "", mCatID = "", mCaType;
+    private boolean loadmore = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +93,14 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
     @Override
     protected void setUpController() {
         jsonRequestController = new JsonRequestController(this);
+        subCategoryController = new SubCategoryController(this);
+        searchController = new SearchController(this);
     }
 
     private void init(){
         ButterKnife.bind(this);
+        dataModel = new ArrayList<>();
+        arrayFilter = new JSONArray();
         setupFragment(AUTOSEARCH_FRAGMENT, false);
     }
 
@@ -91,8 +112,13 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                 changeFragment(fragment, b);
                 break;
             case SEARCHRESULTS_FRAGMENT:
-                SearchResultsFragment searchFragment = new SearchResultsFragment();
+                searchFragment = new SearchResultsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(PRE_PAGE_KEY, Constant.SEARCHPAGE);
+                bundle.putString(ID_KEY, mCatID);
+                bundle.putSerializable(PARCEL_KEY, this.dataModel);
                 searchDataCallback = searchFragment;
+                searchFragment.setArguments(bundle);
                 changeFragment(searchFragment, b);
                 break;
             default:
@@ -102,7 +128,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
 
     private void changeFragment(Fragment fragment, boolean addBackstack) {
 
-        FragmentManager fm = getSupportFragmentManager();/*Removing stack*/
+        FragmentManager fm = getSupportFragmentManager();//Removing stack
         for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
             fm.popBackStack();
         }
@@ -116,31 +142,35 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         ft.commit();
     }
 
-    public void getAutoSearch(String mStr, String mCatId){
-        JSONObject resultJson = SearchController.getAutoSearchListJson(mStr, getIntent().getStringExtra(Constant.PRE_PAGE_KEY), mCatId);
+    public void getAutoSearch(String mStr, String mCatId, String mCattype){
+        JSONObject resultJson = searchController.getAutoSearchListJson(mStr,
+                getIntent().getStringExtra(Constant.PRE_PAGE_KEY), mCatId, mCattype);
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, AUTOSEARCH_URL);
     }
 
-    public void getSearchResult(String mStr, String mCatId){
-        setupFragment(SEARCHRESULTS_FRAGMENT, false);
+    public void getSearchResult(int pageCount, boolean first){
+        if(first)
         this.showProgressDialog(getResources().getString(R.string.loading));
-        JSONObject resultJson = SearchController.getSearchResultJson(mStr, getIntent().getStringExtra(Constant.PRE_PAGE_KEY), mCatId, "1");//TODO
+        JSONObject resultJson = searchController.getSearchResultJson(mStrSearch,
+                getIntent().getStringExtra(Constant.PRE_PAGE_KEY), mCatID, pageCount, mCaType, arrayFilter);
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, SEARCH_URL);
     }
+    public void openSearchResult(String mStr, String mCatId, String mCattype){
+        mStrSearch = mStr;
+        mCatID = mCatId;
+        mCaType = mCattype;
+        setupFragment(SEARCHRESULTS_FRAGMENT, true);
+    }
 
-    public void getRecentPage(){
-        //TODO
-        JSONObject resultJson = LoginController.getHomePageJson(Constant.HOMEPAGE);
+    public void getRecentPage(Fragment fragment, String mCatID){
+        searchDataCallback = (AutoSearchFragment) fragment;
+        JSONObject resultJson = searchController.getRecentSearchListJson(mCatID, SEARCHPAGE);
         this.showProgressDialog(getResources().getString(R.string.loading));
-        jsonRequestController.sendRequest(this, resultJson, Constant.HOMEPAGE_URL);
+        jsonRequestController.sendRequest(this, resultJson, Constant.RECENTSEARCH_URL);
     }
 
     public void setAdapter(StoreList_RecyclerAdapter storeList_recyclerAdapter){
         this.storeList_recyclerAdapter = storeList_recyclerAdapter;
-    }
-
-    public void getSearchResult(){
-
     }
 
     private void handleResponse(JSONObject response){
@@ -148,12 +178,19 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
             String url = response.getString("URL");
             switch (url){
                 case AUTOSEARCH_URL:
-                    ArrayList<SearchModel> searchModels = SearchController.getAutoSearchList(response);
+                    ArrayList<SearchModel> searchModels = searchController.getAutoSearchList(response);
                     searchDataCallback.setAutosearchList(searchModels);
                     break;
                 case SEARCH_URL:
-                    ArrayList <StoreListModel> storeListModels = SearchController.getSearchList(response);
-                    searchDataCallback.setSearchList(storeListModels);
+                    ArrayList <StoreListModel> storeListModels = searchController.getSearchList(response);
+                    if(storeListModels.size()==0)
+                        loadmore = false;
+                    searchDataCallback.setSearchList(storeListModels, loadmore);
+                    break;
+                case RECENTSEARCH_URL:
+                    searchDataCallback.setRecentsearchList(searchController.getRecentViewList(response),
+                            searchController.getRecentSearchList(response),
+                            searchController.getCategoryList(response));
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
                     JSONObject object = response.getJSONObject("Data");
@@ -175,6 +212,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
     @Override
     public void onError(String error) {
         this.hideDialog();
+        loadmore = false;
         displaySnackBar(error);
     }
 
@@ -184,26 +222,27 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
             case Constant.STOREDETAILSPAGE:
                 Intent intent = new Intent(SearchActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, storeListModel);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
+                intent.putExtra(Constant.PRE_PAGE_KEY, SEARCHPAGE);
                 startActivity(intent);
                 break;
             case Constant.TRENDINGPAGE:
                 selectedFragment = TRENDING_FRAGMENT;
                 intent = new Intent(SearchActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SEARCHPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case Constant.EXHIBITIONPAGE:
                 selectedFragment = EXHIBITION_FRAGMENT;
                 intent = new Intent(SearchActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SEARCHPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case Constant.MULTISTOREPAGE:
                 intent = new Intent(SearchActivity.this, MultistoreActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SEARCHPAGE);
+                intent.putExtra(Constant.ID_KEY, storeListModel.getId());
                 startActivity(intent);
                 break;
             default: break;
@@ -212,7 +251,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
 
     @Override
     public void updateFollowStatus(String id) {
-        JSONObject resultJson = SubCategoryController.updateFollowCount(id, Constant.SEARCHPAGE,  Constant.FOLLOWLINK);
+        JSONObject resultJson = SubCategoryController.updateFollowCount(id, SEARCHPAGE,  Constant.FOLLOWLINK);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, UPDATEFOLLOWSTATUS_URL);
     }
@@ -222,8 +261,32 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         ArrayList<String> imageModels1 = imageModels;
         Intent intent = new Intent(SearchActivity.this, FullscreenGalleryActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, imageModels1);
-        intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.STORELISTINGPAGE));
+        intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.SEARCHPAGE));
         intent.putExtra(Constant.POSITION_KEY, position);
         startActivity(intent);
+    }
+
+    @Override
+    public void viewClick(SearchModel searchModel) {
+        StoreListModel storeListModel = new StoreListModel();
+        storeListModel.setId(searchModel.getId());
+        Intent intent = new Intent(SearchActivity.this, StoreDetailsActivity.class);
+        intent.putExtra(Constant.PARCEL_KEY, storeListModel);
+        intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SEARCHPAGE);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == Integer.parseInt(FILTERPAGE) && resultCode  == RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
+                arrayFilter = subCategoryController.createFilterModel(dataModel);
+
+                searchFragment.refreshSearchResult();
+            }
+        } catch (Exception ex) { }
     }
 }

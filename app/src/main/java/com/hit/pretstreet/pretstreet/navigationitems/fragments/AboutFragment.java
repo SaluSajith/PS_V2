@@ -33,7 +33,6 @@ public class AboutFragment extends AbstractBaseFragment<WelcomeActivity> {
     private static final int PRIVACY_FRAGMENT = 7;
     private static final int TERMS_FRAGMENT = 8;
 
-
     ButtonClickCallback buttonClickCallback;
 
     @Override
@@ -76,7 +75,6 @@ public class AboutFragment extends AbstractBaseFragment<WelcomeActivity> {
     public void onAboutusPressed() {
         buttonClickCallback.buttonClick(ABOUTUS_FRAGMENT);
     }
-
 
     @OnClick(R.id.iv_privacy)
     public void onPrivacyPolicyPressed() {

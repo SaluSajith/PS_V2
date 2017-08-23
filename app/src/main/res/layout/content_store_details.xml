@@ -14,7 +14,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/padding_small"
-            android:background="@color/yellow_indicator"
+            android:background="@color/yellow"
             android:paddingBottom="24dp"/>
 
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
@@ -239,6 +239,7 @@
             android:layout_height="wrap_content"
             style="@style/textview_normal"
             android:text="Opening Hours:"
+            android:id="@+id/tv_heading_hrs"
             android:layout_marginBottom="@dimen/padding_standard"
             android:paddingTop="@dimen/padding_large"
             android:paddingBottom="@dimen/padding_large"
@@ -258,9 +259,10 @@
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/yellow_indicator"
+            android:background="@color/yellow"
             style="@style/textview_normal"
             android:text="  Photos  "
+            android:id="@+id/tv_heading_photos"
             android:layout_margin="0dp"
             android:textSize="@dimen/textsize_xlarge"
             app:pret_typeface="@string/font_redvelvet_regular"/>
@@ -277,11 +279,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/textview_small"
+            android:textSize="8dp"
             android:text="254 followers"
             android:gravity="left"
             android:id="@+id/tv_imgsrc"
             android:layout_marginBottom="@dimen/padding_xlarge"
-            app:pret_typeface="@string/font_merriweather_regular"/>
+            android:layout_marginTop="@dimen/padding_xlarge"
+            app:pret_typeface="@string/font_merriweather_light"/>
 
     </LinearLayout>
 

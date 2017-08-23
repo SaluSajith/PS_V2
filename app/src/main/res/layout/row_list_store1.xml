@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="4.5"
             android:orientation="vertical"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center"
             android:id="@+id/ll_sale_arrival"
             android:layout_marginRight="-10dp"
             android:layout_marginBottom="@dimen/padding_xxsmall">
@@ -104,58 +104,78 @@
                 android:layout_margin="@dimen/padding_standard"
                 android:background="@color/dark_gray"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@drawable/divider"
-                android:orientation="horizontal"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:showDividers="middle"
                 android:layout_marginRight="@dimen/padding_xxxsmall"
                 android:layout_marginLeft="@dimen/padding_standard">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
 
-                    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                        android:id="@+id/txt_folleowercount"
-                        android:layout_width="match_parent"
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:id="@+id/tv_offer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Offer ends"
+                    style="@style/textview_small"
+                    android:layout_centerInParent="true"
+                    android:gravity="left"
+                    android:visibility="invisible"
+                    app:pret_typeface="@string/font_merriweather_regular"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:divider="@drawable/divider"
+                    android:showDividers="middle"
+                    android:id="@+id/ll_bottom"
+                    android:visibility="visible">
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="46"
-                        android:gravity="center_horizontal|bottom"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                            android:id="@+id/txt_folleowercount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="46"
+                            android:gravity="center_horizontal|bottom"
+                            app:pret_typeface="@string/font_merriweather_light"/>
+                        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".6"
+                            android:text="followers"
+                            android:textSize="7dp"
+                            app:pret_typeface="@string/font_merriweather_light"/>
+                    </LinearLayout>
+
+                    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                        android:id="@+id/img_follow_unfollow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Follow"
+                        android:textSize="@dimen/textsize_standard"
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         app:pret_typeface="@string/font_merriweather_light"/>
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_closeStatus"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".6"
-                        android:text="followers"
-                        android:textSize="7dp"
+                        android:layout_weight="1"
+                        android:text="Close"
+                        android:textSize="@dimen/textsize_standard"
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         app:pret_typeface="@string/font_merriweather_light"/>
                 </LinearLayout>
-
-                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                    android:id="@+id/img_follow_unfollow"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Follow"
-                    android:gravity="center"
-                    android:textSize="@dimen/textsize_standard"
-                    app:pret_typeface="@string/font_merriweather_light"/>
-                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                    android:id="@+id/tv_closeStatus"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Close"
-                    android:textSize="@dimen/textsize_standard"
-                    android:gravity="center"
-                    app:pret_typeface="@string/font_merriweather_light"/>
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
         <ImageView
@@ -176,20 +196,19 @@
     <LinearLayout
         android:id="@+id/ll_progress"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:visibility="gone"
         android:layout_below="@+id/ll_listdata">
 
         <ProgressBar
-            style="?android:attr/progressBarStyle"
+            style="?android:attr/progressBarStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"/>
     </LinearLayout>
-
     <ImageView
         android:id="@+id/iv_banner"
         android:layout_width="match_parent"

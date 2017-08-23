@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/cattype"
-            android:prompt="@string/products" />
+            android:prompt="@string/stores" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/cattype"
-            android:prompt="@string/products" />
+            android:prompt="@string/all" />
 
         <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
             android:id="@+id/edt_search"
@@ -79,5 +79,26 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rv_Search"/>
+        android:id="@+id/rv_Search"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"/>
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:id="@+id/tv_heading_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RECENTLY VIEWED"
+        android:textColor="@color/white"
+        android:paddingTop="@dimen/padding_small"
+        android:paddingBottom="@dimen/padding_small"
+        android:paddingLeft="@dimen/padding_xlarge"
+        android:background="@color/light_gray"
+        android:textSize="@dimen/textsize_small"
+        app:pret_typeface="@string/font_merriweather_bold"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_View"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"/>
 </LinearLayout>

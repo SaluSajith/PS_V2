@@ -37,6 +37,9 @@ public class LoginController {
         this.loginCallbackInterface = loginCallbackInterface;
         this.context = context;
     }
+    public LoginController(Context context){
+        this.context = context;
+    }
 
     public static JSONObject getFacebookLoginData(JSONObject jsonObject) {
 

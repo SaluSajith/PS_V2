@@ -1,11 +1,14 @@
 package com.hit.pretstreet.pretstreet.search.models;
 
+import java.io.Serializable;
+
 /**
  * Created by User on 14/08/2017.
  */
 
-public class SearchModel {
+public class SearchModel implements Serializable{
     String PageType, PageTypeId, Id, Title, Category, Location;
+    boolean Status;
 
     public String getCategory() {
         return Category;
@@ -52,5 +55,12 @@ public class SearchModel {
 
     public void setTitle(String title) {
         Title = title;
+    }
+
+    public void setStatus(boolean status) {
+        Status = status;
+    }
+    public boolean getStatus(){
+        return Status;
     }
 }

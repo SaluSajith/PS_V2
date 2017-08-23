@@ -10,7 +10,8 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/detail_backdrop_height"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/detail_backdrop_height"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:fitsSystemWindows="true"
         app:expandedTitleTextAppearance="@android:color/transparent">
@@ -29,9 +30,10 @@
             <ImageView
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:fitsSystemWindows="true"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:maxHeight="@dimen/detail_backdrop_maxheight"
+                android:adjustViewBounds="true"
                 app:layout_collapseMode="parallax" />
 
             <ImageView
@@ -40,7 +42,7 @@
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"
-                android:background="#77000000"
+                android:background="#55000000"
                 android:layout_alignParentBottom="true"/>
 
             <android.support.v7.widget.Toolbar

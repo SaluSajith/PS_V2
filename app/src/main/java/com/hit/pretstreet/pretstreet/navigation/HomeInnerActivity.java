@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
+import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
@@ -54,11 +56,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     private static final int TRENDINGARTICLE_FRAGMENT = 12;
 
     JsonRequestController jsonRequestController;
+    HomeFragmentController homeFragmentController;
     TrendingCallback trendingCallback;
+    TrendingFragment trendingFragment;
+    ExhibitionFragment exhibitionFragment;
     Toolbar toolbar;
 
     @BindView(R.id.content) FrameLayout fl_content;
-    @BindView(R.id.nsv_header)NestedScrollView nsv_header;
     @BindView(R.id.iv_header)ImageView iv_header;
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
 
@@ -72,6 +76,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     @Override
     protected void setUpController() {
         jsonRequestController = new JsonRequestController(this);
+        homeFragmentController = new HomeFragmentController(this);
     }
 
     private void init() {
@@ -86,6 +91,8 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 onBackPressed();
             }
         });
+        ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
+        iv_search.setVisibility(View.GONE);
         fl_content.bringToFront();
 
         Intent intent = getIntent();
@@ -98,14 +105,14 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             case TRENDING_FRAGMENT:
                 tv_cat_name.setText("Trending");
                 iv_header.setImageResource(R.drawable.header_yellow);
-                TrendingFragment trendingFragment = new TrendingFragment();
+                trendingFragment = new TrendingFragment();
                 trendingCallback = trendingFragment;
                 changeFragment(trendingFragment, b);
                 break;
             case EXHIBITION_FRAGMENT:
                 tv_cat_name.setText("Exhibition");
                 iv_header.setImageResource(R.drawable.header_yellow);
-                ExhibitionFragment exhibitionFragment = new ExhibitionFragment();
+                exhibitionFragment = new ExhibitionFragment();
                 trendingCallback = exhibitionFragment;
                 changeFragment(exhibitionFragment, b);
                 break;
@@ -118,13 +125,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     }
 
     public void getTrendinglist(String offset){
-        JSONObject resultJson = HomeFragmentController.getTrendinglistJson(offset);
+        JSONObject resultJson = homeFragmentController.getTrendinglistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, TRENDING_URL);
     }
 
     public void getExhibitionlist(String offset){
-        JSONObject resultJson = HomeFragmentController.getExhibitionlistJson(offset);
+        JSONObject resultJson = homeFragmentController.getExhibitionlistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, EXHIBITION_URL);
     }
@@ -151,12 +158,22 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             //displaySnackBar(response.getString("CustomerMessage"));
             switch (url){
                 case TRENDING_URL:
-                    ArrayList<TrendingItems> trendingItemses = HomeFragmentController.getTrendingList(response);
+                    ArrayList<TrendingItems> trendingItemses = homeFragmentController.getTrendingList(response);
                     trendingCallback.bindData(trendingItemses);
                     break;
                 case EXHIBITION_URL:
-                    ArrayList<TrendingItems> exHItemses = HomeFragmentController.getExhibitionList(response);
+                    ArrayList<TrendingItems> exHItemses = homeFragmentController.getExhibitionList(response);
                     trendingCallback.bindData(exHItemses);
+                    break;
+                case TRENDINGLIKE_URL:
+                    JSONObject object = response.getJSONObject("Data");
+                    trendingFragment.updateLikeStatus(object.getInt("LikeStatus"),
+                            object.getString("Id"));
+                    break;
+                case EXHIBITIONLIKE_URL:
+                    object = response.getJSONObject("Data");
+                    exhibitionFragment.updateLikeStatus(object.getInt("LikeStatus"),
+                            object.getString("Id"));
                     break;
                 default: break;
             }
@@ -174,7 +191,11 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     @Override
     public void onError(String error) {
         this.hideDialog();
-        displaySnackBar(error);
+        EmptyFragment emptyFragment = new EmptyFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("error", error);
+        emptyFragment.setArguments(bundle);
+        changeFragment(emptyFragment, false);
     }
 
     @Override
@@ -197,8 +218,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     }
 
     @Override
-    public void likeInvoke(int trendingId) {
-
+    public void likeInvoke(int trendingId, int pageId) {
+        JSONObject resultJson = homeFragmentController.getTrendinglikeJson(trendingId + "", getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        this.showProgressDialog(getResources().getString(R.string.loading));
+        if(pageId == TRENDING_FRAGMENT)
+            jsonRequestController.sendRequest(this, resultJson, TRENDINGLIKE_URL);
+        else
+            jsonRequestController.sendRequest(this, resultJson, EXHIBITIONLIKE_URL);
     }
 
     @Override
@@ -254,6 +280,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 break;*/
             case Constant.MULTISTOREPAGE:
                 intent = new Intent(HomeInnerActivity.this, MultistoreActivity.class);
+                intent.putExtra(Constant.ID_KEY, trendingItems.getId());//TODO : check id
                 intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
                 startActivity(intent);
                 break;

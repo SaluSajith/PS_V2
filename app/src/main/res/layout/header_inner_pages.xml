@@ -50,7 +50,7 @@
                 android:layout_alignParentTop="true"
                 android:orientation="horizontal"
                 android:layout_marginLeft="@dimen/padding_xlarge"
-                android:layout_marginRight="@dimen/padding_standard"
+                android:layout_marginRight="@dimen/padding_xlarge"
                 android:gravity="top"
                 android:id="@+id/linearLayout">
 
@@ -61,7 +61,6 @@
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/back"/>
-
                 <ImageView
                     android:id="@+id/iv_logo"
                     android:layout_width="wrap_content"
@@ -69,23 +68,32 @@
                     android:padding="5dp"
                     android:layout_marginTop="-10dp"
                     app:srcCompat="@drawable/logo1" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="" />
-
                 <ImageView
                     android:id="@+id/iv_search"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:visibility="gone"
-                    android:background="@drawable/search" />
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/search"/>
             </LinearLayout>
 
-
+            <ImageView
+                android:id="@+id/iv_filter"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/filter"
+                android:layout_marginRight="5dp"
+                android:tint="@color/yellow_indicator"
+                android:layout_centerVertical="true"
+                android:layout_alignRight="@+id/linearLayout"
+                android:layout_alignEnd="@+id/linearLayout" />
         </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

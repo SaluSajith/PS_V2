@@ -3,6 +3,7 @@ package com.hit.pretstreet.pretstreet.search;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,8 +25,10 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
+import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.search.controllers.SearchController;
+import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
@@ -67,6 +70,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     private static final int EXHIBITION_FRAGMENT = 11;
 
     JsonRequestController jsonRequestController;
+    SubCategoryController subCategoryController;
     SearchController searchController;
 
     @BindView(R.id.tv_name)TextViewPret tv_name;
@@ -92,12 +96,13 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
 
         Utility.setListLayoutManager(rv_storelist, MultistoreActivity.this);
         rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
-        getShoplist("1");
+        getShoplist();
     }
 
-    private void getShoplist(String mCatid){
+    private void getShoplist(){
         String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
-        JSONObject resultJson = SearchController.getShopListJson(mCatid, pageid, "1", "1");//caat, prepage, clicktype, id
+        String mCatid = getIntent().getStringExtra(Constant.ID_KEY);
+        JSONObject resultJson = searchController.getMultiStoreListJson(mCatid, pageid, "1");//caat, prepage, clicktype, id
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, MULTISTORE_URL);
     }
@@ -152,7 +157,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                     tv_name.setText(jsonObject.getString("MultistoreTitle"));
                     tv_storecount.setText(jsonObject.getString("MultistoreCount")+" Stores");
                     setupCollapsingHeader(jsonObject.getString("MultistoreTitle"), jsonObject.getString("MultistoreImageSource"));
-                    ArrayList<StoreListModel> storeListModels = SearchController.getList(response);
+                    ArrayList<StoreListModel> storeListModels = searchController.getList(response);
                     setAdapter(storeListModels);
                     break;
                 default: break;
@@ -192,6 +197,12 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     public void onError(String error) {
         this.hideDialog();
         displaySnackBar( error);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 2000);
     }
 
     @Override
@@ -239,7 +250,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void updateFollowStatus(String id) {
-        JSONObject resultJson = SubCategoryController.updateFollowCount(id, Constant.MULTISTOREPAGE,  Constant.FOLLOWLINK);
+        JSONObject resultJson = subCategoryController.updateFollowCount(id, Constant.MULTISTOREPAGE,  Constant.FOLLOWLINK);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, UPDATEFOLLOWSTATUS_URL);
     }

@@ -2,6 +2,7 @@ package com.hit.pretstreet.pretstreet.storedetails;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -34,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -67,15 +69,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.BOOK_APPOINTMENT_URL;
+
 public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback {
     JsonRequestController jsonRequestController;
+    SubCategoryController subCategoryController;
     StoreDetailsController storeDetailsController;
 
     @BindView(R.id.tv_product) TextViewPret tv_product;
     @BindView(R.id.tv_about) TextViewPret tv_about;
     @BindView(R.id.tv_imgsrc) TextViewPret tv_imgsrc;
     @BindView(R.id.tv_book_app) TextViewPret tv_book_app;
+    @BindView(R.id.tv_about_heading) TextViewPret tv_about_heading;
+    @BindView(R.id.tv_heading_hrs) TextViewPret tv_heading_hrs;
     @BindView(R.id.tv_testimonials_heading) TextViewPret tv_testimonials_heading;
 
     @BindView(R.id.tv_time) TextViewPret tv_time;
@@ -98,6 +105,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     @BindView(R.id.ll_getdirec) LinearLayout ll_getdirec;
 
     String mStoreId;
+    Dialog popupDialog;
     private StoreDetailsModel storeDetailsModel;
 
     @Override
@@ -117,6 +125,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     @Override
     protected void setUpController() {
+        subCategoryController = new SubCategoryController(this);
         jsonRequestController = new JsonRequestController(this);
         storeDetailsController = new StoreDetailsController(this);
     }
@@ -143,14 +152,14 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private void getShopDetails(String storeId, String pageId){
-        JSONObject resultJson = StoreDetailsController.getShopDetailsJson(storeId, pageId);
+        JSONObject resultJson = storeDetailsController.getShopDetailsJson(storeId, pageId);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.STOREDETAILS_URL);
     }
 
     @OnClick(R.id.btn_follow)
     public void onFollowPressed() {
-        JSONObject resultJson = SubCategoryController.updateFollowCount(mStoreId,
+        JSONObject resultJson = subCategoryController.updateFollowCount(mStoreId,
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY), Constant.FOLLOWLINK);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.UPDATEFOLLOWSTATUS_URL);
@@ -158,42 +167,51 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     private void setupDetailsPage(StoreDetailsModel storeDetailsModel){
 
-        setupCollapsingHeader(storeDetailsModel.getStoreName(), storeDetailsModel.getBaseImage());
+        try {
+            setupCollapsingHeader(storeDetailsModel.getStoreName(), storeDetailsModel.getBaseImage());
 
-        tv_storename.setText(storeDetailsModel.getStoreName());
-        tv_location.setText(storeDetailsModel.getAreaCity());
-        tv_openstatus.setText(storeDetailsModel.getOpenStatus() == true ? "Closed" : "Open now");
-        tv_folowerscount.setText(storeDetailsModel.getFollowingCount() +" followers");
-        tv_about.setText(storeDetailsModel.getAbout());
-        tv_time.setText(" - "+storeDetailsModel.getTimingToday());
-        String sourceString = "<b>" + "Product: " + "</b> " + storeDetailsModel.getProducts();
-        tv_product.setText(Html.fromHtml(sourceString));
-        sourceString = "<b>" + "Image Source: " + "</b> " + storeDetailsModel.getImageSource();
-        tv_imgsrc.setText(Html.fromHtml(sourceString));
+            tv_storename.setText(storeDetailsModel.getStoreName());
+            tv_location.setText(storeDetailsModel.getAreaCity());
+            tv_openstatus.setText(storeDetailsModel.getOpenStatus() == true ? "Closed" : "Open now");
+            tv_folowerscount.setText(storeDetailsModel.getFollowingCount() + " followers");
+            tv_about.setText(storeDetailsModel.getAbout());
+            tv_time.setText(" - " + storeDetailsModel.getTimingToday());
+            String sourceString = "<b>" + "Product: " + "</b> " + storeDetailsModel.getProducts();
+            tv_product.setText(Html.fromHtml(sourceString));
+            sourceString = "<b>" + "Image Source: " + "</b> " + storeDetailsModel.getImageSource();
+            tv_imgsrc.setText(Html.fromHtml(sourceString));
 
-        iv_sale.setVisibility(storeDetailsModel.getFlags().contains("0") == true ? View.INVISIBLE : View.VISIBLE);
-        iv_offer.setVisibility(storeDetailsModel.getFlags().contains("1") == true ? View.INVISIBLE : View.VISIBLE);
-        iv_new.setVisibility(storeDetailsModel.getFlags().contains("2") == true ? View.INVISIBLE : View.VISIBLE);
+            btn_follow.setText(storeDetailsModel.getFollowingStatus() == true ? "Follow" : "Unfollow");
+            iv_sale.setVisibility(storeDetailsModel.getFlags().contains("0") == true ? View.INVISIBLE : View.VISIBLE);
+            iv_offer.setVisibility(storeDetailsModel.getFlags().contains("1") == true ? View.INVISIBLE : View.VISIBLE);
+            iv_new.setVisibility(storeDetailsModel.getFlags().contains("2") == true ? View.INVISIBLE : View.VISIBLE);
 
-        ArrayList arrayListTimings = storeDetailsModel.getArrayListTimings();
-        StringBuilder strTiming = new StringBuilder();
-        for(Object timing : arrayListTimings){
-            strTiming.append(timing + "<br/>"+ "<br/>");
-        }
-        sourceString = strTiming.toString();
-        tv_openinghrs.setText(Html.fromHtml(sourceString));
-        if(storeDetailsModel.getArrayListTesti().size()>0)
-        setupTestimonials(storeDetailsModel);
-        else{
-            viewPager.setVisibility(View.GONE);
-            tv_testimonials_heading.setVisibility(View.GONE);
-        }
-        setupGallery(storeDetailsModel.getArrayListImages());
+            ArrayList arrayListTimings = storeDetailsModel.getArrayListTimings();
+            StringBuilder strTiming = new StringBuilder();
+            for (Object timing : arrayListTimings) {
+                strTiming.append(timing + "<br/>" + "<br/>");
+            }
+            sourceString = strTiming.toString();
+            tv_openinghrs.setText(Html.fromHtml(sourceString));
+            if (storeDetailsModel.getArrayListTesti().size() > 0)
+                setupTestimonials(storeDetailsModel);
+            else {
+                viewPager.setVisibility(View.GONE);
+                tv_testimonials_heading.setVisibility(View.GONE);
+            }
+            setupGallery(storeDetailsModel.getArrayListImages());
+
+            tv_about_heading.setVisibility(storeDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_imgsrc.setVisibility(storeDetailsModel.getImageSource().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_product.setVisibility(storeDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_time.setVisibility(storeDetailsModel.getTimingToday().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_heading_hrs.setVisibility(storeDetailsModel.getArrayListTimings().size() > 0 ? View.VISIBLE : View.GONE);
+        }catch (Exception e){}
     }
 
     public void showBookPopup() {
 
-        final Dialog popupDialog = new Dialog(StoreDetailsActivity.this);
+        popupDialog = new Dialog(StoreDetailsActivity.this);
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.popup_bookappointment, null);
 
@@ -207,6 +225,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupDialog.show();
 
+        final EdittextPret edt_remarks = (EdittextPret) view.findViewById(R.id.edt_remarks);
         ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,6 +238,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         edt_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                edt_date.setError(null);
                 final Calendar c = Calendar.getInstance();
                 DatePickerDialog dpd = new DatePickerDialog(StoreDetailsActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
@@ -231,10 +251,31 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
                             }
                         }, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DATE));
+                c.add(Calendar.DATE, 1);
+                dpd.getDatePicker().setMinDate(c.getTimeInMillis());
                 c.add(Calendar.YEAR, 1);
-                dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 dpd.getDatePicker().setMaxDate(c.getTimeInMillis());
                 dpd.show();
+            }
+        });
+
+        final EdittextPret edt_time = (EdittextPret) view.findViewById(R.id.edt_time);
+        edt_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_time.setError(null);
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(StoreDetailsActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        edt_time.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//true : Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
             }
         });
 
@@ -242,9 +283,25 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupDialog.dismiss();
+                if(edt_date.getText().toString().trim().length()==0){
+                    edt_date.setError("Select date");
+                }
+                else if(edt_time.getText().toString().trim().length()==0){
+                    edt_time.setError("Select time");
+                }
+                else{
+                    bookAppointment(edt_date.getText().toString(),
+                            edt_time.getText().toString(),
+                            edt_remarks.getText().toString());
+                }
             }
         });
+    }
+
+    private void bookAppointment(String date, String time, String remarks){
+        JSONObject resultJson = storeDetailsController.getBookAppoJson(date+" "+time, mStoreId, remarks);
+        this.showProgressDialog(getResources().getString(R.string.loading));
+        jsonRequestController.sendRequest(this, resultJson, BOOK_APPOINTMENT_URL);
     }
 
     private void setupCollapsingHeader(String title, String image){
@@ -276,11 +333,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     private void loadBackdrop(String image) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(getApplicationContext())
-                .load(image)
-                .asBitmap()
-                .centerCrop()
-                .into(imageView);
+        Glide.with(getApplicationContext()).load(image).asBitmap().into(imageView);
     }
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {
@@ -461,23 +514,24 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         startActivity(Intent.createChooser(share, "Share with.."));
     }
 
-
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
             //displaySnackBar(response.getString("CustomerMessage"));
             switch (url){
                 case Constant.STOREDETAILS_URL:
-                    StoreDetailsModel storeDetailsModel = StoreDetailsController.getStoreData(response);
+                    StoreDetailsModel storeDetailsModel = storeDetailsController.getStoreData(response);
                     this.storeDetailsModel = storeDetailsModel;
                     setupDetailsPage(storeDetailsModel);
                     break;
+                case BOOK_APPOINTMENT_URL:
+                    popupDialog.dismiss();
+                    displaySnackBar(response.getString("CustomerMessage"));
                 case Constant.UPDATEFOLLOWSTATUS_URL:
-                    btn_follow.setText(response.getJSONObject("Data").getInt("FollowingStatus") == 0 ? "Unfollow" : "Follow");
+                    btn_follow.setText(response.getJSONObject("Data").getInt("FollowingStatus") == 0 ? "Follow" : "Unfollow");
                     break;
                 default: break;
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

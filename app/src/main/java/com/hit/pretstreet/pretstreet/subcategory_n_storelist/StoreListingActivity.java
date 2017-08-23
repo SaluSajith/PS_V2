@@ -2,6 +2,7 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
@@ -28,24 +29,32 @@ import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
+import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
+import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter$ShopsHolder_ViewBinding;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
@@ -60,11 +69,13 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     @BindView(R.id.rv_storelist)RecyclerView rv_storelist;
     @BindView(R.id.ll_header) LinearLayout ll_header;
     @BindView(R.id.ll_location) LinearLayout ll_location;
+    @BindView(R.id.ll_empty) View ll_empty;
 
     JsonRequestController jsonRequestController;
     SubCategoryController subCategoryController;
     StoreList_RecyclerAdapter storeList_recyclerAdapter;
     TextViewPret[] txtname;
+    ImageView iv_filter;
 
     private int selectedFragment = 0;
     private static final int ACCOUNT_FRAGMENT = 0;
@@ -79,12 +90,14 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
 
-    int pageCount=0, totalPages, total;
-    public static int selectedPosition;
+    int pageCount=0;
     boolean requestCalled = false;
     boolean loadmore = true, first = true;
-    String catTag = "";
-    ArrayList<StoreListModel> storeListModels;
+    private static String catTag = "";
+
+    private static ArrayList<StoreListModel> storeListModels;
+    private ArrayList<FilterDataModel> dataModel;
+    private JSONArray arrayFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +109,10 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        arrayFilter = new JSONArray();
+        dataModel = new ArrayList<>();
         storeListModels = new ArrayList<>();
+        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(StoreListingActivity.this, storeListModels);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
@@ -104,6 +120,21 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
+        iv_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSearchPage();
+            }
+        });
+        iv_filter = (ImageView) toolbar.findViewById(R.id.iv_filter);
+        iv_filter.setVisibility(View.VISIBLE);
+        iv_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFilterPage();
             }
         });
         ll_scroll.setVisibility(View.VISIBLE);
@@ -133,6 +164,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                                 requestCalled = true;
                                 first = false;
                                 if(loadmore)
+                                    storeList_recyclerAdapter.loadMoreView(true);
                                     getShoplist(catTag, false);
                             }
                             if(!loadmore)
@@ -147,7 +179,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private void getShoplist(String mCatid, boolean first){
         loadmore = true;
         String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
-        JSONObject resultJson = SubCategoryController.getShoplistJson(mCatid, "1", ++pageCount+"", pageid);
+        JSONObject resultJson = subCategoryController.getShoplistJson(mCatid, ++pageCount+"", pageid, arrayFilter);
         if(first)
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, STORELISTING_URL);
@@ -164,6 +196,24 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }
+
+    private void openSearchPage(){
+        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+        intent.putExtra(PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
+        intent.putExtra(ID_KEY, getIntent().getStringExtra(ID_KEY));
+        startActivity(intent);
+    }
+
+    private void openFilterPage(){
+        Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
+        bundle.putString(ID_KEY, getIntent().getStringExtra(ID_KEY));
+        bundle.putSerializable(PARCEL_KEY, this.dataModel);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, Integer.parseInt(Constant.FILTERPAGE));
+    }
+
     private void createScrollingHeader(){
 
         /*HomeCatContentData catContentData = (HomeCatContentData) getIntent()
@@ -181,7 +231,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
         if(homeSubCategories.size()>0){
             HomeCatContentData contentData = homeSubCategories.get(0).getHomeContentData();
-            txtname[0].setTag(contentData.getMainCatId());
+            txtname[0].setTag(contentData.getCategoryId());
         } else {
             txtname[0].setTag(getIntent().getStringExtra("mCatId"));
             txtname[0].performClick();
@@ -217,11 +267,14 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
-            //displaySnackBar(response.getString("CustomerMessage"));
             switch (url){
                 case STORELISTING_URL:
                     requestCalled = false;
-                    storeListModels.addAll(SubCategoryController.getList(response));
+                    storeList_recyclerAdapter.loadMoreView(false);
+                    ArrayList <StoreListModel> storeListMode = subCategoryController.getList(response);
+                    storeListModels.addAll(storeListMode);
+                    if(storeListMode.size()==0)
+                        loadmore = false;
                     setAdapter();
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
@@ -239,11 +292,13 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     private void setAdapter(){
         if(first) {
-            storeList_recyclerAdapter = new StoreList_RecyclerAdapter(StoreListingActivity.this, storeListModels);
             rv_storelist.setAdapter(storeList_recyclerAdapter);
         }
         else
             storeList_recyclerAdapter.notifyDataSetChanged();
+        if(storeListModels.size()==0)
+            ll_empty.setVisibility(View.VISIBLE);
+        else ll_empty.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -261,7 +316,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     @Override
     public void onError(String error) {
         this.hideDialog();
-        loadmore = false;
         requestCalled = false;
         displaySnackBar(error);
     }
@@ -279,6 +333,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         catTag = textViewPret.getTag().toString()+"";
         pageCount = 0;
         first = true;
+        rv_storelist.setAdapter(null);
+        storeListModels.clear();
         getShoplist((String) textViewPret.getTag(), first);
     }
 
@@ -287,7 +343,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         switch (storeListModel.getPageTypeId()){
             case Constant.STOREDETAILSPAGE:
                 Intent intent = new Intent(StoreListingActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, storeListModel);
+                intent.putExtra(PARCEL_KEY, storeListModel);
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
                 startActivity(intent);
                 break;
@@ -307,6 +363,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                 break;
             case Constant.MULTISTOREPAGE:
                 intent = new Intent(StoreListingActivity.this, MultistoreActivity.class);
+                intent.putExtra(Constant.ID_KEY, storeListModel.getId());
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
                 startActivity(intent);
                 break;
@@ -315,8 +372,20 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     }
     @Override
     public void updateFollowStatus(String id) {
-        JSONObject resultJson = SubCategoryController.updateFollowCount(id, Constant.STORELISTINGPAGE,  Constant.FOLLOWLINK);
+        JSONObject resultJson = subCategoryController.updateFollowCount(id, Constant.STORELISTINGPAGE,  Constant.FOLLOWLINK);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, UPDATEFOLLOWSTATUS_URL);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == Integer.parseInt(Constant.FILTERPAGE) && resultCode  == RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
+                arrayFilter = subCategoryController.createFilterModel(dataModel);
+                getShoplist(catTag, true);
+            }
+        } catch (Exception ex) { }
     }
 }

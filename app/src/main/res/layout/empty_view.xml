@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:gravity="center"
-    android:orientation="vertical"
-    >
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/network_error"
@@ -22,8 +21,9 @@
         android:layout_margin="15dp"
         android:gravity="center"
         android:textColor="@color/dark_gray"
-        android:text="Can't connect to server. Please check the network connection!"
+        android:text="Oops! No data available!"
         app:pret_typeface="@string/font_merriweather_regular"
-        style="@style/textview_normal"/>
+        style="@style/textview_normal"
+        android:id="@+id/tv_msg"/>
 
 </LinearLayout>

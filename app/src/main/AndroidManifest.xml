@@ -168,7 +168,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigation.HomeInnerActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".location.StoreLocationMapScreen"
             android:screenOrientation="portrait" />
@@ -181,7 +181,9 @@
         <activity
             android:name=".search.MultistoreActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".search.SearchActivity"></activity>
+        <activity android:name=".search.SearchActivity" />
+        <activity android:name=".navigationitems.FollowingActivity" />
+        <activity android:name=".subcategory_n_storelist.FilterActivity"></activity>
     </application>
 
 </manifest>

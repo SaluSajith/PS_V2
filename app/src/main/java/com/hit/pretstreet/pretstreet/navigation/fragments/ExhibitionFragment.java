@@ -32,6 +32,7 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
         implements TrendingCallback, ZoomedViewListener {
 
     @BindView(R.id.rv_trending) RecyclerView rv_trending;
+    ExhibitionAdapter adapter;
 
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
 
     @Override
     public void bindData(ArrayList<TrendingItems> exHItems) {
-        ExhibitionAdapter adapter = new ExhibitionAdapter(getActivity(),ExhibitionFragment.this, exHItems);
+        adapter = new ExhibitionAdapter(getActivity(),ExhibitionFragment.this, exHItems);
         rv_trending.setAdapter(adapter);
         /*TrendingArticleAdapter mAdapter = new TrendingArticleAdapter(getActivity(), exHItems);
         rv_trending.setAdapter(mAdapter);*/
@@ -78,5 +79,9 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
         intent.putExtra(Constant.POSITION_KEY, position);
         startActivity(intent);
 
+    }
+
+    public void updateLikeStatus(int status, String storeid) {
+        adapter.updateLikeStatus(status, storeid);
     }
 }

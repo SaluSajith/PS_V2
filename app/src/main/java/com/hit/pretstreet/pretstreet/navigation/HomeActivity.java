@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.hit.pretstreet.pretstreet.R;
@@ -34,8 +36,10 @@ import com.hit.pretstreet.pretstreet.navigation.adapters.NavDrawerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
+import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
@@ -54,6 +58,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 
 public class HomeActivity extends AbstractBaseAppCompatActivity
@@ -72,6 +77,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     private static final int TERMS_FRAGMENT = 8;
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
+    private static final int NOTIFICATION_FRAGMENT = 12;
 
     @BindView(R.id.tv_location) TextViewPret tv_location;
     NavDrawerAdapter navDrawerAdapter;
@@ -166,6 +172,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(ID_KEY, "0");
                 startActivity(intent);
             }
         });
@@ -180,6 +187,20 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             @Override
             public void onClick(View v) {
                 rateUs();
+            }
+        });
+        AppCompatImageView iv_notif = (AppCompatImageView) drawer.findViewById(R.id.iv_notification);
+        iv_notif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menuOnClick(NOTIFICATION_FRAGMENT+"");
+            }
+        });
+        ImageView iv_noti = (ImageView) toolbar.findViewById(R.id.iv_notif);
+        iv_noti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menuOnClick(NOTIFICATION_FRAGMENT+"");
             }
         });
 
@@ -222,7 +243,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @Override
     public void menuOnClick(String id) {
         String itemId = id;
-        Toast.makeText(HomeActivity.this, id, Toast.LENGTH_SHORT).show();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
@@ -236,13 +256,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             case "nav_account":
                 selectedFragment = ACCOUNT_FRAGMENT;
                 Intent intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case "nav_following":
-                selectedFragment = FOLLOWING_FRAGMENT;
-                intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
@@ -268,9 +281,22 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
+            case NOTIFICATION_FRAGMENT+"":
+                selectedFragment = NOTIFICATION_FRAGMENT;
+                intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("fragment", selectedFragment);
+                startActivity(intent);
+                break;
             case "storedetails":
                 intent = new Intent(HomeActivity.this, MultistoreActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                startActivity(intent);
+                break;
+            case "nav_following":
+                intent = new Intent(HomeActivity.this, FollowingActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("mSubTitle", "Following");
                 startActivity(intent);
                 break;
             /*case "storedetails":
@@ -327,12 +353,8 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
 
     private void handleResponse(JSONObject response){
-        String strsuccess = null;
         try {
             String url = response.getString("URL");
-            strsuccess = response.getString("Status");
-            if (strsuccess.equals("1")) {
-                //displaySnackBar(response.getString("CustomerMessage"));
                 switch (url){
                     case Constant.HOMEPAGE_URL:
                         PreferenceServices.instance().saveHomeMainCatList(response.toString());
@@ -343,9 +365,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                         break;
                     default: break;
                 }
-            } else {
-                displaySnackBar(response.getString("Message"));
-            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

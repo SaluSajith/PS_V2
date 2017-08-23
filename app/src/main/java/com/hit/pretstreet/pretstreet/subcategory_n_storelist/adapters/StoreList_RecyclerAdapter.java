@@ -18,6 +18,7 @@ import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
+import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
@@ -37,6 +38,8 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
     private static ArrayList<StoreListModel> mItems;
     private static TextViewPret textViewPret;
     static int mPosition;
+    private boolean loadmore = false;
+    private LinearLayout layoutPret;
 
     ButtonClickCallbackStoreList buttonClickCallback;
 
@@ -52,14 +55,14 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
         View mRootView;
         int listViewItemType = getItemViewType(viewType);
         if (listViewItemType % 2 == 0) {
-            if (!context.getClass().getSimpleName().equals(StoreListingActivity.class.getSimpleName()))
-                mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store1, parent, false);
-            else {
+            if (context.getClass().getSimpleName().equals(StoreListingActivity.class.getSimpleName())||
+                    context.getClass().getSimpleName().equals(FollowingActivity.class.getSimpleName())) {
                 if (listViewItemType == 0)
                     mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store, parent, false);
                 else
                     mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store1, parent, false);
-            }
+            } else
+                mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store1, parent, false);
         } else {
             mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store2, parent, false);
         }
@@ -69,7 +72,6 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
     @Override
     public int getItemCount() {
         return this.mItems != null ? mItems.size() : 0;
-        //return 10;
     }
 
     @Override
@@ -87,18 +89,23 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
         }
         else;
         StoreListModel storeListModel = mItems.get(position);
+
         /*if(position == mItems.size()-1) {
-            if (pageCount < totalPages) {
-                if(loadmore)
+                if(loadmore) {
+                    holder.ll_progress.setVisibility(View.GONE);
+                }else {
+                    layoutPret = holder.ll_progress;
                     holder.ll_progress.setVisibility(View.VISIBLE);
-                else holder.ll_progress.setVisibility(View.GONE);
-            }
-            else
-                holder.ll_progress.setVisibility(View.GONE);
-        }
-        else
+                }
+        } else
             holder.ll_progress.setVisibility(View.GONE);
         */
+        if(storeListModel.getLoadmoreFlag())
+            holder.ll_progress.setVisibility(View.VISIBLE);
+        else
+            holder.ll_progress.setVisibility(View.GONE);
+
+
         holder.txt_storename.setText(storeListModel.getTitle());
         holder.txt_address.setText(storeListModel.getLocation());
 
@@ -165,6 +172,8 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
             textViewPret =  new TextViewPret(context);
             img_follow_unfollow.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
+            if (context.getClass().getSimpleName().equals(FollowingActivity.class.getSimpleName()))
+                img_follow_unfollow.setVisibility(View.GONE);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -203,8 +212,14 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
     }
 
     public static void updateFollowStatus(int status, String storeid) {
-        textViewPret.setText(status == 1 ? "Unfollow" : "Follow");
+        textViewPret.setText(status == 0 ? "Unfollow" : "Follow");
         if(mItems.get(mPosition).getId().equals(storeid))
-            mItems.get(mPosition).setFollowingStatus(status == 0 ? false : true);
+            mItems.get(mPosition).setFollowingStatus(status == 1 ? false : true);
+    }
+
+    public void loadMoreView(boolean visibility){
+        loadmore = visibility;
+        if(mItems.size()>1)
+        mItems.get(mItems.size()-1).setLoadmoreFlag(visibility);
     }
 }

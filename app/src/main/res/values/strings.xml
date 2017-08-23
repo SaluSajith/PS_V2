@@ -56,6 +56,9 @@
     <string name="mobilenumbr">mobile no:</string>
     <string name="email">email id:</string>
     <string name="submit">Submit</string>
+    <string name="change_pass">Change Password</string>
+    <string name="interested">Interested</string>
+    <string name="going">Going</string>
 
     <!--changepassword-->
     <string name="currentpass">current password:</string>
@@ -79,6 +82,7 @@
         <item name="Product"></item>
         <item name="Store"></item>
     </string-array>
-    <string name="products">Product</string>
+    <string name="stores">Stores</string>
+    <string name="all">All</string>
 
 </resources>

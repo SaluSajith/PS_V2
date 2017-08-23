@@ -74,6 +74,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     @BindView(R.id.content_splash) FrameLayout fl_content_splash;
 
     JsonRequestController jsonRequestController;
+    LoginController loginController;
+
     private static int DURATION;
     private Handler splashHandler;
     private static final int SPLASH_DURATION_END = 2000;
@@ -95,6 +97,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     protected void setUpController() {
+        loginController = new LoginController(this);
         jsonRequestController = new JsonRequestController(this);
     }
 
@@ -134,7 +137,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             if(responseJSON!=null) {
                 mProfilePic = URLEncoder.encode("https://graph.facebook.com/" +
                         responseJSON.getString("id").toString() + "/picture?type=large", "UTF-8");
-                JSONObject resultJson = LoginController.getFacebookLoginData(responseJSON);
+                JSONObject resultJson = loginController.getFacebookLoginData(responseJSON);
                 this.showProgressDialog(getResources().getString(R.string.loading));
                 jsonRequestController.sendRequest(this, resultJson, Constant.SOCIAL_LOGIN_URL);
             }
@@ -146,7 +149,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void getGoogleResponse(GoogleSignInAccount signInAccount) {
-        JSONObject resultJson = LoginController.getGoogleLoginDetails(signInAccount);
+        JSONObject resultJson = loginController.getGoogleLoginDetails(signInAccount);
         String googleImageUrl = String.valueOf(signInAccount.getPhotoUrl());
         mProfilePic = googleImageUrl.substring(0, googleImageUrl.length() - 2) + PROFILE_PIC_SIZE;
         jsonRequestController.sendRequest(this, resultJson, Constant.SOCIAL_LOGIN_URL);
@@ -221,18 +224,23 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     public void validationSuccess(String phonenumber) {
         LoginSession loginSession = new LoginSession();
         loginSession.setMobile(phonenumber);
-        loginJson = LoginController.getNormalLoginDetails(loginSession);
-        JSONObject otpObject = LoginController.getOTPVerificationJson(phonenumber, "");
+        loginJson = loginController.getNormalLoginDetails(loginSession);
+        JSONObject otpObject = loginController.getOTPVerificationJson(phonenumber, "");
         showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, otpObject, Constant.LOGIN_OTP_URL);
     }
 
     @Override
     public void validationSuccess(LoginSession loginSession) {
-        registerJson = LoginController.getNormalLoginDetails(loginSession);
+        registerJson = loginController.getNormalLoginDetails(loginSession);
         showProgressDialog(getResources().getString(R.string.loading));
-        JSONObject otpObject = LoginController.getOTPVerificationJson(loginSession.getMobile(), loginSession.getEmail());
+        JSONObject otpObject = loginController.getOTPVerificationJson(loginSession.getMobile(), loginSession.getEmail());
         jsonRequestController.sendRequest(this, otpObject, Constant.REGISTRATION_OTP_URL);
+    }
+
+    @Override
+    public void validationSuccess(JSONObject jsonObject, int type) {
+
     }
 
     private void handleResponse(JSONObject response){

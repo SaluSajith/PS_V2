@@ -53,6 +53,7 @@
     <dimen name="searchpage_topmargin">60dp</dimen>
     <dimen name="nav_header_height">120dp</dimen>
     <dimen name="detail_backdrop_height">300dp</dimen>
+    <dimen name="detail_backdrop_maxheight">500dp</dimen>
 
     <dimen name="headeryellow_height">137dp</dimen>
     <dimen name="headeryellow_width">1080dp</dimen>

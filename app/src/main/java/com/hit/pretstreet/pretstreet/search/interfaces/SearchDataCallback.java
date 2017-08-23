@@ -10,6 +10,9 @@ import java.util.ArrayList;
  */
 
 public interface SearchDataCallback {
+    void setRecentsearchList(ArrayList<SearchModel> recentViewModels,
+                             ArrayList<SearchModel> recentSearchModels,
+                             ArrayList<SearchModel> catModels);
     void setAutosearchList(ArrayList<SearchModel> searchModels);
-    void setSearchList(ArrayList<StoreListModel> searchModels);
+    void setSearchList(ArrayList<StoreListModel> searchModels, boolean loadmore);
 }

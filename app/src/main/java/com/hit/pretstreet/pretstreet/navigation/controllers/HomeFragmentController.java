@@ -29,7 +29,7 @@ public class HomeFragmentController {
         this.context = context;
     }
 
-    public static JSONObject getTrendinglistJson(String offset) {
+    public static JSONObject getTrendinglistJson(String offset, String prepage) {
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -39,7 +39,7 @@ public class HomeFragmentController {
             jsonBody.put("Filter", filter);*/
             jsonBody.put("Limit", Constant.LIMIT);
             jsonBody.put("Offset", offset);
-            jsonBody.put("PreviousPageTypeId", "");
+            jsonBody.put("PreviousPageTypeId", prepage);
             jsonBody.put("ClickTypeId", "");
 
             jsonBody = Constant.addConstants(jsonBody, context);
@@ -51,7 +51,7 @@ public class HomeFragmentController {
         return jsonBody;
     }
 
-    public static JSONObject getExhibitionlistJson(String offset) {
+    public static JSONObject getExhibitionlistJson(String offset, String prepage) {
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -61,7 +61,7 @@ public class HomeFragmentController {
             jsonBody.put("Filter", filter);*/
             jsonBody.put("Limit", Constant.LIMIT);
             jsonBody.put("Offset", offset);
-            jsonBody.put("PreviousPageTypeId", "");
+            jsonBody.put("PreviousPageTypeId", prepage);
             jsonBody.put("ClickTypeId", "");
 
             jsonBody = Constant.addConstants(jsonBody, context);
@@ -72,7 +72,22 @@ public class HomeFragmentController {
 
         return jsonBody;
     }
+    public static JSONObject getTrendinglikeJson(String id, String prepage) {
 
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("Id", id);
+            jsonBody.put("PreviousPageTypeId", prepage);
+            jsonBody.put("ClickTypeId", "");
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {
+        }
+
+        return jsonBody;
+    }
     public static ArrayList<TrendingItems> getTrendingList(JSONObject response) {
         ArrayList<TrendingItems> trendingItems = new ArrayList<>();
         try {
@@ -145,15 +160,10 @@ public class HomeFragmentController {
                 item.setPagetype(trendingContent.getString("PageType"));
                 item.setClicktype(trendingContent.getString("ClickTypeId"));
                 item.setPagetypeid(trendingContent.getString("PageTypeId"));
-                item.setStoreid(trendingContent.getString("StoreId"));
-                item.setLogoImage(trendingContent.getString("LogoImage"));
                 item.setTitle(trendingContent.getString("Title"));
                 item.setArticle(trendingContent.getString("ArticleShortDescription"));
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 1 ? true : false);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? true : false);
-                Log.e("Exception con", item.getBanner()+" ");
-                Log.e("Exception con like", item.getLike()+" ");
-                item.setStoreName(trendingContent.getString("Storename"));
 
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
                 ArrayList imagearray = new ArrayList();

@@ -15,21 +15,24 @@
         tools:showIn="@layout/activity_scrolling"
         android:background="@drawable/base"
         android:id="@+id/nsv_header"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        android:fillViewport="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/header_inner_pages"></include>
+            <include layout="@layout/header_inner_pages"
+                android:id="@+id/ll_header"></include>
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/content"
+                android:layout_below="@+id/ll_header"
                 android:layout_marginTop="@dimen/content_overlapmargin_activity">
             </FrameLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

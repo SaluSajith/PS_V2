@@ -43,11 +43,31 @@ public class SearchController {
         return jsonBody;
     }
 
-    public static JSONObject getAutoSearchListJson(String searchWord, String prePage, String catId) {
+    public static JSONObject getMultiStoreListJson(String Id, String prePage, String clicktype) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("PreviousPageTypeId", prePage);
+            jsonBody.put("ClickTypeId", clicktype);
+            jsonBody.put("Id", Id);
+            jsonBody.put("Limit", Constant.LIMIT);
+            jsonBody.put("Offset", 1);//TODO change : add pagination
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {
+        }
+
+        return jsonBody;
+    }
+
+    public static JSONObject getAutoSearchListJson(String searchWord, String prePage, String catId, String cattype) {
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("CategoryId", catId);
+            jsonBody.put("Searchfor", cattype);
             jsonBody.put("PreviousPageTypeId", prePage);
             jsonBody.put("ClickTypeId", "");
             jsonBody.put("Searchword", searchWord);
@@ -61,14 +81,34 @@ public class SearchController {
         return jsonBody;
     }
 
+    public static JSONObject getRecentSearchListJson(String Id, String prePage) {
 
-    public static JSONObject getSearchResultJson(String searchWord, String prePage, String catId, String offset) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("Id", Id);
+            jsonBody.put("PreviousPageTypeId", prePage);
+            jsonBody.put("ClickTypeId", "");
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {
+        }
+
+        return jsonBody;
+    }
+
+
+    public static JSONObject getSearchResultJson(String searchWord, String prePage, String catId,
+                                                 int offset, String cattype, JSONArray arrayFilter) {
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("CategoryId", catId);
+            jsonBody.put("Searchfor", cattype);
             jsonBody.put("PreviousPageTypeId", prePage);
             jsonBody.put("ClickTypeId", "");
+            jsonBody.put("Filter", arrayFilter);
             jsonBody.put("Searchword", searchWord);
             jsonBody.put("Limit", Constant.LIMIT);
             jsonBody.put("Offset", offset);
@@ -94,7 +134,7 @@ public class SearchController {
                 storeListModel.setPageTypeId(jsonArray.getJSONObject(i).getString("PageTypeId"));
                 storeListModel.setId(jsonArray.getJSONObject(i).getString("Id"));
                 storeListModel.setTitle(jsonArray.getJSONObject(i).getString("Title"));
-                storeListModel.setFollowingStatus(jsonArray.getJSONObject(i).getInt("FollowingStatus") == 1 ? false : true);
+                storeListModel.setFollowingStatus(jsonArray.getJSONObject(i).getInt("FollowingStatus") == 0 ? false : true);
                 storeListModel.setOpenStatus(jsonArray.getJSONObject(i).getInt("OpenStatus") == 1 ? false : true);
                 storeListModel.setFollowingCount(jsonArray.getJSONObject(i).getString("FollowingCount"));
                 storeListModel.setLocation(jsonArray.getJSONObject(i).getString("Location"));
@@ -154,6 +194,72 @@ public class SearchController {
     }
 
 
+    public static ArrayList <SearchModel> getRecentViewList(JSONObject response) {
+        ArrayList<SearchModel> searchModels = new ArrayList<>();
+        try {
+            JSONObject jsonObject = response.getJSONObject("Data");
+            JSONArray jsonArray = jsonObject.getJSONArray("RecentViewed");
+            SearchModel searchModel;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                searchModel = new SearchModel();
+                searchModel.setPageType(jsonArray.getJSONObject(i).getString("PageType"));
+                searchModel.setPageTypeId(jsonArray.getJSONObject(i).getString("PageTypeId"));
+                searchModel.setId(jsonArray.getJSONObject(i).getString("Id"));
+                searchModel.setTitle(jsonArray.getJSONObject(i).getString("Title"));
+                searchModel.setCategory(jsonArray.getJSONObject(i).getString("Category"));
+                searchModel.setLocation(jsonArray.getJSONObject(i).getString("Location"));
+
+                searchModels.add(searchModel);
+            }
+        }catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+
+        return  searchModels;
+    }
+
+    public static ArrayList <SearchModel> getRecentSearchList(JSONObject response) {
+        ArrayList<SearchModel> searchModels = new ArrayList<>();
+        try {
+            JSONObject jsonObject = response.getJSONObject("Data");
+            JSONArray jsonArray = jsonObject.getJSONArray("RecentSearched");
+            SearchModel searchModel;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                searchModel = new SearchModel();
+                searchModel.setPageType(jsonArray.getJSONObject(i).getString("PageType"));
+                searchModel.setPageTypeId(jsonArray.getJSONObject(i).getString("PageTypeId"));
+                searchModel.setId(jsonArray.getJSONObject(i).getString("Id"));
+                searchModel.setTitle(jsonArray.getJSONObject(i).getString("Title"));
+                searchModel.setCategory(jsonArray.getJSONObject(i).getString("Category"));
+                searchModel.setLocation(jsonArray.getJSONObject(i).getString("Location"));
+
+                searchModels.add(searchModel);
+            }
+        }catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+
+        return  searchModels;
+    }
+
+    public static ArrayList <SearchModel> getCategoryList(JSONObject response) {
+        ArrayList<SearchModel> searchModels = new ArrayList<>();
+        try {
+            JSONObject jsonObject = response.getJSONObject("Data");
+            JSONArray jsonArray = jsonObject.getJSONArray("Category");
+            SearchModel searchModel;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                searchModel = new SearchModel();
+                searchModel.setId(jsonArray.getJSONObject(i).getString("Id"));
+                searchModel.setCategory(jsonArray.getJSONObject(i).getString("CategoryName"));
+                searchModels.add(searchModel);
+            }
+        }catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return  searchModels;
+    }
+
     public static ArrayList <StoreListModel> getSearchList(JSONObject response) {
         ArrayList<StoreListModel> storeListModels = new ArrayList<>();
         try {
@@ -171,33 +277,26 @@ public class SearchController {
                 storeListModel.setLocation(jsonArray.getJSONObject(i).getString("Location"));
                 storeListModel.setImageSource(jsonArray.getJSONObject(i).getString("ImageSource"));
                 String flag = jsonArray.getJSONObject(i).getString("Flags");
-                if(flag.contains("0")){
+                if(flag.contains("0"))
                     storeListModel.setSaleflag(true);
-                }
-                else{
+                else
                     storeListModel.setSaleflag(false);
-                }
-                if(flag.contains("1")){
+                if(flag.contains("1"))
                     storeListModel.setOfferflag(true);
-                }
-                else{
+                else
                     storeListModel.setOfferflag(false);
-                }
-                if(flag.contains("2")){
+                if(flag.contains("2"))
                     storeListModel.setNewflag(true);
-                }
-                else{
+                else
                     storeListModel.setNewflag(false);
-                }
                 storeListModel.setBannerFlag(jsonArray.getJSONObject(i).getInt("BannerFlag") == 0 ? false : true);
+                storeListModel.setLoadmoreFlag(i != jsonArray.length()-1 ? false : true);
 
                 storeListModels.add(storeListModel);
             }
         }catch (JSONException e1) {
             e1.printStackTrace();
         }
-
         return  storeListModels;
     }
-
 }

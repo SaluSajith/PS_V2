@@ -1,6 +1,7 @@
 package com.hit.pretstreet.pretstreet.subcategory_n_storelist;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -25,6 +26,7 @@ import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
+import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
@@ -42,6 +44,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
+
 public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, SubCatTrapeClick {
 
@@ -55,6 +61,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     @BindView(R.id.hs_categories) HorizontalScrollView hs_categories;
 
     JsonRequestController jsonRequestController;
+    LoginController loginController;
     SubCatTrapeClick subCatTrapeClick;
 
     @Override
@@ -66,6 +73,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     protected void setUpController() {
+        loginController = new LoginController(this);
         jsonRequestController = new JsonRequestController(this);
     }
 
@@ -81,6 +89,13 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
                 onBackPressed();
             }
         });
+        ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
+        iv_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSearchPage();
+            }
+        });
         ll_header.bringToFront();
         hs_categories.setVisibility(View.GONE);
 
@@ -91,9 +106,16 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     }
 
     public void getSubCAtPage(String catId){
-        JSONObject resultJson = LoginController.getSubCatPageJson(Constant.HOMEPAGE, catId);
+        JSONObject resultJson = loginController.getSubCatPageJson(Constant.HOMEPAGE, catId);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.SUBCAT_URL);
+    }
+
+    private void openSearchPage(){
+        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+        intent.putExtra(PRE_PAGE_KEY, SUBCATPAGE);
+        intent.putExtra(ID_KEY, getIntent().getStringExtra("mSubCatId"));
+        startActivity(intent);
     }
 
     @OnClick(R.id.tv_location)
@@ -122,7 +144,8 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
             String url = response.getString("URL");
                 switch (url){
                     case Constant.SUBCAT_URL:
-                        ArrayList<HomeCatItems> homeCatItemses = LoginController.getSubCatContent(response);
+                        nsv_header.setBackgroundColor(Color.BLACK);
+                        ArrayList<HomeCatItems> homeCatItemses = loginController.getSubCatContent(response);
                         subCatTrapeClick.onSubTrapeClick(homeCatItemses, "");
                         break;
                     default: break;
@@ -165,7 +188,8 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     public void onSubTrapeClick(ArrayList<HomeCatItems> homeCatItemses, String title) {
         Intent intent = new Intent(getApplicationContext(), StoreListingActivity.class);
         intent.putExtra("contentData", homeCatItemses);
-        intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SUBCATPAGE);
+        intent.putExtra(PRE_PAGE_KEY, SUBCATPAGE);
+        intent.putExtra(ID_KEY, getIntent().getStringExtra("mSubCatId"));
         intent.putExtra("mTitle", title);
         intent.putExtra("mSubTitle", tv_cat_name.getText().toString());
         startActivity(intent);

@@ -48,12 +48,16 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
 
     Context context;
     int dotsCount = 0;
-    int button01pos = 0;
-    ArrayList<TrendingItems> list;
+    static int mPosition;
+    private static ImageView imageViewPret;
+    private static ArrayList<TrendingItems> list;
     ArticlePagerAdapter mAdapter;
     private int mLastPosition;
     TrendingHolderInvoke trendingHolderInvoke;
     private ZoomedViewListener zoomedViewListener;
+
+    private static final int TRENDING_FRAGMENT = 10;
+    private static final int EXHIBITION_FRAGMENT = 11;
 
     public TrendingAdapter(Activity activity, TrendingFragment context, ArrayList<TrendingItems> list) {
         this.context = activity;
@@ -110,18 +114,11 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
         holder.txt_shopname.setText(content);
 
-        //if(!trendingItems.getStoreLink().equals("0")){
         Glide.with(context)
                 .load(trendingItems.getLogoImage())
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .into(holder.iv_profile);
-        /*//}
-        //else{
-            //holder.iv_profile.setImageResource(R.drawable.logo1);
-            Bitmap bitmap = ((BitmapDrawable)holder.iv_profile.getDrawable()).getBitmap();
-            //holder.iv_profile.setImageBitmap(getCircleBitmap(bitmap));
-        //}*/
 
         holder.iv_like.setImageResource(trendingItems.getLike() == true ?
                 R.drawable.red_heart : R.drawable.grey_heart);
@@ -144,7 +141,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-
             params.setMargins(4, 0, 4, 0);
             holder.pager_indicator.addView(holder.dots[i], params);
         }
@@ -174,12 +170,12 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         @BindView(R.id.viewPagerCountDots)LinearLayout pager_indicator;
         @BindView(R.id.ll_desc)LinearLayout ll_desc;
 
-        int viewType;
         ImageView[] dots;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            imageViewPret =  new ImageView(context);
 
             iv_like.setOnClickListener(this);
             iv_share.setOnClickListener(this);
@@ -198,10 +194,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
                         .setDuration(300l)
                         .setListener(null);
                 mLastPosition = getAdapterPosition();
-            }catch (Exception e){
-                Log.e("Exception", e+"");
-            }
-
+            }catch (Exception e){ }
         }
 
         @Override
@@ -210,7 +203,9 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
             TrendingItems trendingItems = list.get(getAdapterPosition());
             switch (viewId) {
                 case R.id.iv_like:
-                    trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()));
+                    mPosition = getAdapterPosition();
+                    imageViewPret = (ImageView) view;
+                    trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), TRENDING_FRAGMENT);
                     break;
                 case R.id.iv_share:
                     trendingHolderInvoke.shareUrl("null");
@@ -231,7 +226,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
                 case R.id.iv_banner:
                     if(trendingItems.getBanner()){
                         trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
-                    }else {
+                    } else {
                         ProductImageItem productImageItem = new ProductImageItem();
                         ArrayList<String> mImagearray = new ArrayList<>();
                         //productImageItem.setImage(list.get(getAdapterPosition()).getImagearray().get(0));
@@ -250,15 +245,23 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
 
         @Override
         public void onPageSelected(int position) {
-            for (int i = 0; i < dotsCount; i++) {
-                dots[i].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_unselected));
-            }
-            dots[position].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_selected));
+            try {
+                for (int i = 0; i < list.get(getAdapterPosition()).getImagearray().size(); i++) {
+                    dots[i].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_unselected));
+                }
+                dots[position].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_selected));
+            }catch (Exception e){}
         }
 
         @Override
         public void onPageScrollStateChanged(int state) {
         }
+    }
 
+    public static void updateLikeStatus(int status, String storeid) {
+        imageViewPret.setImageResource(status == 1 ?
+                R.drawable.red_heart : R.drawable.grey_heart);
+        if(list.get(mPosition).getId().equals(storeid))
+            list.get(mPosition).setLike(status == 0 ? false : true);
     }
 }

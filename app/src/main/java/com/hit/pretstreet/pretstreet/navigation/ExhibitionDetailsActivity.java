@@ -47,6 +47,7 @@ import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.location.StoreLocationMapScreen;
 import com.hit.pretstreet.pretstreet.navigation.controllers.DetailsPageController;
+import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
@@ -68,14 +69,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONLIKE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
+
 public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback {
     JsonRequestController jsonRequestController;
+    HomeFragmentController homeFragmentController;
     DetailsPageController detailsPageController;
+    SubCategoryController subCategoryController;
 
     @BindView(R.id.tv_product) TextViewPret tv_product;
     @BindView(R.id.tv_about) TextViewPret tv_about;
     @BindView(R.id.tv_about_heading) TextViewPret tv_about_heading;
+    @BindView(R.id.tv_heading_hrs) TextViewPret tv_heading_hrs;
     @BindView(R.id.tv_imgsrc) TextViewPret tv_imgsrc;
 
     @BindView(R.id.tv_storename) TextViewPret tv_storename;
@@ -84,6 +91,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     @BindView(R.id.tv_time) TextViewPret tv_time;
     @BindView(R.id.tv_openinghrs) TextViewPret tv_openinghrs;
     @BindView(R.id.tv_book_app) TextViewPret tv_book_app;
+    @BindView(R.id.tv_heading_photos) TextViewPret tv_photos_heading;
     @BindView(R.id.tv_testimonials_heading) TextViewPret tv_testimonials_heading;
 
     @BindView(R.id.rv_images) RecyclerView rv_images;
@@ -121,6 +129,8 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     protected void setUpController() {
         jsonRequestController = new JsonRequestController(this);
         detailsPageController = new DetailsPageController(this);
+        homeFragmentController = new HomeFragmentController(this);
+        subCategoryController = new SubCategoryController(this);
     }
 
     private void initUi(){
@@ -147,33 +157,28 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         tv_book_app.setVisibility(View.GONE);
         btn_follow.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
-        tv_testimonials_heading.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
-        tv_about_heading.setText("Desc:");
+        tv_testimonials_heading.setVisibility(View.GONE);
         tv_about.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
     }
 
     @OnClick(R.id.ib_like)
     public void onLikePressed() {
-        Integer resource = (Integer) ib_like.getTag();
-        if(resource == R.drawable.grey_heart) {
-            ib_like.setImageResource(R.drawable.red_heart);
-            ib_like.setTag(R.drawable.red_heart);
-        } else {
-            ib_like.setImageResource(R.drawable.grey_heart);
-            ib_like.setTag(R.drawable.grey_heart);
-        }
+        JSONObject resultJson = homeFragmentController.getTrendinglikeJson(mStoreId ,
+                getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        this.showProgressDialog(getResources().getString(R.string.loading));
+        jsonRequestController.sendRequest(this, resultJson, EXHIBITIONLIKE_URL);
     }
 
     private void getShopDetails(String storeId, String clicktype, String pagekey){
-        JSONObject resultJson = DetailsPageController.getExhibitionArticle(pagekey, clicktype, storeId);
+        JSONObject resultJson = detailsPageController.getExhibitionArticle(pagekey, clicktype, storeId);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.EXHIBITIONARTICLE_URL);
     }
 
     @OnClick(R.id.btn_follow)
     public void onFollowPressed() {
-        JSONObject resultJson = SubCategoryController.updateFollowCount(mStoreId,
+        JSONObject resultJson = subCategoryController.updateFollowCount(mStoreId,
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY), Constant.FOLLOWLINK);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.UPDATEFOLLOWSTATUS_URL);
@@ -181,138 +186,153 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     private void setupDetailsPage(StoreDetailsModel exhibitionDetailsModel){
 
-        setupCollapsingHeader(exhibitionDetailsModel.getStoreName());
-        tv_storename.setText(exhibitionDetailsModel.getStoreName());
-        tv_location.setText(exhibitionDetailsModel.getAreaCity());
-        tv_openstatus.setText(exhibitionDetailsModel.getOpenStatus() == false ? "Closed" : "Open now");
-        tv_about.setText(exhibitionDetailsModel.getAbout());
-        tv_time.setText(" - "+exhibitionDetailsModel.getTimingToday());
-        String sourceString = "<b>" + "Product: " + "</b> " + exhibitionDetailsModel.getProducts();
-        tv_product.setText(Html.fromHtml(sourceString));
-        sourceString = "<b>" + "Image Source: " + "</b> " + exhibitionDetailsModel.getImageSource();
-        tv_imgsrc.setText(Html.fromHtml(sourceString));
-/*
-        iv_sale.setVisibility(storeDetailsModel.getFlags().contains("0") == true ? View.INVISIBLE : View.VISIBLE);
-        iv_offer.setVisibility(storeDetailsModel.getFlags().contains("1") == true ? View.INVISIBLE : View.VISIBLE);
-        iv_new.setVisibility(storeDetailsModel.getFlags().contains("2") == true ? View.INVISIBLE : View.VISIBLE);*/
+        try {
+            tv_about_heading.setVisibility(exhibitionDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_imgsrc.setVisibility(exhibitionDetailsModel.getImageSource().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_product.setVisibility(exhibitionDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_time.setVisibility(exhibitionDetailsModel.getTimingToday().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_heading_hrs.setVisibility(exhibitionDetailsModel.getArrayListTimings().size() > 0 ? View.VISIBLE : View.GONE);
 
-        ArrayList arrayListTimings = exhibitionDetailsModel.getArrayListTimings();
-        StringBuilder strTiming = new StringBuilder();
-        for(Object timing : arrayListTimings){
-            strTiming.append(timing + "<br/>"+ "<br/>");
-        }
-        sourceString = strTiming.toString();
-        tv_openinghrs.setText(Html.fromHtml(sourceString));
-        setupGallery(exhibitionDetailsModel.getArrayListImages());
+            setupCollapsingHeader(exhibitionDetailsModel.getStoreName(), exhibitionDetailsModel.getBaseImage());
+            tv_storename.setText(exhibitionDetailsModel.getStoreName());
+            tv_location.setText(exhibitionDetailsModel.getAreaCity());
+            tv_openstatus.setText(exhibitionDetailsModel.getOpenStatus() == false ? "Closed" : "Open now");
+            tv_about.setText(exhibitionDetailsModel.getAbout());
+            tv_time.setText(" - " + exhibitionDetailsModel.getTimingToday());
+            String sourceString = "<b>" + "Product: " + "</b> " + exhibitionDetailsModel.getProducts();
+            tv_product.setText(Html.fromHtml(sourceString));
+            sourceString = "<b>" + "Image Source: " + "</b> " + exhibitionDetailsModel.getImageSource();
+            tv_imgsrc.setText(Html.fromHtml(sourceString));
+
+            ArrayList arrayListTimings = exhibitionDetailsModel.getArrayListTimings();
+            StringBuilder strTiming = new StringBuilder();
+            for (Object timing : arrayListTimings) {
+                strTiming.append(timing + "<br/>" + "<br/>");
+            }
+            sourceString = strTiming.toString();
+            tv_openinghrs.setText(Html.fromHtml(sourceString));
+            setupGallery(exhibitionDetailsModel.getArrayListImages());
+        }catch (Exception e){}
     }
 
-    private void setupCollapsingHeader(String title){
+    private void setupCollapsingHeader(String title, String img){
 
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.transparent)); // transperent color = #00000000
         collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-        loadBackdrop("");
+        loadBackdrop(img);
     }
 
     private void setupGallery(ArrayList<String> arrayListImages){
+        if(arrayListImages.size()==0){
+            tv_photos_heading.setVisibility(View.GONE);
+        }
         GalleryAdapter storeList_recyclerAdapter = new GalleryAdapter(ExhibitionDetailsActivity.this, arrayListImages);
         rv_images.setAdapter(storeList_recyclerAdapter);
     }
 
     private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(this).load(R.drawable.base).centerCrop().into(imageView);
+        Glide.with(getApplicationContext()).load(imageUrl).asBitmap().fitCenter().into(imageView);
     }
 
-
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {
-        final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
-        LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View view = li.inflate(R.layout.popup_phone_number, null);
-        TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
-        RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
-        RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
-        RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
+        if (storeDetailsModel.getPhone().size()==0) {
+            displaySnackBar("Number not found");
+        } else {
+            final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
+            LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View view = li.inflate(R.layout.popup_phone_number, null);
+            TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
+            RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
+            RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
+            RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
 
-        TextViewPret txt_phone1 = (TextViewPret) view.findViewById(R.id.txt_phone1);
-        TextViewPret txt_phone2 = (TextViewPret) view.findViewById(R.id.txt_phone2);
-        TextViewPret txt_phone3 = (TextViewPret) view.findViewById(R.id.txt_phone3);
+            TextViewPret txt_phone1 = (TextViewPret) view.findViewById(R.id.txt_phone1);
+            TextViewPret txt_phone2 = (TextViewPret) view.findViewById(R.id.txt_phone2);
+            TextViewPret txt_phone3 = (TextViewPret) view.findViewById(R.id.txt_phone3);
 
-        final ArrayList<String> arrayList = storeDetailsModel.getPhone();
-        txt_cat.setText(storeDetailsModel.getStoreName());
+            final ArrayList<String> arrayList = storeDetailsModel.getPhone();
+            txt_cat.setText(storeDetailsModel.getStoreName());
 
-        switch (arrayList.size()){
-            case 1:
-                txt_phone1.setText(arrayList.get(0));
-                rl_phone2.setVisibility(View.GONE);
-                rl_phone3.setVisibility(View.GONE);
-                break;
-            case 2:
-                txt_phone1.setText(arrayList.get(0));
-                txt_phone2.setText(arrayList.get(1));
-                rl_phone3.setVisibility(View.GONE);
-                break;
-            case 3:
-                txt_phone1.setText(arrayList.get(0));
-                txt_phone3.setText(arrayList.get(1));
-                txt_phone2.setText(arrayList.get(2));
-                break;
-            default:
-                break;
+            switch (arrayList.size()) {
+                case 1:
+                    txt_phone1.setText(arrayList.get(0));
+                    rl_phone2.setVisibility(View.GONE);
+                    rl_phone3.setVisibility(View.GONE);
+                    break;
+                case 2:
+                    txt_phone1.setText(arrayList.get(0));
+                    txt_phone2.setText(arrayList.get(1));
+                    rl_phone3.setVisibility(View.GONE);
+                    break;
+                case 3:
+                    txt_phone1.setText(arrayList.get(0));
+                    txt_phone3.setText(arrayList.get(1));
+                    txt_phone2.setText(arrayList.get(2));
+                    break;
+                default:
+                    break;
+            }
+
+            popupDialog.setCanceledOnTouchOutside(true);
+            popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            popupDialog.setContentView(view);
+            popupDialog.getWindow().setGravity(Gravity.CENTER);
+            WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+            popupDialog.getWindow().setAttributes(params);
+            popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupDialog.show();
+
+            ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+            img_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupDialog.dismiss();
+                }
+            });
+
+            rl_phone1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialPhone(arrayList.get(0));
+                }
+            });
+
+            rl_phone2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialPhone(arrayList.get(1));
+                }
+            });
+
+            rl_phone3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialPhone(arrayList.get(2));
+                }
+            });
         }
-
-        popupDialog.setCanceledOnTouchOutside(true);
-        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        popupDialog.setContentView(view);
-        popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
-        popupDialog.getWindow().setAttributes(params);
-        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupDialog.show();
-
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
-        img_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupDialog.dismiss();
-            }
-        });
-
-        rl_phone1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialPhone(arrayList.get(0));
-            }
-        });
-
-        rl_phone2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialPhone(arrayList.get(1));
-            }
-        });
-
-        rl_phone3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialPhone(arrayList.get(2));
-            }
-        });
     }
 
     private void dialPhone(String phone){
-        MyPhoneListener phoneListener = new MyPhoneListener();
-        TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
-        try {
-            String uri = "tel:" + phone;
-            Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(uri));
-            startActivity(dialIntent);
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Call Failed", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+        if (phone.equalsIgnoreCase("null") ||
+                phone.equalsIgnoreCase("")) {
+            displaySnackBar("Number not found");
+        } else {
+            MyPhoneListener phoneListener = new MyPhoneListener();
+            TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+            try {
+                String uri = "tel:" + phone;
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(uri));
+                startActivity(dialIntent);
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Call Failed", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
         }
     }
 
@@ -347,51 +367,58 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     }
 
     public void showAddress(StoreDetailsModel storeDetailsModel) {
-        final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
-        LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = li.inflate(R.layout.popup_phone_number, null);
-        TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
-        TextViewPret txt_address1 = (TextViewPret) view.findViewById(R.id.txt_address);
-        RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
-        RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
-        RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
-        rl_phone1.setVisibility(View.GONE);
-        rl_phone2.setVisibility(View.GONE);
-        rl_phone3.setVisibility(View.GONE);
-        txt_address1.setVisibility(View.VISIBLE);
-        txt_cat.setText(storeDetailsModel.getStoreName());
-        txt_address1.setText(storeDetailsModel.getAddress());
-        popupDialog.setCanceledOnTouchOutside(true);
-        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        popupDialog.setContentView(view);
-        popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
-        popupDialog.getWindow().setAttributes(params);
-        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupDialog.show();
+        if (storeDetailsModel.getAddress().equalsIgnoreCase("null") ||
+                storeDetailsModel.getAddress().equalsIgnoreCase("")) {
+            displaySnackBar("Address not found");
+        } else {
+            final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
+            LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = li.inflate(R.layout.popup_phone_number, null);
+            TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
+            ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+            TextViewPret txt_address1 = (TextViewPret) view.findViewById(R.id.txt_address);
+            RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
+            RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
+            RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
+            rl_phone1.setVisibility(View.GONE);
+            rl_phone2.setVisibility(View.GONE);
+            rl_phone3.setVisibility(View.GONE);
+            txt_address1.setVisibility(View.VISIBLE);
+            txt_cat.setText(storeDetailsModel.getStoreName());
+            txt_address1.setText(storeDetailsModel.getAddress());
+            popupDialog.setCanceledOnTouchOutside(true);
+            popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            popupDialog.setContentView(view);
+            popupDialog.getWindow().setGravity(Gravity.CENTER);
+            WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+            popupDialog.getWindow().setAttributes(params);
+            popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupDialog.show();
 
-        img_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupDialog.dismiss();
-            }
-        });
+            img_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupDialog.dismiss();
+                }
+            });
+        }
     }
 
     private void showLocation(StoreDetailsModel storeDetailsModel){
-        if (storeDetailsModel.getLatitude().equalsIgnoreCase("") ||
-                storeDetailsModel.getLongitude().equalsIgnoreCase("")) {
+        if (storeDetailsModel.getLatitude().equalsIgnoreCase("null") ||
+                storeDetailsModel.getLongitude().equalsIgnoreCase("null")) {
             displaySnackBar("Location not found");
         } else {
-            Intent intent = new Intent(getApplicationContext(), StoreLocationMapScreen.class);
-            Bundle b = new Bundle();
-            b.putString("name", storeDetailsModel.getStoreName());
-            b.putString("address", storeDetailsModel.getAddress());
-            b.putDouble("lat", Double.parseDouble(storeDetailsModel.getLatitude()));
-            b.putDouble("long", Double.parseDouble(storeDetailsModel.getLongitude()));
-            intent.putExtras(b);
-            startActivity(intent);
+            try {
+                Intent intent = new Intent(getApplicationContext(), StoreLocationMapScreen.class);
+                Bundle b = new Bundle();
+                b.putString("name", storeDetailsModel.getStoreName());
+                b.putString("address", storeDetailsModel.getAddress());
+                b.putDouble("lat", Double.parseDouble(storeDetailsModel.getLatitude()));
+                b.putDouble("long", Double.parseDouble(storeDetailsModel.getLongitude()));
+                intent.putExtras(b);
+                startActivity(intent);
+            }catch (Exception e){}
         }
     }
 
@@ -411,10 +438,17 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             //displaySnackBar(response.getString("CustomerMessage"));
             switch (url){
                 case Constant.EXHIBITIONARTICLE_URL:
-                    exhibitionDetailsModel = DetailsPageController.getExhibitionData(response);
+                    exhibitionDetailsModel = detailsPageController.getExhibitionData(response);
                     ib_like.setTag(exhibitionDetailsModel.getFollowingStatus() == false ? R.drawable.grey_heart : R.drawable.red_heart);
                     ib_like.setImageResource(exhibitionDetailsModel.getFollowingStatus() == false ? R.drawable.grey_heart : R.drawable.red_heart);
                     setupDetailsPage(exhibitionDetailsModel);
+                    break;
+                case EXHIBITIONLIKE_URL:
+                    JSONObject object = response.getJSONObject("Data");
+                    exhibitionDetailsModel.setFollowingStatus(object.getInt("LikeStatus")== 0 ? true : false);
+                    ib_like.setTag(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
+                    ib_like.setImageResource(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
+
                     break;
                 default: break;
             }
@@ -474,20 +508,19 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     @OnClick(R.id.ll_call)
     public void onCallPressed() {
-        ArrayList jsonArray = exhibitionDetailsModel.getPhone();
-        if (jsonArray.size()==0)
-            displaySnackBar("Number not Found");
-        else {
-            showPopupPhoneNumber(exhibitionDetailsModel);
-        }
+        try {
+            ArrayList jsonArray = exhibitionDetailsModel.getPhone();
+            if (jsonArray.size() == 0)
+                displaySnackBar("Number not Found");
+            else
+                showPopupPhoneNumber(exhibitionDetailsModel);
+        }catch (Exception e){}
     }
-
 
     @OnClick(R.id.ll_address)
     public void onAddressPressed() {
         showAddress(exhibitionDetailsModel);
     }
-
 
     @OnClick(R.id.ll_getdirec)
     public void onDirePressed() {

@@ -47,6 +47,23 @@ public class StoreDetailsController {
         return jsonBody;
     }
 
+
+    public static JSONObject getBookAppoJson(String dateNtime, String StoreId, String remarks) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("AppointmentDate", dateNtime);
+            jsonBody.put("StoreId", StoreId);
+            jsonBody.put("Message", remarks);
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {}
+
+        return jsonBody;
+    }
+
     public static StoreDetailsModel getStoreData(JSONObject response){
 
         StoreDetailsModel storeDetailsModel = new StoreDetailsModel();

@@ -51,7 +51,6 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trending_article);
         init();
-
     }
 
     private void init() {
@@ -81,7 +80,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     }
 
     private void getTrendingArticle(String prepage, String clicktype, String trid){
-        JSONObject resultJson = DetailsPageController.getTrendingArticle(prepage, clicktype, trid);
+        JSONObject resultJson = detailsPageController.getTrendingArticle(prepage, clicktype, trid);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, TRENDINGARTICLE_URL);
     }
@@ -96,10 +95,10 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
             String url = response.getString("URL");
             switch (url){
                 case Constant.TRENDINGARTICLE_URL:
-                    txt_name.setText(DetailsPageController.getTitle(response));
-                    ib_like.setTag(DetailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
-                    ib_like.setImageResource(DetailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
-                    ArrayList<TrendingItems> trendingArticle = DetailsPageController.getTrendingArticle(response);
+                    txt_name.setText(detailsPageController.getTitle(response));
+                    ib_like.setTag(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
+                    ib_like.setImageResource(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
+                    ArrayList<TrendingItems> trendingArticle = detailsPageController.getTrendingArticle(response);
                     setupArticle(trendingArticle);
                     break;
                 default: break;

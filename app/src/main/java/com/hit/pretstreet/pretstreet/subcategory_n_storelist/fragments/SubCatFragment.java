@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
@@ -74,7 +75,6 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
         ll_main_cat.removeAllViews();
         ArrayList<HomeCatItems> homeSubCategories = homeCatItemses;
         for (int i = 0; i < homeSubCategories.size(); i++) {
-
             LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view;
             if (i % 2 == 0) {
@@ -89,7 +89,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
 
             LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
-            if (i != 0) {
+            if(i!=0) {
                 relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin_hometrape), 0, 0);
             }
             rl_dd.setLayoutParams(relativeParams);
@@ -101,10 +101,14 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
 
             String catName = contentData.getCategoryName();
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
-            if(catName.length()>7&&catName.length()<15)
-                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 6, -3, 0);
-            else if(catName.length()>=15)
-                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 8, -3, 0);
+            if(catName.length()>3&&catName.length()<=6)
+                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) - 2, -3, 0);
+            else if(catName.length()>6&&catName.length()<=10)
+                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 0, -3, 0);
+            else if(catName.length()>10&&catName.length()<14)
+                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 4, -3, 0);
+            else if(catName.length()>=14)
+                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 7, -3, 0);
             txt_cat_name.setLayoutParams(lp);
 
             Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
@@ -116,20 +120,17 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
 
             final int finalI = i;
             if(finalI == homeSubCategories.size()-1){
-                if (finalI % 2 == 0) {
+                if (finalI % 2 == 0)
                     loadImage(contentData.getImageSource(), mImageView, mask4);
-                } else {
+                else
                     loadImage(contentData.getImageSource(), mImageView, mask3);
-                }
             }
             else {
-                if (finalI % 2 == 0) {
+                if (finalI % 2 == 0)
                     loadImage(contentData.getImageSource(), mImageView, mask1);
-                } else {
+                else
                     loadImage(contentData.getImageSource(), mImageView, mask2);
-                }
             }
-
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -150,6 +151,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
 
         Glide.with(getActivity())
                 .load(url).asBitmap()
+                .placeholder(R.drawable.mask_home)
                 .centerCrop()
                 .into(new BitmapImageViewTarget(imageView) {
                     @Override
@@ -180,7 +182,8 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                         mCanvas.drawBitmap(mask, 0, 0, paint);
                         paint.setXfermode(null);
                         imageView.setImageBitmap(result);
-                        switch (getResources().getDisplayMetrics().densityDpi) {
+                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                        /*switch (getResources().getDisplayMetrics().densityDpi) {
                             case DisplayMetrics.DENSITY_MEDIUM:
                                 imageView.setScaleType(ImageView.ScaleType.CENTER);
                                 break;
@@ -190,8 +193,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                             default:
                                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                                 break;
-                        }
-
+                        }*/
                     }
                 });
     }

@@ -24,13 +24,14 @@
                 android:layout_marginBottom="@dimen/padding_xxxlarge">
 
                 <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
-                    android:id="@+id/edt_currentpass"
+                    android:id="@+id/edt_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/edittext_white_normal"
                     android:hint="@string/message"
                     android:inputType="textImeMultiLine"
-                    android:maxLines="4"/>
+                    android:maxLines="4"
+                    android:maxLength="150"/>
             </LinearLayout>
         </LinearLayout>
         <com.hit.pretstreet.pretstreet.core.customview.ButtonPret

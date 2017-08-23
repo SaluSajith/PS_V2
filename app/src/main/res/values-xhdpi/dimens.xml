@@ -45,6 +45,7 @@
 
     <!-- <dimen name="home_image_height">658dp</dimen>-->
     <dimen name="home_image_height">280dp</dimen>
+    <dimen name="detail_backdrop_maxheight">500dp</dimen>
 
     <dimen name="welcome_margintop">0dp</dimen>
     <dimen name="google_margintop">2dp</dimen>

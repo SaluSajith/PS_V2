@@ -32,13 +32,24 @@ public class Constant {
     public static final String STORELISTING_URL = COMMON_URL + "store/storelisting/";
     public static final String UPDATEFOLLOWSTATUS_URL = COMMON_URL + "store/followStore/";
     public static final String STOREDETAILS_URL = COMMON_URL + "store/storedetails/";
-    public static final String TRENDING_URL = COMMON_URL + "trending/listing/";//
-    public static final String EXHIBITION_URL = COMMON_URL + "exhibition/listing/";//
+    public static final String TRENDING_URL = COMMON_URL + "trending/listing/";
+    public static final String TRENDINGLIKE_URL = COMMON_URL + "trending/trendinglike/";//
+    public static final String EXHIBITION_URL = COMMON_URL + "exhibition/listing/";
+    public static final String EXHIBITIONLIKE_URL = COMMON_URL + "exhibition/exhibitionlike/";//
     public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "exhibition/article/";//
     public static final String TRENDINGARTICLE_URL = COMMON_URL + "trending/article/";//
     public static final String MULTISTORE_URL = COMMON_URL + "store/multistorelisting";
     public static final String AUTOSEARCH_URL = COMMON_URL + "category/autoSearch";
     public static final String SEARCH_URL = COMMON_URL + "category/search";
+    public static final String RECENTSEARCH_URL = COMMON_URL + "category/searchCustomerPage";
+    public static final String FOLLOWING_URL = COMMON_URL + "customer/customerFollowingStores";
+    public static final String FILTER_URL = COMMON_URL + "store/storelistingFilter/";
+    public static final String CONTACTUS_URL = COMMON_URL + "customer/customerContactUs";
+    public static final String FEEDBACK_URL = COMMON_URL + "customer/customerFeedback";
+    public static final String ADDSTORE_URL = COMMON_URL + "customer/customerAddStore";
+    public static final String BOOK_APPOINTMENT_URL = COMMON_URL + "customer/customerAppointment";
+    public static final String UPDATE_ACCOUNT_URL = COMMON_URL + "store/trendingArticle";//TODO
+    public static final String UPDATEPASSWORD_ACCOUNT_URL = COMMON_URL + "store/trendingArticlevb";//TODO
 
     //updated after 5/9/2017
 
@@ -63,6 +74,7 @@ public class Constant {
     public static final String EXARTICLEPAGE = "11";
     public static final String FOLLOWINGPAGE = "12";
     public static final String SEARCHPAGE = "14";
+    public static final String FILTERPAGE = "15";
 
     //Clicktype constants
     public static final String HOMEPAGELINK = "1";
@@ -91,6 +103,7 @@ public class Constant {
 
     //Constants
     public static final String PRE_PAGE_KEY = "pagetype";
+    public static final String ID_KEY = "id";
     public static final String CLICKTYPE_KEY = "clicktype";
     public static final String PARCEL_KEY = "data";
     public static final String POSITION_KEY = "position";

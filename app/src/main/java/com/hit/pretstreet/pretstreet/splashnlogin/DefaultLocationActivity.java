@@ -82,7 +82,6 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
     private void init(){
         ButterKnife.bind(this);
         PreferenceServices.init(this);
-        jsonRequestController = new JsonRequestController(this);
         helper = new DatabaseHelper(getApplicationContext());
         edt_search.addTextChangedListener(new TextWatcher() {
 
@@ -107,6 +106,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
     }
     @Override
     protected void setUpController() {
+        jsonRequestController = new JsonRequestController(this);
     }
 
     @Override
