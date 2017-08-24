@@ -4,6 +4,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_banners"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="@dimen/pager_height"
+        android:fitsSystemWindows="true"
+        android:background="@color/transparent"
+        tools:listitem="@layout/image_slider_item"
+        android:layout_below="@+id/ll_main_cat"
+        android:layout_marginTop="@dimen/content_overlapmargin"/>
     <LinearLayout
         android:id="@+id/ll_main_cat"
         android:layout_width="match_parent"
@@ -20,38 +30,9 @@
         <include layout="@layout/row_sub_cat_list2"></include>-->
 
         </LinearLayout>
-<!--
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/pager_height"
-            android:id="@+id/img1"/>-->
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager_banners"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/pager_height"
-            android:fitsSystemWindows="true"
-            android:background="@color/transparent"
-            tools:listitem="@layout/image_slider_item"
-            android:layout_below="@+id/img1"
-            android:layout_marginTop="@dimen/content_overlapmargin"/>
-<!--
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/pager_height"
-            android:id="@+id/img2"
-            android:layout_below="@+id/pager_banners"
-            android:layout_marginTop="@dimen/content_overlapmargin"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/pager_height"
-            android:id="@+id/img3"
-            android:layout_below="@+id/img2"
-            android:layout_marginTop="@dimen/content_overlapmargin"/>-->
     <LinearLayout
         android:id="@+id/ll_main_cat_bottom"
-        android:layout_below="@+id/ll_main_cat"
+        android:layout_below="@+id/pager_banners"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

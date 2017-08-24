@@ -60,9 +60,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 public class HomeActivity extends AbstractBaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NavigationClick, ApiListenerInterface, HomeTrapeClick {
@@ -87,52 +95,20 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     JsonRequestController jsonRequestController;
     LoginController loginController;
 
+    boolean homeopened = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!homeopened) {
+            getHomePage();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        Intent intent = getIntent();
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            Uri uri = intent.getData();
-            String valueOne = uri.getQueryParameter("share");
-            String id = uri.getQueryParameter("id");
-            switch (valueOne){
-                case "store":
-                    StoreListModel storeListModel =  new StoreListModel();
-                    storeListModel.setId(id);
-                    intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
-                    intent.putExtra(PARCEL_KEY, storeListModel);
-                    intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                    startActivity(intent);
-                    break;
-                case "trending":
-                    TrendingItems trendingItems = new TrendingItems();
-                    trendingItems.setId(id);
-                    intent = new Intent(HomeActivity.this, ExhibitionDetailsActivity.class);
-                    intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                    intent.putExtra(Constant.PRE_PAGE_KEY, Constant.EXHIBITIONPAGE);
-                    startActivity(intent);
-                    break;
-                case "exhibition":
-                    selectedFragment = EXHIBITION_FRAGMENT;
-                    intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
-                    intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                    intent.putExtra(ID_KEY, id);
-                    intent.putExtra("fragment", selectedFragment);
-                    startActivity(intent);
-                    break;
-                case "multistore":
-                    intent = new Intent(HomeActivity.this, MultistoreActivity.class);
-                    intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                    intent.putExtra(ID_KEY, id);
-                    startActivity(intent);
-                    break;
-                default:
-                    break;
-            }
-            return;
-        }
         init();
     }
 
@@ -144,21 +120,69 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     private void init() {
         PreferenceServices.init(this);
-
-        View includedlayout =  findViewById(R.id.includedlayout);
-        //includedlayout.bringToFront();
+        View includedlayout = findViewById(R.id.includedlayout);
         ButterKnife.bind(this, includedlayout);
 
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
-        String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
-        /*if (SavedMAinCaTList.length() > 1)
-            changeFragment(new HomeFragment(), false);
-        else*/
-            getHomePage();
+        if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0) {
+            forwardDeepLink();
+            return;
+        }
+    }
+
+    private void forwardDeepLink(){
+        Intent intent;
+
+        String valueOne = PreferenceServices.getInstance().getShareQueryparam();
+        String id = PreferenceServices.getInstance().getIdQueryparam();
+        switch (valueOne){
+            case "store":
+                StoreListModel storeListModel =  new StoreListModel();
+                storeListModel.setId(id);
+                intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
+                intent.putExtra(PARCEL_KEY, storeListModel);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                startActivity(intent);
+                break;
+            case "trending":
+                TrendingItems trendingItems = new TrendingItems();
+                trendingItems.setId(id);
+                trendingItems.setPagetypeid("");
+                trendingItems.setClicktype("");
+                intent = new Intent(HomeActivity.this, TrendingArticleActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                startActivity(intent);
+                break;
+            case "exhibition":
+                trendingItems = new TrendingItems();
+                trendingItems.setId(id);
+                trendingItems.setPagetypeid("");
+                trendingItems.setClicktype("");
+                intent = new Intent(HomeActivity.this, ExhibitionDetailsActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
+                startActivity(intent);
+                break;
+            case "multistore":
+                intent = new Intent(HomeActivity.this, MultistoreActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(ID_KEY, id);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+        PreferenceServices.getInstance().setIdQueryparam("");
+        PreferenceServices.getInstance().setShareQueryparam("");
+
     }
 
     private void getHomePage(){
+        /*String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+        if (SavedMAinCaTList.length() > 1)
+            changeFragment(new HomeFragment(), false);
+        else*/
         JSONObject resultJson = LoginController.getHomePageJson(Constant.HOMEPAGE);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.HOMEPAGE_URL);
@@ -332,11 +356,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
-            case "storedetails":
-                intent = new Intent(HomeActivity.this, MultistoreActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                startActivity(intent);
-                break;
             case "nav_following":
                 intent = new Intent(HomeActivity.this, FollowingActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
@@ -344,6 +363,11 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 startActivity(intent);
                 break;
             /*case "storedetails":
+                intent = new Intent(HomeActivity.this, MultistoreActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                startActivity(intent);
+                break;
+            case "storedetails":
                 selectedFragment = TRENDING_FRAGMENT;
                 intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
@@ -367,20 +391,22 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     private void changeFragment(Fragment fragment, boolean addBackstack) {
-
-        FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
-        for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
-            fm.popBackStack();
-        }
-        FrameLayout fl_content = (FrameLayout) findViewById(R.id.content);
-        fl_content.removeAllViews();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
-        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        ft.add(R.id.content, fragment);
-        if (addBackstack) {
-            ft.addToBackStack(null);
-        }
-        ft.commit();
+        try {
+            FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
+            for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+                fm.popBackStack();
+            }
+            FrameLayout fl_content = (FrameLayout) findViewById(R.id.content);
+            fl_content.removeAllViews();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
+            ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            ft.add(R.id.content, fragment);
+            if (addBackstack) {
+                ft.addToBackStack(null);
+            }
+            ft.commit();
+            homeopened = true;
+        }catch (Exception e){homeopened = false;}
     }
 
     @Override
@@ -395,20 +421,16 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         displaySnackBar( error);
     }
 
-
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
-                switch (url){
-                    case Constant.HOMEPAGE_URL:
-                        PreferenceServices.instance().saveHomeMainCatList(response.toString());
-                        changeFragment(new HomeFragment(), false);
-                        break;
-                    case Constant.SUBCAT_URL:
-
-                        break;
-                    default: break;
-                }
+            switch (url){
+                case Constant.HOMEPAGE_URL:
+                    PreferenceServices.instance().saveHomeMainCatList(response.toString());
+                    changeFragment(new HomeFragment(), false);
+                    break;
+                default: break;
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -418,7 +440,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     public void onTrapeClick(HomeCatContentData catContentData, String title) {
         String pageid = catContentData.getPageTypeId();
         switch (pageid){
-            case Constant.SUBCATPAGE:
+            case SUBCATPAGE:
                 //displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
                 Intent intent = new Intent(this, SubCatActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
@@ -426,7 +448,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent.putExtra("mTitle", title);
                 startActivity(intent);
                 break;
-            case Constant.STORELISTINGPAGE:
+            case STORELISTINGPAGE:
                 intent = new Intent(getApplicationContext(), StoreListingActivity.class);
                 intent.putExtra("contentData", catContentData.getHomeSubCategoryArrayList());
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
@@ -434,26 +456,26 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent.putExtra("mSubTitle", title);
                 startActivity(intent);
                 break;
-            case Constant.TRENDINGPAGE:
+            case TRENDINGPAGE:
                 selectedFragment = TRENDING_FRAGMENT;
                 intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
-            case Constant.EXHIBITIONPAGE:
+            case EXHIBITIONPAGE:
                 selectedFragment = EXHIBITION_FRAGMENT;
                 intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
-            case Constant.MULTISTOREPAGE:
+            case MULTISTOREPAGE:
                 intent = new Intent(HomeActivity.this, MultistoreActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 startActivity(intent);
                 break;
-            case Constant.STOREDETAILSPAGE:
+            case STOREDETAILSPAGE:
                 StoreListModel storeListModel =  new StoreListModel();
                 storeListModel.setId(catContentData.getMainCatId());
                 intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
@@ -463,6 +485,5 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 break;
             default: break;
         }
-
     }
 }

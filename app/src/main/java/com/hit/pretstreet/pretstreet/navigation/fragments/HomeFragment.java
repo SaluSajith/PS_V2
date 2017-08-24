@@ -26,6 +26,7 @@ import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
+import com.hit.pretstreet.pretstreet.navigation.adapters.ArticlePagerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
@@ -45,15 +46,11 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE_CONTENT_TY
 
 public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implements ViewPager.OnPageChangeListener{
 
-    /*@BindView(R.id.pager_banners) ViewPager pager_banner;
-    @BindView(R.id.img1) ImageView img1;
-    @BindView(R.id.img2) ImageView img2;
-    @BindView(R.id.img3) ImageView img3;*/
+    @BindView(R.id.pager_banners) ViewPager pager_banner;
     @BindView(R.id.ll_main_cat) LinearLayout ll_main_cat;
     @BindView(R.id.ll_main_cat_bottom) LinearLayout ll_main_cat_bottom;
 
     HomeTrapeClick buttonClickCallback;
-    //String SavedMAinCaTList, SavedSubCatList;
 
     @Override
     public void onAttach(Activity activity) {
@@ -75,7 +72,6 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
 
     private void init(){
         String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
-        //loadHomeSample();
         loadHomePage(SavedMAinCaTList);
     }
 
@@ -163,12 +159,14 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
                         ll_main_cat.addView(view);
                     ll_main_cat.setVisibility(View.VISIBLE);
                     ll_main_cat_bottom.setVisibility(View.VISIBLE);
+
+                    break;
+                default:
+                    break;
                 }
             }
-        } else {
-            ll_main_cat.setVisibility(View.GONE);
-            ll_main_cat_bottom.setVisibility(View.GONE);
-        }
+        } else;
+        //loadHomeSample();
     }
 
     private void loadImage(String url, final ImageView imageView, final Bitmap mask){
@@ -242,10 +240,11 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
 
     }
 
-
-/*
-
     private void loadHomeSample(){
+
+        LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = infl.inflate(R.layout.row_home_pager, null);
+
         pager_banner.setOnPageChangeListener(this);
 
         ArrayList imagearray = new ArrayList();
@@ -256,17 +255,8 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
         imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/abraham_and_thakore.jpg");
 
         ArticlePagerAdapter mAdapter = new ArticlePagerAdapter(getActivity(), imagearray);
-
-        Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
-        Bitmap mask2 = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
-
-        loadImage("http://nuuneoi.com/uploads/source/playstore/cover.jpg", img1, mask1);
         pager_banner.setAdapter(mAdapter);
-        img1.bringToFront();
-        loadImage("http://nuuneoi.com/uploads/source/playstore/cover.jpg", img2, mask1);
-        loadImage("http://nuuneoi.com/uploads/source/playstore/cover.jpg", img3, mask2);
-
+        ll_main_cat.addView(view);
     }
-*/
 
 }

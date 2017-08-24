@@ -25,8 +25,10 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
+import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
+import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
@@ -52,10 +54,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
 public class StoreListingActivity extends AbstractBaseAppCompatActivity implements
@@ -341,27 +350,46 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     @Override
     public void buttonClick(StoreListModel storeListModel) {
         switch (storeListModel.getPageTypeId()){
-            case Constant.STOREDETAILSPAGE:
+            case STOREDETAILSPAGE:
                 Intent intent = new Intent(StoreListingActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(PARCEL_KEY, storeListModel);
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
                 startActivity(intent);
                 break;
-            case Constant.TRENDINGPAGE:
+            case TRENDINGPAGE:
                 selectedFragment = TRENDING_FRAGMENT;
                 intent = new Intent(StoreListingActivity.this, HomeInnerActivity.class);
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
-            case Constant.EXHIBITIONPAGE:
+            case EXHIBITIONPAGE:
                 selectedFragment = EXHIBITION_FRAGMENT;
                 intent = new Intent(StoreListingActivity.this, HomeInnerActivity.class);
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
-            case Constant.MULTISTOREPAGE:
+            case ARTICLEPAGE:
+                TrendingItems trendingItems = new TrendingItems();
+                trendingItems.setId(storeListModel.getId());
+                trendingItems.setPagetypeid(storeListModel.getPageTypeId());
+                trendingItems.setClicktype("");
+                intent = new Intent(StoreListingActivity.this, TrendingArticleActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                startActivity(intent);
+                break;
+            case EXARTICLEPAGE:
+                trendingItems = new TrendingItems();
+                trendingItems.setId(storeListModel.getId());
+                trendingItems.setPagetypeid(storeListModel.getPageTypeId());
+                trendingItems.setClicktype("");
+                intent = new Intent(StoreListingActivity.this, ExhibitionDetailsActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                intent.putExtra(Constant.PRE_PAGE_KEY, STORELISTINGPAGE);
+                startActivity(intent);
+                break;
+            case MULTISTOREPAGE:
                 intent = new Intent(StoreListingActivity.this, MultistoreActivity.class);
                 intent.putExtra(Constant.ID_KEY, storeListModel.getId());
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);

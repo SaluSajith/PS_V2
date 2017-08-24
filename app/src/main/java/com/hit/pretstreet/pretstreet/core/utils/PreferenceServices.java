@@ -35,6 +35,8 @@ public class PreferenceServices {
     public static final String HEADERIMAGE = "HEADERIMAGE";
     public static final String BASEIMAGE = "BASEIMAGE";
 
+    public static String SHARE_QUERYPARAM = "SHARE_QUERYPARAM";
+    public static String ID_QUERYPARAM = "ID_QUERYPARAM";
 
     private static final String PREFS_NAME = "FashionSharedPref";
     private static PreferenceServices mSingleton = new PreferenceServices();
@@ -59,6 +61,26 @@ public class PreferenceServices {
         return mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
+    public String getShareQueryparam() {
+        return getPrefs().getString(SHARE_QUERYPARAM, "");
+    }
+
+    public void setShareQueryparam(String shareQueryparam) {
+        SharedPreferences.Editor editor = getPrefs().edit();
+        editor.putString(SHARE_QUERYPARAM, shareQueryparam);
+        editor.commit();
+    }
+
+    public String getIdQueryparam() {
+        return getPrefs().getString(ID_QUERYPARAM, "");
+    }
+
+    public void setIdQueryparam(String idQueryparam) {
+        SharedPreferences.Editor editor = getPrefs().edit();
+        editor.putString(ID_QUERYPARAM, idQueryparam);
+        editor.commit();
+    }
+
     public String geUsertId() {
         return getPrefs().getString(USERID, "");
     }
@@ -68,7 +90,6 @@ public class PreferenceServices {
         editor.putString(USERID, id);
         editor.commit();
     }
-
     public String geUsertName() {
         return getPrefs().getString(USERNAME, "");
     }

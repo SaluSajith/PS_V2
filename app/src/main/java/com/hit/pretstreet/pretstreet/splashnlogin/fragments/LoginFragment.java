@@ -56,7 +56,6 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
 
     @OnClick(R.id.btn_login)
     public void onLoginPressed() {
-        btn_login.setEnabled(false);
         loginController.validateLoginFields(edt_email_number);
     }
 
@@ -90,7 +89,8 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
     }
 
     public void onValidationError(EdittextPret editText, String message) {
-        btn_login.setEnabled(true);
-        editText.setError(message);
+        try {
+            editText.setError(message);
+        }catch (Exception e){}
     }
 }

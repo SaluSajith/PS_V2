@@ -59,6 +59,12 @@ import java.net.URLEncoder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_OTP_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_OTP_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SOCIAL_LOGIN_URL;
+
 /**
  * Created by User on 20/07/2017.
  */
@@ -94,7 +100,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     JSONObject registerJson, loginJson;
     private static final int PROFILE_PIC_SIZE = 400;
 
-
+    SignupFragment signupFragment;
+    LoginFragment loginFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,7 +156,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         responseJSON.getString("id").toString() + "/picture?type=large", "UTF-8");
                 JSONObject resultJson = loginController.getFacebookLoginData(responseJSON);
                 this.showProgressDialog(getResources().getString(R.string.loading));
-                jsonRequestController.sendRequest(this, resultJson, Constant.SOCIAL_LOGIN_URL);
+                jsonRequestController.sendRequest(this, resultJson, SOCIAL_LOGIN_URL);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -162,7 +169,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         JSONObject resultJson = loginController.getGoogleLoginDetails(signInAccount);
         String googleImageUrl = String.valueOf(signInAccount.getPhotoUrl());
         mProfilePic = googleImageUrl.substring(0, googleImageUrl.length() - 2) + PROFILE_PIC_SIZE;
-        jsonRequestController.sendRequest(this, resultJson, Constant.SOCIAL_LOGIN_URL);
+        jsonRequestController.sendRequest(this, resultJson, SOCIAL_LOGIN_URL);
     }
 
     @Override
@@ -211,10 +218,12 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     public void buttonClick(int id) {
         if(id == SIGNUP_CLICK_CODE){
             currentFragment = SIGNUP_FRAGMENT;
-            changeFragment(new SignupFragment(), true, WELCOME_FRAGMENT);
+            signupFragment = new SignupFragment();
+            changeFragment(signupFragment, true, WELCOME_FRAGMENT);
         }
         else if(id == LOGIN_CLICK_CODE){
-            currentFragment = SIGNUP_FRAGMENT;
+            currentFragment = LOGIN_FRAGMENT;
+            loginFragment = new LoginFragment();
             changeFragment(new LoginFragment(), true, LOGIN_FRAGMENT);
         }
     }
@@ -222,10 +231,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     @Override
     public void validateCallback(EdittextPret editText, String message, int type) {
         if(type == SIGNUP) {
-            SignupFragment signupFragment = new SignupFragment();
             signupFragment.onValidationError(editText, message);
         }else if(type == LOGIN){
-            LoginFragment loginFragment = new LoginFragment();
             loginFragment.onValidationError(editText, message);
         }
     }
@@ -237,7 +244,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         loginJson = loginController.getNormalLoginDetails(loginSession);
         JSONObject otpObject = loginController.getOTPVerificationJson(phonenumber, "");
         showProgressDialog(getResources().getString(R.string.loading));
-        jsonRequestController.sendRequest(this, otpObject, Constant.LOGIN_OTP_URL);
+        jsonRequestController.sendRequest(this, otpObject, LOGIN_OTP_URL);
     }
 
     @Override
@@ -245,7 +252,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         registerJson = loginController.getNormalLoginDetails(loginSession);
         showProgressDialog(getResources().getString(R.string.loading));
         JSONObject otpObject = loginController.getOTPVerificationJson(loginSession.getMobile(), loginSession.getEmail());
-        jsonRequestController.sendRequest(this, otpObject, Constant.REGISTRATION_OTP_URL);
+        jsonRequestController.sendRequest(this, otpObject, REGISTRATION_OTP_URL);
     }
 
     @Override
@@ -261,21 +268,21 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             if (strsuccess.equals("1")) {
                 displaySnackBar(response.getString("CustomerMessage"));
                 switch (url){
-                    case Constant.REGISTRATION_OTP_URL:
+                    case REGISTRATION_OTP_URL:
                         otpValue = response.getJSONObject("Data").getString("OTP");
-                        showOTPScreem(registerJson, Constant.REGISTRATION_URL);
+                        showOTPScreem(registerJson, REGISTRATION_URL);
                         break;
-                    case Constant.REGISTRATION_URL:
+                    case REGISTRATION_URL:
                         setupSession(response, "", "");
                         break;
-                    case Constant.LOGIN_OTP_URL:
+                    case LOGIN_OTP_URL:
                         otpValue = response.getJSONObject("Data").getString("OTP");
-                        showOTPScreem(loginJson, Constant.LOGIN_URL);
+                        showOTPScreem(loginJson, LOGIN_URL);
                         break;
-                    case Constant.LOGIN_URL:
+                    case LOGIN_URL:
                         setupSession(response, "", "");
                         break;
-                    case Constant.SOCIAL_LOGIN_URL:
+                    case SOCIAL_LOGIN_URL:
                         setupSession(response, "social", mProfilePic);
                         break;
                     default: break;

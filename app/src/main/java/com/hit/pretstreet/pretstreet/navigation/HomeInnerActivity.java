@@ -278,6 +278,17 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;*/
+            case ARTICLEPAGE:
+                intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                startActivity(intent);
+                break;
+            case EXARTICLEPAGE:
+                intent = new Intent(HomeInnerActivity.this, ExhibitionDetailsActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                intent.putExtra(Constant.PRE_PAGE_KEY, STORELISTINGPAGE);
+                startActivity(intent);
+                break;
             case Constant.MULTISTOREPAGE:
                 intent = new Intent(HomeInnerActivity.this, MultistoreActivity.class);
                 intent.putExtra(Constant.ID_KEY, trendingItems.getId());//TODO : check id
