@@ -4,16 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager_banners"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="@dimen/pager_height"
-        android:fitsSystemWindows="true"
-        android:background="@color/transparent"
-        tools:listitem="@layout/image_slider_item"
-        android:layout_below="@+id/ll_main_cat"
-        android:layout_marginTop="@dimen/content_overlapmargin"/>
     <LinearLayout
         android:id="@+id/ll_main_cat"
         android:layout_width="match_parent"
@@ -30,9 +20,29 @@
         <include layout="@layout/row_sub_cat_list2"></include>-->
 
         </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_banners"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="@dimen/pager_height"
+        android:fitsSystemWindows="true"
+        android:background="@color/transparent"
+        tools:listitem="@layout/image_slider_item"
+        android:layout_below="@+id/ll_main_cat"
+        android:layout_marginTop="@dimen/content_overlapmargin"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_category"
+        android:background="@color/dark_gray"
+        android:layout_below="@+id/ll_main_cat"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginTop="@dimen/content_overlapmargin_hometrape"
+        android:paddingTop="80dp"
+        android:paddingBottom="50dp"/>
     <LinearLayout
         android:id="@+id/ll_main_cat_bottom"
-        android:layout_below="@+id/pager_banners"
+        android:layout_below="@+id/rv_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

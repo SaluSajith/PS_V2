@@ -142,8 +142,9 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         StoreListModel storeListModel = (StoreListModel)getIntent()
                 .getSerializableExtra(Constant.PARCEL_KEY);
         String pagekey = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
+        String clickid = getIntent().getStringExtra(Constant.CLICKTYPE_KEY);
         mStoreId = storeListModel.getId();
-        getShopDetails(mStoreId, pagekey);
+        getShopDetails(mStoreId, pagekey, clickid);
 
         SpannableString content = new SpannableString("Testimonials");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -151,8 +152,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     }
 
-    private void getShopDetails(String storeId, String pageId){
-        JSONObject resultJson = storeDetailsController.getShopDetailsJson(storeId, pageId);
+    private void getShopDetails(String storeId, String pageId, String clickid){
+        JSONObject resultJson = storeDetailsController.getShopDetailsJson(storeId, pageId, clickid);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.STOREDETAILS_URL);
     }

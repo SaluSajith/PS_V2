@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/tools"
+    android:background="@color/transparent">
+    <android.support.v7.widget.CardView
+        android:id="@+id/direction_card_view"
+        android:layout_marginBottom="1dp"
+        card_view:cardElevation="3dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        card_view:cardUseCompatPadding="true">
+        <ImageView
+            android:id="@+id/img_cat_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/mask_home"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/direction_card_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="1dp"
+            android:rotation="4.3"
+            card_view:cardElevation="3dp"
+            card_view:cardUseCompatPadding="true">
+
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:id="@+id/txt_cat_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="-5dp"
+                android:layout_marginTop="@dimen/padding_standard"
+                android:background="@drawable/yellow_rectangle"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:maxLines="1"
+                android:padding="8sp"
+                android:text="Category"
+                android:textAllCaps="true"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/textsize_standard"
+                app:pret_typeface="@string/font_redvelvet_regular" />
+
+        </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

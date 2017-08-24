@@ -39,6 +39,7 @@ import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
+import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
@@ -47,6 +48,7 @@ import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
@@ -56,11 +58,14 @@ import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListMod
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
@@ -73,7 +78,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 public class HomeActivity extends AbstractBaseAppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NavigationClick, ApiListenerInterface, HomeTrapeClick {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        NavigationClick, ApiListenerInterface, HomeTrapeClick, ButtonClickCallback {
 
     //TODO put same in NavigationItemsActivity as well
     private int selectedFragment = 0;
@@ -96,6 +102,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     LoginController loginController;
 
     boolean homeopened = false;
+    private String DEEPLINKINGKEY = "33";
 
     @Override
     protected void onResume() {
@@ -143,6 +150,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(PARCEL_KEY, storeListModel);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(CLICKTYPE_KEY, DEEPLINKINGKEY);
                 startActivity(intent);
                 break;
             case "trending":
@@ -449,8 +457,9 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 startActivity(intent);
                 break;
             case STORELISTINGPAGE:
+                ArrayList<HomeCatItems> homeCatItemses = new ArrayList<>();
                 intent = new Intent(getApplicationContext(), StoreListingActivity.class);
-                intent.putExtra("contentData", catContentData.getHomeSubCategoryArrayList());
+                intent.putExtra("contentData",  homeCatItemses);//TODO
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("mCatId", catContentData.getCategoryId());
                 intent.putExtra("mSubTitle", title);
@@ -485,5 +494,15 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 break;
             default: break;
         }
+    }
+
+    @Override
+    public void buttonClick(int id) {
+        Intent intent = new Intent(getApplicationContext(), StoreListingActivity.class);
+        intent.putExtra("contentData", "");
+        intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+        intent.putExtra("mCatId", id);
+        intent.putExtra("mSubTitle", "");
+        startActivity(intent);
     }
 }

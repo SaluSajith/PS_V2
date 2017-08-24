@@ -40,6 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.AUTOSEARCH_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
@@ -222,6 +223,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
             case Constant.STOREDETAILSPAGE:
                 Intent intent = new Intent(SearchActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, storeListModel);
+                intent.putExtra(CLICKTYPE_KEY, "");
                 intent.putExtra(Constant.PRE_PAGE_KEY, SEARCHPAGE);
                 startActivity(intent);
                 break;

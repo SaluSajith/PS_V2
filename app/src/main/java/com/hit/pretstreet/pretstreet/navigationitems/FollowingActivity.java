@@ -50,6 +50,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FOLLOWING_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
@@ -280,6 +281,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
             case Constant.STOREDETAILSPAGE:
                 Intent intent = new Intent(FollowingActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, storeListModel);
+                intent.putExtra(CLICKTYPE_KEY, "");
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.FOLLOWINGPAGE);
                 startActivity(intent);
                 break;

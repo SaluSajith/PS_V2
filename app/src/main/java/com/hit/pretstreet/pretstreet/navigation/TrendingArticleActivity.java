@@ -38,7 +38,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 public class TrendingArticleActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface {
 
-    @BindView(R.id.rv_trendingarticle) RecyclerView rv_trendingarticle;
+    @BindView(R.id.rv_trendingarticle)RecyclerView rv_trendingarticle;
     @BindView(R.id.txt_description)TextViewPret txt_description;
     @BindView(R.id.ib_like)ImageView ib_like;
     @BindView(R.id.txt_name)TextViewPret txt_name;

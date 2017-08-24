@@ -102,7 +102,12 @@ public class Constant {
     public static final String FOLLOWLINK = "27";
 
     //Trape types
-    public static final String TRAPE_CONTENT_TYPE = "1";
+    public static final String TRAPE = "1";
+    public static final String SLIDER = "2";
+    public static final String SHOPBYPRO = "3";
+    public static final String SHOPBYMOODS = "4";
+    public static final String MALLS = "5";
+
 
     //Constants
     public static final String PRE_PAGE_KEY = "pagetype";

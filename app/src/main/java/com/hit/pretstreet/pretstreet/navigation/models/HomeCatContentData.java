@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class HomeCatContentData implements Serializable{
     String CategoryId, CategoryName, Title, ImageSource, PageType, PageTypeId, MainCatId;
     ArrayList<HomeCatItems> homeSubCategoryArrayList;
+    ArrayList<HomeCatContentData> homeCatContentDatas;
 
     public String getCategoryId() {
         return CategoryId;
@@ -73,5 +74,13 @@ public class HomeCatContentData implements Serializable{
 
     public void setHomeSubCategoryArrayList(ArrayList<HomeCatItems> homeSubCategoryArrayList) {
         this.homeSubCategoryArrayList = homeSubCategoryArrayList;
+    }
+
+    public ArrayList<HomeCatContentData> getHomeCatContentDatas() {
+        return homeCatContentDatas;
+    }
+
+    public void setHomeCatContentDatas(ArrayList<HomeCatContentData> homeCatContentDatas) {
+        this.homeCatContentDatas = homeCatContentDatas;
     }
 }

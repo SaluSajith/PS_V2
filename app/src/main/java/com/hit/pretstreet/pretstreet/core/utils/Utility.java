@@ -2,6 +2,7 @@ package com.hit.pretstreet.pretstreet.core.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,6 +25,14 @@ public class Utility {
 
     public static LinearLayoutManager setListLayoutManager(RecyclerView recyclerView, Context context){
         LinearLayoutManager llm = new LinearLayoutManager(context);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setNestedScrollingEnabled(false);
+        return llm;
+    }
+
+    public static LinearLayoutManager setGridLayoutManager(RecyclerView recyclerView, Context context){
+        GridLayoutManager llm = new GridLayoutManager(context, 3);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setNestedScrollingEnabled(false);

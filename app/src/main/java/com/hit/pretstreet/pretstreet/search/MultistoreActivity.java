@@ -49,6 +49,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTILINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTORE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
@@ -223,6 +225,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                 Intent intent = new Intent(MultistoreActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, storeListModel);
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
+                intent.putExtra(CLICKTYPE_KEY, MULTILINK);
                 startActivity(intent);
                 break;
             case Constant.TRENDINGPAGE:

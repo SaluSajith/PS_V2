@@ -20,6 +20,12 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.MALLS;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYMOODS;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYPRO;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SLIDER;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE;
+
 /**
  * Created by User on 7/4/2017.
  */
@@ -262,7 +268,6 @@ public class LoginController {
         final ArrayList<HomeCatItems> list = new ArrayList<>();
         ArrayList<HomeCatContentData> subcatlist = new ArrayList<>();
 
-
         try {
             JSONObject response = new JSONObject(SavedMAinCaTList);
             JSONArray jsonArray = response.getJSONArray("Data");
@@ -272,43 +277,58 @@ public class LoginController {
                 homeCatItems = new HomeCatItems();
                 homeCatItems.setContentTypeId(jsonArray.getJSONObject(i).getString("ContentTypeId"));
                 homeCatItems.setContentType(jsonArray.getJSONObject(i).getString("ContentType"));
-                JSONObject object = jsonArray.getJSONObject(i).getJSONObject("ContentData");
+                String contentTypeId = jsonArray.getJSONObject(i).getString("ContentTypeId");
+                switch (contentTypeId) {
+                    case TRAPE:
+                        JSONObject object = jsonArray.getJSONObject(i).getJSONObject("ContentData");
 
-                HomeCatContentData homeContentData = new HomeCatContentData();
-                homeContentData.setCategoryId(object.getString("MainCategoryId"));
-                homeContentData.setCategoryName(object.getString("CategoryName"));
-                homeContentData.setImageSource(object.getString("ImageSource"));
-                homeContentData.setPageTypeId(object.getString("PageTypeId"));
+                        HomeCatContentData homeContentData = new HomeCatContentData();
+                        homeContentData.setCategoryId(object.getString("MainCategoryId"));
+                        homeContentData.setCategoryName(object.getString("CategoryName"));
+                        homeContentData.setImageSource(object.getString("ImageSource"));
+                        homeContentData.setPageTypeId(object.getString("PageTypeId"));
+                        homeCatItems.setHomeContentData(homeContentData);
+                        break;
+                    case SLIDER:
+                        break;
+                    case SHOPBYMOODS:
+                        JSONArray proContent = jsonArray.getJSONObject(i).getJSONArray("ContentData");
+                        homeContentData = new HomeCatContentData();
 
-                HomeCatItems homeSubCategory = null;
-                ArrayList<HomeCatItems> homeSubCategoriesArray = new ArrayList<>();
-                if (object.has("SubCategory")) {
-                    JSONArray subcat = object.getJSONArray("SubCategory");
-                    for (int k = 0; k < subcat.length(); k++) {
-                        homeSubCategory = new HomeCatItems();
-                        homeSubCategory.setContentTypeId(subcat.getJSONObject(k).getString("ContentTypeId"));
-                        homeSubCategory.setContentType(subcat.getJSONObject(k).getString("ContentType"));
+                        ArrayList<HomeCatContentData> homeSubCategoriesArray = new ArrayList<>();
+                        for (int k = 0; k < proContent.length(); k++) {
 
-                        JSONObject content = subcat.getJSONObject(k).getJSONObject("ContentData");
-                        HomeCatContentData contentData = new HomeCatContentData();
-                        contentData.setPageTypeId(content.getString("PageTypeId"));
-                        contentData.setImageSource(content.getString("ImageSource"));
-                        contentData.setCategoryId(content.getString("CategoryId"));
-                        contentData.setMainCatId(object.getString("MainCategoryId"));
-                                            /*getting main catid*/
+                            JSONObject data = proContent.getJSONObject(k);
+                            HomeCatContentData contentData = new HomeCatContentData();
+                            contentData.setCategoryId(data.getString("SubCategoryId"));
+                            contentData.setCategoryName(data.getString("CategoryName"));
+                            contentData.setTitle(data.getString("Title"));
+                            contentData.setImageSource(data.getString("ImageSource"));
+                            contentData.setPageType(data.getString("PageType"));
+                            contentData.setPageTypeId(data.getString("PageTypeId"));
 
-                        contentData.setCategoryName(content.getString("CategoryName"));
+                            homeSubCategoriesArray.add(contentData);
+                        }
+                        homeContentData.setHomeCatContentDatas(homeSubCategoriesArray);
+                        subcatlist.add(homeContentData);
+                        homeCatItems.setContentDataArrayList(subcatlist);
+                        homeCatItems.setHomeContentData(homeContentData);
+                        break;
+                    case SHOPBYPRO:
+                        break;
+                    case MALLS:
+                        object = jsonArray.getJSONObject(i).getJSONObject("ContentData");
 
-                        homeSubCategory.setHomeContentData(contentData);
-                        homeSubCategoriesArray.add(homeSubCategory);
-                    }
-                    homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
-                } else
-                    homeContentData.setHomeSubCategoryArrayList(homeSubCategoriesArray);
-
-                subcatlist.add(homeContentData);
-                homeCatItems.setContentDataArrayList(subcatlist);
-                homeCatItems.setHomeContentData(homeContentData);
+                        homeContentData = new HomeCatContentData();
+                        homeContentData.setCategoryId(object.getString("MainCategoryId"));
+                        homeContentData.setCategoryName(object.getString("CategoryName"));
+                        homeContentData.setImageSource(object.getString("ImageSource"));
+                        homeContentData.setPageTypeId(object.getString("PageTypeId"));
+                        homeCatItems.setHomeContentData(homeContentData);
+                        break;
+                    default:
+                        break;
+                }
                 list.add(homeCatItems);
             }
 

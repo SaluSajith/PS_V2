@@ -31,12 +31,12 @@ public class StoreDetailsController {
         this.context = context;
     }
 
-    public static JSONObject getShopDetailsJson(String storeId, String prePage) {
+    public static JSONObject getShopDetailsJson(String storeId, String prePage, String clickid) {
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("PreviousPageTypeId", prePage);
-            jsonBody.put("ClickTypeId", "");
+            jsonBody.put("ClickTypeId", clickid);
             jsonBody.put("Id", storeId);
 
             jsonBody = Constant.addConstants(jsonBody, context);
