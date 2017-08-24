@@ -38,12 +38,14 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="asset_statements"
+            android:resource="@string/asset_statements" />
         <receiver android:name=".Items.IncomingSms">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
         <activity
             android:name=".splashnlogin.WelcomeActivity"
             android:screenOrientation="portrait">
@@ -52,10 +54,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity
-            android:name=".ui.WelcomeScreen"
-            android:screenOrientation="portrait" />
 
         <!-- Facebook relatrd task start -->
         <activity
@@ -108,49 +108,23 @@
         <activity android:name=".ui.ArticleActivity" />
         <activity
             android:name=".navigation.HomeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="true">
+
+            <intent-filter>
+                <data  android:scheme="pretstreet" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".storedetails.StoreDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".TestActivity"
             android:screenOrientation="portrait" />
-        <!--
-        <activity
-            android:name=".ui.RegisterScreen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.LoginScreen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.ForgotPasswordScreen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.UploadPhotoScreen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.HomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.SelectLocation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.StoreLocationMapScreen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.PrivacyandConditionsScreen"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.AddStoreScreen"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".ui.DefaultLocation"
-            android:screenOrientation="portrait" />
-        <activity android:name=".ui.WebViewActivity" />
-        <activity android:name=".storedetails.StoreDetailsActivity"></activity>
-        -->
-
         <activity
             android:name=".navigationitems.NavigationItemsActivity"
             android:screenOrientation="portrait" />
@@ -168,7 +142,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigation.HomeInnerActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".location.StoreLocationMapScreen"
             android:screenOrientation="portrait" />

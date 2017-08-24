@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -39,6 +40,7 @@ import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
+import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
@@ -59,6 +61,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 
 public class HomeActivity extends AbstractBaseAppCompatActivity
@@ -88,6 +91,48 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri uri = intent.getData();
+            String valueOne = uri.getQueryParameter("share");
+            String id = uri.getQueryParameter("id");
+            switch (valueOne){
+                case "store":
+                    StoreListModel storeListModel =  new StoreListModel();
+                    storeListModel.setId(id);
+                    intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
+                    intent.putExtra(PARCEL_KEY, storeListModel);
+                    intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                    startActivity(intent);
+                    break;
+                case "trending":
+                    TrendingItems trendingItems = new TrendingItems();
+                    trendingItems.setId(id);
+                    intent = new Intent(HomeActivity.this, ExhibitionDetailsActivity.class);
+                    intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                    intent.putExtra(Constant.PRE_PAGE_KEY, Constant.EXHIBITIONPAGE);
+                    startActivity(intent);
+                    break;
+                case "exhibition":
+                    selectedFragment = EXHIBITION_FRAGMENT;
+                    intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
+                    intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                    intent.putExtra(ID_KEY, id);
+                    intent.putExtra("fragment", selectedFragment);
+                    startActivity(intent);
+                    break;
+                case "multistore":
+                    intent = new Intent(HomeActivity.this, MultistoreActivity.class);
+                    intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                    intent.putExtra(ID_KEY, id);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+            return;
+        }
         init();
     }
 
@@ -138,8 +183,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 new NavDrawerItem("nav_following", "Following"),
                 new NavDrawerItem("nav_addstore", "Add Store"),
                 new NavDrawerItem("nav_about", "About Pretstreet"),
-                new NavDrawerItem("nav_contact", "Contact Us/Support"),
-                new NavDrawerItem("storedetails", "Store details")};
+                new NavDrawerItem("nav_contact", "Contact Us/Support")};
 
         navDrawerAdapter = new NavDrawerAdapter(HomeActivity.this, navArray, HomeActivity.this);
         RecyclerView rv_nav = (RecyclerView) findViewById(R.id.rv_nav);
@@ -413,6 +457,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 StoreListModel storeListModel =  new StoreListModel();
                 storeListModel.setId(catContentData.getMainCatId());
                 intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
+                intent.putExtra(PARCEL_KEY, storeListModel );
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 startActivity(intent);
                 break;

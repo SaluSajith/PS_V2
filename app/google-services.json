@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "425774378018",
-    "project_id": "pretstreet-160510"
+    "firebase_url": "https://pretstreet-160510.firebaseio.com",
+    "project_id": "pretstreet-160510",
+    "storage_bucket": "pretstreet-160510.appspot.com"
   },
   "client": [
     {
@@ -12,6 +14,18 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "425774378018-dn1mchqlkb67ivolmeff5hv5vdrvmv7t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hit.pretstreet.pretstreet",
+            "certificate_hash": "95a105e9163152ac18fcb0d9360482557b3d583e"
+          }
+        },
+        {
+          "client_id": "425774378018-ql6fcqmeasrh6qlurfi7n31454756mv0.apps.googleusercontent.com",
+          "client_type": 3
+        },
         {
           "client_id": "425774378018-9jena5n2qc1u3bkkcgke7ts973tavu26.apps.googleusercontent.com",
           "client_type": 3
@@ -35,11 +49,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425774378018-ql6fcqmeasrh6qlurfi7n31454756mv0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

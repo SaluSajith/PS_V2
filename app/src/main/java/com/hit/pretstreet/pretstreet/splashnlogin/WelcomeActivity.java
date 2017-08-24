@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,7 +23,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.appinvite.AppInvite;
+import com.google.android.gms.appinvite.AppInviteInvitationResult;
+import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -86,6 +94,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     JSONObject registerJson, loginJson;
     private static final int PROFILE_PIC_SIZE = 400;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +102,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         init();
         changeFragment(new SplashFragment(), false, SPLASH_FRAGMENT);
         fl_content_splash.bringToFront();
+
     }
 
     @Override
@@ -334,8 +344,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     } else {
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     }
-                     finish();
-               }
+                    finish();
+                }
             }
         }
     };

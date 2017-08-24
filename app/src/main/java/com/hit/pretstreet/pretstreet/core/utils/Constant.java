@@ -101,6 +101,9 @@ public class Constant {
     public static final String SEARCHLISTLINK = "25";
     public static final String FOLLOWLINK = "27";
 
+    //Trape types
+    public static final String TRAPE_CONTENT_TYPE = "1";
+
     //Constants
     public static final String PRE_PAGE_KEY = "pagetype";
     public static final String ID_KEY = "id";

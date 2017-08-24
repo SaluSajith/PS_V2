@@ -509,8 +509,10 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
-        share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
-                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");
+        /*share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
+                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");*/
+        share.putExtra(Intent.EXTRA_TEXT, "\n" +
+                "http://pretstreet.com/betashare.php?s=123");
         startActivity(Intent.createChooser(share, "Share with.."));
     }
 

@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE_CONTENT_TYPE;
+
 /**
  * Created by User on 7/19/2017.
  */
@@ -48,6 +50,7 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
     @BindView(R.id.img2) ImageView img2;
     @BindView(R.id.img3) ImageView img3;*/
     @BindView(R.id.ll_main_cat) LinearLayout ll_main_cat;
+    @BindView(R.id.ll_main_cat_bottom) LinearLayout ll_main_cat_bottom;
 
     HomeTrapeClick buttonClickCallback;
     //String SavedMAinCaTList, SavedSubCatList;
@@ -82,77 +85,89 @@ public class HomeFragment extends AbstractBaseFragment<WelcomeActivity> implemen
             final ArrayList<HomeCatItems> list = LoginController.getHomeContent(SavedMAinCaTList);
 
             ll_main_cat.removeAllViews();
+            ll_main_cat_bottom.removeAllViews();
             for (int i = 0; i < list.size(); i++) {
-                LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view;
-                if (i % 2 == 0) {
-                    view = infl.inflate(R.layout.row_sub_cat_list1, null);
-                } else {
-                    view = infl.inflate(R.layout.row_sub_cat_list2, null);
-                }
-                RelativeLayout rl_dd = (RelativeLayout) view.findViewById(R.id.rl_dd);
-                TextViewPret txt_cat_name = (TextViewPret) view.findViewById(R.id.txt_cat_name);
-                final ImageView mImageView = (ImageView) view.findViewById(R.id.img_cat_image);
-                txt_cat_name.setMaxLines(1);
-
-                LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                if(i!=0) {
-                    relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin_hometrape), 0, 0);
-                }
-                rl_dd.setLayoutParams(relativeParams);
-                rl_dd.requestLayout();
-
-                final HomeCatContentData homeContentData = list.get(i).getHomeContentData();
-                txt_cat_name.setText(homeContentData.getCategoryName());
-                txt_cat_name.getBackground().setFilterBitmap(true);
-                if(homeContentData.getCategoryName().length()==0)
-                    txt_cat_name.setVisibility(View.GONE);
-
-                String catName = homeContentData.getCategoryName();
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
-                if(catName.length()>3&&catName.length()<=6)
-                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) - 2, -3, 0);
-                else if(catName.length()>6&&catName.length()<=10)
-                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 0, -3, 0);
-                else if(catName.length()>10&&catName.length()<=15)
-                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 4, -3, 0);
-                else if(catName.length()>=15)
-                    lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 7, -3, 0);
-                txt_cat_name.setLayoutParams(lp);
-
-                Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
-                Matrix matrix = new Matrix();
-                matrix.preScale(-1.0f, 1.0f);
-                Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
-                Bitmap mask3 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_malls);
-                Bitmap mask4= Bitmap.createBitmap(mask3, 0, 0, mask3.getWidth(), mask3.getHeight(), matrix, true);
-
-                final int finalI = i;
-                if(finalI == list.size()-1){
-                    if (finalI % 2 == 0)
-                        loadImage(homeContentData.getImageSource(), mImageView, mask4);
-                    else
-                        loadImage(homeContentData.getImageSource(), mImageView, mask3);
-                }
-                else {
-                    if (finalI % 2 == 0)
-                        loadImage(homeContentData.getImageSource(), mImageView, mask1);
-                    else
-                        loadImage(homeContentData.getImageSource(), mImageView, mask2);
-                }
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        buttonClickCallback.onTrapeClick(homeContentData,
-                                list.get(finalI).getHomeContentData().getCategoryName());
+                String contentType = list.get(i).getContentTypeId();
+                switch (contentType){
+                case TRAPE_CONTENT_TYPE:
+                    LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view;
+                    if (i % 2 == 0) {
+                        view = infl.inflate(R.layout.row_sub_cat_list1, null);
+                    } else {
+                        view = infl.inflate(R.layout.row_sub_cat_list2, null);
                     }
-                });
-                ll_main_cat.addView(view);
+                    RelativeLayout rl_dd = (RelativeLayout) view.findViewById(R.id.rl_dd);
+                    TextViewPret txt_cat_name = (TextViewPret) view.findViewById(R.id.txt_cat_name);
+                    final ImageView mImageView = (ImageView) view.findViewById(R.id.img_cat_image);
+                    txt_cat_name.setMaxLines(1);
+
+                    LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+                    if (i != 0) {
+                        relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin_hometrape), 0, 0);
+                    }
+                    rl_dd.setLayoutParams(relativeParams);
+                    rl_dd.requestLayout();
+
+                    final HomeCatContentData homeContentData = list.get(i).getHomeContentData();
+                    txt_cat_name.setText(homeContentData.getCategoryName());
+                    txt_cat_name.getBackground().setFilterBitmap(true);
+                    if (homeContentData.getCategoryName().length() == 0)
+                        txt_cat_name.setVisibility(View.GONE);
+
+                    String catName = homeContentData.getCategoryName();
+                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
+                    if (catName.length() > 3 && catName.length() <= 6)
+                        lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) - 2, -3, 0);
+                    else if (catName.length() > 6 && catName.length() <= 10)
+                        lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 0, -3, 0);
+                    else if (catName.length() > 10 && catName.length() <= 15)
+                        lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 4, -3, 0);
+                    else if (catName.length() >= 15)
+                        lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 7, -3, 0);
+                    txt_cat_name.setLayoutParams(lp);
+
+                    Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
+                    Matrix matrix = new Matrix();
+                    matrix.preScale(-1.0f, 1.0f);
+                    Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
+                    Bitmap mask3 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_malls);
+                    Bitmap mask4 = Bitmap.createBitmap(mask3, 0, 0, mask3.getWidth(), mask3.getHeight(), matrix, true);
+
+                    final int finalI = i;
+                    if (finalI == list.size() - 1) {
+                        if (finalI % 2 == 0)
+                            loadImage(homeContentData.getImageSource(), mImageView, mask4);
+                        else
+                            loadImage(homeContentData.getImageSource(), mImageView, mask3);
+                    } else {
+                        if (finalI % 2 == 0)
+                            loadImage(homeContentData.getImageSource(), mImageView, mask1);
+                        else
+                            loadImage(homeContentData.getImageSource(), mImageView, mask2);
+                    }
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            buttonClickCallback.onTrapeClick(homeContentData,
+                                    list.get(finalI).getHomeContentData().getCategoryName());
+                        }
+                    });
+                    if (finalI == list.size() - 1) {
+                        relativeParams.setMargins(0, 0, 0, 0);
+                        rl_dd.setLayoutParams(relativeParams);
+                        rl_dd.requestLayout();
+                        ll_main_cat_bottom.addView(view);
+                    } else
+                        ll_main_cat.addView(view);
+                    ll_main_cat.setVisibility(View.VISIBLE);
+                    ll_main_cat_bottom.setVisibility(View.VISIBLE);
+                }
             }
-            ll_main_cat.setVisibility(View.VISIBLE);
         } else {
             ll_main_cat.setVisibility(View.GONE);
+            ll_main_cat_bottom.setVisibility(View.GONE);
         }
     }
 
