@@ -46,6 +46,7 @@ import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MALLS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYMOODS;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYPRO;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE;
 
 /**
@@ -58,6 +59,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
     @BindView(R.id.ll_main_cat) LinearLayout ll_main_cat;
     @BindView(R.id.ll_main_cat_bottom) LinearLayout ll_main_cat_bottom;
     @BindView(R.id.rv_category)RecyclerView rv_category;
+    @BindView(R.id.rv_moods)RecyclerView rv_moods;
 
     HomeTrapeClick buttonClickCallback;
 
@@ -81,6 +83,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
 
     private void init(){
         Utility.setGridLayoutManager(rv_category, getActivity());
+        Utility.setGridLayoutManager(rv_moods, getActivity());
         String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
         loadHomePage(SavedMAinCaTList);
     }
@@ -177,9 +180,13 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
                     case SHOPBYMOODS:
                         ArrayList<HomeCatContentData> homeSubCategoriesArray = list.get(i).
                                 getContentDataArrayList().get(0).getHomeCatContentDatas();
+                        loadGridMoods(homeSubCategoriesArray);
+                        break;
+                    case SHOPBYPRO:
+                        homeSubCategoriesArray = list.get(i).
+                                getContentDataArrayList().get(0).getHomeCatContentDatas();
                         loadGrid(homeSubCategoriesArray);
                         break;
-
                     case MALLS:
                         infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         if (i % 2 == 0) {
@@ -315,6 +322,11 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
     private void loadGrid(ArrayList<HomeCatContentData> homeSubCategoriesArray){
         HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
         rv_category.setAdapter(homeGridAdapter);
+    }
+
+    private void loadGridMoods(ArrayList<HomeCatContentData> homeSubCategoriesArray){
+        HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
+        rv_moods.setAdapter(homeGridAdapter);
     }
 
     private void loadHomeSample(){

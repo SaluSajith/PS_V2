@@ -76,6 +76,7 @@
                     android:layout_height="match_parent"
                     android:text="All"
                     android:textColor="@color/yellow"
+                    android:layout_marginTop="25dp"
                     app:pret_typeface="@string/font_merriweather_regular"/>
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"

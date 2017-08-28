@@ -315,6 +315,27 @@ public class LoginController {
                         homeCatItems.setHomeContentData(homeContentData);
                         break;
                     case SHOPBYPRO:
+                        proContent = jsonArray.getJSONObject(i).getJSONArray("ContentData");
+                        homeContentData = new HomeCatContentData();
+
+                        homeSubCategoriesArray = new ArrayList<>();
+                        for (int k = 0; k < proContent.length(); k++) {
+
+                            JSONObject data = proContent.getJSONObject(k);
+                            HomeCatContentData contentData = new HomeCatContentData();
+                            contentData.setCategoryId(data.getString("SubCategoryId"));
+                            contentData.setCategoryName(data.getString("CategoryName"));
+                            contentData.setTitle(data.getString("Title"));
+                            contentData.setImageSource(data.getString("ImageSource"));
+                            contentData.setPageType(data.getString("PageType"));
+                            contentData.setPageTypeId(data.getString("PageTypeId"));
+
+                            homeSubCategoriesArray.add(contentData);
+                        }
+                        homeContentData.setHomeCatContentDatas(homeSubCategoriesArray);
+                        subcatlist.add(homeContentData);
+                        homeCatItems.setContentDataArrayList(subcatlist);
+                        homeCatItems.setHomeContentData(homeContentData);
                         break;
                     case MALLS:
                         object = jsonArray.getJSONObject(i).getJSONObject("ContentData");

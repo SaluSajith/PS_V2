@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -174,7 +175,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                                 first = false;
                                 if(loadmore)
                                     storeList_recyclerAdapter.loadMoreView(true);
-                                    getShoplist(catTag, false);
+                                getShoplist(catTag, false);
                             }
                             if(!loadmore)
                                 displaySnackBar("No more stores available!");
@@ -190,7 +191,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
         JSONObject resultJson = subCategoryController.getShoplistJson(mCatid, ++pageCount+"", pageid, arrayFilter);
         if(first)
-        this.showProgressDialog(getResources().getString(R.string.loading));
+            this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, STORELISTING_URL);
     }
 
@@ -242,6 +243,12 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             HomeCatContentData contentData = homeSubCategories.get(0).getHomeContentData();
             txtname[0].setTag(contentData.getCategoryId());
         } else {
+            ViewGroup.MarginLayoutParams layoutParams =
+                    (ViewGroup.MarginLayoutParams) txtname[0].getLayoutParams();
+            layoutParams.setMargins(0, 60, 0, 0);
+            txtname[0].requestLayout();
+            txtname[0].setLayoutParams(layoutParams);
+
             txtname[0].setTag(getIntent().getStringExtra("mCatId"));
             txtname[0].performClick();
         }

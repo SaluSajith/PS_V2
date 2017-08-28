@@ -40,9 +40,19 @@
         android:layout_marginTop="@dimen/content_overlapmargin_hometrape"
         android:paddingTop="80dp"
         android:paddingBottom="50dp"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_moods"
+        android:background="@color/dark_gray"
+        android:layout_below="@+id/rv_category"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginTop="@dimen/content_overlapmargin_hometrape"
+        android:paddingTop="80dp"
+        android:paddingBottom="50dp"/>
     <LinearLayout
         android:id="@+id/ll_main_cat_bottom"
-        android:layout_below="@+id/rv_category"
+        android:layout_below="@+id/rv_moods"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

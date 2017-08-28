@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -21,10 +22,8 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
-import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 
 import java.util.ArrayList;
 
@@ -56,10 +55,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
     @Override
     public GridViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if(viewType %2 ==0)
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_cat1, parent, false);
-        else
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_cat2, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_cat1, parent, false);
         return new GridViewHolder(view);
     }
 
@@ -75,15 +71,11 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
         matrix.preScale(-1.0f, 1.0f);
         Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
         if(position % 2 ==0)
-        loadImage(contentData.getImageSource(), holder.img_cat_image, mask1);
+            loadImage(contentData.getImageSource(), holder.img_cat_image, mask1);
         else
             loadImage(contentData.getImageSource(), holder.img_cat_image, mask2);
-        Glide.with(context)
-                .load(contentData.getImageSource())
-                .fitCenter()
-                //.placeholder(R.mipmap.ic_launcher)
-                .into(holder.img_cat_image);
     }
+
     private void loadImage(String url, final ImageView imageView, final Bitmap mask){
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -132,6 +124,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
 
         @BindView(R.id.img_cat_image)ImageView img_cat_image;
         @BindView(R.id.txt_cat_name)TextViewPret txt_cat_name;
+        @BindView(R.id.direction_card_view)CardView direction_card_view;
 
         public GridViewHolder(View itemView) {
             super(itemView);
