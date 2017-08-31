@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class StoreDetailsModel {
 
-    String Id, StoreName, AreaCity, FollowingCount, Flags, Address, Latitude, Longitude, About, Products, ImageSource, TimingToday, BaseImage;
+    String Id, StoreName, AreaCity, FollowingCount, Flags, Address, Latitude, Longitude, About, Products, ImageSource, TimingToday, BaseImage, Share;
     boolean OpenStatus, FollowingStatus;
     ArrayList<String> Phone;
     ArrayList<Testimonials> arrayListTesti;
@@ -167,5 +167,13 @@ public class StoreDetailsModel {
 
     public void setArrayListImages(ArrayList<String> arrayListImages) {
         this.arrayListImages = arrayListImages;
+    }
+
+    public void setShare(String share) {
+        Share = share;
+    }
+
+    public String getShare() {
+        return Share;
     }
 }

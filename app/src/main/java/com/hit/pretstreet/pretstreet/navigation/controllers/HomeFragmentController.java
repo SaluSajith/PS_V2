@@ -29,15 +29,11 @@ public class HomeFragmentController {
         this.context = context;
     }
 
-    public static JSONObject getTrendinglistJson(String offset, String prepage) {
+    public static JSONObject getTrendinglistJson(int offset, String prepage) {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            /*jsonBody.put("CategoryId", catId);
-            jsonBody.put("Limit", limit);
-            jsonBody.put("Offset", offset);
-            jsonBody.put("Filter", filter);*/
-            jsonBody.put("Limit", Constant.LIMIT);
+            jsonBody.put("Limit", Constant.LIMIT_S);
             jsonBody.put("Offset", offset);
             jsonBody.put("PreviousPageTypeId", prepage);
             jsonBody.put("ClickTypeId", "");
@@ -51,15 +47,11 @@ public class HomeFragmentController {
         return jsonBody;
     }
 
-    public static JSONObject getExhibitionlistJson(String offset, String prepage) {
+    public static JSONObject getExhibitionlistJson(int offset, String prepage) {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            /*jsonBody.put("CategoryId", catId);
-            jsonBody.put("Limit", limit);
-            jsonBody.put("Offset", offset);
-            jsonBody.put("Filter", filter);*/
-            jsonBody.put("Limit", Constant.LIMIT);
+            jsonBody.put("Limit", Constant.LIMIT_S);
             jsonBody.put("Offset", offset);
             jsonBody.put("PreviousPageTypeId", prepage);
             jsonBody.put("ClickTypeId", "");
@@ -127,6 +119,7 @@ public class HomeFragmentController {
                 item.setArticle(trendingContent.getString("ArticleShortDescription"));
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 0 ? false : true);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 0 ? false : true);
+                item.setLoadmoreFlag(i != jsonArray.length()-1 ? false : true);
                 item.setStoreName(trendingContent.getString("Storename"));
 
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
@@ -182,6 +175,7 @@ public class HomeFragmentController {
                 item.setInterest(trendingContent.getInt("CustomerInterestedStatus") == 1 ? true : false);
                 item.setGoing(trendingContent.getInt("CustomerGoingStatus") == 1 ? true : false);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? true : false);
+                item.setLoadmoreFlag(i != jsonArray.length()-1 ? false : true);
 
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
                 ArrayList imagearray = new ArrayList();

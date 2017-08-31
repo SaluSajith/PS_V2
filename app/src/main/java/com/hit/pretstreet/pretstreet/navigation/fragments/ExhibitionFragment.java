@@ -33,6 +33,7 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
 
     @BindView(R.id.rv_trending) RecyclerView rv_trending;
     ExhibitionAdapter adapter;
+    ArrayList<TrendingItems> exHItems;
 
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,34 +44,25 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
     }
 
     private void init(){
+        exHItems = new ArrayList<>();
+        adapter = new ExhibitionAdapter(getActivity(),ExhibitionFragment.this, exHItems);
+        rv_trending.setAdapter(adapter);
         Utility.setListLayoutManager(rv_trending, getActivity());
-        /*rv_trending.addItemDecoration(new DividerDecoration(getActivity(),
-                ContextCompat.getColor(getActivity(), R.color.trending_grey), 5.0f));*/
-        ((HomeInnerActivity)getActivity()).getExhibitionlist("1");
-
+        ((HomeInnerActivity)getActivity()).getExhibitionlist(1);
     }
 
     @Override
     public void bindData(ArrayList<TrendingItems> exHItems) {
-        adapter = new ExhibitionAdapter(getActivity(),ExhibitionFragment.this, exHItems);
-        rv_trending.setAdapter(adapter);
-        /*TrendingArticleAdapter mAdapter = new TrendingArticleAdapter(getActivity(), exHItems);
-        rv_trending.setAdapter(mAdapter);*/
+        this.exHItems.addAll(exHItems);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void update_loadmore_adapter(boolean b){
+        adapter.loadMoreView(b);
     }
 
     @Override
     public void onClicked(int position, ArrayList<String> mImagearray) {
-        /*Bundle bundle = new Bundle();
-        bundle.putStringArrayList(Constant.PARCEL_KEY, mImagearray);
-        bundle.putInt(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.HOMEPAGE));
-        bundle.putInt(Constant.POSITION_KEY, position);
-
-        Fragment fragment = new SlideshowDialogFragment();
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content, fragment)
-                .commit();*/
 
         ArrayList<String> imageModels1 = mImagearray;
         Intent intent = new Intent(getActivity(), FullscreenGalleryActivity.class);

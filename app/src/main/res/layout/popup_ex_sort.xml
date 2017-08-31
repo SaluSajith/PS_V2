@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popup_bundle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.7"
+    android:background="@android:color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/ll_sort"
+        android:padding="10dp">
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:padding="5dp"
+            android:text="Sory By"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            app:pret_typeface="@string/font_merriweather_bold"/>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroup"
+            android:checkedButton="@+id/sortby_new" >
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sortby_new"
+                android:text="New"
+                android:textColor="@color/yellow"
+                android:typeface="serif"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sortby_old"
+                android:text="Old"
+                android:textColor="@color/yellow"
+                android:typeface="serif"/>
+
+        </RadioGroup>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:padding="5dp"
+            android:text="Order By"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            app:pret_typeface="@string/font_merriweather_bold"/>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroup1"
+            android:checkedButton="@+id/sortby_ascending" >
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sortby_ascending"
+                android:text="Ascending"
+                android:textColor="@color/yellow"
+                android:typeface="serif"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sortby_descending"
+                android:text="Descending"
+                android:textColor="@color/yellow"
+                android:typeface="serif"/>
+
+        </RadioGroup>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:layout_below="@+id/ll_sort"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        android:layout_centerHorizontal="true">
+
+        <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+            android:id="@+id/btn_apply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Apply"
+            android:textAllCaps="false"
+            android:background="@color/transparent"
+            android:gravity="center"
+            android:paddingBottom="2dp"/>
+
+    </RelativeLayout>
+</RelativeLayout>

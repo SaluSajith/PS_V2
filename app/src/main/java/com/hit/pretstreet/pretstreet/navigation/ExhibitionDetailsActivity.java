@@ -115,9 +115,6 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exhibition_details);
-        /* Intent intent = getIntent();
-        final String cheeseName = intent.getStringExtra(EXTRA_NAME);*/
-
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);

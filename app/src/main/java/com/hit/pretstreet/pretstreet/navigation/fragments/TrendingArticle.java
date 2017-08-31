@@ -27,8 +27,8 @@ import butterknife.ButterKnife;
 
 public class TrendingArticle extends AbstractBaseFragment<HomeInnerActivity> implements TrendingCallback {
 
-    @BindView(R.id.rv_trending)
-    RecyclerView rv_trending;
+    @BindView(R.id.rv_trending) RecyclerView rv_trending;
+
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
@@ -42,7 +42,7 @@ public class TrendingArticle extends AbstractBaseFragment<HomeInnerActivity> imp
         Utility.setListLayoutManager(rv_trending, getActivity());
         /*rv_trending.addItemDecoration(new DividerDecoration(getActivity(),
                 ContextCompat.getColor(getActivity(), R.color.trending_grey), 5.0f));*/
-        ((HomeInnerActivity)getActivity()).getTrendinglist("");
+        ((HomeInnerActivity)getActivity()).getTrendinglist(1); //TODO
 
     }
 

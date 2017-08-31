@@ -1,20 +1,33 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
+import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
@@ -25,16 +38,9 @@ import com.hit.pretstreet.pretstreet.navigation.fragments.ExhibitionFragment;
 import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
-import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
-import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
-import com.hit.pretstreet.pretstreet.navigationitems.fragments.ChangePasswordFragment;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
@@ -44,6 +50,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.*;
 
@@ -64,7 +71,14 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     @BindView(R.id.content) FrameLayout fl_content;
     @BindView(R.id.iv_header)ImageView iv_header;
+    @BindView(R.id.iv_filter)ImageView iv_filter;
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
+    @BindView(R.id.nsv_header)NestedScrollView nsv_header;
+
+    int pageCount = 1;
+    boolean requestCalled = false;
+    boolean loadmore = true, first = true;
+    private static String catTag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,29 +108,75 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
         iv_search.setVisibility(View.GONE);
         fl_content.bringToFront();
+        refreshListviewOnScrolling();
 
         Intent intent = getIntent();
         int fragmentId = intent.getIntExtra("fragment", 0);
         setupFragment(fragmentId, false);
     }
 
+    @OnClick(R.id.iv_filter)
+    public void filterResult(){
+        showSortScreem();
+    }
+
+    private void refreshListviewOnScrolling(){
+        nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    if (scrollY > oldScrollY) {
+                        if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
+                            if(!requestCalled){
+                                requestCalled = true;
+                                first = false;
+                                if(loadmore) {
+                                    pageCount++;
+                                    if(currentFragment == TRENDING_FRAGMENT) {
+                                        getTrendinglist(pageCount);
+                                        trendingFragment.update_loadmore_adapter(true);
+                                    } else {
+                                        exhibitionFragment.update_loadmore_adapter(true);
+                                        getExhibitionlist(pageCount);
+                                    }
+                                }
+                            }
+                            if(!loadmore)
+                                displaySnackBar("No more data available!");
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
             case TRENDING_FRAGMENT:
+                pageCount = 1;
+                currentFragment = TRENDING_FRAGMENT;
                 tv_cat_name.setText("Trending");
+                iv_filter.setVisibility(View.GONE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 trendingFragment = new TrendingFragment();
                 trendingCallback = trendingFragment;
                 changeFragment(trendingFragment, b);
                 break;
             case EXHIBITION_FRAGMENT:
+                pageCount = 1;
+                currentFragment = EXHIBITION_FRAGMENT;
                 tv_cat_name.setText("Exhibition");
+                iv_filter.setVisibility(View.VISIBLE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 exhibitionFragment = new ExhibitionFragment();
                 trendingCallback = exhibitionFragment;
                 changeFragment(exhibitionFragment, b);
                 break;
             case TRENDINGARTICLE_FRAGMENT:
+                pageCount = 0;
+                currentFragment = TRENDINGARTICLE_FRAGMENT;
+                iv_filter.setVisibility(View.GONE);
                 toolbar.setVisibility(View.GONE);
                 break;
             default:
@@ -124,14 +184,16 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
-    public void getTrendinglist(String offset){
+    public void getTrendinglist(int offset){
         JSONObject resultJson = homeFragmentController.getTrendinglistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        if(first)
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, TRENDING_URL);
     }
 
-    public void getExhibitionlist(String offset){
+    public void getExhibitionlist(int offset){
         JSONObject resultJson = homeFragmentController.getExhibitionlistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        if(first)
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, EXHIBITION_URL);
     }
@@ -151,17 +213,22 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         ft.commit();
     }
 
-
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
             //displaySnackBar(response.getString("CustomerMessage"));
             switch (url){
                 case TRENDING_URL:
+                    first = true;
+                    requestCalled = false;
+                    trendingFragment.update_loadmore_adapter(false);
                     ArrayList<TrendingItems> trendingItemses = homeFragmentController.getTrendingList(response);
                     trendingCallback.bindData(trendingItemses);
                     break;
                 case EXHIBITION_URL:
+                    first = true;
+                    requestCalled = false;
+                    exhibitionFragment.update_loadmore_adapter(false);
                     ArrayList<TrendingItems> exHItemses = homeFragmentController.getExhibitionList(response);
                     trendingCallback.bindData(exHItemses);
                     break;
@@ -266,35 +333,6 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         String pageid = trendingItems.getPagetypeid();
         Intent intent;
         switch (pageid){
-            /*case Constant.SUBCATPAGE:
-                //displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
-                Intent intent = new Intent(this, SubCatActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
-                intent.putExtra("mHomeCatItems", catContentData);
-                intent.putExtra("mTitle", title);
-                startActivity(intent);
-                break;
-            case Constant.STORELISTINGPAGE:
-                intent = new Intent(getApplicationContext(), StoreListingActivity.class);
-                intent.putExtra("contentData", catContentData);
-                intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
-                intent.putExtra("mTitle", title);
-                startActivity(intent);
-                break;
-            case Constant.TRENDINGPAGE:
-                selectedFragment = TRENDING_FRAGMENT;
-                intent = new Intent(HomeInnerActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case Constant.EXHIBITIONPAGE:
-                selectedFragment = EXHIBITION_FRAGMENT;
-                intent = new Intent(HomeInnerActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;*/
             case ARTICLEPAGE:
                 intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, trendingItems);
@@ -322,6 +360,30 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 break;
             default: break;
         }
+    }
+
+    public void showSortScreem() {
+
+        final Dialog popupDialog = new Dialog(HomeInnerActivity.this);
+        LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = li.inflate(R.layout.popup_ex_sort, null);
+        ButtonPret btn_apply = (ButtonPret) view.findViewById(R.id.btn_apply);
+        final RadioGroup radioGroup_sortby = (RadioGroup) view.findViewById(R.id.radioGroup);
+        final RadioGroup radioGroup_orderby = (RadioGroup) view.findViewById(R.id.radioGroup1);
+
+        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        popupDialog.setContentView(view);
+        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+        popupDialog.show();
+
+        btn_apply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(radioGroup_sortby.getCheckedRadioButtonId());
+                System.out.println(radioGroup_orderby.getCheckedRadioButtonId());
+                popupDialog.dismiss();
+            }
+        });
     }
 
 }

@@ -83,6 +83,10 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         holder.txt_shopname.setText(trendingItems.getTitle());
         holder.txt_description.setText(trendingItems.getArticle());
 
+        if(trendingItems.getLoadmoreFlag())
+            holder.ll_progress.setVisibility(View.VISIBLE);
+        else
+            holder.ll_progress.setVisibility(View.GONE);
         try {
             Glide.with(context)
                     .load(trendingItems.getImagearray().get(0))
@@ -122,6 +126,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         @BindView(R.id.bt_going)ButtonPret bt_going;
 
         @BindView(R.id.ll_desc)LinearLayout ll_desc;
+        @BindView(R.id.ll_progress) LinearLayout ll_progress;
 
         int viewType;
         private int mLastPosition;
@@ -147,7 +152,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                     ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                 }
             });
-
+/*
             try {
                 float initialTranslation = (mLastPosition <= getAdapterPosition() ? 500f : -500f);
                 itemView.setTranslationY(initialTranslation);
@@ -157,7 +162,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                         .setDuration(300l)
                         .setListener(null);
                 mLastPosition = getAdapterPosition();
-            }catch (Exception e){ }
+            }catch (Exception e){ }*/
         }
 
         @Override
@@ -230,5 +235,10 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
             default:
                 break;
         }
+    }
+
+    public void loadMoreView(boolean visibility){
+        if(list.size()>1)
+            list.get(list.size()-1).setLoadmoreFlag(visibility);
     }
 }

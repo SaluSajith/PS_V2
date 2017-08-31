@@ -81,6 +81,7 @@ public class StoreDetailsController {
             storeDetailsModel.setImageSource(jsonObject.getString("ImageSource"));
             storeDetailsModel.setTimingToday(jsonObject.getString("TimingToday"));
             storeDetailsModel.setBaseImage(jsonObject.getString("BaseImage"));
+            storeDetailsModel.setShare(jsonObject.getString("Share"));
             storeDetailsModel.setOpenStatus(jsonObject.getInt("OpenStatus") == 0 ? true : false);
             storeDetailsModel.setFollowingStatus(jsonObject.getInt("FollowingStatus") == 0 ? true : false);
 

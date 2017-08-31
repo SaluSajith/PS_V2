@@ -341,16 +341,6 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
     private void loadHomeSample( ArrayList<HomeCatContentData> homeSubCategoriesArray){
         if(homeSubCategoriesArray.size()>0) {
             pager_banner.setOnPageChangeListener(this);
-            ArrayList imagearray = new ArrayList();
-            imagearray.add("http://52.77.174.143//admin//media//trendingpage//trendingpageimages//Satyam_Waghela.jpg");
-            imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/Creative_for_article_2_final.jpg");
-            imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/PAPA-DONT-PREACH-BY-SHUBHIKA.jpg");
-            imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/devnaagri.jpg");
-            imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/abraham_and_thakore.jpg");
-
-            /*for(int i=0;i<homeSubCategoriesArray.size();i++){
-                homeSubCategoriesArray.get(i).setImageSource(imagearray.get(i).toString());
-            }*/
             HomePagerAdapter mAdapter = new HomePagerAdapter(getActivity(), homeSubCategoriesArray);
             pager_banner.setAdapter(mAdapter);
             pager_banner.setVisibility(View.VISIBLE);

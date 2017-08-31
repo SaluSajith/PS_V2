@@ -83,6 +83,11 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         holder.txt_title.setText(trendingItems.getTitle());
         holder.txt_description.setText(trendingItems.getArticle());
 
+        if(trendingItems.getLoadmoreFlag())
+            holder.ll_progress.setVisibility(View.VISIBLE);
+        else
+            holder.ll_progress.setVisibility(View.GONE);
+
         if(trendingItems.getBanner()){
             holder.iv_banner.setVisibility(View.VISIBLE);
             holder.article_images.setVisibility(View.GONE);
@@ -169,6 +174,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         @BindView(R.id.pager_article)ViewPager article_images;
         @BindView(R.id.viewPagerCountDots)LinearLayout pager_indicator;
         @BindView(R.id.ll_desc)LinearLayout ll_desc;
+        @BindView(R.id.ll_progress) LinearLayout ll_progress;
 
         ImageView[] dots;
 
@@ -184,7 +190,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
             txt_description.setOnClickListener(this);
             txt_title.setOnClickListener(this);
             article_images.setOnPageChangeListener(this);
-
+/*
             try {
                 float initialTranslation = (mLastPosition <= getAdapterPosition() ? 500f : -500f);
                 itemView.setTranslationY(initialTranslation);
@@ -194,7 +200,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
                         .setDuration(300l)
                         .setListener(null);
                 mLastPosition = getAdapterPosition();
-            }catch (Exception e){ }
+            }catch (Exception e){ }*/
         }
 
         @Override
@@ -263,5 +269,10 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
                 R.drawable.red_heart : R.drawable.grey_heart);
         if(list.get(mPosition).getId().equals(storeid))
             list.get(mPosition).setLike(status == 0 ? false : true);
+    }
+
+    public void loadMoreView(boolean visibility){
+        if(list.size()>1)
+            list.get(list.size()-1).setLoadmoreFlag(visibility);
     }
 }

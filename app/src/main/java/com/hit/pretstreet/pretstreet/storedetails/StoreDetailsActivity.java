@@ -105,7 +105,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     @BindView(R.id.ll_address) LinearLayout ll_address;
     @BindView(R.id.ll_getdirec) LinearLayout ll_getdirec;
 
-    String mStoreId;
+    String mStoreId, shareUrl;
     Dialog popupDialog;
     private StoreDetailsModel storeDetailsModel;
 
@@ -202,6 +202,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 tv_testimonials_heading.setVisibility(View.GONE);
             }
             setupGallery(storeDetailsModel.getArrayListImages());
+            shareUrl = storeDetailsModel.getShare();
 
             tv_about_heading.setVisibility(storeDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
             tv_imgsrc.setVisibility(storeDetailsModel.getImageSource().length() > 0 ? View.VISIBLE : View.GONE);
@@ -512,9 +513,11 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
         /*share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
-                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");*/
+                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");
         share.putExtra(Intent.EXTRA_TEXT, "\n" +
-                "http://pretstreet.com/betashare.php?s=123");
+                "http://pretstreet.com/betashare.php?s=123");*/
+        share.putExtra(Intent.EXTRA_TEXT, "\n" +
+                text);
         startActivity(Intent.createChooser(share, "Share with.."));
     }
 
@@ -548,7 +551,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 onBackPressed();
                 return true;
             case R.id.menu_share:
-                shareUrl("");
+                shareUrl(shareUrl);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

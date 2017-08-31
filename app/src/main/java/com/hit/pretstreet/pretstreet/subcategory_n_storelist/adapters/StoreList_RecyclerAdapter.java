@@ -38,8 +38,6 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
     private static ArrayList<StoreListModel> mItems;
     private static TextViewPret textViewPret;
     static int mPosition;
-    private boolean loadmore = false;
-    private LinearLayout layoutPret;
 
     ButtonClickCallbackStoreList buttonClickCallback;
 
@@ -224,7 +222,6 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
     }
 
     public void loadMoreView(boolean visibility){
-        loadmore = visibility;
         if(mItems.size()>1)
         mItems.get(mItems.size()-1).setLoadmoreFlag(visibility);
     }

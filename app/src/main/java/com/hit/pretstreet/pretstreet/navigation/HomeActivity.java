@@ -1,6 +1,12 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,17 +21,23 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
+import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.core.customview.NotificationBadge;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
@@ -387,11 +399,64 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         }
     }
 
+    private void forceUpdate(String serverVersion){
+        //Force Update Option
+        PackageManager manager = getApplicationContext().getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = manager.getPackageInfo(getApplicationContext().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String curVersion = info.versionCode + "";
+        if(!serverVersion.equals(curVersion)) {
+            showUpdateScreem();
+        }
+    }
+
+    public void showUpdateScreem() {
+
+        final Dialog popupDialog = new Dialog(HomeActivity.this);
+        LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = li.inflate(R.layout.popup_update, null);
+        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+
+        popupDialog.setCanceledOnTouchOutside(false);
+        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
+        rl.setPadding(0, 0, 0, 0);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, 0, 0);
+        rl.setLayoutParams(lp);
+        popupDialog.setContentView(view);
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        popupDialog.getWindow().setAttributes(params);
+        popupDialog.setCancelable(false);
+        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+        popupDialog.show();
+
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
+                            ("market://details?id=com.hit.pretstreet.pretstreet")));
+                    popupDialog.dismiss();
+                }
+                catch (Exception e){}
+            }
+        });
+
+    }
+
     @OnClick(R.id.tv_location)
     public void onTvLocationPressed() {
         Intent intent = new Intent(HomeActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }
+
     @OnClick(R.id.iv_location)
     public void onLocationPressed() {
         Intent intent = new Intent(HomeActivity.this, DefaultLocationActivity.class);
@@ -435,6 +500,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             switch (url){
                 case Constant.HOMEPAGE_URL:
                     PreferenceServices.instance().saveHomeMainCatList(response.toString());
+                    forceUpdate(response.getString("AndroidVersion"));
                     changeFragment(new HomeFragment(), false);
                     break;
                 default: break;

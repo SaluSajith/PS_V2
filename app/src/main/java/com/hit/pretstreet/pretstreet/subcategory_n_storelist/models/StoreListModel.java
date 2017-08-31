@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class StoreListModel implements Serializable {
 
     String PageType, PageTypeId, Id, Title,
-            FollowingCount, Location, ImageSource;
+            FollowingCount, Location, ImageSource, Share;
     boolean Saleflag, Offerflag, Newflag, FollowingStatus, OpenStatus, BannerFlag, loadmoreFlag;
 
     public Boolean getBannerFlag() {
@@ -119,7 +119,16 @@ public class StoreListModel implements Serializable {
     public void setLoadmoreFlag(boolean loadmoreFlag) {
         this.loadmoreFlag = loadmoreFlag;
     }
+
     public Boolean getLoadmoreFlag() {
         return loadmoreFlag;
+    }
+
+    public String getShare() {
+        return Share;
+    }
+
+    public void setShare(String share) {
+        Share = share;
     }
 }

@@ -58,6 +58,7 @@ public class Constant {
 
     public static final String API = "MAPcabpnPawmassmjrc";
     public static final String LIMIT = "20";
+    public static final String LIMIT_S = "10";
     public static final String TAG = "Pretstreetv2";
     public static final int TIMEOUT_LIMIT = 15000;
 

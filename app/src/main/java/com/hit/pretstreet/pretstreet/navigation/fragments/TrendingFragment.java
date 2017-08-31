@@ -33,6 +33,7 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
         implements TrendingCallback, ZoomedViewListener {
 
     @BindView(R.id.rv_trending) RecyclerView rv_trending;
+    ArrayList<TrendingItems> trendingItems;
     TrendingAdapter adapter;
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,28 +45,20 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
 
     private void init(){
         Utility.setListLayoutManager(rv_trending, getActivity());
-        ((HomeInnerActivity)getActivity()).getTrendinglist("1");//todo
+        trendingItems = new ArrayList<>();
+        adapter = new TrendingAdapter(getActivity(), TrendingFragment.this, this.trendingItems);
+        rv_trending.setAdapter(adapter);
+        ((HomeInnerActivity)getActivity()).getTrendinglist(1);//todo
     }
 
     @Override
     public void bindData(ArrayList<TrendingItems> trendingItems) {
-            adapter = new TrendingAdapter(getActivity(), TrendingFragment.this, trendingItems);
-            rv_trending.setAdapter(adapter);
+        this.trendingItems.addAll(trendingItems);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onClicked(int position, ArrayList<String> mImagearray) {
-        /*Bundle bundle = new Bundle();
-        bundle.putStringArrayList(Constant.PARCEL_KEY, mImagearray);
-        bundle.putInt(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.HOMEPAGE));
-        bundle.putInt(Constant.POSITION_KEY, position);
-
-        Fragment fragment = new SlideshowDialogFragment();
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content, fragment)
-                .commit();*/
 
         ArrayList<String> imageModels1 = mImagearray;
         Intent intent = new Intent(getActivity(), FullscreenGalleryActivity.class);
@@ -77,5 +70,9 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
 
     public void updateLikeStatus(int status, String storeid) {
         adapter.updateLikeStatus(status, storeid);
+    }
+
+    public void update_loadmore_adapter(boolean b){
+        adapter.loadMoreView(b);
     }
 }
