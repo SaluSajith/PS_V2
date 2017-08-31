@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
@@ -49,12 +50,18 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
     Context context;
     static int mPosition;
     private static ImageView imageViewPret;
+    private static ButtonPret buttonPret;
     private static ArrayList<TrendingItems> list;
     private TrendingHolderInvoke trendingHolderInvoke;
     private ZoomedViewListener zoomedViewListener;
 
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
+
+    private static final int INTERESTED = 20;
+    private static final int GOING = 21;
+    private static final int LIKE = 22;
+    private static int selected_id = 22;
 
     public ExhibitionAdapter(Activity activity, ExhibitionFragment context, ArrayList<TrendingItems> list) {
         this.context = activity;
@@ -84,6 +91,8 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                     .into(holder.iv_banner);
         }catch (Exception e){}
 
+        holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);//TODO
+        holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
     }
@@ -109,6 +118,9 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         @BindView(R.id.txt_shopname)TextViewPret txt_shopname;
         @BindView(R.id.txt_description)TextViewPret txt_description;
 
+        @BindView(R.id.bt_interested)ButtonPret bt_interested;
+        @BindView(R.id.bt_going)ButtonPret bt_going;
+
         @BindView(R.id.ll_desc)LinearLayout ll_desc;
 
         int viewType;
@@ -118,12 +130,15 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
             super(itemView);
             this.viewType = viewType;
             imageViewPret =  new ImageView(context);
+            buttonPret = new ButtonPret(context);
             ButterKnife.bind(this, itemView);
 
             iv_like.setOnClickListener(this);
             iv_share.setOnClickListener(this);
             txt_shopname.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
+            bt_interested.setOnClickListener(this);
+            bt_going.setOnClickListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -152,8 +167,21 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
             switch (viewId) {
                 case R.id.iv_like:
                     mPosition = getAdapterPosition();
+                    selected_id = LIKE;
                     imageViewPret = (ImageView) view;
                     trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
+                    break;
+                case R.id.bt_interested:
+                    mPosition = getAdapterPosition();
+                    selected_id = INTERESTED;
+                    buttonPret = (ButtonPret) view;
+                    trendingHolderInvoke.interestInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
+                    break;
+                case R.id.bt_going:
+                    mPosition = getAdapterPosition();
+                    selected_id = GOING;
+                    buttonPret = (ButtonPret) view;
+                    trendingHolderInvoke.goingInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
                     break;
                 case R.id.iv_share:
                     trendingHolderInvoke.shareUrl("null");
@@ -180,9 +208,27 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
     }
 
     public static void updateLikeStatus(int status, String storeid) {
-        imageViewPret.setImageResource(status == 1 ?
-                R.drawable.red_heart : R.drawable.grey_heart);
-        if(list.get(mPosition).getId().equals(storeid))
-            list.get(mPosition).setLike(status == 0 ? false : true);
+        switch (selected_id){//TODO
+            case GOING:
+                imageViewPret.setImageResource(status == 1 ?
+                        R.drawable.red_heart : R.drawable.grey_heart);
+                if(list.get(mPosition).getId().equals(storeid))
+                    list.get(mPosition).setLike(status == 0 ? false : true);
+                break;
+            case INTERESTED:
+                imageViewPret.setImageResource(status == 1 ?
+                        R.drawable.red_heart : R.drawable.grey_heart);
+                if(list.get(mPosition).getId().equals(storeid))
+                    list.get(mPosition).setLike(status == 0 ? false : true);
+                break;
+            case LIKE:
+                imageViewPret.setImageResource(status == 1 ?
+                        R.drawable.red_heart : R.drawable.grey_heart);
+                if(list.get(mPosition).getId().equals(storeid))
+                    list.get(mPosition).setLike(status == 0 ? false : true);
+                break;
+            default:
+                break;
+        }
     }
 }

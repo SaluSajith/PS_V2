@@ -266,7 +266,6 @@ public class LoginController {
 
     public static ArrayList<HomeCatItems> getHomeContent(String SavedMAinCaTList){
         final ArrayList<HomeCatItems> list = new ArrayList<>();
-        ArrayList<HomeCatContentData> subcatlist = new ArrayList<>();
 
         try {
             JSONObject response = new JSONObject(SavedMAinCaTList);
@@ -289,8 +288,6 @@ public class LoginController {
                         homeContentData.setPageTypeId(object.getString("PageTypeId"));
                         homeCatItems.setHomeContentData(homeContentData);
                         break;
-                    case SLIDER:
-                        break;
                     case SHOPBYMOODS:
                         JSONArray proContent = jsonArray.getJSONObject(i).getJSONArray("ContentData");
                         homeContentData = new HomeCatContentData();
@@ -310,8 +307,6 @@ public class LoginController {
                             homeSubCategoriesArray.add(contentData);
                         }
                         homeContentData.setHomeCatContentDatas(homeSubCategoriesArray);
-                        subcatlist.add(homeContentData);
-                        homeCatItems.setContentDataArrayList(subcatlist);
                         homeCatItems.setHomeContentData(homeContentData);
                         break;
                     case SHOPBYPRO:
@@ -333,8 +328,27 @@ public class LoginController {
                             homeSubCategoriesArray.add(contentData);
                         }
                         homeContentData.setHomeCatContentDatas(homeSubCategoriesArray);
-                        subcatlist.add(homeContentData);
-                        homeCatItems.setContentDataArrayList(subcatlist);
+                        homeCatItems.setHomeContentData(homeContentData);
+                        break;
+                    case SLIDER:
+                        JSONArray sliContent = jsonArray.getJSONObject(i).getJSONArray("ContentData");
+                        homeContentData = new HomeCatContentData();
+
+                        homeSubCategoriesArray = new ArrayList<>();
+                        for (int k = 0; k < sliContent.length(); k++) {
+
+                            JSONObject data = sliContent.getJSONObject(k);
+                            HomeCatContentData contentData = new HomeCatContentData();
+                            contentData.setCategoryId(data.getString("SubCategoryId"));
+                            contentData.setCategoryName("");
+                            contentData.setTitle(data.getString("Title"));
+                            contentData.setImageSource(data.getString("ImageSource"));
+                            contentData.setPageType(data.getString("PageType"));
+                            contentData.setPageTypeId(data.getString("PageTypeId"));
+
+                            homeSubCategoriesArray.add(contentData);
+                        }
+                        homeContentData.setHomeCatContentDatas(homeSubCategoriesArray);
                         homeCatItems.setHomeContentData(homeContentData);
                         break;
                     case MALLS:
@@ -363,8 +377,6 @@ public class LoginController {
 
     public static ArrayList<HomeCatItems> getSubCatContent(JSONObject mResponse){
         final ArrayList<HomeCatItems> list = new ArrayList<>();
-        ArrayList<HomeCatContentData> subcatlist = new ArrayList<>();
-
 
         try {
             JSONObject response = mResponse;
@@ -384,8 +396,6 @@ public class LoginController {
                 homeContentData.setPageTypeId(object.getString("PageTypeId"));
                 homeContentData.setTitle(object.getString("Title"));
 
-                subcatlist.add(homeContentData);
-                homeCatItems.setContentDataArrayList(subcatlist);
                 homeCatItems.setHomeContentData(homeContentData);
                 list.add(homeCatItems);
             }

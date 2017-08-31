@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.core.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -34,6 +35,7 @@ public class SharedPreferencesHelper {
     public static final String KEY_PIC = "profile_pic";
     public static final String KEY_SESSION = "session_id";
 
+    @SuppressLint("CommitPrefEdits")
     public SharedPreferencesHelper(Context mContext) {
         if (mContext != null)
             this.mContext = mContext;

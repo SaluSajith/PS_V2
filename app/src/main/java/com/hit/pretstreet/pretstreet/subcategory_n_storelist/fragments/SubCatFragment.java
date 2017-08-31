@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.subcategory_n_storelist.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -69,6 +70,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
         ((SubCatActivity)getActivity()).getSubCAtPage(mCatId);
     }
 
+    @SuppressLint("InflateParams")
     private void loadSubCatPage(final ArrayList<HomeCatItems> homeCatItemses) {
 
         ll_main_cat.setVisibility(View.VISIBLE);

@@ -219,12 +219,29 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void likeInvoke(int trendingId, int pageId) {
-        JSONObject resultJson = homeFragmentController.getTrendinglikeJson(trendingId + "", getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        JSONObject resultJson;
         this.showProgressDialog(getResources().getString(R.string.loading));
-        if(pageId == TRENDING_FRAGMENT)
+        if(pageId == TRENDING_FRAGMENT) {
+            resultJson = homeFragmentController.getTrendinglikeJson(trendingId + "", getIntent().getStringExtra(PRE_PAGE_KEY));
             jsonRequestController.sendRequest(this, resultJson, TRENDINGLIKE_URL);
-        else
+        } else {
+            resultJson = homeFragmentController.getExhibitionlikeJson(EXUNLIKELINK, trendingId + "", getIntent().getStringExtra(PRE_PAGE_KEY));
             jsonRequestController.sendRequest(this, resultJson, EXHIBITIONLIKE_URL);
+        }
+    }
+
+    @Override
+    public void goingInvoke(int trendingId, int pageId) {
+        JSONObject resultJson = homeFragmentController.getExhibitionlikeJson(EXNOTGOINGLINK,
+                trendingId + "", getIntent().getStringExtra(PRE_PAGE_KEY));
+        jsonRequestController.sendRequest(this, resultJson, EXHIBITIONLIKE_URL);
+    }
+
+    @Override
+    public void interestInvoke(int trendingId, int pageId) {
+        JSONObject resultJson = homeFragmentController.getExhibitionlikeJson(EXNOTINTERESTEDLINK,
+                trendingId + "", getIntent().getStringExtra(PRE_PAGE_KEY));
+        jsonRequestController.sendRequest(this, resultJson, EXHIBITIONLIKE_URL);
     }
 
     @Override

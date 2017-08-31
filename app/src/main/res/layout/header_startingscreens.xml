@@ -10,7 +10,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/fixed_top"
             android:scaleType="centerCrop"
-            android:id="@+id/imageView3" />
+            android:id="@+id/imageView3"
+            android:contentDescription=""/>
 
         <ImageView
             android:id="@+id/imageView4"
@@ -24,6 +25,7 @@
             android:layout_alignBottom="@+id/imageView3"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="19dp" />
+            android:layout_marginStart="19dp"
+            android:contentDescription=""/>
 
 </RelativeLayout>

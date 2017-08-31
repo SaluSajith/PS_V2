@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -31,6 +32,7 @@ import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.adapters.ArticlePagerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.adapters.HomeGridAdapter;
+import com.hit.pretstreet.pretstreet.navigation.adapters.HomePagerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
@@ -47,6 +49,7 @@ import butterknife.ButterKnife;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MALLS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYMOODS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYPRO;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SLIDER;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE;
 
 /**
@@ -88,6 +91,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
         loadHomePage(SavedMAinCaTList);
     }
 
+    @SuppressLint("InflateParams")
     private void loadHomePage(String SavedMAinCaTList){
 
         if (SavedMAinCaTList.length() > 1) {
@@ -176,17 +180,6 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
                         ll_main_cat_bottom.setVisibility(View.VISIBLE);
 
                         break;
-
-                    case SHOPBYMOODS:
-                        ArrayList<HomeCatContentData> homeSubCategoriesArray = list.get(i).
-                                getContentDataArrayList().get(0).getHomeCatContentDatas();
-                        loadGridMoods(homeSubCategoriesArray);
-                        break;
-                    case SHOPBYPRO:
-                        homeSubCategoriesArray = list.get(i).
-                                getContentDataArrayList().get(0).getHomeCatContentDatas();
-                        loadGrid(homeSubCategoriesArray);
-                        break;
                     case MALLS:
                         infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         if (i % 2 == 0) {
@@ -221,7 +214,6 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
 
                         final int finali = i;
 
-
                         if (finali == list.size() - 1) {
                             if (finali % 2 == 0)
                                 loadImage(homeContentData1.getImageSource(), mImageView, mask4);
@@ -236,16 +228,27 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
                             }
                         });
 
-                            ll_main_cat_bottom.addView(view);
+                        ll_main_cat_bottom.addView(view);
 
                         ll_main_cat_bottom.setVisibility(View.VISIBLE);
+                        break;
+                    case SHOPBYMOODS:
+                        ArrayList<HomeCatContentData> homeSubCategoriesArray = list.get(i).getHomeContentData().getHomeCatContentDatas();
+                        loadGridMoods(homeSubCategoriesArray);
+                        break;
+                    case SHOPBYPRO:
+                        homeSubCategoriesArray = list.get(i).getHomeContentData().getHomeCatContentDatas();
+                        loadGrid(homeSubCategoriesArray);
+                        break;
+                    case SLIDER:
+                        homeSubCategoriesArray = list.get(i).getHomeContentData().getHomeCatContentDatas();
+                        loadHomeSample(homeSubCategoriesArray);
                         break;
                     default:
                         break;
                 }
             }
         } else;
-        //loadHomeSample();
     }
 
     private void loadImage(String url, final ImageView imageView, final Bitmap mask){
@@ -320,31 +323,38 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
     }
 
     private void loadGrid(ArrayList<HomeCatContentData> homeSubCategoriesArray){
-        HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
-        rv_category.setAdapter(homeGridAdapter);
+        if(homeSubCategoriesArray.size()>0) {
+            HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
+            rv_category.setAdapter(homeGridAdapter);
+            rv_category.setVisibility(View.VISIBLE);
+        }
     }
 
     private void loadGridMoods(ArrayList<HomeCatContentData> homeSubCategoriesArray){
-        HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
-        rv_moods.setAdapter(homeGridAdapter);
+        if(homeSubCategoriesArray.size()>0) {
+            HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
+            rv_moods.setAdapter(homeGridAdapter);
+            rv_moods.setVisibility(View.VISIBLE);
+        }
     }
 
-    private void loadHomeSample(){
+    private void loadHomeSample( ArrayList<HomeCatContentData> homeSubCategoriesArray){
+        if(homeSubCategoriesArray.size()>0) {
+            pager_banner.setOnPageChangeListener(this);
+            ArrayList imagearray = new ArrayList();
+            imagearray.add("http://52.77.174.143//admin//media//trendingpage//trendingpageimages//Satyam_Waghela.jpg");
+            imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/Creative_for_article_2_final.jpg");
+            imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/PAPA-DONT-PREACH-BY-SHUBHIKA.jpg");
+            imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/devnaagri.jpg");
+            imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/abraham_and_thakore.jpg");
 
-        LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = infl.inflate(R.layout.row_home_pager, null);
-
-        pager_banner.setOnPageChangeListener(this);
-
-        ArrayList imagearray = new ArrayList();
-        imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/Creative-for-article-1-final.jpg");
-        imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/Creative_for_article_2_final.jpg");
-        imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/PAPA-DONT-PREACH-BY-SHUBHIKA.jpg");
-        imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/devnaagri.jpg");
-        imagearray.add("http://52.77.174.143/admin/media/trendingpage/trendingpageimages/abraham_and_thakore.jpg");
-
-        ArticlePagerAdapter mAdapter = new ArticlePagerAdapter(getActivity(), imagearray);
-        pager_banner.setAdapter(mAdapter);
-        ll_main_cat.addView(view);
+            /*for(int i=0;i<homeSubCategoriesArray.size();i++){
+                homeSubCategoriesArray.get(i).setImageSource(imagearray.get(i).toString());
+            }*/
+            HomePagerAdapter mAdapter = new HomePagerAdapter(getActivity(), homeSubCategoriesArray);
+            pager_banner.setAdapter(mAdapter);
+            pager_banner.setVisibility(View.VISIBLE);
+            ll_main_cat.bringToFront();
+        }
     }
 }

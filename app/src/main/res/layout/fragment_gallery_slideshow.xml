@@ -28,6 +28,7 @@
         android:layout_marginTop="@dimen/padding_huge"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:scaleType="centerCrop"
-        android:id="@+id/iv_back"/>
+        android:id="@+id/iv_back"
+        android:contentDescription="Back"/>
 
 </FrameLayout>

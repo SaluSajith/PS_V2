@@ -14,6 +14,7 @@
     <dimen name="padding_xxxlarge">25dp</dimen>
     <dimen name="padding_huge">30dp</dimen>
     <dimen name="padding_xhuge">45dp</dimen>
+    <dimen name="padding_xxhuge">20dp</dimen>
 
     <dimen name="margin_xxlarge">19dp</dimen>
 

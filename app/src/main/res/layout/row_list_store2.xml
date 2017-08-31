@@ -12,7 +12,8 @@
         android:layout_height="@dimen/storelist_img_height"
         android:layout_alignParentRight="true"
         android:scaleType="matrix"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:contentDescription="Image"/>
 
     <LinearLayout
         android:id="@+id/ll_listdata"
@@ -54,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:visibility="visible"
                     android:background="@drawable/sale"
-                    android:layout_marginTop="@dimen/padding_small"/>
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:contentDescription="Image"/>
 
                 <ImageButton
                     android:id="@+id/img_offer"
@@ -63,7 +65,8 @@
                     android:visibility="visible"
                     android:background="@drawable/offer"
                     android:layout_marginLeft="@dimen/padding_small"
-                    android:layout_marginTop="@dimen/padding_small"/>
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:contentDescription="Image"/>
                 <ImageButton
                     android:id="@+id/img_newarrival"
                     android:layout_width="90dp"
@@ -71,7 +74,8 @@
                     android:visibility="visible"
                     android:background="@drawable/new_arrival"
                     android:layout_marginLeft="@dimen/padding_small"
-                    android:layout_marginTop="@dimen/padding_small"/>
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:contentDescription="Image"/>
 
             </LinearLayout>
 
@@ -182,14 +186,16 @@
             android:id="@+id/line1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@drawable/line_down"/>
+            android:background="@drawable/line_down"
+            android:contentDescription="Image"/>
         <ImageView
             android:layout_width="@dimen/storelist_img_width"
             android:layout_height="@dimen/storelist_img_height"
             android:scaleType="centerCrop"
             android:layout_marginLeft="-20dp"
             android:visibility="visible"
-            android:clickable="false" />
+            android:clickable="false"
+            android:contentDescription="Image"/>
 
     </LinearLayout>
 
@@ -215,5 +221,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/storelist_banner_height"
         android:scaleType="matrix"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:contentDescription="Image"/>
 </RelativeLayout>

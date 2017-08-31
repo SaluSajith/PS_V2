@@ -69,6 +69,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="33dp"
-        android:layout_marginRight="33dp" />
+        android:layout_marginRight="33dp"
+        android:contentDescription="Like"/>
 
 </android.support.design.widget.CoordinatorLayout>

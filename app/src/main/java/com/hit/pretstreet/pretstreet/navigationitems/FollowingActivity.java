@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigationitems;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
@@ -182,7 +183,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
             for (SearchModel object : homeSubCategories) {
                 SearchModel searchModel = object;
                 LayoutInflater infl = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = infl.inflate(R.layout.row_storelistscroll, null);
+                @SuppressLint("InflateParams") View view = infl.inflate(R.layout.row_storelistscroll, null);
                 txtname[index] = (TextViewPret) view.findViewById(R.id.tv_catname);
                 txtname[index].setText(searchModel.getCategory());
                 txtname[index].setTag(searchModel.getId());

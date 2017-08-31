@@ -151,7 +151,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                 placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        String str = resultList.get(i).toString();
+                        String str = resultList.get(i);
                         getLocationFromAddress(DefaultLocationActivity.this, str);
                         placeList.setAdapter(null);
                     }

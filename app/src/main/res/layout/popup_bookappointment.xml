@@ -31,7 +31,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:padding="10dp"
-            android:src="@drawable/ic_close" />
+            android:src="@drawable/ic_close"
+            android:contentDescription="Close"/>
 
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
             android:id="@+id/txt_close"

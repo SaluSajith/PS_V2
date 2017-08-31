@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.subcategory_n_storelist;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
@@ -148,6 +149,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             }
         });
         ll_scroll.setVisibility(View.VISIBLE);
+        ll_empty.setVisibility(View.INVISIBLE);
         ll_header.bringToFront();
 
         String title = getIntent().getStringExtra("mSubTitle");
@@ -169,7 +171,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
                     if (scrollY > oldScrollY) {
-                        if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
                             if(!requestCalled){
                                 requestCalled = true;
                                 first = false;
@@ -224,6 +226,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         startActivityForResult(intent, Integer.parseInt(Constant.FILTERPAGE));
     }
 
+    @SuppressLint("InflateParams")
     private void createScrollingHeader(){
 
         /*HomeCatContentData catContentData = (HomeCatContentData) getIntent()
@@ -233,7 +236,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
         txtname = new TextViewPret[homeSubCategories.size()+1];
         LayoutInflater infl = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = infl.inflate(R.layout.row_storelistscroll, null);
+        @SuppressLint("InflateParams") View view = infl.inflate(R.layout.row_storelistscroll, null);
         txtname[0] = (TextViewPret) view.findViewById(R.id.tv_catname);
         txtname[0].setText("All");
         ll_scroll.addView(view);
@@ -245,7 +248,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         } else {
             ViewGroup.MarginLayoutParams layoutParams =
                     (ViewGroup.MarginLayoutParams) txtname[0].getLayoutParams();
-            layoutParams.setMargins(0, 60, 0, 0);
+            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxhuge), 0, 0);
             txtname[0].requestLayout();
             txtname[0].setLayoutParams(layoutParams);
 
@@ -285,6 +288,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             String url = response.getString("URL");
             switch (url){
                 case STORELISTING_URL:
+                    showProgressDialog("Fetching content");
                     requestCalled = false;
                     storeList_recyclerAdapter.loadMoreView(false);
                     ArrayList <StoreListModel> storeListMode = subCategoryController.getList(response);
@@ -315,6 +319,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         if(storeListModels.size()==0)
             ll_empty.setVisibility(View.VISIBLE);
         else ll_empty.setVisibility(View.INVISIBLE);
+
+        hideDialog();
     }
 
     @Override

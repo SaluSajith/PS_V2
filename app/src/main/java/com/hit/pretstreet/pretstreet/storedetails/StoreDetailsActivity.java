@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.storedetails;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -214,7 +215,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
         popupDialog = new Dialog(StoreDetailsActivity.this);
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = li.inflate(R.layout.popup_bookappointment, null);
+        @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_bookappointment, null);
 
         popupDialog.setCanceledOnTouchOutside(true);
         popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -332,15 +333,15 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         rv_images.setAdapter(storeList_recyclerAdapter);
     }
 
-    private void loadBackdrop(String image) {
+    private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(getApplicationContext()).load(image).asBitmap().into(imageView);
+        Glide.with(getApplicationContext()).load(imageUrl).asBitmap().fitCenter().into(imageView);
     }
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {
         final Dialog popupDialog = new Dialog(StoreDetailsActivity.this);
         LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View view = li.inflate(R.layout.popup_phone_number, null);
+        @SuppressLint("InflateParams") final View view = li.inflate(R.layout.popup_phone_number, null);
         TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
         RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
         RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
@@ -459,7 +460,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     public void showAddress(StoreDetailsModel storeDetailsModel) {
         final Dialog popupDialog = new Dialog(StoreDetailsActivity.this);
         LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = li.inflate(R.layout.popup_phone_number, null);
+        @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_phone_number, null);
         TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
         ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
         TextViewPret txt_address1 = (TextViewPret) view.findViewById(R.id.txt_address);

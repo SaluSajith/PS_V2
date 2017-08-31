@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.splashnlogin;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +42,7 @@ import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
+import com.hit.pretstreet.pretstreet.sociallogin.TokenService;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.fragments.LoginFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.fragments.SignupFragment;
@@ -125,6 +127,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         DURATION = Integer.valueOf(getString(R.string.splash_duration));
         splashHandler.postDelayed(mChangeSplash, DURATION);
         splashHandler.postDelayed(mEndSplash, SPLASH_DURATION_END);
+
     }
 
     private void changeFragment(Fragment fragment, boolean addBackstack, int content) {
@@ -373,7 +376,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = li.inflate(R.layout.popup_otp_screen, null);
+        @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_otp_screen, null);
         ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
         final EdittextPret edt_otp = (EdittextPret) view.findViewById(R.id.edt_otp);
         ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);

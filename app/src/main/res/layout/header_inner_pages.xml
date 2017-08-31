@@ -28,7 +28,8 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/fixed_top"
                 android:scaleType="centerCrop"
-                android:id="@+id/iv_header" />
+                android:id="@+id/iv_header"
+                android:contentDescription=""/>
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                 android:id="@+id/tv_cat_name"
@@ -60,14 +61,16 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/back"/>
+                    app:srcCompat="@drawable/back"
+                    android:contentDescription="Back"/>
                 <ImageView
                     android:id="@+id/iv_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:layout_marginTop="-10dp"
-                    app:srcCompat="@drawable/logo1" />
+                    app:srcCompat="@drawable/logo1"
+                    android:contentDescription=""/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -79,7 +82,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/search"/>
+                    app:srcCompat="@drawable/search"
+                    android:contentDescription="Search"/>
             </LinearLayout>
 
             <ImageView
@@ -93,7 +97,8 @@
                 android:tint="@color/yellow_indicator"
                 android:layout_centerVertical="true"
                 android:layout_alignRight="@+id/linearLayout"
-                android:layout_alignEnd="@+id/linearLayout" />
+                android:layout_alignEnd="@+id/linearLayout"
+                android:contentDescription="Filter"/>
         </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class HomeCatItems implements Serializable {
     String ContentTypeId, ContentType, Position;
     HomeCatContentData homeContentData;
-    ArrayList<HomeCatContentData> contentDataArrayList;
 
     public void setContentType(String contentType) {
         ContentType = contentType;
@@ -46,13 +45,4 @@ public class HomeCatItems implements Serializable {
     public void setHomeContentData(HomeCatContentData homeContentData) {
         this.homeContentData = homeContentData;
     }
-
-    public ArrayList<HomeCatContentData> getContentDataArrayList() {
-        return contentDataArrayList;
-    }
-
-    public void setContentDataArrayList(ArrayList<HomeCatContentData> contentDataArrayList) {
-        this.contentDataArrayList = contentDataArrayList;
-    }
-
 }

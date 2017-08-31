@@ -101,6 +101,16 @@ public class Constant {
     public static final String SEARCHLISTLINK = "25";
     public static final String FOLLOWLINK = "27";
 
+    public static final String TRENDINGARTICLELIKELINK = "29";
+    public static final String TRENDINGARTICLEUNLIKELINK = "30";
+    public static final String EXLIKELINK = "31";
+    public static final String EXUNLIKELINK = "32";
+    public static final String SHARE = "33";
+    public static final String EXINTERESTLINK = "34";
+    public static final String EXNOTINTERESTEDLINK = "35";
+    public static final String EXGOINGLINK = "36";
+    public static final String EXNOTGOINGLINK = "37";
+
     //Trape types
     public static final String TRAPE = "1";
     public static final String SLIDER = "2";

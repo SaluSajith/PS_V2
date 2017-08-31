@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/content"
+                android:background="@color/white"
                 android:layout_below="@+id/ll_header"
                 android:layout_marginTop="@dimen/content_overlapmargin_hometrape">
                 <include layout="@layout/empty_view"

@@ -20,7 +20,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5sp"
             android:padding="10sp"
-            android:src="@drawable/close" />
+            android:src="@drawable/close"
+            android:contentDescription="Close"/>
 
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
             android:id="@+id/txt_location"
@@ -62,7 +63,8 @@
             android:src="@drawable/auto_detect"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:contentDescription="Image"/>
 
     </RelativeLayout>
 
@@ -89,7 +91,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/edt_search"
-            android:background="@color/trending_grey">
+            android:background="@color/trending_grey"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/img"
@@ -97,7 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:padding="10sp"
-                android:src="@drawable/map" />
+                android:src="@drawable/map"
+                android:contentDescription="Image"/>
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                 android:layout_width="wrap_content"

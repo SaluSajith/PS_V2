@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.storedetails.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -72,6 +73,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
         //return this.urls != null ? urls.size() : 0;
         return urls.size();
     }
+    @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(final GalleryHolder holder, final int position) {
 

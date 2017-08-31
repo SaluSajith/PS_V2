@@ -10,6 +10,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="rateus">Rate Us on Playstore</string>
+    <string name="image">Image</string>
 
     <string name="font_merriweather_light">MERRIWEATHER LIGHT_0.TTF</string>
     <string name="font_merriweather_bold">MERRIWEATHER-BOLD.TTF</string>
@@ -18,7 +19,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="follow">   Follow   </string>
+    <string name="follow">Follow</string>
+    <string name="interested">Interested</string>
+    <string name="nt_interested">Not Interested</string>
+    <string name="going">Going</string>
+    <string name="nt_going">Not Going</string>
     <string name="loading">Loading..Please wait.</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -57,8 +62,6 @@
     <string name="email">email id:</string>
     <string name="submit">Submit</string>
     <string name="change_pass">Change Password</string>
-    <string name="interested">Interested</string>
-    <string name="going">Going</string>
 
     <!--changepassword-->
     <string name="currentpass">current password:</string>

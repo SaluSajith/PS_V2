@@ -67,22 +67,57 @@
             android:layout_gravity="center"
             app:pret_typeface="@string/font_merriweather_regular"/>
 
-        <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/follow"
-            android:textAllCaps="false"
-            android:background="@drawable/yellow_border"
-            android:textColor="@color/dark_gray"
-            android:id="@+id/btn_follow"
-            android:minHeight="30dp"
-            android:minWidth="60dp"
-            android:paddingLeft="@dimen/padding_large"
-            android:paddingRight="@dimen/padding_large"
-            android:layout_margin="@dimen/padding_xlarge"
-            app:pret_typeface="@string/font_merriweather_regular"
-            android:layout_gravity="center"/>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_margin="@dimen/padding_xlarge">
 
+            <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/follow"
+                android:textAllCaps="false"
+                android:background="@drawable/yellow_border"
+                android:textColor="@color/dark_gray"
+                android:id="@+id/btn_follow"
+                android:minHeight="30dp"
+                android:minWidth="60dp"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                app:pret_typeface="@string/font_merriweather_regular"/>
+
+            <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/interested"
+                android:textAllCaps="false"
+                android:background="@drawable/yellow_border"
+                android:textColor="@color/dark_gray"
+                android:id="@+id/btn_interested"
+                android:minHeight="30dp"
+                android:minWidth="60dp"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                android:layout_marginLeft="@dimen/padding_large"
+                android:layout_marginRight="@dimen/padding_large"
+                app:pret_typeface="@string/font_merriweather_regular"/>
+
+            <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/going"
+                android:textAllCaps="false"
+                android:background="@drawable/yellow_border"
+                android:textColor="@color/dark_gray"
+                android:id="@+id/btn_going"
+                android:minHeight="30dp"
+                android:minWidth="60dp"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                app:pret_typeface="@string/font_merriweather_regular"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,7 +137,8 @@
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
-                    android:src="@drawable/call" />
+                    android:src="@drawable/call"
+                    android:contentDescription="Call"/>
 
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"
@@ -126,7 +162,8 @@
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
-                    android:src="@drawable/address" />
+                    android:src="@drawable/address"
+                    android:contentDescription="Address"/>
 
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"
@@ -151,7 +188,8 @@
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
-                    android:src="@drawable/get_directions" />
+                    android:src="@drawable/get_directions"
+                    android:contentDescription="Profile"/>
 
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"
@@ -298,6 +336,7 @@
         android:layout_marginTop="@dimen/padding_huge"
         android:layout_marginRight="20dp"
         android:visibility="invisible"
+        android:contentDescription="New"
         app:srcCompat="@drawable/new_stamp" />
     <ImageView
         android:id="@+id/iv_offer"
@@ -308,7 +347,8 @@
         app:srcCompat="@drawable/offer_stamp"
         android:layout_alignTop="@+id/iv_new"
         android:layout_alignLeft="@+id/iv_new"
-        android:layout_alignStart="@+id/iv_new" />
+        android:layout_alignStart="@+id/iv_new"
+        android:contentDescription="Offer"/>
     <ImageView
         android:id="@+id/iv_sale"
         android:layout_width="60dp"
@@ -320,5 +360,6 @@
         android:layout_marginBottom="16dp"
         android:layout_alignBottom="@+id/iv_offer"
         android:layout_alignRight="@+id/iv_new"
-        android:layout_alignEnd="@+id/iv_new" />
+        android:layout_alignEnd="@+id/iv_new"
+        android:contentDescription="Sale"/>
 </RelativeLayout>

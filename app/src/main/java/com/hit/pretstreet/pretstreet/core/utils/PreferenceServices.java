@@ -68,7 +68,7 @@ public class PreferenceServices {
     public void setShareQueryparam(String shareQueryparam) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(SHARE_QUERYPARAM, shareQueryparam);
-        editor.commit();
+        editor.apply();
     }
 
     public String getIdQueryparam() {
@@ -78,7 +78,7 @@ public class PreferenceServices {
     public void setIdQueryparam(String idQueryparam) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(ID_QUERYPARAM, idQueryparam);
-        editor.commit();
+        editor.apply();
     }
 
     public String geUsertId() {
@@ -88,7 +88,7 @@ public class PreferenceServices {
     public void saveUserId(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(USERID, id);
-        editor.commit();
+        editor.apply();
     }
     public String geUsertName() {
         return getPrefs().getString(USERNAME, "");
@@ -97,7 +97,7 @@ public class PreferenceServices {
     public void saveUserName(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(USERNAME, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getCurrentLocation() {
@@ -107,7 +107,7 @@ public class PreferenceServices {
     public void saveCurrentLocation(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(CURLOCATION, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getLatitute() {
@@ -117,7 +117,7 @@ public class PreferenceServices {
     public void saveLatitute(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(LATITUTE, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getLongitute() {
@@ -127,7 +127,7 @@ public class PreferenceServices {
     public void saveLongitute(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(LONGITUTE, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getLoginType() {
@@ -147,7 +147,7 @@ public class PreferenceServices {
     public void saveDeviceSize(int id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putInt(DEVICESIZE, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getHomeMainCatList() {
@@ -157,7 +157,7 @@ public class PreferenceServices {
     public void saveHomeMainCatList(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(HOMEMAINCATLIST, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getHomeSubCatList() {
@@ -167,7 +167,7 @@ public class PreferenceServices {
     public void saveHomeSubCatList(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(SUBMAINCATLIST, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getTrendingCatList() {
@@ -177,7 +177,7 @@ public class PreferenceServices {
     public void saveTrendingCatList(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(TRENDINGCATLIST, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getTheshopscatlist() {
@@ -187,7 +187,7 @@ public class PreferenceServices {
     public void saveTheshopscatlist(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(THESHOPSCATLIST, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getThedesignerscatlist() {
@@ -197,7 +197,7 @@ public class PreferenceServices {
     public void saveThedesignerscatlist(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(THEDESIGNERSCATLIST, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getThejewekkarytrendingcatlist() {
@@ -207,7 +207,7 @@ public class PreferenceServices {
     public void saveThejewekkarytrendingcatlist(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(THEJEWEKKARYTRENDINGCATLIST, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getTHERETAILSCATLIST() {
@@ -217,7 +217,7 @@ public class PreferenceServices {
     public void saveTHERETAILSCATLIST(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(THERETAILSCATLIST, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getSplashScreen() {
@@ -227,7 +227,7 @@ public class PreferenceServices {
     public void saveSplashScreen(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(SPLASHSCREEN, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getBaseImage() {
@@ -237,7 +237,7 @@ public class PreferenceServices {
     public void saveBaseImage(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(BASEIMAGE, id);
-        editor.commit();
+        editor.apply();
     }
 
     public String getHeaderImage() {
@@ -247,6 +247,6 @@ public class PreferenceServices {
     public void saveHeaderImage(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(HEADERIMAGE, id);
-        editor.commit();
+        editor.apply();
     }
 }

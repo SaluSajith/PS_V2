@@ -1,8 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation.adapters;
 
 import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,35 +10,32 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
+import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
 
 import java.util.ArrayList;
 
 /**
- * Created by User on 04/08/2017.
+ * Created by User on 28/08/2017.
  */
 
-public class ArticlePagerAdapter extends PagerAdapter {
+public class HomePagerAdapter extends PagerAdapter {
 
     private Context mContext;
-    private ArrayList<String> mResources;
-    //private ArrayList<ProductImageItem> mImagearray;
+    private ArrayList<HomeCatContentData> homeSubCategoriesArray;
+    HomeTrapeClick buttonClickCallback;
 
-    public ArticlePagerAdapter(Context mContext, ArrayList<String> mResources) {
+    public HomePagerAdapter(Context mContext, ArrayList<HomeCatContentData> homeSubCategoriesArray) {
         this.mContext = mContext;
-        this.mResources = mResources;
-        //mImagearray = new ArrayList<>();
-        ProductImageItem productImageItem;
-        /*for(int i = 0;i<mResources.size();i++) {
-            productImageItem = new ProductImageItem();
-            productImageItem.setImage(mResources.get(i));
-            mImagearray.add(productImageItem);
-        }*/
+        buttonClickCallback = (HomeActivity)mContext;
+        this.homeSubCategoriesArray = homeSubCategoriesArray;
     }
 
     @Override
     public int getCount() {
-        return mResources.size();
+        return this.homeSubCategoriesArray != null ? homeSubCategoriesArray.size() : 0;
     }
 
     @Override
@@ -53,22 +48,25 @@ public class ArticlePagerAdapter extends PagerAdapter {
         final View itemView = LayoutInflater.from(mContext).inflate(R.layout.image_slider_item, container, false);
 
         final ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
-        if((mResources.get(position)).length()==0){
+        if(homeSubCategoriesArray.size()==0){
             imageView.setImageResource(R.mipmap.ic_launcher);
         }else {
                 /*Bitmap mask;
                 mask = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
                 loadImage(mResources.get(position), imageView, mask);*/
+                System.out.println(position+"  "+homeSubCategoriesArray.get(position).getImageSource());
             Glide.with(mContext)
-                    .load(mResources.get(position))
+                    .load(homeSubCategoriesArray.get(position).getImageSource())
                     .fitCenter()
+                    .placeholder(R.mipmap.ic_launcher)
                     .into(imageView);
         }
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                buttonClickCallback.onTrapeClick(homeSubCategoriesArray.get(position),
+                        homeSubCategoriesArray.get(position).getCategoryName());
             }
         });
         container.addView(itemView);

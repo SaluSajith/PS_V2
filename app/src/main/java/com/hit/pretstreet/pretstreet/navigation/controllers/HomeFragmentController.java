@@ -72,6 +72,22 @@ public class HomeFragmentController {
 
         return jsonBody;
     }
+    public static JSONObject getExhibitionlikeJson(String clicktype, String id, String prepage) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("Id", id);
+            jsonBody.put("PreviousPageTypeId", prepage);
+            jsonBody.put("ClickTypeId", clicktype);
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {
+        }
+
+        return jsonBody;
+    }
     public static JSONObject getTrendinglikeJson(String id, String prepage) {
 
         JSONObject jsonBody = new JSONObject();
@@ -163,6 +179,8 @@ public class HomeFragmentController {
                 item.setTitle(trendingContent.getString("Title"));
                 item.setArticle(trendingContent.getString("ArticleShortDescription"));
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 1 ? true : false);
+                item.setInterest(trendingContent.getInt("CustomerInterestedStatus") == 1 ? true : false);
+                item.setGoing(trendingContent.getInt("CustomerGoingStatus") == 1 ? true : false);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? true : false);
 
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");

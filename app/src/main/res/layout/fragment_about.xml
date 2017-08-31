@@ -32,7 +32,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:src="@drawable/aboutus" />
+                    android:src="@drawable/aboutus"
+                    android:contentDescription="About"/>
 
                 <ImageView
                     android:id="@+id/iv_contact"
@@ -41,7 +42,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/padding_standard"
-                    android:src="@drawable/contactus" />
+                    android:src="@drawable/contactus"
+                    android:contentDescription="Contace Us"/>
 
             </LinearLayout>
 
@@ -57,7 +59,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:src="@drawable/privacypolicy" />
+                    android:src="@drawable/privacypolicy"
+                    android:contentDescription="Privacy policy"/>
 
                 <ImageView
                     android:id="@+id/iv_terms"
@@ -66,7 +69,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/padding_large"
-                    android:src="@drawable/terms_conditions" />
+                    android:src="@drawable/terms_conditions"
+                    android:contentDescription="Terms"/>
 
             </LinearLayout>
 
@@ -83,7 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:src="@drawable/rateus" />
+                    android:src="@drawable/rateus"
+                    android:contentDescription="Rate us"/>
 
                 <ImageView
                     android:id="@+id/iv_feedback"
@@ -92,7 +97,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/padding_large"
-                    android:src="@drawable/feedback" />
+                    android:src="@drawable/feedback"
+                    android:contentDescription="Feedback"/>
 
             </LinearLayout>
 
@@ -111,7 +117,8 @@
                     android:gravity="center"
                     android:visibility="invisible"
                     android:clickable="false"
-                    android:src="@drawable/privacypolicy" />
+                    android:src="@drawable/privacypolicy"
+                    android:contentDescription=""/>
 
                 <ImageView
                     android:id="@+id/iv_logout"
@@ -120,7 +127,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/padding_large"
-                    android:src="@drawable/logout" />
+                    android:src="@drawable/logout"
+                    android:contentDescription="Logout"/>
 
             </LinearLayout>
 

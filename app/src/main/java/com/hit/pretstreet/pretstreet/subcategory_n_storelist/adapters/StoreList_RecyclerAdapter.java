@@ -124,16 +124,17 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
 
         Glide.with(context)
                 .load(storeListModel.getImageSource())
-                .asBitmap()
+                //.asBitmap()
                 .centerCrop()
-                .into(new BitmapImageViewTarget(holder.img_store_photo) {
+                .into( holder.img_store_photo);
+                /*.into(new BitmapImageViewTarget(holder.img_store_photo) {
                     @Override
                     protected void setResource(Bitmap resource) {
                         Bitmap croppedBmp = Bitmap.createBitmap(resource);
                         //holder.img_store_photo.setImageMatrix(holder.matrix);
                         holder.img_store_photo.setImageBitmap(croppedBmp);
                     }
-                });
+                });*/
 
         holder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == true ?"Unfollow" : "Follow");
         holder.tv_closeStatus.setText(storeListModel.getOpenStatus() == false ? "Closed" : "Open");
@@ -171,6 +172,9 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
             ButterKnife.bind(this, itemView);
             textViewPret =  new TextViewPret(context);
             img_follow_unfollow.setOnClickListener(this);
+            img_store_photo.setOnClickListener(this);
+            iv_banner.setOnClickListener(this);
+            txt_storename.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
             if (context.getClass().getSimpleName().equals(FollowingActivity.class.getSimpleName()))
                 img_follow_unfollow.setVisibility(View.GONE);
@@ -196,8 +200,10 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
                     break;
                 case R.id.img_store_photo:
                     buttonClickCallback.buttonClick(storeListModel);
+                    break;
                 case R.id.iv_banner:
                     buttonClickCallback.buttonClick(storeListModel);
+                    break;
                 case R.id.txt_storename:
                     buttonClickCallback.buttonClick(storeListModel);
                     break;

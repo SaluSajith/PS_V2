@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -65,15 +66,21 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
         HomeCatContentData contentData = homeSubCategoriesArray.get(position);
         holder.txt_cat_name.setText(contentData.getCategoryName());
 
-
-        Bitmap mask1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.mask_home);
+        Bitmap mask1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_cat);
+        Bitmap shadow1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_shadow);
         Matrix matrix = new Matrix();
         matrix.preScale(-1.0f, 1.0f);
         Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
-        if(position % 2 ==0)
+        Bitmap shadow2 = Bitmap.createBitmap(shadow1, 0, 0, shadow1.getWidth(), shadow1.getHeight(), matrix, true);
+        if(position % 2 ==0) {
             loadImage(contentData.getImageSource(), holder.img_cat_image, mask1);
-        else
+            BitmapDrawable ob = new BitmapDrawable(shadow1);
+            holder.img_cat_image.setBackgroundDrawable(ob);
+        } else {
             loadImage(contentData.getImageSource(), holder.img_cat_image, mask2);
+            BitmapDrawable ob = new BitmapDrawable(shadow2);
+            holder.img_cat_image.setBackgroundDrawable(ob);
+        }
     }
 
     private void loadImage(String url, final ImageView imageView, final Bitmap mask){

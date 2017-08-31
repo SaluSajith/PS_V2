@@ -16,7 +16,8 @@
         app:srcCompat="@drawable/logo1"
         android:layout_gravity="end"
         android:paddingRight="@dimen/padding_large"
-        android:layout_marginBottom="@dimen/padding_huge"/>
+        android:layout_marginBottom="@dimen/padding_huge"
+        android:contentDescription="Logo"/>
 
     <LinearLayout
         android:layout_width="match_parent"

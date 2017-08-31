@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:padding="10dp"
-        android:src="@drawable/close" />
+        android:src="@drawable/close"
+        android:contentDescription="Close"/>
 
     <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
         android:id="@+id/edt_otp"

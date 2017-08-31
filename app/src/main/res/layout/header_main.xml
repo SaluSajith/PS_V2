@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/fixed_top"
                 android:scaleType="centerCrop"
-                android:id="@+id/imageView6" />
+                android:id="@+id/imageView6"
+                android:contentDescription=""/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,7 +72,8 @@
                     android:layout_height="@dimen/textsize_xlarge"
                     android:src="@drawable/ic_expand"
                     android:layout_marginLeft="5dp"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:contentDescription="Location"/>
             </LinearLayout>
             <ImageView
                 android:id="@+id/imageView4"
@@ -82,7 +84,8 @@
                 android:rotation="1"
                 android:layout_below="@+id/linearLayout"
                 android:layout_alignLeft="@+id/linearLayout"
-                android:layout_alignStart="@+id/linearLayout" />
+                android:layout_alignStart="@+id/linearLayout"
+                android:contentDescription=""/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,7 +105,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/padding_standard"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/menu"/>
+                    app:srcCompat="@drawable/menu"
+                    android:contentDescription="Menu"/>
 
                 <ImageView
                     android:id="@+id/iv_logo"
@@ -111,7 +115,8 @@
                     android:padding="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="-10dp"
-                    app:srcCompat="@drawable/logo1" />
+                    app:srcCompat="@drawable/logo1"
+                    android:contentDescription=""/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -124,7 +129,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:background="@drawable/search" />
+                    android:background="@drawable/search"
+                    android:contentDescription="Search"/>
             </LinearLayout>
 
             <ImageView
@@ -136,7 +142,8 @@
                 android:layout_marginTop="-15dp"
                 android:layout_below="@+id/linearLayout"
                 android:layout_alignRight="@+id/linearLayout"
-                android:layout_alignEnd="@+id/linearLayout" />
+                android:layout_alignEnd="@+id/linearLayout"
+                android:contentDescription="Notification"/>
 
             <com.hit.pretstreet.pretstreet.core.customview.NotificationBadge
                 android:id="@+id/badge"

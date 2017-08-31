@@ -17,7 +17,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5sp"
             android:padding="10sp"
-            android:src="@drawable/back" />
+            android:src="@drawable/back"
+            android:contentDescription="Back"/>
 
         <TextView
             android:id="@+id/txt_cat"

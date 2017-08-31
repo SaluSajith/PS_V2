@@ -11,7 +11,7 @@ public class TrendingItems implements Serializable {
 
     String id, storeLink, logoImage, title, article, articledate, pagetype, pagetypeid, storeid, clicktype;
     String storeName;
-    boolean like, banner;
+    boolean like, banner, interest, going;
     String latitude, longitude;
     ArrayList<String> imagearray = new ArrayList<>();
 
@@ -140,5 +140,18 @@ public class TrendingItems implements Serializable {
 
     public String getClicktype() {
         return clicktype;
+    }
+
+    public void setInterest(boolean interest) {
+        this.interest = interest;
+    }
+    public boolean getInterest() {
+        return interest;
+    }
+    public void setGoing(boolean going) {
+        this.going = going;
+    }
+    public boolean getGoing() {
+        return going;
     }
 }

@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -244,7 +245,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         } else {
             final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
             LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View view = li.inflate(R.layout.popup_phone_number, null);
+            @SuppressLint("InflateParams") final View view = li.inflate(R.layout.popup_phone_number, null);
             TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
             RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
             RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
@@ -373,7 +374,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         } else {
             final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
             LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = li.inflate(R.layout.popup_phone_number, null);
+            @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_phone_number, null);
             TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
             ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
             TextViewPret txt_address1 = (TextViewPret) view.findViewById(R.id.txt_address);

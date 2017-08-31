@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.core.customview;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -52,6 +53,7 @@ public class PageState extends FrameLayout {
         initPages();
     }
 
+    @SuppressLint("InflateParams")
     private void initPages() {
         LayoutInflater layoutInflater = LayoutInflater.from(this.context);
         this.loadingView = layoutInflater.inflate(R.layout.loading_view, null, false);
