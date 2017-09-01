@@ -134,13 +134,26 @@ public class Constant {
             jsonBody.put("Latitude", PreferenceServices.getInstance().getLatitute());
             jsonBody.put("Longitude", PreferenceServices.getInstance().getLongitute());
             jsonBody.put("ApiKey", Constant.API);
-            jsonBody.put("DeviceId", PretStreet.getDeviceId());
+            //jsonBody.put("DeviceId", PretStreet.getDeviceId());
             jsonBody.put("DeviceType", "1");
 
             SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
             LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
             jsonBody.put("UserId", loginSession.getRegid());
             jsonBody.put("SessionId", loginSession.getSessionid());
+
+        } catch (JSONException e) {
+        } catch (Exception e) {}
+
+        return jsonBody;
+    }
+
+    public static JSONObject addDeviceId(JSONObject jsonObject, Context context){
+
+        JSONObject jsonBody = jsonObject;
+        try {
+            SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
+            jsonBody.put("DeviceId", sharedPreferencesHelper.getString("TOKEN", ""));
 
         } catch (JSONException e) {
         } catch (Exception e) {}

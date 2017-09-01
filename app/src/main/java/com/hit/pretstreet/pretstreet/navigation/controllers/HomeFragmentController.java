@@ -104,8 +104,6 @@ public class HomeFragmentController {
             TrendingItems item;
             if (trendingItems == null)
                 trendingItems = new ArrayList<>();
-                /*else
-                list.clear();*/
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject trendingContent = jsonArray.getJSONObject(i);
                 item = new TrendingItems();
@@ -121,15 +119,14 @@ public class HomeFragmentController {
                 item.setBanner(trendingContent.getInt("BannerFlag") == 0 ? false : true);
                 item.setLoadmoreFlag(i != jsonArray.length()-1 ? false : true);
                 item.setStoreName(trendingContent.getString("Storename"));
-
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
                 ArrayList imagearray = new ArrayList();
                 for(int j=0;j<jsonImagearray.length();j++) {
                     imagearray.add(jsonImagearray.get(j));
                 }
                 item.setImagearray(imagearray);
-                if(!trendingContent.getString("ArticleDate").equalsIgnoreCase("")) {
-                    try {
+                 if(!trendingContent.getString("ArticleDate").equalsIgnoreCase("")) {
+                   try {
                         DateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
                         DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
                         String inputDateStr = trendingContent.getString("ArticleDate");
@@ -140,8 +137,8 @@ public class HomeFragmentController {
                         e.printStackTrace();
                     }
                 }
-                else item.setArticledate("");
-
+                else
+                item.setArticledate("");
                 trendingItems.add(item);
             }
         }catch (JSONException e1) {

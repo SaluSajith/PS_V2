@@ -74,6 +74,7 @@ public class LoginController {
             }
 
             jsonBody = Constant.addConstants(jsonBody, context);
+            jsonBody = Constant.addDeviceId(jsonBody, context);
 
         } catch (JSONException e) {
         } catch (Exception e) {
@@ -95,6 +96,7 @@ public class LoginController {
             jsonBody.put("LastName", account.getFamilyName());
 
             jsonBody = Constant.addConstants(jsonBody, context);
+            jsonBody = Constant.addDeviceId(jsonBody, context);
 
         } catch (JSONException e) {
         } catch (Exception e) {}
@@ -113,6 +115,7 @@ public class LoginController {
             jsonBody.put("UserPassword", loginSession.getPassword());
 
             jsonBody = Constant.addConstants(jsonBody, context);
+            jsonBody = Constant.addDeviceId(jsonBody, context);
 
         } catch (JSONException e) {
         } catch (Exception e) {}

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 
 /**
@@ -21,7 +22,7 @@ public class TokenService extends FirebaseInstanceIdService {
     }
 
     private void saveToken(String token) {
-        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(PretStreet.getInstance());
         sharedPreferencesHelper.putString("TOKEN", token);
     }
 }

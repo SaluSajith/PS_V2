@@ -54,7 +54,6 @@ public class HomePagerAdapter extends PagerAdapter {
                 /*Bitmap mask;
                 mask = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
                 loadImage(mResources.get(position), imageView, mask);*/
-                System.out.println(position+"  "+homeSubCategoriesArray.get(position).getImageSource());
             Glide.with(mContext)
                     .load(homeSubCategoriesArray.get(position).getImageSource())
                     .fitCenter()

@@ -77,7 +77,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
     }
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
         TrendingItems trendingItems = list.get(position);
         holder.txt_date.setText(trendingItems.getArticledate());
         holder.txt_title.setText(trendingItems.getTitle());
@@ -130,7 +129,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
     }
 
-
     private void setUiPageViewController(ViewHolder holder, int position) {
 
         dotsCount = list.get(position).getImagearray().size();
@@ -160,7 +158,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener, ViewPager.OnPageChangeListener {
-
         @BindView(R.id.iv_like)ImageView iv_like;
         @BindView(R.id.iv_share)ImageView iv_share;
         @BindView(R.id.iv_banner)ImageView iv_banner;
@@ -175,7 +172,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         @BindView(R.id.viewPagerCountDots)LinearLayout pager_indicator;
         @BindView(R.id.ll_desc)LinearLayout ll_desc;
         @BindView(R.id.ll_progress) LinearLayout ll_progress;
-
         ImageView[] dots;
 
         public ViewHolder(View itemView) {
@@ -190,17 +186,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
             txt_description.setOnClickListener(this);
             txt_title.setOnClickListener(this);
             article_images.setOnPageChangeListener(this);
-/*
-            try {
-                float initialTranslation = (mLastPosition <= getAdapterPosition() ? 500f : -500f);
-                itemView.setTranslationY(initialTranslation);
-                itemView.animate()
-                        .setInterpolator(new DecelerateInterpolator(1.0f))
-                        .translationY(0f)
-                        .setDuration(300l)
-                        .setListener(null);
-                mLastPosition = getAdapterPosition();
-            }catch (Exception e){ }*/
+
         }
 
         @Override

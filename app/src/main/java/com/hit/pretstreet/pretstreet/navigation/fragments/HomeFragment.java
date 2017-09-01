@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -27,6 +28,7 @@ import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
+import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
@@ -36,12 +38,15 @@ import com.hit.pretstreet.pretstreet.navigation.adapters.HomePagerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
+import com.hit.pretstreet.pretstreet.sociallogin.TokenService;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,8 +68,13 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
     @BindView(R.id.ll_main_cat_bottom) LinearLayout ll_main_cat_bottom;
     @BindView(R.id.rv_category)RecyclerView rv_category;
     @BindView(R.id.rv_moods)RecyclerView rv_moods;
+    @BindView(R.id.rl_category)RelativeLayout rl_category;
+    @BindView(R.id.rl_moods)RelativeLayout rl_moods;
 
     HomeTrapeClick buttonClickCallback;
+    private Handler handler = new Handler();
+    private Runnable runnable;
+    int position = 0;
 
     @Override
     public void onAttach(Activity activity) {
@@ -309,24 +319,21 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
     public void onPageSelected(int position) {
-
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 
     private void loadGrid(ArrayList<HomeCatContentData> homeSubCategoriesArray){
         if(homeSubCategoriesArray.size()>0) {
             HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
             rv_category.setAdapter(homeGridAdapter);
-            rv_category.setVisibility(View.VISIBLE);
+            rl_category.setVisibility(View.VISIBLE);
         }
     }
 
@@ -334,17 +341,47 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
         if(homeSubCategoriesArray.size()>0) {
             HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
             rv_moods.setAdapter(homeGridAdapter);
-            rv_moods.setVisibility(View.VISIBLE);
+            rl_moods.setVisibility(View.VISIBLE);
         }
     }
 
-    private void loadHomeSample( ArrayList<HomeCatContentData> homeSubCategoriesArray){
+    private void loadHomeSample(final ArrayList<HomeCatContentData> homeSubCategoriesArray){
         if(homeSubCategoriesArray.size()>0) {
             pager_banner.setOnPageChangeListener(this);
+
             HomePagerAdapter mAdapter = new HomePagerAdapter(getActivity(), homeSubCategoriesArray);
             pager_banner.setAdapter(mAdapter);
             pager_banner.setVisibility(View.VISIBLE);
             ll_main_cat.bringToFront();
+
+            runnable = new Runnable() {
+                public void run() {
+                    if(pager_banner.getCurrentItem() >= homeSubCategoriesArray.size()-1)
+                        position = 0;
+                    else
+                        position = position + 1;
+                    pager_banner.setCurrentItem(position, true);
+                    handler.postDelayed(runnable, 3000);
+                }
+            };
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            if (handler!= null) {
+                handler.removeCallbacks(runnable);
+            }
+        }catch (Exception e){}
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+        handler.postDelayed(runnable, 3000);
+        }catch (Exception e){}
     }
 }

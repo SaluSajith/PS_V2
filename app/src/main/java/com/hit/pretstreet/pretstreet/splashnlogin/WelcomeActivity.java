@@ -40,7 +40,11 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
+import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
+import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
+import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
 import com.hit.pretstreet.pretstreet.sociallogin.TokenService;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
@@ -51,6 +55,8 @@ import com.hit.pretstreet.pretstreet.splashnlogin.fragments.WelcomeFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
+import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,8 +67,13 @@ import java.net.URLEncoder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_OTP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_OTP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SOCIAL_LOGIN_URL;
@@ -104,6 +115,10 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     SignupFragment signupFragment;
     LoginFragment loginFragment;
+
+    private String DEEPLINKINGKEY = "38";
+    boolean notif = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +143,73 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         splashHandler.postDelayed(mChangeSplash, DURATION);
         splashHandler.postDelayed(mEndSplash, SPLASH_DURATION_END);
 
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+        try {
+            if (sharedPreferencesHelper.getString("TOKEN", "").equalsIgnoreCase("")) {
+                TokenService tokenService = new TokenService();
+                tokenService.onTokenRefresh();
+            }
+            System.out.println("TOKEN" + sharedPreferencesHelper.getString("TOKEN", ""));
+        }catch (Exception e){}
+
+        if (getIntent().getExtras() != null && notif == false) {
+            notif = true;
+            //for (String key : getIntent().getExtras().keySet()) {
+               // String value = getIntent().getExtras().getString(key);
+               // Log.d("TOKEN", "Key: " + key + " Value: " + value);
+            try {
+                String valueOne = getIntent().getExtras().getString("share");
+                String id = getIntent().getExtras().getString("id");
+                if (valueOne.trim().length() != 0 && id.trim().length() != 0)
+                    forwardDeepLink(valueOne, id);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            //}
+        }
+    }
+
+    private void forwardDeepLink(String valueOne, String id){
+        Intent intent;
+        switch (valueOne){  //TODO nullpointer excp
+            case "store":
+                StoreListModel storeListModel =  new StoreListModel();
+                storeListModel.setId(id);
+                intent = new Intent(WelcomeActivity.this, StoreDetailsActivity.class);
+                intent.putExtra(PARCEL_KEY, storeListModel);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(CLICKTYPE_KEY, DEEPLINKINGKEY);
+                startActivity(intent);
+                break;
+            case "trending":
+                TrendingItems trendingItems = new TrendingItems();
+                trendingItems.setId(id);
+                trendingItems.setPagetypeid("");
+                trendingItems.setClicktype("");
+                intent = new Intent(WelcomeActivity.this, TrendingArticleActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                startActivity(intent);
+                break;
+            case "exhibition":
+                trendingItems = new TrendingItems();
+                trendingItems.setId(id);
+                trendingItems.setPagetypeid("");
+                trendingItems.setClicktype("");
+                intent = new Intent(WelcomeActivity.this, ExhibitionDetailsActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
+                startActivity(intent);
+                break;
+            case "multistore":
+                intent = new Intent(WelcomeActivity.this, MultistoreActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(ID_KEY, id);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+        finish();
     }
 
     private void changeFragment(Fragment fragment, boolean addBackstack, int content) {
@@ -343,19 +425,19 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     private Runnable mEndSplash = new Runnable() {
         public void run() {
-            if (!isFinishing()) {
-                splashHandler.removeCallbacks(this);
-                if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
-                    changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
-                } else {
-                    if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
-                            || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
-                        startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
+                if (!isFinishing()) {
+                    splashHandler.removeCallbacks(this);
+                    if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
+                        changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
                     } else {
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
+                                || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
+                            startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        }
+                        finish();
                     }
-                    finish();
-                }
             }
         }
     };
