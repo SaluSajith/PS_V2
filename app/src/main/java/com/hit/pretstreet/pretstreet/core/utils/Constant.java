@@ -1,6 +1,5 @@
 package com.hit.pretstreet.pretstreet.core.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -21,7 +20,7 @@ public class Constant {
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
     //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
-    public static final String COMMON_URL = "http://54.179.131.57/pretstreetvtwobeta/index.php/mobileapp/";
+    public static final String COMMON_URL = "http://54.169.30.210/pretstreetvtwobeta/index.php/mobileapp/";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
     public static final String LOGIN_OTP_URL = COMMON_URL + "customer/customerlogingenerateOtp";
@@ -157,7 +156,6 @@ public class Constant {
 
         } catch (JSONException e) {
         } catch (Exception e) {}
-
         return jsonBody;
     }
 

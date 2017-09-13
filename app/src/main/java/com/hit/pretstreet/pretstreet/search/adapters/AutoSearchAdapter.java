@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
@@ -46,12 +47,15 @@ public class AutoSearchAdapter extends RecyclerView.Adapter<AutoSearchAdapter.Au
     public void onBindViewHolder(AutoSearchViewHolder holder, int position) {
 
         SearchModel searchModel = artItems.get(position);
-        holder.txt_storename.setText(searchModel.getTitle());
-        holder.txt_address.setText(searchModel.getLocation());
-        holder.txt_cat.setText(searchModel.getCategory());
+        setViewText(holder.txt_storename, searchModel.getTitle());
+        setViewText(holder.txt_address, searchModel.getLocation());
+        setViewText(holder.txt_cat, searchModel.getCategory());
 
     }
 
+    private void setViewText(TextView textView, String text) {
+        textView.setText(text);
+    }
     public class AutoSearchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         @BindView(R.id.txt_storename)TextViewPret txt_storename;

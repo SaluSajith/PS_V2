@@ -61,6 +61,7 @@ public class ArticlePagerAdapter extends PagerAdapter {
                 loadImage(mResources.get(position), imageView, mask);*/
             Glide.with(mContext)
                     .load(mResources.get(position))
+                    .placeholder(R.drawable.close)
                     .fitCenter()
                     .into(imageView);
         }

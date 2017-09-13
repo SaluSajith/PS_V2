@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
@@ -79,9 +80,9 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
     public void onBindViewHolder(final ExhibitionAdapter.ViewHolder holder, int position) {
 
         TrendingItems trendingItems = list.get(position);
-        holder.txt_date.setText(trendingItems.getArticledate());
-        holder.txt_shopname.setText(trendingItems.getTitle());
-        holder.txt_description.setText(trendingItems.getArticle());
+        setViewText(holder.txt_date, trendingItems.getArticledate());
+        setViewText(holder.txt_shopname, trendingItems.getTitle());
+        setViewText(holder.txt_description, trendingItems.getArticle());
 
         if(trendingItems.getLoadmoreFlag())
             holder.ll_progress.setVisibility(View.VISIBLE);
@@ -99,6 +100,10 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
+    }
+
+    private void setViewText(TextView textView, String text) {
+        textView.setText(text);
     }
 
     @Override
@@ -122,9 +127,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         @BindView(R.id.txt_shopname)TextViewPret txt_shopname;
         @BindView(R.id.txt_description)TextViewPret txt_description;
 
-        @BindView(R.id.bt_interested)ButtonPret bt_interested;
-        @BindView(R.id.bt_going)ButtonPret bt_going;
-
         @BindView(R.id.ll_desc)LinearLayout ll_desc;
         @BindView(R.id.ll_progress) LinearLayout ll_progress;
 
@@ -142,8 +144,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
             iv_share.setOnClickListener(this);
             txt_shopname.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
-            bt_interested.setOnClickListener(this);
-            bt_going.setOnClickListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -175,18 +175,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                     selected_id = LIKE;
                     imageViewPret = (ImageView) view;
                     trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
-                    break;
-                case R.id.bt_interested:
-                    mPosition = getAdapterPosition();
-                    selected_id = INTERESTED;
-                    buttonPret = (ButtonPret) view;
-                    trendingHolderInvoke.interestInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
-                    break;
-                case R.id.bt_going:
-                    mPosition = getAdapterPosition();
-                    selected_id = GOING;
-                    buttonPret = (ButtonPret) view;
-                    trendingHolderInvoke.goingInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
                     break;
                 case R.id.iv_share:
                     trendingHolderInvoke.shareUrl("null");

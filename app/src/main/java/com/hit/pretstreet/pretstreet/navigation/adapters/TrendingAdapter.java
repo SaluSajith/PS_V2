@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
@@ -78,9 +79,9 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         TrendingItems trendingItems = list.get(position);
-        holder.txt_date.setText(trendingItems.getArticledate());
-        holder.txt_title.setText(trendingItems.getTitle());
-        holder.txt_description.setText(trendingItems.getArticle());
+        setViewText(holder.txt_date, trendingItems.getArticledate());
+        setViewText(holder.txt_title, trendingItems.getTitle());
+        setViewText(holder.txt_description, trendingItems.getArticle());
 
         if(trendingItems.getLoadmoreFlag())
             holder.ll_progress.setVisibility(View.VISIBLE);
@@ -116,7 +117,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         String udata = trendingItems.getStoreName()+"";
         SpannableString content = new SpannableString(udata);
         content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
-        holder.txt_shopname.setText(content);
+        setViewText(holder.txt_shopname, content.toString());
 
         Glide.with(context)
                 .load(trendingItems.getLogoImage())
@@ -151,6 +152,10 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
             holder.dots[0].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_selected));
     }
 
+    private void setViewText(TextView textView, String text) {
+        textView.setText(text);
+    }
+
     @Override
     public int getItemViewType(int position) {
         return R.layout.row_trending;
@@ -158,6 +163,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener, ViewPager.OnPageChangeListener {
+
         @BindView(R.id.iv_like)ImageView iv_like;
         @BindView(R.id.iv_share)ImageView iv_share;
         @BindView(R.id.iv_banner)ImageView iv_banner;
@@ -186,7 +192,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
             txt_description.setOnClickListener(this);
             txt_title.setOnClickListener(this);
             article_images.setOnPageChangeListener(this);
-
         }
 
         @Override

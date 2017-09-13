@@ -169,8 +169,6 @@ public class HomeFragmentController {
                 item.setTitle(trendingContent.getString("Title"));
                 item.setArticle(trendingContent.getString("ArticleShortDescription"));
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 1 ? true : false);
-                item.setInterest(trendingContent.getInt("CustomerInterestedStatus") == 1 ? true : false);
-                item.setGoing(trendingContent.getInt("CustomerGoingStatus") == 1 ? true : false);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? true : false);
                 item.setLoadmoreFlag(i != jsonArray.length()-1 ? false : true);
 

@@ -46,14 +46,18 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
     public void onBindViewHolder(ArticleViewHolder holder, int position) {
 
         TrendingItems trendingItems = artItems.get(position);
-        holder.txt_shopname.setText(trendingItems.getTitle());
-        holder.txt_description.setText(trendingItems.getArticle());
+        setViewText(holder.txt_shopname, trendingItems.getTitle());
+        setViewText(holder.txt_description, trendingItems.getArticle());
 
         Glide.with(context)
                 .load(trendingItems.getLogoImage())
                 .fitCenter()
                 //.placeholder(R.mipmap.ic_launcher)
                 .into(holder.iv_banner);
+    }
+
+    private void setViewText(TextView textView, String text) {
+        textView.setText(text);
     }
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder {

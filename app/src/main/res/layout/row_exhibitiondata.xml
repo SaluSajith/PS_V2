@@ -99,7 +99,7 @@
                         android:contentDescription="Share"/>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -118,7 +118,7 @@
                     android:layout_weight="1"
                     android:layout_height="35dp"
                     android:background="@drawable/going_white"/>
-            </LinearLayout>
+            </LinearLayout>-->
             <LinearLayout
                 android:id="@+id/ll_progress"
                 android:layout_width="match_parent"
