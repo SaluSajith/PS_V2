@@ -80,7 +80,6 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
 
     @Override
     public void onBindViewHolder(final ShopsHolder holder, final int position) {
-
         if(holder.matrix==null) {
             holder.matrix = holder.img_store_photo.getImageMatrix();
             holder.matrix.postScale(2,2);
@@ -88,16 +87,6 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
         else;
         StoreListModel storeListModel = mItems.get(position);
 
-        /*if(position == mItems.size()-1) {
-                if(loadmore) {
-                    holder.ll_progress.setVisibility(View.GONE);
-                }else {
-                    layoutPret = holder.ll_progress;
-                    holder.ll_progress.setVisibility(View.VISIBLE);
-                }
-        } else
-            holder.ll_progress.setVisibility(View.GONE);
-        */
         if(storeListModel.getLoadmoreFlag())
             holder.ll_progress.setVisibility(View.VISIBLE);
         else
@@ -125,14 +114,6 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
                 //.asBitmap()
                 .centerCrop()
                 .into( holder.img_store_photo);
-                /*.into(new BitmapImageViewTarget(holder.img_store_photo) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        Bitmap croppedBmp = Bitmap.createBitmap(resource);
-                        //holder.img_store_photo.setImageMatrix(holder.matrix);
-                        holder.img_store_photo.setImageBitmap(croppedBmp);
-                    }
-                });*/
 
         holder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == true ?"Unfollow" : "Follow");
         holder.tv_closeStatus.setText(storeListModel.getOpenStatus() == false ? "Closed" : "Open");
@@ -144,12 +125,10 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
         Glide.with(context)
                 .load(storeListModel.getImageSource())
                 .centerCrop()
-                //.placeholder(R.mipmap.ic_launcher)
                 .into(holder.iv_banner);
     }
 
     public class ShopsHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
         @BindView(R.id.ll_progress) LinearLayout ll_progress;
         @BindView(R.id.img_follow_unfollow) TextViewPret img_follow_unfollow;
         @BindView(R.id.txt_storename) TextViewPret txt_storename;
@@ -208,6 +187,15 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
                 default: break;
             }
         }
+    }
+
+    @Override
+    public void onViewRecycled(ShopsHolder holder) {
+        if(holder != null) {
+            Glide.clear(holder.iv_banner);
+            Glide.clear(holder.img_store_photo);
+        }
+        super.onViewRecycled(holder);
     }
 
     @Override

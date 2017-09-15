@@ -1,11 +1,13 @@
 package com.hit.pretstreet.pretstreet.core.apis;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -39,7 +41,6 @@ public class JsonRequestController {
     public JsonRequestController(ApiListenerInterface listenerInterface){
         this.listenerInterface = listenerInterface;
     }
-
     public void sendRequest(Activity activity, JSONObject jsonObject, final String url){
         //Utility.hide_keyboard(activity);
 

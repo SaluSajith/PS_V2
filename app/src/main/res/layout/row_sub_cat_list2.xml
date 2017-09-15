@@ -20,7 +20,7 @@
         android:layout_marginLeft="-20dp"
         android:layout_marginRight="-20dp"
         android:id="@+id/view_seperator"
-        android:background="@drawable/yellow_rectangle"></View>
+        android:background="@drawable/yellow_rectangle"/>
     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
         android:id="@+id/txt_cat_name"
         android:layout_width="wrap_content"

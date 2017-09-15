@@ -96,7 +96,7 @@ public class HomeFragmentController {
 
         return jsonBody;
     }
-    public static ArrayList<TrendingItems> getTrendingList(JSONObject response) {
+    public static ArrayList<TrendingItems> getTrendingList(JSONObject response){
         ArrayList<TrendingItems> trendingItems = new ArrayList<>();
         try {
             JSONArray jsonArray = response.getJSONArray("Data");
@@ -149,7 +149,7 @@ public class HomeFragmentController {
     }
 
 
-    public static ArrayList<TrendingItems> getExhibitionList(JSONObject response) {
+    public static ArrayList<TrendingItems> getExhibitionList(JSONObject response){
         ArrayList<TrendingItems> exHItems = new ArrayList<>();
         try {
             //JSONObject jsonObject = response.getJSONObject("Data");
@@ -172,11 +172,13 @@ public class HomeFragmentController {
                 item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? true : false);
                 item.setLoadmoreFlag(i != jsonArray.length()-1 ? false : true);
 
-                JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
+                String jsonImage = trendingContent.getString("ImageSource");
+
                 ArrayList imagearray = new ArrayList();
-                for(int j=0;j<jsonImagearray.length();j++) {
+                imagearray.add(jsonImage);
+                /*for(int j=0;j<jsonImagearray.length();j++) {
                     imagearray.add(jsonImagearray.get(j));
-                }
+                }*/
                 item.setImagearray(imagearray);
                 if(!trendingContent.getString("ArticleDate").equalsIgnoreCase("")) {
                     try {

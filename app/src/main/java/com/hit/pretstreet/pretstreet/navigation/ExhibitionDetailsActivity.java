@@ -446,7 +446,6 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
                     exhibitionDetailsModel.setFollowingStatus(object.getInt("LikeStatus")== 0 ? true : false);
                     ib_like.setTag(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
                     ib_like.setImageResource(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
-
                     break;
                 default: break;
             }

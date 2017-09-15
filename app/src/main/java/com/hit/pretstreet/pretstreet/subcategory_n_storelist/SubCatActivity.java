@@ -194,4 +194,10 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         intent.putExtra("mSubTitle", tv_cat_name.getText().toString());
         startActivity(intent);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

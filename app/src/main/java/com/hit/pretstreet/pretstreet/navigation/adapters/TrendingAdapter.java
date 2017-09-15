@@ -117,12 +117,12 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         String udata = trendingItems.getStoreName()+"";
         SpannableString content = new SpannableString(udata);
         content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
-        setViewText(holder.txt_shopname, content.toString());
+        holder.txt_shopname.setText(content.toString());
 
         Glide.with(context)
                 .load(trendingItems.getLogoImage())
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
+                .fitCenter()
+                //.placeholder(R.mipmap.ic_launcher)
                 .into(holder.iv_profile);
 
         holder.iv_like.setImageResource(trendingItems.getLike() == true ?
@@ -242,12 +242,15 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
 
         @Override
         public void onPageSelected(int position) {
+            if(list.get(getAdapterPosition()).getImagearray().size()>1)
             try {
                 for (int i = 0; i < list.get(getAdapterPosition()).getImagearray().size(); i++) {
                     dots[i].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_unselected));
                 }
                 dots[position].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_selected));
-            }catch (Exception e){}
+            }
+            catch (IllegalStateException e){}
+            catch (Exception e){}
         }
 
         @Override

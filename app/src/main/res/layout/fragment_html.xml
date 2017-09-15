@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <TextView
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:background="@android:color/white">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
         android:id="@+id/txt_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/img"
         android:layout_marginLeft="5sp"
         android:padding="10sp"
-        android:textAppearance="@android:style/TextAppearance.Small"
+        android:visibility="gone"
+        android:nestedScrollingEnabled="false"
         android:textColor="@color/dark_gray"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="50dp"/>
 
     <include layout="@layout/empty_view"
-        android:id="@+id/ll_empty"/>
-
-</FrameLayout>
+        android:id="@+id/ll_empty"
+        android:visibility="invisible"/>
+    </FrameLayout>
+</android.support.v4.widget.NestedScrollView>

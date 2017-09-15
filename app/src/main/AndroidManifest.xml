@@ -119,6 +119,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationitems.NavigationItemsActivity"
+            android:hardwareAccelerated="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".splashnlogin.DefaultLocationActivity"
@@ -134,6 +135,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigation.HomeInnerActivity"
+            android:hardwareAccelerated="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".location.StoreLocationMapScreen"

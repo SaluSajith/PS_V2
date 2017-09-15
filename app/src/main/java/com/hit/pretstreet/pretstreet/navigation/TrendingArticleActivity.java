@@ -32,7 +32,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONLIKE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGARTICLE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 
 public class TrendingArticleActivity extends AbstractBaseAppCompatActivity implements
@@ -45,6 +47,8 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
 
     JsonRequestController jsonRequestController;
     DetailsPageController detailsPageController;
+
+    String mId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +73,18 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
 
     @OnClick(R.id.ib_like)
     public void onLikePressed() {
-        Integer resource = (Integer) ib_like.getTag();
+        JSONObject resultJson = detailsPageController.getTrendinglikeJson(mId ,
+                getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        this.showProgressDialog(getResources().getString(R.string.loading));
+        jsonRequestController.sendRequest(this, resultJson, TRENDINGLIKE_URL);
+        /*Integer resource = (Integer) ib_like.getTag();
         if(resource == R.drawable.grey_heart) {
             ib_like.setImageResource(R.drawable.red_heart);
             ib_like.setTag(R.drawable.red_heart);
         } else {
             ib_like.setImageResource(R.drawable.grey_heart);
             ib_like.setTag(R.drawable.grey_heart);
-        }
+        }*/
     }
 
     private void getTrendingArticle(String prepage, String clicktype, String trid){
@@ -100,6 +108,13 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
                     ib_like.setImageResource(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
                     ArrayList<TrendingItems> trendingArticle = detailsPageController.getTrendingArticle(response);
                     setupArticle(trendingArticle);
+                    this.hideDialog();
+                    break;
+                case TRENDINGLIKE_URL:
+                    this.hideDialog();
+                    JSONObject object = response.getJSONObject("Data");
+                    ib_like.setTag(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
+                    ib_like.setImageResource(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
                     break;
                 default: break;
             }
@@ -117,7 +132,6 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
 
     @Override
     public void onResponse(JSONObject response) {
-        this.hideDialog();
         handleResponse(response);
     }
 

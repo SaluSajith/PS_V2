@@ -55,6 +55,7 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
     public void bindData(ArrayList<TrendingItems> trendingItems) {
         this.trendingItems.addAll(trendingItems);
         adapter.notifyDataSetChanged();
+        //adapter.setHasStableIds(true);
     }
 
     @Override

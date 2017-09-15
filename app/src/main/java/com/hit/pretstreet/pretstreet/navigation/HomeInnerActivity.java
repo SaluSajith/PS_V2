@@ -318,6 +318,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         }else {
             Intent intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
             intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+            intent.putExtra(Constant.PRE_PAGE_KEY, Constant.TRENDINGPAGE);
             startActivity(intent);
         }
     }

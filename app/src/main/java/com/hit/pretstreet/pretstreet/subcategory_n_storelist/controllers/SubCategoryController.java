@@ -2,6 +2,11 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers;
 
 import android.content.Context;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
@@ -11,12 +16,17 @@ import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterf
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel_J;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import needle.Needle;
 
 /**
  * Created by User on 7/27/2017.
@@ -80,7 +90,7 @@ public class SubCategoryController {
         return jsonBody;
     }
 
-    public static JSONArray createFilterModel(ArrayList<FilterDataModel> filterDataModels) {
+    public static JSONArray createFilterModel(ArrayList<FilterDataModel> filterDataModels){
 
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
@@ -94,7 +104,7 @@ public class SubCategoryController {
 
                 for(int j=0;j<filterDataModel.getAllItemsInSection().size();j++){
                     if(filterDataModel.getAllItemsInSection().get(j).getStatus())
-                    stringBuilder.append(filterDataModel.getAllItemsInSection().get(j).getId() + ", ");
+                        stringBuilder.append(filterDataModel.getAllItemsInSection().get(j).getId() + ", ");
                 }
 
                 jsonArray.put(stringBuilder.toString().replaceAll(", $", ""));
@@ -110,8 +120,8 @@ public class SubCategoryController {
     }
 
 
-    public static ArrayList <StoreListModel> getList(JSONObject response) {
-        ArrayList<StoreListModel> storeListModels = new ArrayList<>();
+    /*public static ArrayList <StoreListModel> getList(JSONObject response){
+        final ArrayList<StoreListModel> storeListModels = new ArrayList<>();
         try {
             JSONArray jsonArray = response.getJSONArray("Data");
             StoreListModel storeListModel;
@@ -147,12 +157,56 @@ public class SubCategoryController {
         }catch (JSONException e1) {
             e1.printStackTrace();
         }
+        return  storeListModels;
+    }*/
 
+    public static ArrayList <StoreListModel> getList(JSONObject response){
+        final ArrayList<StoreListModel> storeListModels = new ArrayList<>();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(String.valueOf(response));
+            ArrayNode dataNode = (ArrayNode)rootNode.get("Data");
+            Iterator<JsonNode> dataIterator = dataNode.elements();
+            StoreListModel storeListModel;
+            while (dataIterator.hasNext()) {
+                storeListModel = new StoreListModel();
+                JsonNode storeNode = dataIterator.next();
+                storeListModel.setPageType(storeNode.get("PageType").textValue());
+                storeListModel.setPageTypeId(storeNode.get("PageTypeId").asInt()+"");
+                storeListModel.setId(storeNode.get("Id").asInt()+"");
+                storeListModel.setTitle(storeNode.get("Title").textValue());
+                storeListModel.setFollowingStatus(storeNode.get("FollowingStatus").asInt() == 0 ? false : true);
+                storeListModel.setOpenStatus(storeNode.get("OpenStatus").asInt() == 1 ? false : true);
+                storeListModel.setFollowingCount(storeNode.get("FollowingCount").asInt()+"");
+                storeListModel.setLocation(storeNode.get("Location").textValue());
+                storeListModel.setImageSource(storeNode.get("ImageSource").textValue());
+                String flag = storeNode.get("Flags").textValue();
+                if(flag.contains("0"))
+                    storeListModel.setSaleflag(true);
+                else
+                    storeListModel.setSaleflag(false);
+                if(flag.contains("1"))
+                    storeListModel.setOfferflag(true);
+                else
+                    storeListModel.setOfferflag(false);
+                if(flag.contains("2"))
+                    storeListModel.setNewflag(true);
+                else
+                    storeListModel.setNewflag(false);
+                storeListModel.setBannerFlag(storeNode.get("BannerFlag").asInt() == 0 ? false : true);
+                storeListModel.setLoadmoreFlag(dataIterator.hasNext() ? false : true);
+
+                storeListModels.add(storeListModel);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return  storeListModels;
     }
 
-
-    public static ArrayList <FilterDataModel> getFilterList(JSONObject response) {
+    public static ArrayList <FilterDataModel> getFilterList(JSONObject response){
         ArrayList<FilterDataModel> filterDataModels = new ArrayList<>();
         try {
             JSONArray jsonArray = response.getJSONArray("Data");

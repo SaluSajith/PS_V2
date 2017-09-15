@@ -83,11 +83,10 @@
                 android:id="@+id/txt_storename"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:layout_marginTop="@dimen/padding_small"
                 style="@style/textview_title"
                 android:gravity="left"
-                android:inputType="textNoSuggestions"
                 app:pret_typeface="@string/font_merriweather_regular"/>
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret

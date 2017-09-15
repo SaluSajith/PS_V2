@@ -187,6 +187,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 trendingItems.setPagetypeid("");
                 trendingItems.setClicktype("");
                 intent = new Intent(WelcomeActivity.this, TrendingArticleActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, "");
                 intent.putExtra(Constant.PARCEL_KEY, trendingItems);
                 startActivity(intent);
                 break;

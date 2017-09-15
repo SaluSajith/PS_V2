@@ -37,19 +37,5 @@ public class MyTagHandler implements Html.TagHandler {
                 }
             }
         }
-        /*if (tag.equals("li")) {
-            char lastChar = 0;
-            if (output.length() > 0)
-                lastChar = output.charAt(output.length() - 1);
-            if (first) {
-                if (lastChar == '\n')
-                    output.append("\t•  ");
-                else
-                    output.append("\n\t•  ");
-                first = false;
-            } else {
-                first = true;
-            }
-        }*/
     }
 }

@@ -145,6 +145,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         String pagekey = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
         String clickid = getIntent().getStringExtra(Constant.CLICKTYPE_KEY);
         mStoreId = storeListModel.getId();
+        setupCollapsingHeader("", "");
         getShopDetails(mStoreId, pagekey, clickid);
 
         SpannableString content = new SpannableString("Testimonials");
@@ -184,9 +185,9 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             tv_imgsrc.setText(Html.fromHtml(sourceString));
 
             btn_follow.setText(storeDetailsModel.getFollowingStatus() == true ? "Follow" : "Unfollow");
-            iv_sale.setVisibility(storeDetailsModel.getFlags().contains("0") == true ? View.INVISIBLE : View.VISIBLE);
-            iv_offer.setVisibility(storeDetailsModel.getFlags().contains("1") == true ? View.INVISIBLE : View.VISIBLE);
-            iv_new.setVisibility(storeDetailsModel.getFlags().contains("2") == true ? View.INVISIBLE : View.VISIBLE);
+            iv_sale.setVisibility(storeDetailsModel.getFlags().contains("0") == true ? View.VISIBLE : View.INVISIBLE);
+            iv_offer.setVisibility(storeDetailsModel.getFlags().contains("1") == true ? View.VISIBLE : View.INVISIBLE);
+            iv_new.setVisibility(storeDetailsModel.getFlags().contains("2") == true ? View.VISIBLE : View.INVISIBLE);
 
             ArrayList arrayListTimings = storeDetailsModel.getArrayListTimings();
             StringBuilder strTiming = new StringBuilder();
@@ -556,6 +557,12 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 
     @Override

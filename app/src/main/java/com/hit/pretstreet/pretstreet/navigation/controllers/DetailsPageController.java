@@ -41,6 +41,20 @@ public class DetailsPageController {
         return jsonBody;
     }
 
+    public static JSONObject getTrendinglikeJson(String id, String prepage) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("Id", id);
+            jsonBody.put("PreviousPageTypeId", prepage);
+            jsonBody.put("ClickTypeId", "");
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {
+        }
+        return jsonBody;
+    }
     public static JSONObject getTrendingArticle(String prepage, String clicktype, String exid) {
 
         JSONObject jsonBody = new JSONObject();

@@ -36,6 +36,7 @@ import butterknife.ButterKnife;
  */
 
 public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridViewHolder>{
+
     private Context context;
     Activity activity;
     ArrayList<HomeCatContentData> homeSubCategoriesArray;

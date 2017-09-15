@@ -6,6 +6,7 @@ import android.location.Location;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.models.SearchModel;
@@ -260,6 +261,18 @@ public class NavItemsController {
 
         return jsonBody;
     }
+
+
+    public static JSONObject getStaticPageJson() {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody = Constant.addConstants(jsonBody, context);
+        } catch (Exception e) {
+        }
+
+        return jsonBody;
+    }
     public static JSONObject getFollowinglistJson(String catId, String pagecount, String pageid) {
 
         JSONObject jsonBody = new JSONObject();
@@ -279,7 +292,7 @@ public class NavItemsController {
         return jsonBody;
     }
 
-    public static ArrayList<SearchModel> getCategoryListHeader(JSONObject response) {
+    public static ArrayList<SearchModel> getCategoryListHeader(JSONObject response){
         ArrayList<SearchModel> searchModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
@@ -298,8 +311,18 @@ public class NavItemsController {
         return  searchModels;
     }
 
+    public static String getStaticHtmlData(JSONObject response){
+        String html = null;
+        try {
+            JSONObject jsonObject = response.getJSONObject("Data");
+            html = jsonObject.getString("Content");
+        }catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return html;
+    }
 
-    public static ArrayList <StoreListModel> getCategoryList(JSONObject response) {
+    public static ArrayList <StoreListModel> getCategoryList(JSONObject response){
         ArrayList<StoreListModel> storeListModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");

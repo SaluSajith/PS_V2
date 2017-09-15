@@ -19,8 +19,9 @@ public class Constant {
     public static final String GOOGLE_API_KEY = "AIzaSyCAq0CP83saVHVc93LDs_m3xUdpFna0c2c";
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
-    //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
-    public static final String COMMON_URL = "http://54.169.30.210/pretstreetvtwobeta/index.php/mobileapp/";
+    //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";13.126.57.85
+    public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";
+    //public static final String COMMON_URL = "http://54.169.30.210/pretstreetvtwobeta/index.php/mobileapp/";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
     public static final String LOGIN_OTP_URL = COMMON_URL + "customer/customerlogingenerateOtp";
@@ -32,11 +33,11 @@ public class Constant {
     public static final String UPDATEFOLLOWSTATUS_URL = COMMON_URL + "store/followStore/";
     public static final String STOREDETAILS_URL = COMMON_URL + "store/storedetails/";
     public static final String TRENDING_URL = COMMON_URL + "trending/listing/";
-    public static final String TRENDINGLIKE_URL = COMMON_URL + "trending/trendinglike/";//
+    public static final String TRENDINGLIKE_URL = COMMON_URL + "trending/trendinglike/";
     public static final String EXHIBITION_URL = COMMON_URL + "exhibition/listing/";
-    public static final String EXHIBITIONLIKE_URL = COMMON_URL + "exhibition/exhibitionlike/";//
-    public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "exhibition/article/";//
-    public static final String TRENDINGARTICLE_URL = COMMON_URL + "trending/article/";//
+    public static final String EXHIBITIONLIKE_URL = COMMON_URL + "exhibition/exhibitionlike/";
+    public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "exhibition/article/";
+    public static final String TRENDINGARTICLE_URL = COMMON_URL + "trending/article/";
     public static final String MULTISTORE_URL = COMMON_URL + "store/multistorelisting";
     public static final String AUTOSEARCH_URL = COMMON_URL + "category/autoSearch";
     public static final String SEARCH_URL = COMMON_URL + "category/search";
@@ -49,6 +50,9 @@ public class Constant {
     public static final String BOOK_APPOINTMENT_URL = COMMON_URL + "customer/customerAppointment";
     public static final String UPDATE_ACCOUNT_URL = COMMON_URL + "store/trendingArticle";//TODO
     public static final String UPDATEPASSWORD_ACCOUNT_URL = COMMON_URL + "store/trendingArticlevb";//TODO
+    public static final String PRIVACYPOLICY_URL = COMMON_URL + "customer/staticpagePrivacyPolicy";
+    public static final String TC_URL = COMMON_URL + "customer/staticpageTnC";
+    public static final String ABOUT_URL = COMMON_URL + "customer/staticpageAbout";
 
     //updated after 5/9/2017
 

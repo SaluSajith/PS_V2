@@ -80,6 +80,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     NavItemsController navItemsController;
     LoginController loginController;
     TrendingCallback trendingCallback;
+    HtmlFragment htmlFragment;
 
     @BindView(R.id.content) FrameLayout fl_content;
     @BindView(R.id.nsv_header)NestedScrollView nsv_header;
@@ -204,17 +205,29 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             case ABOUTUS_FRAGMENT:
                 currentFragment = ABOUTUS_FRAGMENT;
                 tv_cat_name.setText("About Pretstreet");
-                changeFragment(new HtmlFragment(), b);
+                htmlFragment = new HtmlFragment();
+                bundle = new Bundle();
+                bundle.putString(PARCEL_KEY, ABOUT_URL);
+                htmlFragment.setArguments(bundle);
+                changeFragment(htmlFragment, b);
                 break;
             case PRIVACY_FRAGMENT:
                 currentFragment = PRIVACY_FRAGMENT;
                 tv_cat_name.setText("Privacy Policy");
-                changeFragment(new HtmlFragment(), b);
+                htmlFragment = new HtmlFragment();
+                bundle = new Bundle();
+                bundle.putString(PARCEL_KEY, PRIVACYPOLICY_URL);
+                htmlFragment.setArguments(bundle);
+                changeFragment(htmlFragment, b);
                 break;
             case TERMS_FRAGMENT:
                 currentFragment = TERMS_FRAGMENT;
                 tv_cat_name.setText("Terms & Conditions");
-                changeFragment(new HtmlFragment(), b);
+                htmlFragment = new HtmlFragment();
+                bundle = new Bundle();
+                bundle.putString(PARCEL_KEY, TC_URL);
+                htmlFragment.setArguments(bundle);
+                changeFragment(htmlFragment, b);
                 break;
             case NOTIFICATION_FRAGMENT:
                 currentFragment = NOTIFICATION_FRAGMENT;
@@ -251,14 +264,14 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
-            displaySnackBar(response.getString("CustomerMessage"));
+            /*displaySnackBar(response.getString("CustomerMessage"));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         onBackPressed();
                     }
-                }, 1500);
-            /*switch (url){
+                }, 1500);*/
+            switch (url){
                 case CONTACTUS_URL:
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -299,8 +312,20 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
                         }
                     }, 1500);
                     break;
+                case ABOUT_URL:
+                    String html = navItemsController.getStaticHtmlData(response);
+                    htmlFragment.loadHtml(html);
+                    break;
+                case TC_URL:
+                    html = navItemsController.getStaticHtmlData(response);
+                    htmlFragment.loadHtml(html);
+                    break;
+                case PRIVACYPOLICY_URL:
+                    html = navItemsController.getStaticHtmlData(response);
+                    htmlFragment.loadHtml(html);
+                    break;
                 default: break;
-            }*/
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -367,10 +392,10 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             jsonRequestController.sendRequest(this, jsonObject, UPDATEPASSWORD_ACCOUNT_URL);
     }
 
-    public void getHtmlData(){
-        /*JSONObject resultJson = navItemsController.getNoitficationlistJson(offset, pageCount, pageid);
+    public void getHtmlData(String URL){
+        JSONObject resultJson = navItemsController.getStaticPageJson();
         showProgressDialog(getResources().getString(R.string.loading));
-        jsonRequestController.sendRequest(this, resultJson, TRENDING_URL);*/
+        jsonRequestController.sendRequest(this, resultJson, URL);
     }
     public void openUpdatePassword(){
         setupFragment(CHANGEPASSWORD_FRAGMENT, true);

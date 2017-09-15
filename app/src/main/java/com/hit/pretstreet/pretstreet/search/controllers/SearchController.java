@@ -122,7 +122,7 @@ public class SearchController {
         return jsonBody;
     }
 
-    public static ArrayList <StoreListModel> getList(JSONObject response) {
+    public static ArrayList <StoreListModel> getList(JSONObject response){
         ArrayList<StoreListModel> storeListModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
@@ -170,7 +170,7 @@ public class SearchController {
     }
 
 
-    public static ArrayList <SearchModel> getAutoSearchList(JSONObject response) {
+    public static ArrayList <SearchModel> getAutoSearchList(JSONObject response){
         ArrayList<SearchModel> searchModels = new ArrayList<>();
         try {
             JSONArray jsonArray = response.getJSONArray("Data");
@@ -194,7 +194,7 @@ public class SearchController {
     }
 
 
-    public static ArrayList <SearchModel> getRecentViewList(JSONObject response) {
+    public static ArrayList <SearchModel> getRecentViewList(JSONObject response){
         ArrayList<SearchModel> searchModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
@@ -218,7 +218,7 @@ public class SearchController {
         return  searchModels;
     }
 
-    public static ArrayList <SearchModel> getRecentSearchList(JSONObject response) {
+    public static ArrayList <SearchModel> getRecentSearchList(JSONObject response){
         ArrayList<SearchModel> searchModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
@@ -242,7 +242,7 @@ public class SearchController {
         return  searchModels;
     }
 
-    public static ArrayList <SearchModel> getCategoryList(JSONObject response) {
+    public static ArrayList <SearchModel> getCategoryList(JSONObject response){
         ArrayList<SearchModel> searchModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
@@ -260,7 +260,7 @@ public class SearchController {
         return  searchModels;
     }
 
-    public static ArrayList <StoreListModel> getSearchList(JSONObject response) {
+    public static ArrayList <StoreListModel> getSearchList(JSONObject response){
         ArrayList<StoreListModel> storeListModels = new ArrayList<>();
         try {
             JSONArray jsonArray = response.getJSONArray("Data");

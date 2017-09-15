@@ -172,6 +172,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 trendingItems.setClicktype("");
                 intent = new Intent(HomeActivity.this, TrendingArticleActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
                 startActivity(intent);
                 break;
             case "exhibition":

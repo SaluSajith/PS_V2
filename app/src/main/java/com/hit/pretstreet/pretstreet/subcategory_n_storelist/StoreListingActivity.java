@@ -1,10 +1,15 @@
 package com.hit.pretstreet.pretstreet.subcategory_n_storelist;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.CursorJoiner;
+import android.os.AsyncTask;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +59,8 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import needle.Needle;
+import needle.UiRelatedTask;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
@@ -104,6 +111,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     boolean requestCalled = false;
     boolean loadmore = true, first = true;
     private static String catTag = "";
+    int previousCount = 0;
 
     private static ArrayList<StoreListModel> storeListModels;
     private ArrayList<FilterDataModel> dataModel;
@@ -123,6 +131,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         dataModel = new ArrayList<>();
         storeListModels = new ArrayList<>();
         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(StoreListingActivity.this, storeListModels);
+        storeList_recyclerAdapter.setHasStableIds(true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
@@ -171,13 +180,14 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
                     if (scrollY > oldScrollY) {
                         if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
+                            //if (scrollY == v.getMeasuredHeight() ) {
                             if(!requestCalled){
                                 requestCalled = true;
                                 first = false;
-                                if(loadmore)
+                                if(loadmore) {
                                     storeList_recyclerAdapter.loadMoreView(true);
-                                getShoplist(catTag, false);
-                            }
+                                    getShoplist(catTag, false);
+                                }}
                             if(!loadmore)
                                 displaySnackBar("No more stores available!");
                         }
@@ -282,19 +292,30 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         }
     }
 
-    private void handleResponse(JSONObject response){
+    private void handleResponse(final JSONObject response){
         try {
             String url = response.getString("URL");
             switch (url){
                 case STORELISTING_URL:
-                    showProgressDialog("Fetching content");
                     requestCalled = false;
                     storeList_recyclerAdapter.loadMoreView(false);
-                    ArrayList <StoreListModel> storeListMode = subCategoryController.getList(response);
-                    storeListModels.addAll(storeListMode);
-                    if(storeListMode.size()==0)
-                        loadmore = false;
-                    setAdapter();
+                    new JSONParsing().execute(response.toString());
+                    /*Needle.onBackgroundThread().execute(new UiRelatedTask() {
+                        @Override
+                        protected Object doWork() {
+                            previousCount = storeListModels.size();
+                            ArrayList <StoreListModel> storeListMode = subCategoryController.getList(response);
+                            storeListModels.addAll(storeListMode);
+                            if(storeListMode.size()==0)
+                                loadmore = false;
+                            return storeListMode;
+                        }
+                        @Override
+                        protected void thenDoUiRelatedWork(Object o) {
+                            progressDialog.dismiss();
+                            setAdapter();
+                        }
+                    });*/
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
                     JSONObject object = response.getJSONObject("Data");
@@ -309,11 +330,44 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         this.hideDialog();
     }
 
+    private class JSONParsing extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(StoreListingActivity.this);
+            progressDialog.setMessage("Its loading....");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            previousCount = storeListModels.size();
+            try {
+                JSONObject jsonObject = new JSONObject(params[0]);
+                ArrayList <StoreListModel> storeListMode = subCategoryController.getList(jsonObject);
+                storeListModels.addAll(storeListMode);
+                if(storeListMode.size()==0)
+                    loadmore = false;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return "Executed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            progressDialog.dismiss();
+            setAdapter();
+        }
+    }
+
     private void setAdapter(){
         if(first) {
             rv_storelist.setAdapter(storeList_recyclerAdapter);
         }
         else
+            //storeList_recyclerAdapter.notifyItemRangeInserted(previousCount, Integer.parseInt(Constant.LIMIT));
             storeList_recyclerAdapter.notifyDataSetChanged();
         if(storeListModels.size()==0)
             ll_empty.setVisibility(View.VISIBLE);
@@ -331,7 +385,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     @Override
     public void onResponse(JSONObject response) {
         handleResponse(response);
-        //this.hideDialog();
     }
 
     @Override
@@ -389,6 +442,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                 trendingItems.setClicktype("");
                 intent = new Intent(StoreListingActivity.this, TrendingArticleActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
                 startActivity(intent);
                 break;
             case EXARTICLEPAGE:
@@ -427,5 +481,11 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                 getShoplist(catTag, true);
             }
         } catch (Exception ex) { }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 }
