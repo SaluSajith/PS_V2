@@ -3,11 +3,14 @@ package com.hit.pretstreet.pretstreet.navigation.adapters;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -48,19 +51,17 @@ import butterknife.ButterKnife;
 
 public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.ViewHolder>{
 
-    Context context;
+    private static Context context;
     static int mPosition;
     private static ImageView imageViewPret;
-    private static ButtonPret buttonPret;
+    private static TextViewPret textViewPret;
     private static ArrayList<TrendingItems> list;
     private TrendingHolderInvoke trendingHolderInvoke;
     private ZoomedViewListener zoomedViewListener;
 
-    private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
 
-    private static final int INTERESTED = 20;
-    private static final int GOING = 21;
+    private static final int ReGISTER = 21;
     private static final int LIKE = 22;
     private static int selected_id = 22;
 
@@ -83,6 +84,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         setViewText(holder.txt_date, trendingItems.getArticledate());
         setViewText(holder.txt_shopname, trendingItems.getTitle());
         setViewText(holder.txt_description, trendingItems.getArticle());
+        setViewText(holder.txt_location, trendingItems.getArea());
 
         if(trendingItems.getLoadmoreFlag())
             holder.ll_progress.setVisibility(View.VISIBLE);
@@ -92,14 +94,24 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
             Glide.with(context)
                     .load(trendingItems.getImagearray().get(0))
                     .fitCenter()
-                    //.placeholder(R.mipmap.ic_launcher)
                     .into(holder.iv_banner);
         }catch (Exception e){}
 
-        holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);//TODO
-        holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
+
+        if(trendingItems.getRegisterFlag() == false){
+            holder.bt_register.setEnabled(true);
+            holder.bt_register.setText("Register");
+            holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.dark_gray));
+            holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
+        }
+        else {
+            holder.bt_register.setEnabled(false);
+            holder.bt_register.setText("Registered");
+            holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.white));
+            holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+        }
     }
 
     private void setViewText(TextView textView, String text) {
@@ -125,23 +137,24 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
 
         @BindView(R.id.txt_date)TextViewPret txt_date;
         @BindView(R.id.txt_shopname)TextViewPret txt_shopname;
+        @BindView(R.id.txt_location)TextViewPret txt_location;
         @BindView(R.id.txt_description)TextViewPret txt_description;
+        @BindView(R.id.bt_register)TextViewPret bt_register;
 
         @BindView(R.id.ll_desc)LinearLayout ll_desc;
         @BindView(R.id.ll_progress) LinearLayout ll_progress;
 
         int viewType;
-        private int mLastPosition;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
             this.viewType = viewType;
             imageViewPret =  new ImageView(context);
-            buttonPret = new ButtonPret(context);
             ButterKnife.bind(this, itemView);
 
             iv_like.setOnClickListener(this);
             iv_share.setOnClickListener(this);
+            bt_register.setOnClickListener(this);
             txt_shopname.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -152,17 +165,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                     ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                 }
             });
-/*
-            try {
-                float initialTranslation = (mLastPosition <= getAdapterPosition() ? 500f : -500f);
-                itemView.setTranslationY(initialTranslation);
-                itemView.animate()
-                        .setInterpolator(new DecelerateInterpolator(1.0f))
-                        .translationY(0f)
-                        .setDuration(300l)
-                        .setListener(null);
-                mLastPosition = getAdapterPosition();
-            }catch (Exception e){ }*/
         }
 
         @Override
@@ -177,8 +179,13 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                     trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
                     break;
                 case R.id.iv_share:
-                    trendingHolderInvoke.shareUrl("null");
-                    //shareTextUrl();
+                    trendingHolderInvoke.shareurl(trendingItems.getShareUrl());
+                    break;
+                case R.id.bt_register:
+                    mPosition = getAdapterPosition();
+                    selected_id = ReGISTER;
+                    textViewPret = (TextViewPret) view;
+                    trendingHolderInvoke.registerInvoke(Integer.parseInt(trendingItems.getId()));
                     break;
                 case R.id.txt_shopname:
                     ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
@@ -187,9 +194,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                     if(trendingItems.getBanner()){
                         trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.EXHIBITIONPAGE);
                     }else {
-                        ProductImageItem productImageItem = new ProductImageItem();
                         ArrayList<String> mImagearray = new ArrayList<>();
-                        //productImageItem.setImage(list.get(getAdapterPosition()).getImagearray().get(0));
                         mImagearray.add(trendingItems.getImagearray().get(0));
                         zoomedViewListener.onClicked(0, mImagearray);
                     }
@@ -201,18 +206,17 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
     }
 
     public static void updateLikeStatus(int status, String storeid) {
-        switch (selected_id){//TODO
-            case GOING:
-                imageViewPret.setImageResource(status == 1 ?
-                        R.drawable.red_heart : R.drawable.grey_heart);
+        switch (selected_id){
+            case ReGISTER:
+                if(status==1){
+                    textViewPret.setEnabled(false);
+                    textViewPret.setText("Registered");
+                    textViewPret.setTextColor(ContextCompat.getColor(context, R.color.white));
+                    textViewPret.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+                }
+
                 if(list.get(mPosition).getId().equals(storeid))
-                    list.get(mPosition).setLike(status == 0 ? false : true);
-                break;
-            case INTERESTED:
-                imageViewPret.setImageResource(status == 1 ?
-                        R.drawable.red_heart : R.drawable.grey_heart);
-                if(list.get(mPosition).getId().equals(storeid))
-                    list.get(mPosition).setLike(status == 0 ? false : true);
+                    list.get(mPosition).setRegister(status == 0 ? false : true);
                 break;
             case LIKE:
                 imageViewPret.setImageResource(status == 1 ?

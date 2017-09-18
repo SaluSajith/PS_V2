@@ -45,11 +45,13 @@ import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.ShadowTransformer;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
+import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.location.StoreLocationMapScreen;
 import com.hit.pretstreet.pretstreet.navigation.controllers.DetailsPageController;
 import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.storedetails.adapters.CardFragmentPagerAdapter;
@@ -71,6 +73,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONLIKE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONREGISTER_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXNOTGOINGLINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
 
 public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity implements
@@ -152,7 +157,6 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         iv_new.setVisibility(View.GONE);
         iv_offer.setVisibility(View.GONE);
         iv_sale.setVisibility(View.GONE);
-        tv_book_app.setVisibility(View.GONE);
         btn_follow.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
@@ -187,11 +191,17 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         try {
             tv_about_heading.setVisibility(exhibitionDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
             tv_imgsrc.setVisibility(exhibitionDetailsModel.getImageSource().length() > 0 ? View.VISIBLE : View.GONE);
-            tv_product.setVisibility(exhibitionDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
+            //tv_product.setVisibility(exhibitionDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
             tv_time.setVisibility(exhibitionDetailsModel.getTimingToday().length() > 0 ? View.VISIBLE : View.GONE);
             tv_heading_hrs.setVisibility(exhibitionDetailsModel.getArrayListTimings().size() > 0 ? View.VISIBLE : View.GONE);
 
             setupCollapsingHeader(exhibitionDetailsModel.getStoreName(), exhibitionDetailsModel.getBaseImage());
+            tv_book_app.setClickable(exhibitionDetailsModel.getRegisterStatus() == false ? true : false);
+            tv_book_app.setText(exhibitionDetailsModel.getRegisterStatus() == false ? "Register" : "Registered");
+            tv_book_app.setTextColor(exhibitionDetailsModel.getRegisterStatus() == false ?
+                    ContextCompat.getColor(getApplicationContext(), R.color.dark_gray) : ContextCompat.getColor(getApplicationContext(), R.color.white));
+            tv_book_app.setBackgroundColor(exhibitionDetailsModel.getRegisterStatus() == false ?
+                    ContextCompat.getColor(getApplicationContext(), R.color.yellow) : ContextCompat.getColor(getApplicationContext(), R.color.light_gray));
             tv_storename.setText(exhibitionDetailsModel.getStoreName());
             tv_location.setText(exhibitionDetailsModel.getAreaCity());
             tv_openstatus.setText(exhibitionDetailsModel.getOpenStatus() == false ? "Closed" : "Open now");
@@ -200,6 +210,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             String sourceString = "<b>" + "Product: " + "</b> " + exhibitionDetailsModel.getProducts();
             tv_product.setText(Html.fromHtml(sourceString));
             sourceString = "<b>" + "Image Source: " + "</b> " + exhibitionDetailsModel.getImageSource();
+            //tv_product.setText(tv_product.getText()+"/n"+exhibitionDetailsModel.get);
             tv_imgsrc.setText(Html.fromHtml(sourceString));
 
             ArrayList arrayListTimings = exhibitionDetailsModel.getArrayListTimings();
@@ -420,14 +431,65 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         }
     }
 
-    private void shareUrl(String text) {
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
-        share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
-                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");
-        startActivity(Intent.createChooser(share, "Share with.."));
+    @OnClick(R.id.tv_book_app)
+    public void onRegisterPressed() {
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+        LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
+        String phone = loginSession.getMobile();
+        if(phone.trim().length()==0||phone.equalsIgnoreCase("null")){
+            showRegisterPopup();
+        }
+        else {
+            this.showProgressDialog(getResources().getString(R.string.loading));
+            JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
+                    mStoreId + "", getIntent().getStringExtra(PRE_PAGE_KEY), phone);
+            jsonRequestController.sendRequest(this, resultJson, EXHIBITIONREGISTER_URL);
+        }
+    }
+
+    public void showRegisterPopup() {
+
+        final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
+        LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_register, null);
+
+        popupDialog.setCanceledOnTouchOutside(true);
+        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        popupDialog.setContentView(view);
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        popupDialog.getWindow().setAttributes(params);
+        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupDialog.show();
+
+        final EdittextPret edt_phone = (EdittextPret) view.findViewById(R.id.edt_phone);
+        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupDialog.dismiss();
+            }
+        });
+
+        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String regexStr = "^[789]\\d{9}$";
+                String number = edt_phone.getText().toString();
+                if(edt_phone.getText().toString().length()<10 || number.length()>13 || number.matches(regexStr)==false  ) {
+                    edt_phone.setError("Invalid phone number!");
+                }
+                else{
+                    popupDialog.dismiss();
+                    ExhibitionDetailsActivity.this.showProgressDialog(getResources().getString(R.string.loading));
+                    JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
+                            mStoreId + "", getIntent().getStringExtra(PRE_PAGE_KEY), number);
+                    jsonRequestController.sendRequest(ExhibitionDetailsActivity.this, resultJson, EXHIBITIONREGISTER_URL);
+                }
+            }
+        });
     }
 
     private void handleResponse(JSONObject response){
@@ -462,7 +524,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
                 onBackPressed();
                 return true;
             case R.id.menu_share:
-                shareUrl("");
+                shareUrl(exhibitionDetailsModel.getShare());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

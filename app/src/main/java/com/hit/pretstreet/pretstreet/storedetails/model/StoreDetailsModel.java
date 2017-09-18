@@ -10,8 +10,9 @@ import java.util.ArrayList;
 
 public class StoreDetailsModel {
 
-    String Id, StoreName, AreaCity, FollowingCount, Flags, Address, Latitude, Longitude, About, Products, ImageSource, TimingToday, BaseImage, Share;
-    boolean OpenStatus, FollowingStatus;
+    String Id, StoreName, AreaCity, FollowingCount, Flags, Address, Latitude, Longitude, About,
+            Products, ImageSource, TimingToday, BaseImage, Share, Description;
+    boolean OpenStatus, FollowingStatus, RegisterStatus;
     ArrayList<String> Phone;
     ArrayList<Testimonials> arrayListTesti;
     ArrayList<String> arrayListTimings;
@@ -175,5 +176,20 @@ public class StoreDetailsModel {
 
     public String getShare() {
         return Share;
+    }
+
+    public void setRegisterStatus(boolean registerStatus) {
+        RegisterStatus = registerStatus;
+    }
+    public boolean getRegisterStatus() {
+        return RegisterStatus;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public String getDescription() {
+        return Description;
     }
 }

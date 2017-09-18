@@ -65,6 +65,7 @@
                 android:layout_weight="1"
                 style="@style/edittext_white_normal"
                 android:hint="@string/email"
+                android:enabled="false"
                 android:inputType="textEmailAddress" />
         </LinearLayout>
         <LinearLayout
@@ -101,6 +102,7 @@
                 android:layout_weight="1"
                 style="@style/edittext_white_normal"
                 android:hint="@string/mobilenumbr"
+                android:enabled="false"
                 android:inputType="phone" />
         </LinearLayout>
     </LinearLayout>

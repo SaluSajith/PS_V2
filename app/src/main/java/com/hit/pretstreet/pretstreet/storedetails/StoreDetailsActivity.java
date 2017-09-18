@@ -71,6 +71,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.BOOK_APPOINTMENT_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CALLEDLINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CALLLINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.REPORT_ERROR_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRACK_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.VIEWADDRESSLINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.VIEWONMAPLINK;
 
 public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback {
@@ -92,6 +98,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     @BindView(R.id.tv_openstatus) TextViewPret tv_openstatus;
     @BindView(R.id.tv_folowerscount) TextViewPret tv_folowerscount;
     @BindView(R.id.tv_openinghrs) TextViewPret tv_openinghrs;
+    @BindView(R.id.tv_reportError) TextViewPret tv_reportError;
 
     @BindView(R.id.rv_images) RecyclerView rv_images;
     @BindView(R.id.viewPager) ViewPager viewPager;
@@ -134,6 +141,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     private void initUi(){
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        tv_reportError.setVisibility(View.VISIBLE);
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager
                 (3, LinearLayoutManager.VERTICAL);
@@ -158,6 +166,11 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         JSONObject resultJson = storeDetailsController.getShopDetailsJson(storeId, pageId, clickid);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.STOREDETAILS_URL);
+    }
+
+    @OnClick(R.id.tv_reportError)
+    public void onReportPressed() {
+        showReportErrorPopup();
     }
 
     @OnClick(R.id.btn_follow)
@@ -211,6 +224,45 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             tv_time.setVisibility(storeDetailsModel.getTimingToday().length() > 0 ? View.VISIBLE : View.GONE);
             tv_heading_hrs.setVisibility(storeDetailsModel.getArrayListTimings().size() > 0 ? View.VISIBLE : View.GONE);
         }catch (Exception e){}
+    }
+
+
+    public void showReportErrorPopup() {
+
+        popupDialog = new Dialog(StoreDetailsActivity.this);
+        LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_reporterror, null);
+
+        popupDialog.setCanceledOnTouchOutside(true);
+        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        popupDialog.setContentView(view);
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        popupDialog.getWindow().setAttributes(params);
+        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupDialog.show();
+
+        final EdittextPret edt_remarks = (EdittextPret) view.findViewById(R.id.edt_remarks);
+        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupDialog.dismiss();
+            }
+        });
+
+        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edt_remarks.getText().toString().trim().length()==0){
+                    edt_remarks.setError("Field cannot be blank!");
+                }
+                else
+                reportError(edt_remarks.getText().toString());
+            }
+        });
     }
 
     public void showBookPopup() {
@@ -306,6 +358,20 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         JSONObject resultJson = storeDetailsController.getBookAppoJson(date+" "+time, mStoreId, remarks);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, BOOK_APPOINTMENT_URL);
+    }
+
+
+    private void reportError(String remarks){
+        JSONObject resultJson = storeDetailsController.getReportErrorJson(mStoreId, remarks);
+        this.showProgressDialog(getResources().getString(R.string.loading));
+        jsonRequestController.sendRequest(this, resultJson, REPORT_ERROR_URL);
+    }
+
+    private void logTracking(String clicktypeid){
+        JSONObject resultJson = storeDetailsController.getLogTrackJson(clicktypeid, "",
+                getIntent().getStringExtra(Constant.PRE_PAGE_KEY), mStoreId);
+        this.showProgressDialog(getResources().getString(R.string.loading));
+        jsonRequestController.sendRequest(this, resultJson, TRACK_URL);
     }
 
     private void setupCollapsingHeader(String title, String image){
@@ -413,9 +479,12 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 dialPhone(arrayList.get(2));
             }
         });
+
+        logTracking(CALLLINK);
     }
 
     private void dialPhone(String phone){
+        logTracking(CALLEDLINK);
         MyPhoneListener phoneListener = new MyPhoneListener();
         TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -490,6 +559,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 popupDialog.dismiss();
             }
         });
+        logTracking(VIEWADDRESSLINK);
     }
 
     private void showLocation(StoreDetailsModel storeDetailsModel){
@@ -506,20 +576,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             intent.putExtras(b);
             startActivity(intent);
         }
-    }
-
-    private void shareUrl(String text) {
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
-        /*share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
-                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");
-        share.putExtra(Intent.EXTRA_TEXT, "\n" +
-                "http://pretstreet.com/betashare.php?s=123");*/
-        share.putExtra(Intent.EXTRA_TEXT, "\n" +
-                text);
-        startActivity(Intent.createChooser(share, "Share with.."));
+        logTracking(VIEWONMAPLINK);
     }
 
     private void handleResponse(JSONObject response){
@@ -552,7 +609,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 onBackPressed();
                 return true;
             case R.id.menu_share:
-                shareUrl(shareUrl);
+                this.shareUrl(shareUrl);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

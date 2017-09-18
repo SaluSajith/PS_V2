@@ -8,10 +8,8 @@
         android:id="@+id/img_cat_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/brand2"
         android:scaleType="fitXY"
         android:contentDescription="Image"/>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"

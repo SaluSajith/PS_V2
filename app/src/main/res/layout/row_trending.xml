@@ -65,7 +65,7 @@
                 android:layout_marginTop="@dimen/padding_small"
                 android:gravity="center">
 
-                <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
+                <ImageView
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:src="@drawable/logo1"
@@ -125,12 +125,12 @@
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                         android:id="@+id/txt_description"
                         android:layout_width="match_parent"
-                        android:text="Text"
-                        android:maxLines="3"
+                        android:text=""
+                        android:maxLines="7"
                         android:minLines="2"
                         android:inputType="textMultiLine"
                         android:layout_height="wrap_content"
-                        style="@style/textview_normal"
+                        style="@style/textview_small"
                         android:gravity="left"
                         android:layout_marginLeft="0dp"
                         app:pret_typeface="@string/font_merriweather_light"/>
@@ -140,18 +140,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:gravity="bottom"
                     android:layout_marginLeft="@dimen/padding_large">
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="25dp"
-                        android:layout_weight="1"
                         android:src="@drawable/grey_heart"
                         android:id="@+id/iv_like"
                         android:contentDescription="Like"/>
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_weight="1"
                         android:src="@drawable/ic_share"
                         android:id="@+id/iv_share"
                         android:layout_marginBottom="@dimen/padding_small"

@@ -64,6 +64,37 @@ public class StoreDetailsController {
         return jsonBody;
     }
 
+    public static JSONObject getReportErrorJson(String StoreId, String remarks) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("StoreId", StoreId);
+            jsonBody.put("Message", remarks);
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {}
+
+        return jsonBody;
+    }
+
+    public static JSONObject getLogTrackJson(String clicktype, String catId, String prepage, String Storeid) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("CategoryId", catId);
+            jsonBody.put("PreviousPageTypeId", prepage);
+            jsonBody.put("ClickTypeId", clicktype);
+            jsonBody.put("StoreId", Storeid);
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {}
+
+        return jsonBody;
+    }
     public static StoreDetailsModel getStoreData(JSONObject response){
 
         StoreDetailsModel storeDetailsModel = new StoreDetailsModel();

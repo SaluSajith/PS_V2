@@ -140,12 +140,12 @@ public class NavItemsController {
             message = "Fields cannot be empty";
             loginCallbackInterface.validateCallback(edittextPret, message, ACCOUNT_FRAGMENT);
             return;
-        }  else if (!Utility.validCellPhone(mobile)) {
+        } /* else if (!Utility.validCellPhone(mobile)) {
             edittextPret = edt_mobile;
             message = "Invalid phone number";
             loginCallbackInterface.validateCallback(edittextPret, message, ACCOUNT_FRAGMENT);
             return;
-        }  else if (email.length() < 1) {
+        }  */else if (email.length() < 1) {
             edittextPret = edt_email;
             message = "Fields cannot be empty";
             loginCallbackInterface.validateCallback(edittextPret, message, ACCOUNT_FRAGMENT);
@@ -160,8 +160,8 @@ public class NavItemsController {
             try {
                 jsonBody.put("FirstName", firstname);
                 jsonBody.put("LastName", lname);
-                jsonBody.put("Email", email);
-                jsonBody.put("MobileNumber", mobile);
+                jsonBody.put("UserEmail", email);
+                jsonBody.put("UserMobile", mobile);
                 jsonBody.put("DOB", dob);
 
                 jsonBody = Constant.addConstants(jsonBody, context);
@@ -173,6 +173,7 @@ public class NavItemsController {
             loginCallbackInterface.validationSuccess(jsonBody, ACCOUNT_FRAGMENT);
         }
     }
+
     public static void validateUpdatePassFields(EdittextPret et_currPas,
                                       EdittextPret et_newPas,
                                         EdittextPret et_confPas) {
@@ -203,8 +204,9 @@ public class NavItemsController {
         } else {
             JSONObject jsonBody = new JSONObject();
             try {
-                jsonBody.put("OldPassword", password);
-                jsonBody.put("NewPassword", new_password);
+                jsonBody.put("UserOldPassword", password);
+                jsonBody.put("UserNewPassword", new_password);
+                jsonBody.put("UserConfirmNewPassword", confirm_password);
                 jsonBody = Constant.addConstants(jsonBody, context);
 
             } catch (JSONException e) {

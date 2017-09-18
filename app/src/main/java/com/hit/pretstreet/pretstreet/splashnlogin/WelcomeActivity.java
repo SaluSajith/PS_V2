@@ -423,7 +423,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
-
     private Runnable mEndSplash = new Runnable() {
         public void run() {
                 if (!isFinishing()) {

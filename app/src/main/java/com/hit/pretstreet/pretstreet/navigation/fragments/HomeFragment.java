@@ -81,6 +81,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
     @BindView(R.id.rv_category)RecyclerView rv_category;
     @BindView(R.id.rv_moods)RecyclerView rv_moods;
     @BindView(R.id.rl_category)RelativeLayout rl_category;
+    @BindView(R.id.rl_all)RelativeLayout rl_all;
     @BindView(R.id.rl_moods)RelativeLayout rl_moods;
     @BindView(R.id.tv_tc)TextViewPret tv_tc;
 
@@ -127,6 +128,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
             final ArrayList<HomeCatItems> list = LoginController.getHomeContent(SavedMAinCaTList);
 
             ll_main_cat.removeAllViews();
+            rl_all.setVisibility(View.VISIBLE);
 
             for (int i = 0; i < list.size(); i++) {
                 String contentType = list.get(i).getContentTypeId();
@@ -287,23 +289,11 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
                         Canvas mCanvas = new Canvas(result);
                         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                        //mCanvas.drawBitmap(resource, 0, 0, null);
                         mCanvas.drawBitmap(resizedBitmap, 0, 0, null);
                         mCanvas.drawBitmap(mask, 0, 0, paint);
                         paint.setXfermode(null);
                         imageView.setImageBitmap(result);
                         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                        /*switch (getResources().getDisplayMetrics().densityDpi) {
-                            case DisplayMetrics.DENSITY_MEDIUM:
-                                imageView.setScaleType(ImageView.ScaleType.CENTER);
-                                break;
-                            case DisplayMetrics.DENSITY_HIGH:
-                                imageView.setScaleType(ImageView.ScaleType.CENTER);
-                                break;
-                            default:
-                                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                                break;
-                        }*/
                     }
                 });
     }
@@ -344,7 +334,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
             TextViewPret txt = (TextViewPret) view.findViewById(R.id.txt);
             txt.setLayoutParams(lp);
 
-            HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
+            HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray, 0);
             rv_category.setAdapter(homeGridAdapter);
             rl_category.setVisibility(View.VISIBLE);
         }
@@ -374,7 +364,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
             txt.setLayoutParams(lp);
             txt.setBackgroundColor(getResources().getColor(R.color.moods_bg));
 
-            HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray);
+            HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), homeSubCategoriesArray, 1);
             rv_moods.setAdapter(homeGridAdapter);
             rl_moods.setVisibility(View.VISIBLE);
         }

@@ -75,7 +75,7 @@
     <dimen name="margin_top">-25dp</dimen>
 
     <dimen name="changepass_height">320dp</dimen>
-    <dimen name="submitbtn_height">50dp</dimen>
+    <dimen name="submitbtn_height">40dp</dimen>
     <dimen name="submitbtn_width">110dp</dimen>
 
     <dimen name="contactus_height">250dp</dimen>

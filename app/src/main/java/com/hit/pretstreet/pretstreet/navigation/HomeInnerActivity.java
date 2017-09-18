@@ -1,6 +1,9 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,20 +21,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TimePicker;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
+import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
+import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
 import com.hit.pretstreet.pretstreet.navigation.fragments.ExhibitionFragment;
@@ -40,6 +47,7 @@ import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -47,6 +55,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -242,6 +251,11 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                     exhibitionFragment.updateLikeStatus(object.getInt("LikeStatus"),
                             object.getString("Id"));
                     break;
+                case EXHIBITIONREGISTER_URL:
+                    object = response.getJSONObject("Data");
+                    displaySnackBar(response.getString("CustomerMessage"));
+                    exhibitionFragment.updateLikeStatus(object.getInt("LikeStatus"),
+                            object.getString("Id"));
                 default: break;
             }
         } catch (JSONException e) {
@@ -274,14 +288,8 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     }
 
     @Override
-    public void shareUrl(String text) {
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
-        share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
-                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");
-        startActivity(Intent.createChooser(share, "Share with.."));
+    public void shareurl(String text) {
+        this.shareUrl(text);
     }
 
     @Override
@@ -298,17 +306,68 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     }
 
     @Override
-    public void goingInvoke(int trendingId, int pageId) {
-        JSONObject resultJson = homeFragmentController.getExhibitionlikeJson(EXNOTGOINGLINK,
-                trendingId + "", getIntent().getStringExtra(PRE_PAGE_KEY));
-        jsonRequestController.sendRequest(this, resultJson, EXHIBITIONLIKE_URL);
+    public void registerInvoke(int Id) {
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+        LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
+        String phone = loginSession.getMobile();
+        if(phone.trim().length()==0||phone.equalsIgnoreCase("null")){
+            showRegisterPopup(Id);
+        }
+        else {
+            HomeInnerActivity.this.showProgressDialog(getResources().getString(R.string.loading));
+            JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
+                    Id + "", getIntent().getStringExtra(PRE_PAGE_KEY), phone);
+            jsonRequestController.sendRequest(this, resultJson, EXHIBITIONREGISTER_URL);
+        }
+    }
+
+    public void showRegisterPopup(final int id) {
+
+        final Dialog popupDialog = new Dialog(HomeInnerActivity.this);
+        LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_register, null);
+
+        popupDialog.setCanceledOnTouchOutside(true);
+        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        popupDialog.setContentView(view);
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        popupDialog.getWindow().setAttributes(params);
+        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupDialog.show();
+
+        final EdittextPret edt_phone = (EdittextPret) view.findViewById(R.id.edt_phone);
+        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupDialog.dismiss();
+            }
+        });
+
+        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String regexStr = "^[789]\\d{9}$";
+                String number = edt_phone.getText().toString();
+                if(edt_phone.getText().toString().length()<10 || number.length()>13 || number.matches(regexStr)==false  ) {
+                    edt_phone.setError("Invalid phone number!");
+                }
+                else{
+                    popupDialog.dismiss();
+                    HomeInnerActivity.this.showProgressDialog(getResources().getString(R.string.loading));
+                    JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
+                            id + "", getIntent().getStringExtra(PRE_PAGE_KEY), number);
+                    jsonRequestController.sendRequest(HomeInnerActivity.this, resultJson, EXHIBITIONREGISTER_URL);
+                }
+            }
+        });
     }
 
     @Override
     public void interestInvoke(int trendingId, int pageId) {
-        JSONObject resultJson = homeFragmentController.getExhibitionlikeJson(EXNOTINTERESTEDLINK,
-                trendingId + "", getIntent().getStringExtra(PRE_PAGE_KEY));
-        jsonRequestController.sendRequest(this, resultJson, EXHIBITIONLIKE_URL);
     }
 
     @Override

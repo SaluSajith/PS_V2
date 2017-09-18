@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class TrendingItems implements Serializable {
 
     String id, storeLink, logoImage, title, article, articledate, pagetype, pagetypeid, storeid, clicktype;
-    String storeName;
-    boolean like, banner, interest, going, loadmoreFlag;
+    String storeName, shareUrl, area;
+    boolean like, banner, register, loadmoreFlag;
     String latitude, longitude;
     ArrayList<String> imagearray = new ArrayList<>();
 
@@ -142,27 +142,34 @@ public class TrendingItems implements Serializable {
         return clicktype;
     }
 
-    public void setInterest(boolean interest) {
-        this.interest = interest;
-    }
-
-    public boolean getInterest() {
-        return interest;
-    }
-
-    public void setGoing(boolean going) {
-        this.going = going;
-    }
-
-    public boolean getGoing() {
-        return going;
-    }
-
     public void setLoadmoreFlag(boolean loadmoreFlag) {
         this.loadmoreFlag = loadmoreFlag;
     }
 
     public Boolean getLoadmoreFlag() {
         return loadmoreFlag;
+    }
+
+    public void setRegister(boolean register) {
+        this.register = register;
+    }
+    public Boolean getRegisterFlag() {
+        return register;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getArea() {
+        return area;
     }
 }

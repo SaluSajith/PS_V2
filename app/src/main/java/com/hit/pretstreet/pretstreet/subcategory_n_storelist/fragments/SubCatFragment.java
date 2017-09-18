@@ -3,6 +3,7 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -28,6 +29,7 @@ import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
+import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.SubCatTrapeClick;
@@ -36,6 +38,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 
 /**
  * Created by User on 7/25/2017.
@@ -43,8 +48,8 @@ import butterknife.ButterKnife;
 
 public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implements SubCatTrapeClick{
 
+    private static final int TERMS_FRAGMENT = 8;
     @BindView(R.id.ll_main_cat) LinearLayout ll_main_cat;
-
     SubCatTrapeClick onTrapeClick;
 
     @Override
@@ -204,4 +209,13 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
     public void onSubTrapeClick(ArrayList<HomeCatItems> homeCatItemses, String title) {
         loadSubCatPage(homeCatItemses);
     }
+
+    @OnClick(R.id.tv_tc)
+    public void onTCPressed() {
+        Intent intent = new Intent(getActivity(), NavigationItemsActivity.class);
+        intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+        intent.putExtra("fragment", TERMS_FRAGMENT);
+        startActivity(intent);
+    }
+
 }

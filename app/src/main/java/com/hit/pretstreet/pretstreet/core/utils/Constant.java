@@ -36,6 +36,7 @@ public class Constant {
     public static final String TRENDINGLIKE_URL = COMMON_URL + "trending/trendinglike/";
     public static final String EXHIBITION_URL = COMMON_URL + "exhibition/listing/";
     public static final String EXHIBITIONLIKE_URL = COMMON_URL + "exhibition/exhibitionlike/";
+    public static final String EXHIBITIONREGISTER_URL = COMMON_URL + "exhibition/exhibitionRegister/";
     public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "exhibition/article/";
     public static final String TRENDINGARTICLE_URL = COMMON_URL + "trending/article/";
     public static final String MULTISTORE_URL = COMMON_URL + "store/multistorelisting";
@@ -48,11 +49,13 @@ public class Constant {
     public static final String FEEDBACK_URL = COMMON_URL + "customer/customerFeedback";
     public static final String ADDSTORE_URL = COMMON_URL + "customer/customerAddStore";
     public static final String BOOK_APPOINTMENT_URL = COMMON_URL + "customer/customerAppointment";
-    public static final String UPDATE_ACCOUNT_URL = COMMON_URL + "store/trendingArticle";//TODO
-    public static final String UPDATEPASSWORD_ACCOUNT_URL = COMMON_URL + "store/trendingArticlevb";//TODO
+    public static final String REPORT_ERROR_URL = COMMON_URL + "customer/storeError";
+    public static final String UPDATE_ACCOUNT_URL = COMMON_URL + "customer/customerprofileedit";
+    public static final String UPDATEPASSWORD_ACCOUNT_URL = COMMON_URL + "customer/customerresetpassword";
     public static final String PRIVACYPOLICY_URL = COMMON_URL + "customer/staticpagePrivacyPolicy";
     public static final String TC_URL = COMMON_URL + "customer/staticpageTnC";
     public static final String ABOUT_URL = COMMON_URL + "customer/staticpageAbout";
+    public static final String TRACK_URL = COMMON_URL + "customer/storeDetailsTracking";
 
     //updated after 5/9/2017
 

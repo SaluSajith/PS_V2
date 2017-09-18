@@ -79,6 +79,8 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     @BindView(R.id.tv_storecount)TextViewPret tv_storecount;
     @BindView(R.id.rv_storelist)RecyclerView rv_storelist;
 
+    String shareText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,16 +141,6 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         searchController = new SearchController(this);
     }
 
-    private void shareUrl(String text) {
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
-        share.putExtra(Intent.EXTRA_TEXT, "Discover the latest talent in Fashion Designers, brands & Jewellers." +
-                " Follow us on PrêtStreet, Your ultimate shopping guide.\n\nhttp://www.pretstreet.com/share.php");
-        startActivity(Intent.createChooser(share, "Share with.."));
-    }
-
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
@@ -159,6 +151,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                     tv_name.setText(jsonObject.getString("MultistoreTitle"));
                     tv_storecount.setText(jsonObject.getString("MultistoreCount")+" Stores");
                     setupCollapsingHeader(jsonObject.getString("MultistoreTitle"), jsonObject.getString("MultistoreImageSource"));
+                    shareText = jsonObject.getString("Share");
                     ArrayList<StoreListModel> storeListModels = searchController.getList(response);
                     setAdapter(storeListModels);
                     break;
@@ -176,7 +169,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                 onBackPressed();
                 return true;
             case R.id.menu_share:
-                shareUrl("");
+                shareUrl(shareText);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

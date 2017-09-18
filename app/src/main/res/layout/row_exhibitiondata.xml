@@ -56,13 +56,13 @@
                         android:layout_marginLeft="5dp"
                         app:pret_typeface="@string/font_merriweather_bold" />
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                        android:id="@+id/txt_description"
+                        android:id="@+id/txt_location"
                         android:layout_width="wrap_content"
                         android:text="Text"
                         android:maxLines="3"
                         android:inputType="textMultiLine"
                         android:layout_height="wrap_content"
-                        style="@style/textview_normal"
+                        style="@style/textview_small"
                         android:gravity="left"
                         android:layout_marginLeft="5dp"
                         app:pret_typeface="@string/font_merriweather_regular"/>
@@ -76,6 +76,7 @@
                         android:layout_marginLeft="5dp"
                         android:textSize="9dp"
                         app:pret_typeface="@string/font_merriweather_bold"/>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,26 +100,36 @@
                         android:contentDescription="Share"/>
                 </LinearLayout>
             </LinearLayout>
-            <!--<LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="visible">
-
-                <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
-                    android:id="@+id/bt_interested"
+                android:visibility="visible"
+                android:layout_margin="@dimen/padding_large">
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:id="@+id/txt_description"
                     android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/interested_white"/>
+                    android:layout_weight="3"
+                    android:text="Text"
+                    android:inputType="textMultiLine"
+                    android:layout_height="wrap_content"
+                    style="@style/textview_small"
+                    android:layout_margin="0dp"
+                    android:gravity="left"
+                    android:layout_marginLeft="5dp"
+                    app:pret_typeface="@string/font_merriweather_regular"/>
 
-                <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
-                    android:id="@+id/bt_going"
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:id="@+id/bt_register"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="35dp"
-                    android:background="@drawable/going_white"/>
-            </LinearLayout>-->
+                    android:layout_height="30dp"
+                    style="@style/textview_normal"
+                    android:text="Register"
+                    android:layout_margin="0dp"
+                    android:background="@color/yellow"
+                    app:pret_typeface="@string/font_merriweather_regular"/>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_progress"
                 android:layout_width="match_parent"

@@ -82,6 +82,16 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         Log.d(key, message);
     }
 
+    public void shareUrl(String text) {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        share.putExtra(Intent.EXTRA_SUBJECT, "PrêtStreet : Your ultimate shopping guide!!!");
+        share.putExtra(Intent.EXTRA_TEXT, "\n" +
+                text);
+        startActivity(Intent.createChooser(share, "Share with.."));
+    }
+
     public void logError(String error) {
         Log.e("ERROR", error);
     }

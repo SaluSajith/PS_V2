@@ -122,7 +122,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         Glide.with(context)
                 .load(trendingItems.getLogoImage())
                 .fitCenter()
-                //.placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.drawable.logo1)
                 .into(holder.iv_profile);
 
         holder.iv_like.setImageResource(trendingItems.getLike() == true ?
@@ -167,7 +167,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         @BindView(R.id.iv_like)ImageView iv_like;
         @BindView(R.id.iv_share)ImageView iv_share;
         @BindView(R.id.iv_banner)ImageView iv_banner;
-        @BindView(R.id.iv_profile)CircularImageView iv_profile;
+        @BindView(R.id.iv_profile)ImageView iv_profile;
 
         @BindView(R.id.txt_date)TextViewPret txt_date;
         @BindView(R.id.txt_title)TextViewPret txt_title;
@@ -205,7 +205,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
                     trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), TRENDING_FRAGMENT);
                     break;
                 case R.id.iv_share:
-                    trendingHolderInvoke.shareUrl("null");
+                    trendingHolderInvoke.shareurl(trendingItems.getShareUrl());
                     break;
                 case R.id.txt_shopname:
                     StoreListModel storeListModel = new StoreListModel();

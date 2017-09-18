@@ -10,7 +10,7 @@
             android:id="@+id/img_cat_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/tile_cat"
+            android:src="@drawable/tile_cat1"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
             android:contentDescription="Image"/>
@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/tile_shadow"
+            android:background="@drawable/tile_shadow1"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
             android:contentDescription="Image"/>

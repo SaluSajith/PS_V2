@@ -11,9 +11,9 @@ import java.util.ArrayList;
  */
 
 public interface TrendingHolderInvoke {
-    void shareUrl(String text);
+    void shareurl(String text);
     void likeInvoke(int trendingId, int pageId);
-    void goingInvoke(int trendingId, int pageId);
+    void registerInvoke(int trendingId);
     void interestInvoke(int trendingId, int pageId);
     void openTrendingArticle(TrendingItems trendingItems, String prePage);
     void loadStoreDetails(int position, StoreListModel storeListModel);

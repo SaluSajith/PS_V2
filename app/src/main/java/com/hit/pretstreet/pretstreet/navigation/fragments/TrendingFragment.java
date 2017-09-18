@@ -73,6 +73,10 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
         adapter.updateLikeStatus(status, storeid);
     }
 
+    public void updateRegisterStatus(int status, String storeid) {
+        adapter.updateLikeStatus(status, storeid);
+    }
+
     public void update_loadmore_adapter(boolean b){
         adapter.loadMoreView(b);
     }

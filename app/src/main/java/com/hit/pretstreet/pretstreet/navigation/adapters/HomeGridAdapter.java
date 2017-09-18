@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -25,6 +27,8 @@ import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
+import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 
 import java.util.ArrayList;
 
@@ -42,9 +46,14 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
     ArrayList<HomeCatContentData> homeSubCategoriesArray;
     HomeTrapeClick buttonClickCallback;
 
-    public HomeGridAdapter(Context context, ArrayList<HomeCatContentData> homeSubCategoriesArray) {
+    private int type = 0;
+    private int CAT_TYPE = 0;
+    private int MOODS_TYPE = 1;
+
+    public HomeGridAdapter(Context context, ArrayList<HomeCatContentData> homeSubCategoriesArray, int type) {
         this.context = context;
         this.activity = (HomeActivity)context;
+        this.type = type;
         this.homeSubCategoriesArray = homeSubCategoriesArray;
         buttonClickCallback = (HomeActivity)context;
     }
@@ -57,7 +66,11 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
     @Override
     public GridViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_cat1, parent, false);
+        if (viewType % 2 == 0) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_cat1, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_cat2, parent, false);
+        }
         return new GridViewHolder(view);
     }
 
@@ -68,19 +81,16 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
         holder.txt_cat_name.setText(contentData.getCategoryName());
 
         Bitmap mask1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_cat);
-        Bitmap shadow1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_shadow);
-        Matrix matrix = new Matrix();
-        matrix.preScale(-1.0f, 1.0f);
-        Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
-        Bitmap shadow2 = Bitmap.createBitmap(shadow1, 0, 0, shadow1.getWidth(), shadow1.getHeight(), matrix, true);
-        if(position % 2 ==0) {
-            loadImage(contentData.getImageSource(), holder.img_cat_image, mask1);
-            BitmapDrawable ob = new BitmapDrawable(shadow1);
-            holder.img_cat_image.setBackgroundDrawable(ob);
-        } else {
-            loadImage(contentData.getImageSource(), holder.img_cat_image, mask2);
-            BitmapDrawable ob = new BitmapDrawable(shadow2);
-            holder.img_cat_image.setBackgroundDrawable(ob);
+        loadImage(contentData.getImageSource(), holder.img_cat_image, mask1);
+
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.txt_cat_name.getLayoutParams();
+        if(type == MOODS_TYPE) {
+            lp.setMargins(10, (int) context.getResources().getDimension(R.dimen.padding_standard) + 3, 5, 0);
+            holder.txt_cat_name.setLayoutParams(lp);
+        }
+        else{
+            lp.setMargins(10, 0, 5, 0);
+            holder.txt_cat_name.setLayoutParams(lp);
         }
     }
 
@@ -93,7 +103,6 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
 
         Glide.with(context)
                 .load(url).asBitmap()
-                .placeholder(R.drawable.mask_home)
                 .centerCrop()
                 .into(new BitmapImageViewTarget(imageView) {
                     @Override
@@ -128,11 +137,11 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
                     }
                 });
     }
+
     public class GridViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.img_cat_image)ImageView img_cat_image;
         @BindView(R.id.txt_cat_name)TextViewPret txt_cat_name;
-        @BindView(R.id.direction_card_view)CardView direction_card_view;
 
         public GridViewHolder(View itemView) {
             super(itemView);

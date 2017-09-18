@@ -358,6 +358,10 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             ContactUsFragment contactUsFragment = new ContactUsFragment();
             contactUsFragment.onValidationError(editText, message);
         }
+        else if (type == ACCOUNT_FRAGMENT){
+            AccountFragment accountFragment = new AccountFragment();
+            accountFragment.onValidationError(editText, message);
+        }
         else if (type == CHANGEPASSWORD_FRAGMENT){
             ChangePasswordFragment changePasswordFragment = new ChangePasswordFragment();
             changePasswordFragment.onValidationError(editText, message);

@@ -51,12 +51,13 @@ public class Utility {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
         }
     }
+
     public static boolean validCellPhone(String number){
         boolean status = false;
         if(android.util.Patterns.PHONE.matcher(number).matches()) {
-            if (number.length() == 10)
-                status = true;
-            else status = false;
+            if (number.length() == 10) {
+                //status = true;
+            } else status = false;
         }else
             status = false;
         return status;
@@ -69,13 +70,5 @@ public class Utility {
             InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-        /*if (activity != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            View view = activity.getCurrentFocus();
-            if (view == null) {
-                view = new View(activity);
-            }
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }*/
     }
 }

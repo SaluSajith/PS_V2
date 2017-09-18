@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/yellow"
-        android:padding="1dp">
+        android:padding="2dp">
 
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
             android:id="@+id/txt_cat"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             style="@style/textview_title"
-            android:text="Book Appointment"
+            android:text="Please enter your phone number"
             android:textColor="@color/dark_gray"
             app:pret_typeface="@string/font_merriweather_regular"/>
 
@@ -58,60 +58,52 @@
         android:layout_marginTop="@dimen/activity_horizontal_margin">
 
         <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
-            android:id="@+id/edt_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select date"
-            android:clickable="true"
-            android:focusable="false"
-            android:maxLines="1"
-            android:padding="10dp"
-            android:textAppearance="@android:style/TextAppearance.Small"
-            android:textColor="@android:color/white"
-            android:drawableRight="@drawable/ic_date_range"
-            android:textColorHint="@android:color/white" />
-
-        <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
-            android:id="@+id/edt_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select time"
-            android:clickable="true"
-            android:focusable="false"
-            android:maxLines="1"
-            android:padding="10dp"
-            android:layout_below="@+id/edt_date"
-            android:textAppearance="@android:style/TextAppearance.Small"
-            android:textColor="@android:color/white"
-            android:drawableRight="@drawable/ic_date_range"
-            android:textColorHint="@android:color/white" />
-
-        <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
-            android:id="@+id/edt_remarks"
+            android:id="@+id/edt_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/edittext_white_normal"
-            android:layout_below="@+id/edt_time"
-            android:hint="Remarks"
+            android:hint="Phone"
             android:padding="10dp"
             android:gravity="left"
-            android:lines="4"
-            android:inputType="textImeMultiLine"/>
+            android:inputType="phone"/>
 
         <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
             android:id="@+id/btn_send"
             android:layout_width="@dimen/submitbtn_width"
             android:layout_height="@dimen/submitbtn_height"
-            android:text="@string/book_btn"
+            android:text="Register"
             style="@style/button_standard"
-            android:layout_below="@+id/edt_remarks"
+            android:textSize="15dp"
+            android:layout_below="@+id/edt_phone"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/buttonbg"
             android:padding="5dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/btn_send">
 
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="10dp"/>
+
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Privacy Policy"
+                android:textColor="@color/yellow"
+                android:textSize="10dp"/>
+
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>

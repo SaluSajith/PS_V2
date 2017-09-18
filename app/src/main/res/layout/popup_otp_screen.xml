@@ -3,7 +3,7 @@
     android:id="@+id/popup_bundle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0.7"
+    android:alpha="1"
     android:background="@android:color/black">
 
     <ImageView

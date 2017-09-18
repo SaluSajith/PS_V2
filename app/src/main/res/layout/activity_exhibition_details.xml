@@ -40,6 +40,7 @@
                     android:maxHeight="@dimen/detail_backdrop_maxheight"
                     android:adjustViewBounds="true"
                     app:layout_collapseMode="parallax" />
+                <include layout="@layout/content_imageoverlay"></include>
 
                 <ImageView
                     android:id="@+id/ib_like"

@@ -87,6 +87,8 @@ public class DetailsPageController {
             storeDetailsModel.setLatitude(jsonObject.getString("Latitude"));
             storeDetailsModel.setLongitude(jsonObject.getString("Longitude"));
             storeDetailsModel.setAbout(jsonObject.getString("About"));
+            storeDetailsModel.setShare(jsonObject.getString("Share"));
+            storeDetailsModel.setRegisterStatus(jsonObject.getInt("CustomerRegisterStatus") == 0 ? false : true);
             storeDetailsModel.setProducts(jsonObject.getString("Products"));
             storeDetailsModel.setImageSource(jsonObject.getString("ImageSource"));
             storeDetailsModel.setTimingToday(jsonObject.getString("TimingToday"));
