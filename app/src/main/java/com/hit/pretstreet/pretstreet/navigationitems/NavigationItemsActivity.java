@@ -254,6 +254,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             case NOTIFICATION_FRAGMENT:
                 currentFragment = NOTIFICATION_FRAGMENT;
                 tv_cat_name.setText("Notification");
+                //vcb
                 NotificationFragment notificationFragment = new NotificationFragment();
                 trendingCallback = notificationFragment;
                 changeFragment(notificationFragment, b);
