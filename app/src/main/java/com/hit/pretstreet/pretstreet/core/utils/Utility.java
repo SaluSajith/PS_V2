@@ -55,9 +55,10 @@ public class Utility {
     public static boolean validCellPhone(String number){
         boolean status = false;
         if(android.util.Patterns.PHONE.matcher(number).matches()) {
-            if (number.length() == 10) {
-                //status = true;
-            } else status = false;
+            String regexStr = "^[789]\\d{9}$";
+            if(number.length()<10 || number.length()>13 || number.matches(regexStr)==false  ) {
+                status = false;
+            } else status = true;
         }else
             status = false;
         return status;

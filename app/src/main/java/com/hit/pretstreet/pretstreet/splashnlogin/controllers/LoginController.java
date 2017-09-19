@@ -1,6 +1,7 @@
 package com.hit.pretstreet.pretstreet.splashnlogin.controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.hit.pretstreet.pretstreet.PretStreet;
@@ -51,22 +52,25 @@ public class LoginController {
 
         JSONObject jsonBody = new JSONObject();
         try {
-
             jsonBody.put("UserSocialId", URLEncoder.encode(jsonObject.getString("id").toString(), "UTF-8"));
             jsonBody.put("UserSocialType", "facebook");
-            jsonBody.put("profile_pic", URLEncoder.encode("https://graph.facebook.com/" +
+            jsonBody.put("ProfileImage", URLEncoder.encode("https://graph.facebook.com/" +
                     jsonObject.getString("id").toString() + "/picture?type=large", "UTF-8"));
             if (jsonObject.has("email")) {
                 jsonBody.put("UserEmail", jsonObject.getString("email").toString());
             } else {
                 jsonBody.put("UserEmail", "");
             }
-            if (jsonObject.has("name")) {
-                jsonBody.put("FirstName", URLEncoder.encode(jsonObject.getString("name").toString(), "UTF-8"));
+            if (jsonObject.has("first_name")) {
+                jsonBody.put("FirstName", URLEncoder.encode(jsonObject.getString("first_name").toString(), "UTF-8"));
             } else {
                 jsonBody.put("FirstName", "");
             }
-            jsonBody.put("LastName", "");
+            if (jsonObject.has("first_name")) {
+                jsonBody.put("LastName", URLEncoder.encode(jsonObject.getString("last_name").toString(), "UTF-8"));
+            } else {
+                jsonBody.put("LastName", "");
+            }
             if (jsonObject.has("gender")) {
                 jsonBody.put("gender", jsonObject.getString("gender").toString());
             } else {
@@ -89,8 +93,8 @@ public class LoginController {
         try {
             jsonBody.put("UserSocialId", URLEncoder.encode(account.getId(), "UTF-8"));
             jsonBody.put("UserSocialType", "google");
-            String googleImageUrl = String.valueOf(account.getPhotoUrl());
-            jsonBody.put("profile_pic", googleImageUrl.substring(0, googleImageUrl.length() - 2) + PROFILE_PIC_SIZE);
+            //jsonBody.put("ProfileImage", googleImageUrl.substring(0, googleImageUrl.length() - 2) + PROFILE_PIC_SIZE);
+            jsonBody.put("ProfileImage", account.getPhotoUrl());
             jsonBody.put("UserEmail", account.getEmail());
             jsonBody.put("FirstName", account.getGivenName());
             jsonBody.put("LastName", account.getFamilyName());
@@ -122,27 +126,6 @@ public class LoginController {
 
         return jsonBody;
     }
-
-    public static JSONObject getSocialLoginDetails(String phone) {
-
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("social_id", "");
-            jsonBody.put("social_type", "");
-            jsonBody.put("profile_pic", "");
-            jsonBody.put("email", "");
-            jsonBody.put("fname", "");
-            jsonBody.put("lname", "");
-            jsonBody.put("gender", "");
-            jsonBody.put("DeviceType", "1");
-            jsonBody.put("DeviceId", PretStreet.getDeviceId());
-
-        } catch (JSONException e) {
-        } catch (Exception e) {}
-
-        return jsonBody;
-    }
-
 
     public static JSONObject getOTPVerificationJson(String phone, String email) {
 
@@ -352,16 +335,6 @@ public class LoginController {
                             homeSubCategoriesArray.add(contentData);
                         }
                         homeContentData.setHomeCatContentDatas(homeSubCategoriesArray);
-                        homeCatItems.setHomeContentData(homeContentData);
-                        break;
-                    case MALLS:
-                        object = jsonArray.getJSONObject(i).getJSONObject("ContentData");
-
-                        homeContentData = new HomeCatContentData();
-                        homeContentData.setCategoryId(object.getString("MainCategoryId"));
-                        homeContentData.setCategoryName(object.getString("CategoryName"));
-                        homeContentData.setImageSource(object.getString("ImageSource"));
-                        homeContentData.setPageTypeId(object.getString("PageTypeId"));
                         homeCatItems.setHomeContentData(homeContentData);
                         break;
                     default:

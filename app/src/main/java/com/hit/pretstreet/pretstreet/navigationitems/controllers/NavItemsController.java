@@ -212,7 +212,7 @@ public class NavItemsController {
             } catch (JSONException e) {
             } catch (Exception e) {
             }
-            loginCallbackInterface.validationSuccess(jsonBody, ACCOUNT_FRAGMENT);
+            loginCallbackInterface.validationSuccess(jsonBody, CHANGEPASSWORD_FRAGMENT);
         }
     }
 

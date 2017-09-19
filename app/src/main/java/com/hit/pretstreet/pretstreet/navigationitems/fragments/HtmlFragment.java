@@ -38,14 +38,18 @@ public class HtmlFragment  extends AbstractBaseFragment<NavigationItemsActivity>
     }
 
     private void init(){
-        URL = this.getArguments().getString(Constant.PARCEL_KEY);
-        ((NavigationItemsActivity)getActivity()).getHtmlData(URL);
+        String html = this.getArguments().getString(Constant.PARCEL_KEY);
+        if(html.length()!=0){
+            loadHtml(html);
+        }else {
+            URL = this.getArguments().getString(Constant.URL_KEY);
+            ((NavigationItemsActivity) getActivity()).getHtmlData(URL);
+        }
     }
 
     public void loadHtml(String html){
         if(html.trim().length()!=0) {
             txt_content.setVisibility(View.VISIBLE);
-            txt_content.setNestedScrollingEnabled(false);
             txt_content.setText(Html.fromHtml(html, null, new MyTagHandler()));
             ll_empty.setVisibility(View.GONE);
         }

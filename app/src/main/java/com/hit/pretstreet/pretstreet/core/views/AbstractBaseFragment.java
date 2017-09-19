@@ -4,6 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,11 +17,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.IntentCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.helpers.UIThreadHandler;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
@@ -92,6 +102,52 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void loadImage(String url, final ImageView imageView, final Bitmap mask){
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        final int dwidth = displaymetrics.widthPixels;
+        final int dheight = (int) ((displaymetrics.heightPixels) * 0.45);
+
+        Glide.with(getActivity())
+                .load(url).asBitmap()
+                .placeholder(R.drawable.mask_home)
+                //.centerCrop()
+                .into(new BitmapImageViewTarget(imageView) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        try {
+                            int width = resource.getWidth();
+                            int height = resource.getHeight();
+                            float scaleWidth = ((float) dwidth) / width;
+                            float scaleHeight = ((float) dheight) / height;
+                            Matrix matrix = new Matrix();
+                            if (width > height)
+                                if (scaleHeight > scaleWidth)
+                                    matrix.postScale(scaleWidth, scaleWidth);
+                                else
+                                    matrix.postScale(scaleHeight, scaleHeight);
+                            else {
+                                if (scaleHeight > scaleWidth)
+                                    matrix.postScale(scaleHeight, scaleHeight);
+                                else
+                                    matrix.postScale(scaleWidth, scaleWidth);
+                            }
+                            Bitmap resizedBitmap = Bitmap.createBitmap(resource, 0, 0, width, height, matrix, false);
+                            Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
+                            Canvas mCanvas = new Canvas(result);
+                            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+                            mCanvas.drawBitmap(resizedBitmap, 0, 0, null);
+                            mCanvas.drawBitmap(mask, 0, 0, paint);
+                            paint.setXfermode(null);
+                            imageView.setImageBitmap(result);
+                            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                        } catch (Exception e){}
+                    }
+                });
     }
 
 

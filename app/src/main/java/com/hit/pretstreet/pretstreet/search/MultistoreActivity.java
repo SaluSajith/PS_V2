@@ -131,6 +131,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                 .load(imageUrl)
                 .asBitmap()
                 .centerCrop()
+                .placeholder(R.drawable.default_banner)
                 .into(imageView);
 
     }

@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 
 public class ProductImageItem implements Parcelable {
-    String image;
+    String image="";
 
     public ProductImageItem() {
     }

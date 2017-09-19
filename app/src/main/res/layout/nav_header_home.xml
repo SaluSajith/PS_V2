@@ -26,10 +26,9 @@
         android:paddingRight="@dimen/textsize_small"
         android:layout_marginBottom="@dimen/padding_large">
 
-        <com.hit.pretstreet.pretstreet.core.customview.CircularImageView
+        <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/logo1"
             android:id="@+id/iv_profile"
             android:layout_marginLeft="@dimen/padding_large"
             android:layout_gravity="center"/>

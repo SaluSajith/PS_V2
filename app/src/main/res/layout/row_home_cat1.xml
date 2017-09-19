@@ -20,15 +20,18 @@
             android:layout_height="match_parent"
             android:background="@drawable/tile_shadow"
             android:scaleType="fitXY"
+            android:id="@+id/img_cat_image1"
             android:adjustViewBounds="true"
-            android:contentDescription="Image"/>
+            android:contentDescription="Image"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
         android:id="@+id/txt_cat_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5sp"
-        android:layout_marginLeft="5dp"
         android:lines="1"
         android:maxLines="1"
         android:ellipsize="end"

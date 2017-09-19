@@ -48,6 +48,7 @@ import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.ShadowTransformer;
 import com.hit.pretstreet.pretstreet.location.StoreLocationMapScreen;
+import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.storedetails.adapters.CardFragmentPagerAdapter;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
@@ -73,6 +74,8 @@ import butterknife.OnClick;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.BOOK_APPOINTMENT_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CALLEDLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CALLLINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REPORT_ERROR_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRACK_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.VIEWADDRESSLINK;
@@ -83,6 +86,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     JsonRequestController jsonRequestController;
     SubCategoryController subCategoryController;
     StoreDetailsController storeDetailsController;
+
+    private static final int ABOUTDESIGNER_FRAGMENT = 101;
 
     @BindView(R.id.tv_product) TextViewPret tv_product;
     @BindView(R.id.tv_about) TextViewPret tv_about;
@@ -127,7 +132,6 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         initUi();
     }
 
@@ -173,6 +177,16 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         showReportErrorPopup();
     }
 
+    @OnClick(R.id.tv_about)
+    public void aboutShop(){
+        Intent intent = new Intent(getApplicationContext(), NavigationItemsActivity.class);
+        intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+        intent.putExtra("fragment", ABOUTDESIGNER_FRAGMENT);
+        intent.putExtra("NAME", storeDetailsModel.getStoreName());
+        intent.putExtra(PARCEL_KEY, storeDetailsModel.getDescription());
+        startActivity(intent);
+    }
+
     @OnClick(R.id.btn_follow)
     public void onFollowPressed() {
         JSONObject resultJson = subCategoryController.updateFollowCount(mStoreId,
@@ -182,10 +196,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private void setupDetailsPage(StoreDetailsModel storeDetailsModel){
-
         try {
             setupCollapsingHeader(storeDetailsModel.getStoreName(), storeDetailsModel.getBaseImage());
-
             tv_storename.setText(storeDetailsModel.getStoreName());
             tv_location.setText(storeDetailsModel.getAreaCity());
             tv_openstatus.setText(storeDetailsModel.getOpenStatus() == true ? "Closed" : "Open now");
@@ -198,6 +210,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             tv_imgsrc.setText(Html.fromHtml(sourceString));
 
             btn_follow.setText(storeDetailsModel.getFollowingStatus() == true ? "Follow" : "Unfollow");
+            tv_book_app.setVisibility(storeDetailsModel.getAppointmentFlag() == true ? View.VISIBLE : View.GONE);
             iv_sale.setVisibility(storeDetailsModel.getFlags().contains("0") == true ? View.VISIBLE : View.INVISIBLE);
             iv_offer.setVisibility(storeDetailsModel.getFlags().contains("1") == true ? View.VISIBLE : View.INVISIBLE);
             iv_new.setVisibility(storeDetailsModel.getFlags().contains("2") == true ? View.VISIBLE : View.INVISIBLE);
@@ -225,7 +238,6 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             tv_heading_hrs.setVisibility(storeDetailsModel.getArrayListTimings().size() > 0 ? View.VISIBLE : View.GONE);
         }catch (Exception e){}
     }
-
 
     public void showReportErrorPopup() {
 
@@ -260,7 +272,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                     edt_remarks.setError("Field cannot be blank!");
                 }
                 else
-                reportError(edt_remarks.getText().toString());
+                    reportError(edt_remarks.getText().toString());
             }
         });
     }
@@ -370,7 +382,6 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     private void logTracking(String clicktypeid){
         JSONObject resultJson = storeDetailsController.getLogTrackJson(clicktypeid, "",
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY), mStoreId);
-        this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, TRACK_URL);
     }
 
@@ -403,7 +414,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(getApplicationContext()).load(imageUrl).asBitmap().fitCenter().into(imageView);
+        Glide.with(getApplicationContext()).load(imageUrl).asBitmap().placeholder(R.drawable.default_banner).fitCenter().into(imageView);
     }
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {

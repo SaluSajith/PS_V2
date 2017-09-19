@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -15,11 +16,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -34,15 +38,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
+import com.hit.pretstreet.pretstreet.core.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.core.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.core.customview.NotificationBadge;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
+import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.adapters.NavDrawerAdapter;
@@ -62,6 +70,7 @@ import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
+import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
@@ -70,6 +79,8 @@ import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListMod
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -93,7 +104,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         NavigationClick, ApiListenerInterface, HomeTrapeClick, ButtonClickCallback {
 
-    //TODO put same in NavigationItemsActivity as well
     private int selectedFragment = 0;
     private static final int ACCOUNT_FRAGMENT = 0;
     private static final int FOLLOWING_FRAGMENT = 1;
@@ -259,6 +269,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra(ID_KEY, "0");
@@ -271,6 +282,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         badge_home.bringToFront();
 
         TextViewPret tv_profile = (TextViewPret) navigationView.findViewById(R.id.tv_profile);
+        final ImageView iv_profile = (ImageView) navigationView.findViewById(R.id.iv_profile);
         TextViewPret tv_rateus = (TextViewPret) drawer.findViewById(R.id.tv_rateus);
         tv_rateus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,12 +305,25 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             }
         });
 
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+        LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
         if (PreferenceServices.getInstance().geUsertName().equalsIgnoreCase("")) {
             //TODO : get Username Api
             tv_profile.setText("");
         }
         else{
             tv_profile.setText(PreferenceServices.getInstance().geUsertName());
+            Glide.with(getApplicationContext()).load(loginSession.getProfile_pic()).asBitmap()
+                    .placeholder(R.drawable.profilepic)
+                    .centerCrop().into(new BitmapImageViewTarget(iv_profile) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(getApplicationContext().getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    iv_profile.setImageDrawable(circularBitmapDrawable);
+                }
+            });
         }
     }
 
@@ -383,18 +408,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent.putExtra("mSubTitle", "Following");
                 startActivity(intent);
                 break;
-            /*case "storedetails":
-                intent = new Intent(HomeActivity.this, MultistoreActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                startActivity(intent);
-                break;
-            case "storedetails":
-                selectedFragment = TRENDING_FRAGMENT;
-                intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;*/
             default:
                 break;
         }
@@ -454,12 +467,14 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     @OnClick(R.id.tv_location)
     public void onTvLocationPressed() {
+        finish();
         Intent intent = new Intent(HomeActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.iv_location)
     public void onLocationPressed() {
+        finish();
         Intent intent = new Intent(HomeActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }

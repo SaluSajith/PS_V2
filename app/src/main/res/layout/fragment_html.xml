@@ -9,19 +9,19 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-        android:id="@+id/txt_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
-        android:padding="10sp"
-        android:visibility="gone"
-        android:nestedScrollingEnabled="false"
-        android:textColor="@color/dark_gray"
-        android:layout_marginTop="50dp"/>
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:id="@+id/txt_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5sp"
+            android:padding="10sp"
+            android:visibility="gone"
+            android:nestedScrollingEnabled="false"
+            android:textColor="@color/dark_gray"
+            android:layout_marginTop="50dp"/>
 
-    <include layout="@layout/empty_view"
-        android:id="@+id/ll_empty"
-        android:visibility="invisible"/>
+        <include layout="@layout/empty_view"
+            android:id="@+id/ll_empty"
+            android:visibility="invisible"/>
     </FrameLayout>
 </android.support.v4.widget.NestedScrollView>

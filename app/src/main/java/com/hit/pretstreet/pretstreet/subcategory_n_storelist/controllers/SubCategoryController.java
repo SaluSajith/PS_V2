@@ -16,7 +16,6 @@ import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterf
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel_J;
 
 import org.json.JSONArray;
 import org.json.JSONException;

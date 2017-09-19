@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class TrendingItems implements Serializable {
 
-    String id, storeLink, logoImage, title, article, articledate, pagetype, pagetypeid, storeid, clicktype;
-    String storeName, shareUrl, area;
-    boolean like, banner, register, loadmoreFlag;
-    String latitude, longitude;
+    String id="", storeLink="", logoImage="", title="", article="", articledate="", pagetype="", pagetypeid="", storeid="", clicktype="";
+    String storeName="", shareUrl="", area="";
+    boolean like=false, banner=false, register=false, loadmoreFlag=false;
+    String latitude="", longitude="";
     ArrayList<String> imagearray = new ArrayList<>();
 
     public String getId() {

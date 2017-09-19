@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -25,6 +26,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
+import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
@@ -42,16 +44,19 @@ import butterknife.ButterKnife;
 public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridViewHolder>{
 
     private Context context;
+    Fragment fragment;
     Activity activity;
     ArrayList<HomeCatContentData> homeSubCategoriesArray;
     HomeTrapeClick buttonClickCallback;
+    private RelativeLayout.LayoutParams lp;
 
     private int type = 0;
     private int CAT_TYPE = 0;
     private int MOODS_TYPE = 1;
 
-    public HomeGridAdapter(Context context, ArrayList<HomeCatContentData> homeSubCategoriesArray, int type) {
+    public HomeGridAdapter(Context context, Fragment fragment, ArrayList<HomeCatContentData> homeSubCategoriesArray, int type) {
         this.context = context;
+        this.fragment = fragment;
         this.activity = (HomeActivity)context;
         this.type = type;
         this.homeSubCategoriesArray = homeSubCategoriesArray;
@@ -66,7 +71,8 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
     @Override
     public GridViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if (viewType % 2 == 0) {
+        int listViewItemType = getItemViewType(viewType);
+        if (listViewItemType % 2 == 0) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_cat1, parent, false);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_home_cat2, parent, false);
@@ -75,78 +81,43 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+    @Override
     public void onBindViewHolder(GridViewHolder holder, int position) {
 
         HomeCatContentData contentData = homeSubCategoriesArray.get(position);
         holder.txt_cat_name.setText(contentData.getCategoryName());
 
         Bitmap mask1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_cat);
-        loadImage(contentData.getImageSource(), holder.img_cat_image, mask1);
+        Bitmap mask2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_cat1);
+        if(position%2==0) {
+            ((HomeFragment)fragment).loadImage(contentData.getImageSource(), holder.img_cat_image, mask1);
+        }else{
+            ((HomeFragment)fragment).loadImage(contentData.getImageSource(), holder.img_cat_image, mask2);
+        }
 
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.txt_cat_name.getLayoutParams();
         if(type == MOODS_TYPE) {
-            lp.setMargins(10, (int) context.getResources().getDimension(R.dimen.padding_standard) + 3, 5, 0);
+            lp.setMargins(40, (int) context.getResources().getDimension(R.dimen.padding_xlarge) + 3, 5, 0);
             holder.txt_cat_name.setLayoutParams(lp);
         }
         else{
-            lp.setMargins(10, 0, 5, 0);
+            lp.setMargins(40,(int) context.getResources().getDimension(R.dimen.padding_standard), 5, 0);
             holder.txt_cat_name.setLayoutParams(lp);
         }
-    }
-
-    private void loadImage(String url, final ImageView imageView, final Bitmap mask){
-
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        final int dwidth = displaymetrics.widthPixels;
-        final int dheight = (int) ((displaymetrics.heightPixels) * 0.45);
-
-        Glide.with(context)
-                .load(url).asBitmap()
-                .centerCrop()
-                .into(new BitmapImageViewTarget(imageView) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        int width = resource.getWidth();
-                        int height = resource.getHeight();
-                        float scaleWidth = ((float) dwidth) / width;
-                        float scaleHeight = ((float) dheight) / height;
-                        Matrix matrix = new Matrix();
-                        if (width > height)
-                            if (scaleHeight > scaleWidth)
-                                matrix.postScale(scaleWidth, scaleWidth);
-                            else
-                                matrix.postScale(scaleHeight, scaleHeight);
-                        else {
-                            if (scaleHeight > scaleWidth)
-                                matrix.postScale(scaleHeight, scaleHeight);
-                            else
-                                matrix.postScale(scaleWidth, scaleWidth);
-                        }
-                        Bitmap resizedBitmap = Bitmap.createBitmap(resource, 0, 0, width, height, matrix, false);
-                        Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas mCanvas = new Canvas(result);
-                        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                        //mCanvas.drawBitmap(resource, 0, 0, null);
-                        mCanvas.drawBitmap(resizedBitmap, 0, 0, null);
-                        mCanvas.drawBitmap(mask, 0, 0, paint);
-                        paint.setXfermode(null);
-                        imageView.setImageBitmap(result);
-                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                    }
-                });
     }
 
     public class GridViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.img_cat_image)ImageView img_cat_image;
+        @BindView(R.id.img_cat_image1)ImageView img_cat_image1;
         @BindView(R.id.txt_cat_name)TextViewPret txt_cat_name;
 
         public GridViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
+            lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

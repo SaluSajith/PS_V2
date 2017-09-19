@@ -149,62 +149,6 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
 
     }
 
-    private void loadImage(String url, final ImageView imageView, final Bitmap mask){
-
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        final int dwidth = displaymetrics.widthPixels;
-        final int dheight = (int) ((displaymetrics.heightPixels) * 0.45);
-
-        Glide.with(getActivity())
-                .load(url).asBitmap()
-                .placeholder(R.drawable.mask_home)
-                .centerCrop()
-                .into(new BitmapImageViewTarget(imageView) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        int width = resource.getWidth();
-                        int height = resource.getHeight();
-                        float scaleWidth = ((float) dwidth) / width;
-                        float scaleHeight = ((float) dheight) / height;
-                        Matrix matrix = new Matrix();
-                        if (width > height)
-                            if (scaleHeight > scaleWidth)
-                                matrix.postScale(scaleWidth, scaleWidth);
-                            else
-                                matrix.postScale(scaleHeight, scaleHeight);
-                        else {
-                            if (scaleHeight > scaleWidth)
-                                matrix.postScale(scaleHeight, scaleHeight);
-                            else
-                                matrix.postScale(scaleWidth, scaleWidth);
-                        }
-                        Bitmap resizedBitmap = Bitmap.createBitmap(resource, 0, 0, width, height, matrix, false);
-                        Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas mCanvas = new Canvas(result);
-                        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                        //mCanvas.drawBitmap(resource, 0, 0, null);
-                        mCanvas.drawBitmap(resizedBitmap, 0, 0, null);
-                        mCanvas.drawBitmap(mask, 0, 0, paint);
-                        paint.setXfermode(null);
-                        imageView.setImageBitmap(result);
-                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                        /*switch (getResources().getDisplayMetrics().densityDpi) {
-                            case DisplayMetrics.DENSITY_MEDIUM:
-                                imageView.setScaleType(ImageView.ScaleType.CENTER);
-                                break;
-                            case DisplayMetrics.DENSITY_HIGH:
-                                imageView.setScaleType(ImageView.ScaleType.CENTER);
-                                break;
-                            default:
-                                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                                break;
-                        }*/
-                    }
-                });
-    }
-
     @Override
     public void onSubTrapeClick(ArrayList<HomeCatItems> homeCatItemses, String title) {
         loadSubCatPage(homeCatItemses);

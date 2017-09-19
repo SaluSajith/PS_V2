@@ -10,13 +10,13 @@ import java.util.ArrayList;
 
 public class StoreDetailsModel {
 
-    String Id, StoreName, AreaCity, FollowingCount, Flags, Address, Latitude, Longitude, About,
-            Products, ImageSource, TimingToday, BaseImage, Share, Description;
-    boolean OpenStatus, FollowingStatus, RegisterStatus;
-    ArrayList<String> Phone;
-    ArrayList<Testimonials> arrayListTesti;
-    ArrayList<String> arrayListTimings;
-    ArrayList<String> arrayListImages;
+    String Id = "", StoreName = "", AreaCity = "", FollowingCount = "", Flags = "", Address = "", Latitude = "", Longitude = "", About = "",
+            Products = "", ImageSource = "", TimingToday = "", BaseImage = "", Share = "", Description = "";
+    boolean OpenStatus = false, FollowingStatus = false, RegisterStatus = false, AppointmentFlag = false;
+    ArrayList<String> Phone = new ArrayList<>();
+    ArrayList<Testimonials> arrayListTesti = new ArrayList<>();
+    ArrayList<String> arrayListTimings = new ArrayList<>();
+    ArrayList<String> arrayListImages = new ArrayList<>();
 
     public String getId() {
         return Id;
@@ -181,6 +181,7 @@ public class StoreDetailsModel {
     public void setRegisterStatus(boolean registerStatus) {
         RegisterStatus = registerStatus;
     }
+
     public boolean getRegisterStatus() {
         return RegisterStatus;
     }
@@ -191,5 +192,13 @@ public class StoreDetailsModel {
 
     public String getDescription() {
         return Description;
+    }
+
+    public void setAppointmentFlag(boolean appointmentFlag) {
+        AppointmentFlag = appointmentFlag;
+    }
+
+    public boolean getAppointmentFlag() {
+        return AppointmentFlag;
     }
 }

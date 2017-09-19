@@ -244,7 +244,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(getApplicationContext()).load(imageUrl).asBitmap().fitCenter().into(imageView);
+        Glide.with(getApplicationContext()).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_banner).into(imageView);
     }
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {

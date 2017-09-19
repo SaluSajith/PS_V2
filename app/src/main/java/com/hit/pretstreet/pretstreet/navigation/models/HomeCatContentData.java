@@ -8,9 +8,9 @@ import java.util.ArrayList;
  */
 
 public class HomeCatContentData implements Serializable{
-    String CategoryId, CategoryName, Title, ImageSource, PageType, PageTypeId, MainCatId;
-    ArrayList<HomeCatItems> homeSubCategoryArrayList;
-    ArrayList<HomeCatContentData> homeCatContentDatas;
+    String CategoryId="", CategoryName="", Title="", ImageSource="", PageType="", PageTypeId="", MainCatId="";
+    ArrayList<HomeCatItems> homeSubCategoryArrayList=new ArrayList<>();
+    ArrayList<HomeCatContentData> homeCatContentDatas= new ArrayList<>();
 
     public String getCategoryId() {
         return CategoryId;

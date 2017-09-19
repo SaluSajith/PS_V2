@@ -8,9 +8,9 @@ import java.io.Serializable;
 
 public class StoreListModel implements Serializable {
 
-    private String PageType, PageTypeId, Id, Title,
-            FollowingCount, Location, ImageSource, Share;
-    private boolean Saleflag, Offerflag, Newflag, FollowingStatus, OpenStatus, BannerFlag, loadmoreFlag;
+    private String PageType="", PageTypeId="", Id="", Title="",
+            FollowingCount="", Location="", ImageSource="", Share="";
+    private boolean Saleflag=false, Offerflag=false, Newflag=false, FollowingStatus=false, OpenStatus=false, BannerFlag=false, loadmoreFlag=false;
 
     public Boolean getBannerFlag() {
         return BannerFlag;

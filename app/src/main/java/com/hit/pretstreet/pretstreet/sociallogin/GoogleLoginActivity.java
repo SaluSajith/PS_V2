@@ -23,19 +23,19 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_login);
         getSupportActionBar().hide();
 
         // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
-// options specified by gso.
+        // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -62,14 +62,12 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
             setResult(RESULT_CANCELED);
             finish();
         }
-
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        GoogleSignInAccount account = result.getSignInAccount();
-       // Log.d(TAG, "handleSignInResult:" + account.getPhotoUrl());
+        //GoogleSignInAccount account = result.getSignInAccount();
+        //Log.d(TAG, "handleSignInResult:" + account.getPhotoUrl());
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             Intent intent = getIntent();
             intent.putExtra("responsejson", acct);

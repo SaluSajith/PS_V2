@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -23,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
@@ -47,13 +50,12 @@ import butterknife.ButterKnife;
 
 public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHolder>{
 
-    Context context;
+    Context context, fragContext;
     int dotsCount = 0;
     static int mPosition;
     private static ImageView imageViewPret;
     private static ArrayList<TrendingItems> list;
     ArticlePagerAdapter mAdapter;
-    private int mLastPosition;
     TrendingHolderInvoke trendingHolderInvoke;
     private ZoomedViewListener zoomedViewListener;
 
@@ -63,7 +65,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
     public TrendingAdapter(Activity activity, TrendingFragment context, ArrayList<TrendingItems> list) {
         this.context = activity;
         this.list = list;
-        this.zoomedViewListener = (ZoomedViewListener) context;
+        //this.zoomedViewListener = (ZoomedViewListener) context;
         this.trendingHolderInvoke = (TrendingHolderInvoke)activity;
     }
     @Override
@@ -119,11 +121,17 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
         content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
         holder.txt_shopname.setText(content.toString());
 
-        Glide.with(context)
-                .load(trendingItems.getLogoImage())
-                .fitCenter()
+        Glide.with(context).load(trendingItems.getLogoImage()).asBitmap()
                 .placeholder(R.drawable.logo1)
-                .into(holder.iv_profile);
+                .fitCenter().into(new BitmapImageViewTarget(holder.iv_profile) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                holder.iv_profile.setImageDrawable(circularBitmapDrawable);
+            }
+        });
 
         holder.iv_like.setImageResource(trendingItems.getLike() == true ?
                 R.drawable.red_heart : R.drawable.grey_heart);
@@ -224,9 +232,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
                     if(trendingItems.getBanner()){
                         trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
                     } else {
-                        ProductImageItem productImageItem = new ProductImageItem();
                         ArrayList<String> mImagearray = new ArrayList<>();
-                        //productImageItem.setImage(list.get(getAdapterPosition()).getImagearray().get(0));
                         mImagearray.add(trendingItems.getImagearray().get(0));
                         zoomedViewListener.onClicked(0, mImagearray);
                     }

@@ -1,16 +1,21 @@
 package com.hit.pretstreet.pretstreet.navigationitems.fragments;
 
 import android.app.DatePickerDialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
@@ -36,7 +41,7 @@ import butterknife.OnClick;
 
 public class AccountFragment extends AbstractBaseFragment<WelcomeActivity> {
 
-    @BindView(R.id.civ_profile) CircularImageView civ_profile;
+    @BindView(R.id.civ_profile)ImageView civ_profile;
     @BindView(R.id.edt_fname) EdittextPret edt_fname;
     @BindView(R.id.edt_lname) EdittextPret edt_lname;
     @BindView(R.id.edt_email) EdittextPret edt_email;
@@ -63,11 +68,17 @@ public class AccountFragment extends AbstractBaseFragment<WelcomeActivity> {
         edt_dob.setText(loginSession.getDob());
         edt_mobile.setText(loginSession.getMobile());
 
-        Glide.with(getActivity())
-                .load(loginSession.getProfile_pic())
-                .centerCrop()
+        Glide.with(getActivity()).load(loginSession.getProfile_pic()).asBitmap()
                 .placeholder(R.drawable.profilepic)
-                .into(civ_profile);
+                .centerCrop().into(new BitmapImageViewTarget(civ_profile) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(getActivity().getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                civ_profile.setImageDrawable(circularBitmapDrawable);
+            }
+        });
     }
 
     @OnClick(R.id.edt_dob)

@@ -45,9 +45,11 @@ import com.hit.pretstreet.pretstreet.navigation.fragments.ExhibitionFragment;
 import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
+import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -64,7 +66,7 @@ import butterknife.OnClick;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.*;
 
 public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
-        ApiListenerInterface, TrendingHolderInvoke {
+        ApiListenerInterface, TrendingHolderInvoke, ZoomedViewListener {
 
     private int currentFragment = 0;
     private static final int TRENDING_FRAGMENT = 10;
@@ -176,7 +178,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 pageCount = 1;
                 currentFragment = EXHIBITION_FRAGMENT;
                 tv_cat_name.setText("Exhibition");
-                iv_filter.setVisibility(View.VISIBLE);
+                iv_filter.setVisibility(View.GONE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 exhibitionFragment = new ExhibitionFragment();
                 trendingCallback = exhibitionFragment;
@@ -352,7 +354,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             public void onClick(View v) {
                 String regexStr = "^[789]\\d{9}$";
                 String number = edt_phone.getText().toString();
-                if(edt_phone.getText().toString().length()<10 || number.length()>13 || number.matches(regexStr)==false  ) {
+                if(number.length()<10 || number.length()>13 || number.matches(regexStr)==false  ) {
                     edt_phone.setError("Invalid phone number!");
                 }
                 else{
@@ -446,4 +448,14 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         });
     }
 
+    @Override
+    public void onClicked(int position, ArrayList<String> mImagearray) {
+
+        ArrayList<String> imageModels1 = mImagearray;
+        Intent intent = new Intent(getApplicationContext(), FullscreenGalleryActivity.class);
+        intent.putExtra(Constant.PARCEL_KEY, imageModels1);
+        intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.HOMEPAGE));
+        intent.putExtra(Constant.POSITION_KEY, position);
+        startActivity(intent);
+    }
 }

@@ -219,6 +219,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private void openSearchPage(){
+        finish();
         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
         intent.putExtra(PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
         intent.putExtra(ID_KEY, getIntent().getStringExtra(ID_KEY));
@@ -331,13 +332,13 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private class JSONParsing extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
+        //ProgressDialog progressDialog;
 
         @Override
         protected void onPreExecute() {
-            progressDialog = new ProgressDialog(StoreListingActivity.this);
+            /*progressDialog = new ProgressDialog(StoreListingActivity.this);
             progressDialog.setMessage("Its loading....");
-            progressDialog.show();
+            progressDialog.show();*/
         }
 
         @Override
@@ -357,7 +358,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
         @Override
         protected void onPostExecute(String result) {
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
             setAdapter();
         }
     }

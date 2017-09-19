@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 
 public class ImageModel implements Parcelable {
-    String imgSrc;
+    String imgSrc = "";
 
     public ImageModel(Parcel in) {
         imgSrc = in.readString();

@@ -73,6 +73,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     private static final int EXHIBITION_FRAGMENT = 11;
     private static final int NOTIFICATION_FRAGMENT = 12;
     private static final int CHANGEPASSWORD_FRAGMENT = 13;
+    private static final int ABOUTDESIGNER_FRAGMENT = 101;
 
     private int PLACE_PICKER_REQUEST = 1;
 
@@ -161,6 +162,15 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         jsonRequestController.sendRequest(this, resultJson, TRENDING_URL);
     }
 
+    private void delayedBackpress(String msg){
+        displaySnackBar(msg);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onBackPressed();
+            }
+        }, 3000);
+    }
 
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
@@ -207,7 +217,8 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
                 tv_cat_name.setText("About Pretstreet");
                 htmlFragment = new HtmlFragment();
                 bundle = new Bundle();
-                bundle.putString(PARCEL_KEY, ABOUT_URL);
+                bundle.putString(PARCEL_KEY, "");
+                bundle.putString(URL_KEY, ABOUT_URL);
                 htmlFragment.setArguments(bundle);
                 changeFragment(htmlFragment, b);
                 break;
@@ -216,7 +227,8 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
                 tv_cat_name.setText("Privacy Policy");
                 htmlFragment = new HtmlFragment();
                 bundle = new Bundle();
-                bundle.putString(PARCEL_KEY, PRIVACYPOLICY_URL);
+                bundle.putString(PARCEL_KEY, "");
+                bundle.putString(URL_KEY, PRIVACYPOLICY_URL);
                 htmlFragment.setArguments(bundle);
                 changeFragment(htmlFragment, b);
                 break;
@@ -225,7 +237,17 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
                 tv_cat_name.setText("Terms & Conditions");
                 htmlFragment = new HtmlFragment();
                 bundle = new Bundle();
-                bundle.putString(PARCEL_KEY, TC_URL);
+                bundle.putString(PARCEL_KEY, "");
+                bundle.putString(URL_KEY, TC_URL);
+                htmlFragment.setArguments(bundle);
+                changeFragment(htmlFragment, b);
+                break;
+            case ABOUTDESIGNER_FRAGMENT:
+                currentFragment = ABOUTDESIGNER_FRAGMENT;
+                tv_cat_name.setText(getIntent().getStringExtra("NAME"));
+                htmlFragment = new HtmlFragment();
+                bundle = new Bundle();
+                bundle.putString(PARCEL_KEY, getIntent().getStringExtra(PARCEL_KEY));
                 htmlFragment.setArguments(bundle);
                 changeFragment(htmlFragment, b);
                 break;
@@ -264,53 +286,22 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
-            /*displaySnackBar(response.getString("CustomerMessage"));
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        onBackPressed();
-                    }
-                }, 1500);*/
+            String msg = response.getString("CustomerMessage");
             switch (url){
                 case CONTACTUS_URL:
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onBackPressed();
-                        }
-                    }, 1500);
+                    delayedBackpress(msg);
                     break;
                 case FEEDBACK_URL:
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onBackPressed();
-                        }
-                    }, 1500);
+                    delayedBackpress(msg);
                     break;
                 case ADDSTORE_URL:
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onBackPressed();
-                        }
-                    }, 1500);
+                    delayedBackpress(msg);
                     break;
                 case UPDATE_ACCOUNT_URL:
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onBackPressed();
-                        }
-                    }, 1500);
+                    delayedBackpress(msg);
                     break;
                 case UPDATEPASSWORD_ACCOUNT_URL:
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onBackPressed();
-                        }
-                    }, 1500);
+                    delayedBackpress(msg);
                     break;
                 case ABOUT_URL:
                     String html = navItemsController.getStaticHtmlData(response);
@@ -415,5 +406,4 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             }
         }
     }
-
 }

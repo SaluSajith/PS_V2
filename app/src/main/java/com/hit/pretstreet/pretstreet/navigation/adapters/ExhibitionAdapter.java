@@ -156,6 +156,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
             iv_share.setOnClickListener(this);
             bt_register.setOnClickListener(this);
             txt_shopname.setOnClickListener(this);
+            txt_description.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -190,6 +191,9 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                 case R.id.txt_shopname:
                     ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                     break;
+                case R.id.txt_description:
+                    ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
+                    break;
                 case R.id.iv_banner:
                     if(trendingItems.getBanner()){
                         trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.EXHIBITIONPAGE);
@@ -214,7 +218,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                     textViewPret.setTextColor(ContextCompat.getColor(context, R.color.white));
                     textViewPret.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
                 }
-
                 if(list.get(mPosition).getId().equals(storeid))
                     list.get(mPosition).setRegister(status == 0 ? false : true);
                 break;

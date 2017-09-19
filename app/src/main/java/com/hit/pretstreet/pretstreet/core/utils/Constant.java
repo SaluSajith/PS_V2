@@ -129,6 +129,7 @@ public class Constant {
     //Constants
     public static final String PRE_PAGE_KEY = "pagetype";
     public static final String ID_KEY = "id";
+    public static final String URL_KEY = "id";
     public static final String CLICKTYPE_KEY = "clicktype";
     public static final String PARCEL_KEY = "data";
     public static final String POSITION_KEY = "position";

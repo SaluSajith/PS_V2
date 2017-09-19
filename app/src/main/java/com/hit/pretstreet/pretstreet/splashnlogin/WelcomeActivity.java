@@ -62,6 +62,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import butterknife.BindView;
@@ -109,9 +110,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     private String otpValue;
     Dialog popupDialog;
-    String mProfilePic;
     JSONObject registerJson, loginJson;
-    private static final int PROFILE_PIC_SIZE = 400;
 
     SignupFragment signupFragment;
     LoginFragment loginFragment;
@@ -238,15 +237,11 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         try {
             JSONObject responseJSON = new JSONObject(stringJSON);
             if(responseJSON!=null) {
-                mProfilePic = URLEncoder.encode("https://graph.facebook.com/" +
-                        responseJSON.getString("id").toString() + "/picture?type=large", "UTF-8");
                 JSONObject resultJson = loginController.getFacebookLoginData(responseJSON);
                 this.showProgressDialog(getResources().getString(R.string.loading));
                 jsonRequestController.sendRequest(this, resultJson, SOCIAL_LOGIN_URL);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
@@ -254,7 +249,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     private void getGoogleResponse(GoogleSignInAccount signInAccount) {
         JSONObject resultJson = loginController.getGoogleLoginDetails(signInAccount);
         String googleImageUrl = String.valueOf(signInAccount.getPhotoUrl());
-        mProfilePic = googleImageUrl.substring(0, googleImageUrl.length() - 2) + PROFILE_PIC_SIZE;
         jsonRequestController.sendRequest(this, resultJson, SOCIAL_LOGIN_URL);
     }
 
@@ -359,17 +353,17 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         showOTPScreem(registerJson, REGISTRATION_URL);
                         break;
                     case REGISTRATION_URL:
-                        setupSession(response, "", "");
+                        setupSession(response, "");
                         break;
                     case LOGIN_OTP_URL:
                         otpValue = response.getJSONObject("Data").getString("OTP");
                         showOTPScreem(loginJson, LOGIN_URL);
                         break;
                     case LOGIN_URL:
-                        setupSession(response, "", "");
+                        setupSession(response, "");
                         break;
                     case SOCIAL_LOGIN_URL:
-                        setupSession(response, "social", mProfilePic);
+                        setupSession(response, "social");
                         break;
                     default: break;
                 }
@@ -381,14 +375,13 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
-    private void setupSession(JSONObject response, String loginType, String pic){
+    private void setupSession(JSONObject response, String loginType){
 
         try {
             JSONObject object = response.getJSONObject("Data");
 
             LoginSession loginSession = new LoginSession();
             loginSession.setRegid(object.getString("UserId"));
-            loginSession.setProfile_pic(pic);
             loginSession.setFname(object.getString("UserFirstName"));
             loginSession.setLname(object.getString("UserLastName"));
             loginSession.setEmail(object.getString("UserEmail"));
@@ -396,7 +389,13 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
             loginSession.setMobile(object.getString("UserMobile"));
             if(object.has("UserProfilePicture")) {
-                loginSession.setProfile_pic(object.getString("UserProfilePicture"));
+                String url = "";
+                try {
+                    url = URLDecoder.decode(object.getString("UserProfilePicture"), "UTF-8")+"";
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                loginSession.setProfile_pic(url);
             }
             SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
             sharedPreferencesHelper.createLoginSession(loginSession);
@@ -495,6 +494,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 else {
                     popupDialog.dismiss();
                     if (otpValue.equals(edt_otp.getText().toString())) {
+                        showProgressDialog(getResources().getString(R.string.loading));
                         jsonRequestController.sendRequest(WelcomeActivity.this, jsonObject, url);
                     } else {
                         displaySnackBar("Wrong OTP");

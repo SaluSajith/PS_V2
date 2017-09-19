@@ -5,8 +5,8 @@ package com.hit.pretstreet.pretstreet.navigation.models;
  */
 
 public class NavDrawerItem {
-    public String id;
-    public String name;
+    public String id="";
+    public String name="";
 
     public NavDrawerItem(String id, String name)
     {

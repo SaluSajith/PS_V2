@@ -51,9 +51,6 @@ public class HomePagerAdapter extends PagerAdapter {
         if(homeSubCategoriesArray.size()==0){
             imageView.setImageResource(R.mipmap.ic_launcher);
         }else {
-                /*Bitmap mask;
-                mask = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
-                loadImage(mResources.get(position), imageView, mask);*/
             Glide.with(mContext)
                     .load(homeSubCategoriesArray.get(position).getImageSource())
                     .fitCenter()

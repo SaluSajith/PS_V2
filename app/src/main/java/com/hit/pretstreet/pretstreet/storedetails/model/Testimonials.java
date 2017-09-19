@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 
 public class Testimonials implements Serializable {
-    String testimonial, name;
+    String testimonial="", name="";
 
     public String getName() {
         return name;

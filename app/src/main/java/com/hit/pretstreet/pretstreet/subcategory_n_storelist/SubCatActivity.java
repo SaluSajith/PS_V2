@@ -112,6 +112,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void openSearchPage(){
+        finish();
         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
         intent.putExtra(PRE_PAGE_KEY, SUBCATPAGE);
         intent.putExtra(ID_KEY, getIntent().getStringExtra("mSubCatId"));

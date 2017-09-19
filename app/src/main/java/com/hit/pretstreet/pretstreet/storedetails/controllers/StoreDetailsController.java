@@ -113,6 +113,8 @@ public class StoreDetailsController {
             storeDetailsModel.setTimingToday(jsonObject.getString("TimingToday"));
             storeDetailsModel.setBaseImage(jsonObject.getString("BaseImage"));
             storeDetailsModel.setShare(jsonObject.getString("Share"));
+            storeDetailsModel.setDescription(jsonObject.getJSONObject("ShortDescritpion").getString("Html"));
+            storeDetailsModel.setAppointmentFlag(jsonObject.getInt("AppointmentFlag") == 0 ? false : true);
             storeDetailsModel.setOpenStatus(jsonObject.getInt("OpenStatus") == 0 ? true : false);
             storeDetailsModel.setFollowingStatus(jsonObject.getInt("FollowingStatus") == 0 ? true : false);
 

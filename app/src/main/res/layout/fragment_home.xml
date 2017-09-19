@@ -1,94 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rl_all"
     android:background="@color/category_bg">
-    <LinearLayout
-        android:id="@+id/ll_main_cat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <!--<include layout="@layout/row_sub_cat_list1"></include>
-
-        <include layout="@layout/row_sub_cat_list2"></include>-->
-
-        <!--<include layout="@layout/row_sub_cat_list1"></include>
-
-        <include layout="@layout/row_sub_cat_list2"></include>-->
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:id="@+id/ll_pager"
-        android:layout_below="@+id/ll_main_cat"
-        android:visibility="gone"
-        android:layout_height="@dimen/pager_height"
-        android:fitsSystemWindows="true"
-        android:layout_marginTop="@dimen/content_overlapmargin_hometrape"
-        android:orientation="horizontal"/>
 
     <RelativeLayout
-        android:id="@+id/rl_category"
-        android:layout_below="@+id/ll_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/content_overlapmargin_hometrape">
-
-        <android.support.v7.widget.RecyclerView
+        android:id="@+id/rl_sub">
+        <LinearLayout
+            android:id="@+id/ll_main_cat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rv_category"
-            android:nestedScrollingEnabled="false"
-            android:layout_marginBottom="@dimen/padding_large"
-            android:paddingTop="80dp"
-            android:paddingBottom="40dp"/>
+            android:orientation="vertical"
+            android:visibility="visible"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/ll_header_cat"
-            android:layout_alignParentTop="true"
+            android:id="@+id/ll_pager"
+            android:layout_below="@+id/ll_main_cat"
             android:visibility="gone"
+            android:layout_height="@dimen/pager_height"
             android:fitsSystemWindows="true"
-            android:orientation="horizontal">
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_moods"
-        android:layout_below="@+id/rl_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rv_moods"
-            android:background="@color/moods_bg"
-            android:layout_marginTop="30dp"
-            android:paddingTop="50dp"
-            android:nestedScrollingEnabled="false"
-            android:paddingBottom="10dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ll_header_moods"
-            android:layout_alignParentTop="true"
-            android:visibility="visible"
+            android:layout_marginTop="@dimen/content_overlapmargin_hometrape"
             android:orientation="horizontal"/>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_category"
+            android:layout_below="@+id/ll_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/content_overlapmargin_hometrape">
 
-    <include layout="@layout/content_footer"
-        />
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_category"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="@dimen/padding_large"
+                android:paddingTop="80dp"
+                android:paddingBottom="40dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ll_header_cat"
+                android:layout_alignParentTop="true"
+                android:visibility="gone"
+                android:fitsSystemWindows="true"
+                android:orientation="horizontal">
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_moods"
+            android:layout_below="@+id/rl_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_moods"
+                android:background="@color/moods_bg"
+                android:layout_marginTop="30dp"
+                android:paddingTop="50dp"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ll_header_moods"
+                android:layout_alignParentTop="true"
+                android:visibility="visible"
+                android:orientation="horizontal"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_sub"
+        android:layout_marginTop="@dimen/content_overlapmargin_hometrape">
+        <include layout="@layout/content_footer"/>
+    </LinearLayout>
+
 </RelativeLayout>

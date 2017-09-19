@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 
 public class SearchModel implements Serializable{
-    String PageType, PageTypeId, Id, Title, Category, Location;
-    boolean Status;
+    String PageType="", PageTypeId="", Id="", Title="", Category="", Location="";
+    boolean Status=false;
 
     public String getCategory() {
         return Category;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 
 public class HomeCatItems implements Serializable {
-    String ContentTypeId, ContentType, Position;
+    String ContentTypeId="", ContentType="", Position="";
     HomeCatContentData homeContentData;
 
     public void setContentType(String contentType) {

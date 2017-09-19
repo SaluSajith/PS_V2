@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 public class FilterDataModel implements Serializable{
 
-    private String headerTitle;
-    private ArrayList<SearchModel> allItemsInSection;
+    private String headerTitle = "";
+    private ArrayList<SearchModel> allItemsInSection =  new ArrayList<>();
 
     public FilterDataModel() {
     }

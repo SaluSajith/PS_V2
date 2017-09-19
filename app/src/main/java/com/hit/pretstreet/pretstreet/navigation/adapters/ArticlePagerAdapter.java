@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
 
 import java.util.ArrayList;
@@ -29,13 +30,6 @@ public class ArticlePagerAdapter extends PagerAdapter {
     public ArticlePagerAdapter(Context mContext, ArrayList<String> mResources) {
         this.mContext = mContext;
         this.mResources = mResources;
-        //mImagearray = new ArrayList<>();
-        ProductImageItem productImageItem;
-        /*for(int i = 0;i<mResources.size();i++) {
-            productImageItem = new ProductImageItem();
-            productImageItem.setImage(mResources.get(i));
-            mImagearray.add(productImageItem);
-        }*/
     }
 
     @Override
@@ -56,12 +50,9 @@ public class ArticlePagerAdapter extends PagerAdapter {
         if((mResources.get(position)).length()==0){
             imageView.setImageResource(R.mipmap.ic_launcher);
         }else {
-                /*Bitmap mask;
-                mask = BitmapFactory.decodeResource(getResources(), R.drawable.brand2);
-                loadImage(mResources.get(position), imageView, mask);*/
             Glide.with(mContext)
                     .load(mResources.get(position))
-                    .placeholder(R.drawable.close)
+                    .placeholder(R.drawable.default_banner)
                     .fitCenter()
                     .into(imageView);
         }
@@ -69,7 +60,9 @@ public class ArticlePagerAdapter extends PagerAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                ArrayList<String> mImagearray = new ArrayList<>();
+                mImagearray.add(mResources.get(position));
+                ((HomeInnerActivity)mContext).onClicked(0, mImagearray);
             }
         });
         container.addView(itemView);

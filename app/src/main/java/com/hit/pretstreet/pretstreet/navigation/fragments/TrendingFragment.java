@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
  */
 
 public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
-        implements TrendingCallback, ZoomedViewListener {
+        implements TrendingCallback {
 
     @BindView(R.id.rv_trending) RecyclerView rv_trending;
     ArrayList<TrendingItems> trendingItems;
@@ -56,17 +56,6 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
         this.trendingItems.addAll(trendingItems);
         adapter.notifyDataSetChanged();
         //adapter.setHasStableIds(true);
-    }
-
-    @Override
-    public void onClicked(int position, ArrayList<String> mImagearray) {
-
-        ArrayList<String> imageModels1 = mImagearray;
-        Intent intent = new Intent(getActivity(), FullscreenGalleryActivity.class);
-        intent.putExtra(Constant.PARCEL_KEY, imageModels1);
-        intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.HOMEPAGE));
-        intent.putExtra(Constant.POSITION_KEY, position);
-        startActivity(intent);
     }
 
     public void updateLikeStatus(int status, String storeid) {
