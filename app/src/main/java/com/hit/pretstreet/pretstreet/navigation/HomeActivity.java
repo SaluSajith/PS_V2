@@ -269,7 +269,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra(ID_KEY, "0");

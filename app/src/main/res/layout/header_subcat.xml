@@ -38,6 +38,7 @@
                     style="@style/textview_small"
                     android:layout_gravity="top"
                     android:gravity="top"
+                    android:lines="1"
                     android:textColor="@color/black"
                     android:layout_marginLeft="9dp"
                     android:layout_marginStart="9dp"
@@ -71,34 +72,33 @@
                 android:orientation="horizontal"
                 android:visibility="visible"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="2dp">
+                android:layout_marginTop="@dimen/padding_xxsmall">
                 <!--<com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="All"
                     android:textColor="@color/yellow"
-                    android:layout_marginTop="25dp"
                     app:pret_typeface="@string/font_merriweather_regular"/>
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Brands"
+                    android:layout_height="wrap_content"
+                    android:text="Fine house"
                     android:textColor="@color/yellow"
                     app:pret_typeface="@string/font_merriweather_regular"/>
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Highstreet"
+                    android:layout_height="wrap_content"
+                    android:text="fashion label"
                     android:textColor="@color/black"
                     android:background="@color/yellow_indicator"
                     app:pret_typeface="@string/font_merriweather_regular"/>
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="Retail"
                     android:textColor="@color/yellow"
-                    app:pret_typeface="@string/font_merriweather_regular"/>-->
-
+                    app:pret_typeface="@string/font_merriweather_regular"/>
+-->
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>

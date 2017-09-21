@@ -14,6 +14,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.view.menu.ShowableListMenu;
+import android.support.v7.widget.ForwardingListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -27,6 +29,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -264,15 +267,25 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             }
         });
 
+        edt_remarks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_remarks.setError(null);
+            }
+        });
+
         ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                edt_remarks.setError("");
                 if(edt_remarks.getText().toString().trim().length()==0){
                     edt_remarks.setError("Field cannot be blank!");
                 }
-                else
+                else {
+                    popupDialog.dismiss();
                     reportError(edt_remarks.getText().toString());
+                }
             }
         });
     }
@@ -358,6 +371,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                     edt_time.setError("Select time");
                 }
                 else{
+                    popupDialog.dismiss();
                     bookAppointment(edt_date.getText().toString(),
                             edt_time.getText().toString(),
                             edt_remarks.getText().toString());
@@ -601,10 +615,12 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                     setupDetailsPage(storeDetailsModel);
                     break;
                 case BOOK_APPOINTMENT_URL:
-                    popupDialog.dismiss();
                     displaySnackBar(response.getString("CustomerMessage"));
                 case Constant.UPDATEFOLLOWSTATUS_URL:
                     btn_follow.setText(response.getJSONObject("Data").getInt("FollowingStatus") == 0 ? "Follow" : "Unfollow");
+                    break;
+                case REPORT_ERROR_URL:
+                    displaySnackBar(response.getString("CustomerMessage"));
                     break;
                 default: break;
             }

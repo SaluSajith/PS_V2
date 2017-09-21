@@ -67,7 +67,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE;
  * Created by User on 7/19/2017.
  */
 
-public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements ViewPager.OnPageChangeListener, View.OnClickListener{
+public class HomeFragment extends AbstractBaseFragment<HomeActivity>
+        implements ViewPager.OnPageChangeListener, View.OnClickListener{
 
     private static final int TERMS_FRAGMENT = 8;
 
@@ -127,7 +128,6 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
 
         if (SavedMAinCaTList.length() > 1) {
             final ArrayList<HomeCatItems> list = LoginController.getHomeContent(SavedMAinCaTList);
-
             ll_main_cat.removeAllViews();
 
             for (int i = 0; i < list.size(); i++) {
@@ -180,18 +180,18 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity> implements 
                             matrix.preScale(-1.0f, 1.0f);
                             Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
                             if (finalI % 2 != 0)
-                                loadImage(homeContentData.getImageSource(), mImageView, mask1);
+                                loadImage(homeContentData.getImageSource(), mImageView, mask1, R.drawable.mask_malls);
                             else
-                                loadImage(homeContentData.getImageSource(), mImageView, mask2);
+                                loadImage(homeContentData.getImageSource(), mImageView, mask2, R.drawable.mask_malls);
                         }else {
                             Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
                             Matrix matrix = new Matrix();
                             matrix.preScale(-1.0f, 1.0f);
                             Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
                             if (finalI % 2 == 0)
-                                loadImage(homeContentData.getImageSource(), mImageView, mask1);
+                                loadImage(homeContentData.getImageSource(), mImageView, mask1, R.drawable.mask_home);
                             else
-                                loadImage(homeContentData.getImageSource(), mImageView, mask2);
+                                loadImage(homeContentData.getImageSource(), mImageView, mask2, R.drawable.brand2);
                         }
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override

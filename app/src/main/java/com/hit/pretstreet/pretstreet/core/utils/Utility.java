@@ -35,6 +35,18 @@ public class Utility {
         return llm;
     }
 
+    public static LinearLayoutManager setListLayoutManager_(RecyclerView recyclerView, Context context){
+        LinearLayoutManager llm = new LinearLayoutManager(context);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setNestedScrollingEnabled(true);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        return llm;
+    }
+
     public static LinearLayoutManager setGridLayoutManager(RecyclerView recyclerView, Context context, int columnCount){
         GridLayoutManager llm = new GridLayoutManager(context, columnCount);
         llm.setOrientation(LinearLayoutManager.VERTICAL);

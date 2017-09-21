@@ -49,6 +49,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implements SubCatTrapeClick{
 
     private static final int TERMS_FRAGMENT = 8;
+    @BindView(R.id.ll_sub) LinearLayout ll_sub;
     @BindView(R.id.ll_main_cat) LinearLayout ll_main_cat;
     SubCatTrapeClick onTrapeClick;
 
@@ -127,16 +128,12 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
 
             final int finalI = i;
             if(finalI == homeSubCategories.size()-1){
-                if (finalI % 2 == 0)
-                    loadImage(contentData.getImageSource(), mImageView, mask4);
-                else
-                    loadImage(contentData.getImageSource(), mImageView, mask3);
+                if (finalI % 2 == 0) loadImage(contentData.getImageSource(), mImageView, mask4, R.drawable.mask_malls);
+                else loadImage(contentData.getImageSource(), mImageView, mask3, R.drawable.mask_malls);
             }
             else {
-                if (finalI % 2 == 0)
-                    loadImage(contentData.getImageSource(), mImageView, mask1);
-                else
-                    loadImage(contentData.getImageSource(), mImageView, mask2);
+                if (finalI % 2 == 0) loadImage(contentData.getImageSource(), mImageView, mask1, R.drawable.mask_home);
+                else loadImage(contentData.getImageSource(), mImageView, mask2, R.drawable.brand2);
             }
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -146,7 +143,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
             });
             ll_main_cat.addView(view);
         }
-
+        ll_sub.setVisibility(View.VISIBLE);
     }
 
     @Override

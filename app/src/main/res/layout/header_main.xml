@@ -60,6 +60,7 @@
                         style="@style/textview_small"
                         android:layout_gravity="top"
                         android:gravity="top"
+                        android:lines="1"
                         android:textColor="@color/black"
                         android:layout_marginLeft="9dp"
                         android:layout_marginStart="9dp"

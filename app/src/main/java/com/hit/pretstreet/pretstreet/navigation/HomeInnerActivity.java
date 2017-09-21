@@ -441,8 +441,6 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         btn_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(radioGroup_sortby.getCheckedRadioButtonId());
-                System.out.println(radioGroup_orderby.getCheckedRadioButtonId());
                 popupDialog.dismiss();
             }
         });

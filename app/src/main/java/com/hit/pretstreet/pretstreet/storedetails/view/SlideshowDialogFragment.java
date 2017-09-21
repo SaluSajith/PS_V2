@@ -54,20 +54,12 @@ public class SlideshowDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_gallery_slideshow, container, false);
         ButterKnife.bind(this, v);
-
         imageModels = getArguments().getStringArrayList(Constant.PARCEL_KEY);
-
         selectedPosition = getArguments().getInt(Constant.POSITION_KEY);
-       /* int countvisibility = getArguments().getInt(Constant.POSITION_KEY);
-        if(countvisibility==0)
-            lblCount.setVisibility(View.INVISIBLE);*/
-
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
-
         setCurrentItem(selectedPosition);
-
         return v;
     }
 
@@ -85,12 +77,10 @@ public class SlideshowDialogFragment extends DialogFragment {
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-
         }
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
-
         }
     };
 
@@ -101,10 +91,6 @@ public class SlideshowDialogFragment extends DialogFragment {
 
     private void displayMetaInfo(int position) {
         lbl_count.setText((position + 1) + " of " + imageModels.size());
-
-//        Image image = images.get(position);
-//        lblTitle.setText(image.getName());
-//        lblDate.setText(image.getTimestamp());
     }
 
     @Override
@@ -113,9 +99,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
     }
 
-    //  adapter
     public class MyViewPagerAdapter extends PagerAdapter {
-
 
         public MyViewPagerAdapter() {
         }
@@ -124,13 +108,8 @@ public class SlideshowDialogFragment extends DialogFragment {
         public Object instantiateItem(ViewGroup container, int position) {
 
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.gallery_fullscreen_image, container, false);
-
             TouchImageView imageViewPreview = (TouchImageView) view.findViewById(R.id.image_preview);
-
-            // ImageModel imageModel = images.get(position);
-            //String image = imageModel.getImgSrc();
             String image = imageModels.get(position);
-            System.out.println("image "+image);
             Glide.with(getActivity()).load(image)
                     .thumbnail(0.5f)
                     .crossFade()
@@ -138,7 +117,6 @@ public class SlideshowDialogFragment extends DialogFragment {
                     .into(imageViewPreview);
 
             container.addView(view);
-
             return view;
         }
 
@@ -151,7 +129,6 @@ public class SlideshowDialogFragment extends DialogFragment {
         public boolean isViewFromObject(View view, Object obj) {
             return view == ((View) obj);
         }
-
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {

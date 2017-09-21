@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -162,6 +163,13 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
         String title = getIntent().getStringExtra("mSubTitle");
         tv_cat_name.setText(title);
+        FrameLayout.LayoutParams layoutParams =
+                (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
+        if(title.equalsIgnoreCase("JEWELLERS"))
+            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_small), 0, 0);
+        else
+            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxsmall), 0, 0);
+        ll_scroll.setLayoutParams(layoutParams);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
         Utility.setListLayoutManager(rv_storelist, StoreListingActivity.this);

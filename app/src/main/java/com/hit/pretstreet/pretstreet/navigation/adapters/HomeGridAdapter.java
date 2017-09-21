@@ -93,9 +93,9 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
         Bitmap mask1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_cat);
         Bitmap mask2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.tile_cat1);
         if(position%2==0) {
-            ((HomeFragment)fragment).loadImage(contentData.getImageSource(), holder.img_cat_image, mask1);
+            ((HomeFragment)fragment).loadImage(contentData.getImageSource(), holder.img_cat_image, mask1, R.drawable.tile_cat);
         }else{
-            ((HomeFragment)fragment).loadImage(contentData.getImageSource(), holder.img_cat_image, mask2);
+            ((HomeFragment)fragment).loadImage(contentData.getImageSource(), holder.img_cat_image, mask2, R.drawable.tile_cat1);
         }
 
         if(type == MOODS_TYPE) {

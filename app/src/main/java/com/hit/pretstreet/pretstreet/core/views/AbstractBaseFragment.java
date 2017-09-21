@@ -104,7 +104,7 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         }
     }
 
-    public void loadImage(String url, final ImageView imageView, final Bitmap mask){
+    public void loadImage(String url, final ImageView imageView, final Bitmap mask, int placeholder){
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -113,7 +113,7 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
 
         Glide.with(getActivity())
                 .load(url).asBitmap()
-                .placeholder(R.drawable.mask_home)
+                .placeholder(placeholder)
                 //.centerCrop()
                 .into(new BitmapImageViewTarget(imageView) {
                     @Override
