@@ -92,7 +92,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
         else
             holder.ll_progress.setVisibility(View.GONE);
 
-        //System.out.println("position "+position);
+        System.out.println("position "+position);
         holder.txt_storename.setText(storeListModel.getTitle());
         holder.txt_address.setText(storeListModel.getLocation());
 

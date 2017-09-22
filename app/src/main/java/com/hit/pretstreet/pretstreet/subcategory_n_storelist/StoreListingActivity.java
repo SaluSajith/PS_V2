@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.CursorJoiner;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Looper;
 import android.os.Parcelable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -80,7 +83,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         ApiListenerInterface, ButtonClickCallbackStoreList, View.OnClickListener {
 
     @BindView(R.id.content) FrameLayout fl_content;
-    @BindView(R.id.nsv_header)NestedScrollView nsv_header;
+    @BindView(R.id.nsv_header)AppBarLayout nsv_header;
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
     @BindView(R.id.tv_location) TextViewPret tv_location;
     @BindView(R.id.ll_scroll) LinearLayout ll_scroll;
@@ -135,6 +138,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         storeList_recyclerAdapter.setHasStableIds(true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+            toolbar.setElevation(0);
         ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +164,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         });
         ll_scroll.setVisibility(View.VISIBLE);
         ll_empty.setVisibility(View.INVISIBLE);
-        ll_header.bringToFront();
+        nsv_header.bringToFront();
 
         String title = getIntent().getStringExtra("mSubTitle");
         tv_cat_name.setText(title);
@@ -172,7 +177,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         ll_scroll.setLayoutParams(layoutParams);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
-        Utility.setListLayoutManager(rv_storelist, StoreListingActivity.this);
+        Utility.setListLayoutManager_(rv_storelist, StoreListingActivity.this);
         rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
         /*Get shoplist details of selected category*/
@@ -181,7 +186,23 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private void refreshListviewOnScrolling(){
-        nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv_storelist.getLayoutManager();
+        rv_storelist.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+               /* totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    if (onLoadMoreListener != null) {
+                        onLoadMoreListener.onLoadMore();
+                    }
+                    isLoading = true;
+                }*/
+            }
+        });
+        /*nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
 
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -202,7 +223,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                     }
                 }
             }
-        });
+        });*/
     }
 
     private void getShoplist(String mCatid, boolean first){
@@ -473,12 +494,14 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             default: break;
         }
     }
+
     @Override
     public void updateFollowStatus(String id) {
         JSONObject resultJson = subCategoryController.updateFollowCount(id, Constant.STORELISTINGPAGE,  Constant.FOLLOWLINK);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, UPDATEFOLLOWSTATUS_URL);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {

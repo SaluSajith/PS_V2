@@ -19,9 +19,9 @@ public class Constant {
     public static final String GOOGLE_API_KEY = "AIzaSyCAq0CP83saVHVc93LDs_m3xUdpFna0c2c";
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
-    //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";13.126.57.85
-    //public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";
-    public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
+    //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
+    public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";
+    //public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
     public static final String LOGIN_OTP_URL = COMMON_URL + "customer/customerlogingenerateOtp";
