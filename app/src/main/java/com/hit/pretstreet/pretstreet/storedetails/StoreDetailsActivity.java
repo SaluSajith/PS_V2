@@ -107,6 +107,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     @BindView(R.id.tv_folowerscount) TextViewPret tv_folowerscount;
     @BindView(R.id.tv_openinghrs) TextViewPret tv_openinghrs;
     @BindView(R.id.tv_reportError) TextViewPret tv_reportError;
+    @BindView(R.id.tv_heading_photos) TextViewPret tv_heading_photos;
 
     @BindView(R.id.rv_images) RecyclerView rv_images;
     @BindView(R.id.viewPager) ViewPager viewPager;
@@ -217,6 +218,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             iv_sale.setVisibility(storeDetailsModel.getFlags().contains("0") == true ? View.VISIBLE : View.INVISIBLE);
             iv_offer.setVisibility(storeDetailsModel.getFlags().contains("1") == true ? View.VISIBLE : View.INVISIBLE);
             iv_new.setVisibility(storeDetailsModel.getFlags().contains("2") == true ? View.VISIBLE : View.INVISIBLE);
+            tv_heading_photos.setVisibility(storeDetailsModel.getArrayListImages().size() > 0 ? View.VISIBLE : View.GONE);
 
             ArrayList arrayListTimings = storeDetailsModel.getArrayListTimings();
             StringBuilder strTiming = new StringBuilder();
@@ -234,7 +236,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             setupGallery(storeDetailsModel.getArrayListImages());
             shareUrl = storeDetailsModel.getShare();
 
-            tv_about_heading.setVisibility(storeDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_about.setVisibility(storeDetailsModel.getDescription().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_about_heading.setVisibility(storeDetailsModel.getDescription().length() > 0 ? View.VISIBLE : View.GONE);
             tv_imgsrc.setVisibility(storeDetailsModel.getImageSource().length() > 0 ? View.VISIBLE : View.GONE);
             tv_product.setVisibility(storeDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
             tv_time.setVisibility(storeDetailsModel.getTimingToday().length() > 0 ? View.VISIBLE : View.GONE);
@@ -428,7 +431,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(getApplicationContext()).load(imageUrl).asBitmap().placeholder(R.drawable.default_banner).fitCenter().into(imageView);
+        Glide.with(this).load(imageUrl).asBitmap().placeholder(R.drawable.default_banner).fitCenter().into(imageView);
     }
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {

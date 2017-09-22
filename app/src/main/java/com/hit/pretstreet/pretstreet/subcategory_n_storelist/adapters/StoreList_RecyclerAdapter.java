@@ -112,8 +112,9 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
         Glide.with(context)
                 .load(storeListModel.getImageSource())
                 //.asBitmap()
+                //.error(R.drawable.default_banner)
                 .centerCrop()
-                .into( holder.img_store_photo);
+                .into(holder.img_store_photo);
 
         holder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == true ?"Unfollow" : "Follow");
         holder.tv_closeStatus.setText(storeListModel.getOpenStatus() == false ? "Closed" : "Open");

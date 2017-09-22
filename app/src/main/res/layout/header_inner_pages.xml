@@ -38,7 +38,7 @@
                 style="@style/textview_heading_yellow"
                 android:layout_marginBottom="20dp"
                 android:text="category name"
-                app:pret_typeface="@string/font_merriweather_bold"
+                app:pret_typeface="@string/font_redvelvet_regular"
                 android:layout_alignBottom="@+id/iv_header"
                 android:layout_alignLeft="@+id/linearLayout"
                 android:layout_alignStart="@+id/linearLayout" />

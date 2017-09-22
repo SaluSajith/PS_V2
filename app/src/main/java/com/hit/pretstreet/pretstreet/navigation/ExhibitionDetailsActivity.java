@@ -191,9 +191,10 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         try {
             tv_about_heading.setVisibility(exhibitionDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
             tv_imgsrc.setVisibility(exhibitionDetailsModel.getImageSource().length() > 0 ? View.VISIBLE : View.GONE);
-            //tv_product.setVisibility(exhibitionDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_product.setVisibility(exhibitionDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
             tv_time.setVisibility(exhibitionDetailsModel.getTimingToday().length() > 0 ? View.VISIBLE : View.GONE);
             tv_heading_hrs.setVisibility(exhibitionDetailsModel.getArrayListTimings().size() > 0 ? View.VISIBLE : View.GONE);
+            tv_photos_heading.setVisibility(exhibitionDetailsModel.getArrayListImages().size() > 0 ? View.VISIBLE : View.GONE);
 
             setupCollapsingHeader(exhibitionDetailsModel.getStoreName(), exhibitionDetailsModel.getBaseImage());
             tv_book_app.setClickable(exhibitionDetailsModel.getRegisterStatus() == false ? true : false);

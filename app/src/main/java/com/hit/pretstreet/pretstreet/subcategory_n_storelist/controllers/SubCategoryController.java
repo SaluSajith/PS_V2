@@ -2,12 +2,6 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers;
 
 import android.content.Context;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
@@ -119,7 +113,7 @@ public class SubCategoryController {
     }
 
 
-    /*public static ArrayList <StoreListModel> getList(JSONObject response){
+    public static ArrayList <StoreListModel> getList(JSONObject response){
         final ArrayList<StoreListModel> storeListModels = new ArrayList<>();
         try {
             JSONArray jsonArray = response.getJSONArray("Data");
@@ -157,8 +151,8 @@ public class SubCategoryController {
             e1.printStackTrace();
         }
         return  storeListModels;
-    }*/
-
+    }
+/*
     public static ArrayList <StoreListModel> getList(JSONObject response){
         final ArrayList<StoreListModel> storeListModels = new ArrayList<>();
         try {
@@ -203,7 +197,7 @@ public class SubCategoryController {
             e.printStackTrace();
         }
         return  storeListModels;
-    }
+    }*/
 
     public static ArrayList <FilterDataModel> getFilterList(JSONObject response){
         ArrayList<FilterDataModel> filterDataModels = new ArrayList<>();
