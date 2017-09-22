@@ -142,11 +142,11 @@ public class LoginController {
         return jsonBody;
     }
 
-    public static JSONObject getHomePageJson(String pageid) {
+    public static JSONObject getHomePageJson() {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("PreviousPageTypeId", pageid);
+            jsonBody.put("PreviousPageTypeId", "");
             jsonBody.put("ClickTypeId", "");
 
             jsonBody = Constant.addConstants(jsonBody, context);

@@ -92,7 +92,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
         else
             holder.ll_progress.setVisibility(View.GONE);
 
-
+        //System.out.println("position "+position);
         holder.txt_storename.setText(storeListModel.getTitle());
         holder.txt_address.setText(storeListModel.getLocation());
 
@@ -205,13 +205,13 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
     }
 
     public static void updateFollowStatus(int status, String storeid) {
-        textViewPret.setText(status == 0 ? "Unfollow" : "Follow");
+        textViewPret.setText(status == 0 ? "Follow" : "Unfollow");
         if(mItems.get(mPosition).getId().equals(storeid))
             mItems.get(mPosition).setFollowingStatus(status == 1 ? false : true);
     }
 
     public void loadMoreView(boolean visibility){
         if(mItems.size()>1)
-        mItems.get(mItems.size()-1).setLoadmoreFlag(visibility);
+            mItems.get(mItems.size()-1).setLoadmoreFlag(visibility);
     }
 }

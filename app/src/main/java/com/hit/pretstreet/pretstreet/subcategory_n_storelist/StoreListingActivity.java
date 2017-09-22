@@ -269,6 +269,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxhuge), 0, 0);
             txtname[0].requestLayout();
             txtname[0].setLayoutParams(layoutParams);
+
             txtname[0].setTag(getIntent().getStringExtra("mCatId"));
             txtname[0].performClick();
         }

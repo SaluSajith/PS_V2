@@ -145,7 +145,9 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
 
     public void getAutoSearch(String mStr, String mCatId, String mCattype){
         JSONObject resultJson = searchController.getAutoSearchListJson(mStr,
-                getIntent().getStringExtra(Constant.PRE_PAGE_KEY), mCatId, mCattype);
+                getIntent().getStringExtra(PRE_PAGE_KEY),
+                mCatId,
+                mCattype);
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, AUTOSEARCH_URL);
     }
 
@@ -153,7 +155,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         if(first)
         this.showProgressDialog(getResources().getString(R.string.loading));
         JSONObject resultJson = searchController.getSearchResultJson(mStrSearch,
-                getIntent().getStringExtra(Constant.PRE_PAGE_KEY), mCatID, pageCount, mCaType, arrayFilter);
+                getIntent().getStringExtra(PRE_PAGE_KEY), mCatID, pageCount, mCaType, arrayFilter);
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, SEARCH_URL);
     }
     public void openSearchResult(String mStr, String mCatId, String mCattype){

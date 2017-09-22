@@ -115,23 +115,15 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHo
                     break;
             }
         }
-
         String udata = trendingItems.getStoreName()+"";
         SpannableString content = new SpannableString(udata);
         content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
         holder.txt_shopname.setText(content.toString());
 
-        Glide.with(context).load(trendingItems.getLogoImage()).asBitmap()
+        Glide.with(context).load(trendingItems.getLogoImage())
                 .placeholder(R.drawable.logo1)
-                .fitCenter().into(new BitmapImageViewTarget(holder.iv_profile) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable =
-                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                circularBitmapDrawable.setCircular(true);
-                holder.iv_profile.setImageDrawable(circularBitmapDrawable);
-            }
-        });
+                .fitCenter()
+                .fitCenter().into(holder.iv_profile);
 
         holder.iv_like.setImageResource(trendingItems.getLike() == true ?
                 R.drawable.red_heart : R.drawable.grey_heart);

@@ -91,6 +91,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
@@ -171,7 +172,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 storeListModel.setId(id);
                 intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(PARCEL_KEY, storeListModel);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra(CLICKTYPE_KEY, DEEPLINKINGKEY);
                 startActivity(intent);
                 break;
@@ -182,7 +183,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 trendingItems.setClicktype("");
                 intent = new Intent(HomeActivity.this, TrendingArticleActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(Constant.PRE_PAGE_KEY, HOMEPAGE);
                 startActivity(intent);
                 break;
             case "exhibition":
@@ -197,7 +198,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 break;
             case "multistore":
                 intent = new Intent(HomeActivity.this, MultistoreActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra(ID_KEY, id);
                 startActivity(intent);
                 break;
@@ -214,7 +215,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         if (SavedMAinCaTList.length() > 1)
             changeFragment(new HomeFragment(), false);
         else*/
-        JSONObject resultJson = LoginController.getHomePageJson(Constant.HOMEPAGE);
+        JSONObject resultJson = LoginController.getHomePageJson();
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.HOMEPAGE_URL);
     }
@@ -270,7 +271,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra(ID_KEY, "0");
                 startActivity(intent);
             }
@@ -369,41 +370,41 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             case "nav_account":
                 selectedFragment = ACCOUNT_FRAGMENT;
                 Intent intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_addstore":
                 selectedFragment = ADDSTORE_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_about":
                 selectedFragment = ABOUT_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_contact":
                 selectedFragment = CONTACTUS_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case NOTIFICATION_FRAGMENT+"":
                 selectedFragment = NOTIFICATION_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case "nav_following":
                 intent = new Intent(HomeActivity.this, FollowingActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("mSubTitle", "Following");
                 startActivity(intent);
                 break;
@@ -532,7 +533,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             case SUBCATPAGE:
                 //displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
                 Intent intent = new Intent(this, SubCatActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("mSubCatId", catContentData.getCategoryId());
                 intent.putExtra("mTitle", title);
                 startActivity(intent);
@@ -541,7 +542,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 ArrayList<HomeCatItems> homeCatItemses = new ArrayList<>();
                 intent = new Intent(getApplicationContext(), StoreListingActivity.class);
                 intent.putExtra("contentData",  homeCatItemses);//TODO
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("mCatId", catContentData.getCategoryId());
                 intent.putExtra("mSubTitle", title);
                 startActivity(intent);
@@ -549,20 +550,20 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             case TRENDINGPAGE:
                 selectedFragment = TRENDING_FRAGMENT;
                 intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case EXHIBITIONPAGE:
                 selectedFragment = EXHIBITION_FRAGMENT;
                 intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case MULTISTOREPAGE:
                 intent = new Intent(HomeActivity.this, MultistoreActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 startActivity(intent);
                 break;
             case STOREDETAILSPAGE:
@@ -570,7 +571,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 storeListModel.setId(catContentData.getMainCatId());
                 intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(PARCEL_KEY, storeListModel );
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 startActivity(intent);
                 break;
             default: break;
@@ -581,7 +582,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     public void buttonClick(int id) {
         Intent intent = new Intent(getApplicationContext(), StoreListingActivity.class);
         intent.putExtra("contentData", "");
-        intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+        intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
         intent.putExtra("mCatId", id);
         intent.putExtra("mSubTitle", "");
         startActivity(intent);

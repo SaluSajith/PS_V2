@@ -69,7 +69,7 @@ public class SearchController {
             jsonBody.put("CategoryId", catId);
             jsonBody.put("Searchfor", cattype);
             jsonBody.put("PreviousPageTypeId", prePage);
-            jsonBody.put("ClickTypeId", "");
+            jsonBody.put("ClickTypeId", Constant.AUTOSEARCHLINK);
             jsonBody.put("Searchword", searchWord);
 
             jsonBody = Constant.addConstants(jsonBody, context);
@@ -87,7 +87,7 @@ public class SearchController {
         try {
             jsonBody.put("Id", Id);
             jsonBody.put("PreviousPageTypeId", prePage);
-            jsonBody.put("ClickTypeId", "");
+            jsonBody.put("ClickTypeId", Constant.AUTOSEARCHLINK);
 
             jsonBody = Constant.addConstants(jsonBody, context);
 
