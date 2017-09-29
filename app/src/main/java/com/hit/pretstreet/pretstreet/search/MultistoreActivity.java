@@ -1,12 +1,9 @@
 package com.hit.pretstreet.pretstreet.search;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +12,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -25,17 +21,11 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.search.controllers.SearchController;
-import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
-import com.hit.pretstreet.pretstreet.storedetails.controllers.StoreDetailsController;
 import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
-import com.hit.pretstreet.pretstreet.storedetails.model.StoreDetailsModel;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
@@ -52,7 +42,6 @@ import butterknife.ButterKnife;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTILINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTORE_URL;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
 public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
@@ -98,7 +87,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         ButterKnife.bind(this);
         PreferenceServices.init(this);
 
-        Utility.setListLayoutManager(rv_storelist, MultistoreActivity.this);
+        Utility.setListLayoutManager_(rv_storelist, MultistoreActivity.this);
         rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
         getShoplist();
     }
@@ -112,8 +101,9 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void setAdapter(ArrayList<StoreListModel> storeListModels){
-        StoreList_RecyclerAdapter storeList_recyclerAdapter = new StoreList_RecyclerAdapter(MultistoreActivity.this, storeListModels);
+        StoreList_RecyclerAdapter storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, MultistoreActivity.this, storeListModels);
         rv_storelist.setAdapter(storeList_recyclerAdapter);
+        storeList_recyclerAdapter.setLoaded();
     }
 
     private void setupCollapsingHeader(String title, String imageUrl){
@@ -185,7 +175,12 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void onResponse(JSONObject response) {
-        this.hideDialog();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideDialog();
+            }
+        }, 1000);
         handleResponse(response);
     }
 

@@ -62,7 +62,7 @@
 
             <include layout="@layout/content_store_details"></include>
 
-            </LinearLayout>
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -77,9 +77,22 @@ public class HomeFragmentController {
         } catch (JSONException e) {
         } catch (Exception e) {
         }
+        return jsonBody;
+    }
+
+    public static JSONObject getOTPVerificationJson(String phone) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("UserMobile", phone);
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {}
 
         return jsonBody;
     }
+
     public static JSONObject getExhibitionRegisterJson(String clicktype, String id, String prepage, String phone) {
 
         JSONObject jsonBody = new JSONObject();
@@ -90,6 +103,19 @@ public class HomeFragmentController {
             jsonBody.put("ClickTypeId", clicktype);
 
             jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {
+        }
+
+        return jsonBody;
+    }
+
+    public static JSONObject getRegisterJson_UpdatePhone(JSONObject jsonObject, String phone) {
+
+        JSONObject jsonBody = jsonObject;
+        try {
+            jsonBody.put("Phonenumber", phone);
 
         } catch (JSONException e) {
         } catch (Exception e) {
@@ -133,9 +159,12 @@ public class HomeFragmentController {
                 item.setTitle(trendingContent.getString("Title"));
                 item.setArticle(trendingContent.getString("ArticleShortDescription"));
 
+                JSONObject jsonObject = trendingContent.getJSONObject("TitleContent");
+                item.setTitleid(jsonObject.getString("RedirectionId"));
+                item.setTitlepagetype(jsonObject.getString("PageTypeId"));
+
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 0 ? false : true);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 0 ? false : true);
-                item.setLoadmoreFlag(i != jsonArray.length()-1 ? false : true);
                 item.setStoreName(trendingContent.getString("Storename"));
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
                 ArrayList imagearray = new ArrayList();
@@ -143,7 +172,7 @@ public class HomeFragmentController {
                     imagearray.add(jsonImagearray.get(j));
                 }
                 item.setImagearray(imagearray);
-                if(!trendingContent.getString("ArticleDate").equalsIgnoreCase("")) {
+                /*if(!trendingContent.getString("ArticleDate").equalsIgnoreCase("")) {
                     try {
                         DateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
                         DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
@@ -155,8 +184,8 @@ public class HomeFragmentController {
                         e.printStackTrace();
                     }
                 }
-                else
-                    item.setArticledate("");
+                else*/
+                item.setArticledate(trendingContent.getString("ArticleDate"));
                 if(trendingContent.has("Share"))
                     item.setShareUrl(trendingContent.getString("Share"));
                 trendingItems.add(item);
@@ -189,7 +218,6 @@ public class HomeFragmentController {
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 1 ? true : false);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? true : false);
                 item.setRegister(trendingContent.getInt("CustomerRegisterStatus") == 1 ? true : false);
-                item.setLoadmoreFlag(i != jsonArray.length()-1 ? false : true);
 
                 String jsonImage = trendingContent.getString("ImageSource");
 

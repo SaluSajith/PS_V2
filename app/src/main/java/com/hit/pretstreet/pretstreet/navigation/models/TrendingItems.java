@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class TrendingItems implements Serializable {
 
     String id="", storeLink="", logoImage="", title="", article="", articledate="", pagetype="", pagetypeid="", storeid="", clicktype="";
-    String storeName="", shareUrl="", area="";
-    boolean like=false, banner=false, register=false, loadmoreFlag=false;
+    String storeName="", shareUrl="", area="", titlepagetype="", titleid="";
+    boolean like=false, banner=false, register=false, NotifPage = false;
     String latitude="", longitude="";
     ArrayList<String> imagearray = new ArrayList<>();
 
@@ -142,14 +142,6 @@ public class TrendingItems implements Serializable {
         return clicktype;
     }
 
-    public void setLoadmoreFlag(boolean loadmoreFlag) {
-        this.loadmoreFlag = loadmoreFlag;
-    }
-
-    public Boolean getLoadmoreFlag() {
-        return loadmoreFlag;
-    }
-
     public void setRegister(boolean register) {
         this.register = register;
     }
@@ -171,5 +163,28 @@ public class TrendingItems implements Serializable {
 
     public String getArea() {
         return area;
+    }
+
+    public void setTitleid(String titleid) {
+        this.titleid = titleid;
+    }
+
+    public String getTitleid() {
+        return titleid;
+    }
+
+    public void setTitlepagetype(String titlepagetype) {
+        this.titlepagetype = titlepagetype;
+    }
+
+    public String getTitlepagetype() {
+        return titlepagetype;
+    }
+
+    public void setNotifPage(boolean notifPage) {
+        NotifPage = notifPage;
+    }
+    public boolean isNotifPage() {
+        return NotifPage;
     }
 }

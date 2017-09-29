@@ -99,6 +99,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     @BindView(R.id.tv_book_app) TextViewPret tv_book_app;
     @BindView(R.id.tv_heading_photos) TextViewPret tv_photos_heading;
     @BindView(R.id.tv_testimonials_heading) TextViewPret tv_testimonials_heading;
+    @BindView(R.id.tv_folowerscount) TextViewPret tv_folowerscount;
 
     @BindView(R.id.rv_images) RecyclerView rv_images;
     @BindView(R.id.viewPager) ViewPager viewPager;
@@ -161,6 +162,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         viewPager.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
         tv_testimonials_heading.setVisibility(View.GONE);
+        tv_folowerscount.setVisibility(View.GONE);
         tv_about.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
     }
 

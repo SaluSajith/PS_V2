@@ -11,7 +11,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,13 +29,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -44,10 +40,10 @@ import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
-import com.hit.pretstreet.pretstreet.core.customview.CircularImageView;
 import com.hit.pretstreet.pretstreet.core.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.core.customview.NotificationBadge;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
@@ -57,7 +53,6 @@ import com.hit.pretstreet.pretstreet.navigation.adapters.NavDrawerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
-import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
@@ -69,9 +64,9 @@ import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
+import com.hit.pretstreet.pretstreet.storedetails.adapters.GalleryAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
@@ -79,23 +74,20 @@ import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListMod
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHARE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
@@ -125,13 +117,27 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     LoginController loginController;
 
     boolean homeopened = false;
-    private String DEEPLINKINGKEY = "33";
 
     @Override
     protected void onResume() {
         super.onResume();
         if (!homeopened) {
             getHomePage();
+        }
+
+        View includedlayout = findViewById(R.id.includedlayout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NotificationBadge badge_home = (NotificationBadge)includedlayout.findViewById(R.id.badge);
+        NotificationBadge mBadge = (NotificationBadge) navigationView.findViewById(R.id.badge);
+        try {
+            int size = PreferenceServices.getInstance().getNotifCOunt();
+            Log.d("FCM h", ""+PreferenceServices.getInstance().getNotifCOunt());
+           if(size>0) {
+                badge_home.setNumber(size);
+                mBadge.setNumber(size);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -173,7 +179,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(PARCEL_KEY, storeListModel);
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
-                intent.putExtra(CLICKTYPE_KEY, DEEPLINKINGKEY);
+                intent.putExtra(CLICKTYPE_KEY, SHARE);
                 startActivity(intent);
                 break;
             case "trending":
@@ -229,9 +235,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        NotificationBadge mBadge = (NotificationBadge) navigationView.findViewById(R.id.badge);
-        mBadge.setNumber(10);
-        mBadge.bringToFront();
 
         NavDrawerItem[] navArray = new NavDrawerItem[]{
                 new NavDrawerItem("nav_home", "Home"),
@@ -276,10 +279,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 startActivity(intent);
             }
         });
-
-        NotificationBadge badge_home = (NotificationBadge)toolbar.findViewById(R.id.badge);
-        badge_home.setNumber(10);
-        badge_home.bringToFront();
 
         TextViewPret tv_profile = (TextViewPret) navigationView.findViewById(R.id.tv_profile);
         final ImageView iv_profile = (ImageView) navigationView.findViewById(R.id.iv_profile);

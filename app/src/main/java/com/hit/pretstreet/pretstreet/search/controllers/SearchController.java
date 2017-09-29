@@ -140,24 +140,9 @@ public class SearchController {
                 storeListModel.setLocation(jsonArray.getJSONObject(i).getString("Location"));
                 storeListModel.setImageSource(jsonArray.getJSONObject(i).getString("ImageSource"));
                 String flag = jsonArray.getJSONObject(i).getString("Flags");
-                if(flag.contains("0")){
-                    storeListModel.setSaleflag(true);
-                }
-                else{
-                    storeListModel.setSaleflag(false);
-                }
-                if(flag.contains("1")){
-                    storeListModel.setOfferflag(true);
-                }
-                else{
-                    storeListModel.setOfferflag(false);
-                }
-                if(flag.contains("2")){
-                    storeListModel.setNewflag(true);
-                }
-                else{
-                    storeListModel.setNewflag(false);
-                }
+                storeListModel.setSaleflag(flag.contains("0")==true ? true : false);
+                storeListModel.setOfferflag(flag.contains("1")==true ? true : false);
+                storeListModel.setNewflag(flag.contains("2")==true ? true : false);
                 storeListModel.setBannerFlag(jsonArray.getJSONObject(i).getInt("BannerFlag") == 0 ? false : true);
 
                 storeListModels.add(storeListModel);
@@ -277,20 +262,10 @@ public class SearchController {
                 storeListModel.setLocation(jsonArray.getJSONObject(i).getString("Location"));
                 storeListModel.setImageSource(jsonArray.getJSONObject(i).getString("ImageSource"));
                 String flag = jsonArray.getJSONObject(i).getString("Flags");
-                if(flag.contains("0"))
-                    storeListModel.setSaleflag(true);
-                else
-                    storeListModel.setSaleflag(false);
-                if(flag.contains("1"))
-                    storeListModel.setOfferflag(true);
-                else
-                    storeListModel.setOfferflag(false);
-                if(flag.contains("2"))
-                    storeListModel.setNewflag(true);
-                else
-                    storeListModel.setNewflag(false);
+                storeListModel.setSaleflag(flag.contains("0")==true ? true : false);
+                storeListModel.setOfferflag(flag.contains("1")==true ? true : false);
+                storeListModel.setNewflag(flag.contains("2")==true ? true : false);
                 storeListModel.setBannerFlag(jsonArray.getJSONObject(i).getInt("BannerFlag") == 0 ? false : true);
-                storeListModel.setLoadmoreFlag(i != jsonArray.length()-1 ? false : true);
 
                 storeListModels.add(storeListModel);
             }

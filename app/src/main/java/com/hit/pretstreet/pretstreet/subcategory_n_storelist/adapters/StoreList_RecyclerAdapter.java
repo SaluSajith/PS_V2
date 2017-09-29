@@ -1,26 +1,28 @@
 package com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.utils.Constant;
-import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
 import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import java.util.ArrayList;
@@ -32,39 +34,84 @@ import butterknife.ButterKnife;
  * Created by User on 7/27/2017.
  */
 
-public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_RecyclerAdapter.ShopsHolder >
-{
+public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder > {
+
+    static int mPosition;
     private Context context;
     private static ArrayList<StoreListModel> mItems;
     private static TextViewPret textViewPret;
-    static int mPosition;
+    private ButtonClickCallbackStoreList buttonClickCallback;
 
-    ButtonClickCallbackStoreList buttonClickCallback;
+    private OnLoadMoreListener mOnLoadMoreListener;
 
-    public StoreList_RecyclerAdapter(Context context,
+    private final int VIEW_TYPE_LOADING = 3;
+    private final int VIEW_TYPE_ITEM_0 = 0;
+    private final int VIEW_TYPE_ITEM_1 = 1;
+    private final int VIEW_TYPE_ITEM_2 = 2;
+    private boolean isLoading;
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
+    private final RequestManager glide;
+
+    public StoreList_RecyclerAdapter(final RequestManager glide, RecyclerView mRecyclerView, Context context,
                                      ArrayList<StoreListModel> storeListModels) {
         this.context = context;
         this.mItems = storeListModels;
+        this.glide = glide;
         buttonClickCallback = (ButtonClickCallbackStoreList) context;
+
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                try {
+                    if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                        if (mOnLoadMoreListener != null) {
+                            mOnLoadMoreListener.onLoadMore();
+                        }
+                        isLoading = true;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    glide.resumeRequests();
+                }
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    glide.pauseRequests();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+    }
+    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
+        this.mOnLoadMoreListener = mOnLoadMoreListener;
     }
 
     @Override
-    public ShopsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View mRootView;
-        int listViewItemType = getItemViewType(viewType);
-        if (listViewItemType % 2 == 0) {
-            if (context.getClass().getSimpleName().equals(StoreListingActivity.class.getSimpleName())||
-                    context.getClass().getSimpleName().equals(FollowingActivity.class.getSimpleName())) {
-                if (listViewItemType == 0)
-                    mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store, parent, false);
-                else
-                    mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store1, parent, false);
-            } else
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View mRootView = null;
+        switch (viewType) {
+            case VIEW_TYPE_ITEM_0:
+                mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store, parent, false);
+                return new ShopsHolder(mRootView);
+            case VIEW_TYPE_ITEM_1:
                 mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store1, parent, false);
-        } else {
-            mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store2, parent, false);
+                return new ShopsHolder(mRootView);
+            case VIEW_TYPE_ITEM_2:
+                mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store2, parent, false);
+                return new ShopsHolder(mRootView);
+            default:
+                mRootView = LayoutInflater.from(context).inflate(R.layout.row_list_store1, parent, false);
+                return new ShopsHolder(mRootView);
         }
-        return new ShopsHolder(mRootView);
     }
 
     @Override
@@ -74,62 +121,74 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
 
     @Override
     public int getItemViewType(int position) {
-        //return mItems.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
-        return position;
+        int viewType = 0;
+        if (position % 2 == 0) {
+            if (context.getClass().getSimpleName().equals(StoreListingActivity.class.getSimpleName()) ||
+                    context.getClass().getSimpleName().equals(FollowingActivity.class.getSimpleName())) {
+                if (position == 0)
+                    viewType = VIEW_TYPE_ITEM_0;
+                else
+                    viewType = VIEW_TYPE_ITEM_1;
+            } else
+                viewType = VIEW_TYPE_ITEM_1;
+        } else
+            viewType = VIEW_TYPE_ITEM_2;
+        //return position == mItems.size() ? VIEW_TYPE_LOADING : viewType;
+        return viewType;
     }
 
     @Override
-    public void onBindViewHolder(final ShopsHolder holder, final int position) {
-        if(holder.matrix==null) {
-            holder.matrix = holder.img_store_photo.getImageMatrix();
-            holder.matrix.postScale(2,2);
-        }
-        else;
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+
+        ShopsHolder shopsHolder = (ShopsHolder) holder;
+        if (shopsHolder.matrix == null) {
+            shopsHolder.matrix = shopsHolder.img_store_photo.getImageMatrix();
+            shopsHolder.matrix.postScale(2, 2);
+        } else ;
         StoreListModel storeListModel = mItems.get(position);
-
-        if(storeListModel.getLoadmoreFlag())
-            holder.ll_progress.setVisibility(View.VISIBLE);
-        else
-            holder.ll_progress.setVisibility(View.GONE);
-
-        System.out.println("position "+position);
-        holder.txt_storename.setText(storeListModel.getTitle());
-        holder.txt_address.setText(storeListModel.getLocation());
+        shopsHolder.txt_storename.setText(storeListModel.getTitle());
+        shopsHolder.txt_address.setText(storeListModel.getLocation());
 
         String strFollowCount = storeListModel.getFollowingCount();
         if (strFollowCount.length() >= 4) {
             String convertedCountK = strFollowCount.substring(0, strFollowCount.length() - 3);
             if (convertedCountK.length() >= 4) {
                 String convertedCount = convertedCountK.substring(0, convertedCountK.length() - 3);
-                holder.txt_folleowercount.setText(Html.fromHtml(convertedCount + "<sup>M</sup>"));
-            } else {
-                holder.txt_folleowercount.setText(Html.fromHtml(convertedCountK + "<sup>K</sup>"));
-            }
-        } else {
-            holder.txt_folleowercount.setText(Html.fromHtml(strFollowCount));
-        }
+                shopsHolder.txt_folleowercount.setText(Html.fromHtml(convertedCount + "<sup>M</sup>"));
+            } else shopsHolder.txt_folleowercount.setText(Html.fromHtml(convertedCountK + "<sup>K</sup>"));
+        } else shopsHolder.txt_folleowercount.setText(Html.fromHtml(strFollowCount));
 
-        Glide.with(context)
-                .load(storeListModel.getImageSource())
-                //.asBitmap()
-                //.error(R.drawable.default_banner)
-                .centerCrop()
-                .into(holder.img_store_photo);
+        loadImage(glide, storeListModel.getImageSource(), shopsHolder.img_store_photo);
 
-        holder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == true ?"Unfollow" : "Follow");
-        holder.tv_closeStatus.setText(storeListModel.getOpenStatus() == false ? "Closed" : "Open");
-        holder.img_sale.setVisibility(storeListModel.getSaleflag() == false ? View.GONE : View.VISIBLE);
-        holder.img_offer.setVisibility(storeListModel.getOfferflag() == false ? View.GONE : View.VISIBLE);
-        holder.img_newarrival.setVisibility(storeListModel.getNewflag() == false ? View.GONE : View.VISIBLE);
+        shopsHolder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == true ? "Unfollow" : "Follow");
+        shopsHolder.tv_closeStatus.setText(storeListModel.getOpenStatus() == false ? "Closed" : "Open");
+        shopsHolder.img_sale.setVisibility(storeListModel.getSaleflag() == false ? View.GONE : View.VISIBLE);
+        shopsHolder.img_offer.setVisibility(storeListModel.getOfferflag() == false ? View.GONE : View.VISIBLE);
+        shopsHolder.img_newarrival.setVisibility(storeListModel.getNewflag() == false ? View.GONE : View.VISIBLE);
 
-        holder.iv_banner.setVisibility(storeListModel.getBannerFlag() == false ? View.GONE : View.VISIBLE);
-        Glide.with(context)
-                .load(storeListModel.getImageSource())
-                .centerCrop()
-                .into(holder.iv_banner);
+        shopsHolder.iv_banner.setVisibility(storeListModel.getBannerFlag() == false ? View.GONE : View.VISIBLE);
+        loadImage(glide, storeListModel.getImageSource(), shopsHolder.iv_banner);
+        if(storeListModel.getBannerFlag()) {
+            shopsHolder.iv_banner.setVisibility(View.VISIBLE);
+            loadImage(glide, storeListModel.getImageSource(), shopsHolder.iv_banner);
+        } else shopsHolder.iv_banner.setVisibility(View.GONE);
+
     }
 
-    public class ShopsHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public static void updateFollowStatus(int status, String storeid) {
+        textViewPret.setText(status == 0 ? "Follow" : "Unfollow");
+        if (mItems.get(mPosition).getId().equals(storeid))
+            mItems.get(mPosition).setFollowingStatus(status == 1 ? false : true);
+        else ;
+    }
+
+    class ShopsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         @BindView(R.id.ll_progress) LinearLayout ll_progress;
         @BindView(R.id.img_follow_unfollow) TextViewPret img_follow_unfollow;
         @BindView(R.id.txt_storename) TextViewPret txt_storename;
@@ -145,10 +204,10 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
 
         Matrix matrix;
 
-        public ShopsHolder(View itemView) {
+        ShopsHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            textViewPret =  new TextViewPret(context);
+            textViewPret = new TextViewPret(context);
             img_follow_unfollow.setOnClickListener(this);
             img_store_photo.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
@@ -156,6 +215,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
             iv_banner.setOnClickListener(this);
             if (context.getClass().getSimpleName().equals(FollowingActivity.class.getSimpleName()))
                 img_follow_unfollow.setVisibility(View.GONE);
+            else ;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -170,7 +230,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
         public void onClick(View view) {
             int id = view.getId();
             StoreListModel storeListModel = mItems.get(getAdapterPosition());
-            switch (id){
+            switch (id) {
                 case R.id.img_follow_unfollow:
                     mPosition = getAdapterPosition();
                     textViewPret = (TextViewPret) view;
@@ -185,33 +245,35 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<StoreList_Re
                 case R.id.txt_storename:
                     buttonClickCallback.buttonClick(storeListModel);
                     break;
-                default: break;
+                default:
+                    break;
             }
         }
     }
 
-    @Override
-    public void onViewRecycled(ShopsHolder holder) {
+    class LoadingViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar progressBar;
+
+        public LoadingViewHolder(View itemView) {
+            super(itemView);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progress);
+        }
+    }
+
+    public void setLoaded() {
+        isLoading = false;
+    }
+
+    /*@Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        StoreList_RecyclerAdapter.ShopsHolder holder1 = (StoreList_RecyclerAdapter.ShopsHolder) holder;
         if(holder != null) {
-            Glide.clear(holder.iv_banner);
-            Glide.clear(holder.img_store_photo);
+            Glide.clear(holder1.iv_banner);
+            Glide.clear(holder1.img_store_photo);
         }
         super.onViewRecycled(holder);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public static void updateFollowStatus(int status, String storeid) {
-        textViewPret.setText(status == 0 ? "Follow" : "Unfollow");
-        if(mItems.get(mPosition).getId().equals(storeid))
-            mItems.get(mPosition).setFollowingStatus(status == 1 ? false : true);
-    }
-
-    public void loadMoreView(boolean visibility){
-        if(mItems.size()>1)
-            mItems.get(mItems.size()-1).setLoadmoreFlag(visibility);
+    }*/
+    static void loadImage(RequestManager glide, String url, ImageView view) {
+        glide.load(url).centerCrop().diskCacheStrategy(DiskCacheStrategy.RESULT).into(view);
     }
 }

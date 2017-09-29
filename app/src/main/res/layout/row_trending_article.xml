@@ -31,24 +31,24 @@
 
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:id="@+id/txt_shopname"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Z Studio"
                     android:layout_marginTop="@dimen/padding_small"
                     style="@style/textview_title"
                     android:gravity="left"
                     android:layout_gravity="left"
                     android:layout_marginLeft="5dp"
+                    android:maxLines="2"
                     app:pret_typeface="@string/font_merriweather_bold" />
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:id="@+id/txt_description"
                     android:layout_width="wrap_content"
                     android:text="Text"
-                    android:inputType="textMultiLine"
                     android:layout_height="wrap_content"
                     style="@style/textview_small"
+                    android:inputType="textMultiLine|textNoSuggestions"
                     android:gravity="left"
-                    android:layout_marginLeft="0dp"
+                    android:layout_marginLeft="5dp"
                     app:pret_typeface="@string/font_merriweather_light"/>
 
         </LinearLayout>

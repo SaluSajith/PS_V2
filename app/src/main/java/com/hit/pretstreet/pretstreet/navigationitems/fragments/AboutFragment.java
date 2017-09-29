@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
+import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
@@ -94,6 +95,8 @@ public class AboutFragment extends AbstractBaseFragment<WelcomeActivity> {
         PreferenceServices.instance().saveCurrentLocation("");
         PreferenceServices.instance().saveLatitute("");
         PreferenceServices.instance().saveLongitute("");
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getActivity());
+        sharedPreferencesHelper.logoutUser();
         getActivity().startActivity(new Intent(getActivity(), WelcomeActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }

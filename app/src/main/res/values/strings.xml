@@ -80,6 +80,7 @@
     <!--store details-->
     <string name="book">Book Appointment</string>
     <string name="book_btn">Book</string>
+    <string name="get_dir">Get \nDirections</string>
 
     <string-array name="cattype">
         <item name="Product"></item>

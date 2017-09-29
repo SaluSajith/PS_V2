@@ -22,14 +22,8 @@ import com.hit.pretstreet.pretstreet.R;
 
 public class HiveProgressView extends View {
 
-    /*private static final int[] rainbowColor = {
-            0xDC143C, 0xFF8C00, 0x808000, 0x20B2AA, 0x2F4F4F, 0xBA55D3, 0xBC8F8F
-    };*/
-   /* private static final int[] rainbowColor = {
-            0xDC143C, 0xDC143C, 0xDC143C, 0xDC143C, 0xDC143C, 0xDC143C, 0xDC143C, 0xDC143C, 0xDC143C, 0xDC143C, 0xDC143C, 0xDC143C
-    };*/
     private static final int[] rainbowColor = {
-            0xDC143C, 0xFFD700, 0x0000FF
+            0xDC143C, 0xFFD700, 0x088e11, 0x088E81, 0x0243BA, 0x7203c1, 0xf41e9e
     };
 
     private static final int MAX_PROGRESS_VALUE = 1450;

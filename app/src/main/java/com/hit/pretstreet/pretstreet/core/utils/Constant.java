@@ -20,8 +20,8 @@ public class Constant {
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
     //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
-    public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";
-    //public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
+    //public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";
+    public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
     public static final String LOGIN_OTP_URL = COMMON_URL + "customer/customerlogingenerateOtp";
@@ -37,6 +37,7 @@ public class Constant {
     public static final String EXHIBITION_URL = COMMON_URL + "exhibition/listing/";
     public static final String EXHIBITIONLIKE_URL = COMMON_URL + "exhibition/exhibitionlike/";
     public static final String EXHIBITIONREGISTER_URL = COMMON_URL + "exhibition/exhibitionRegister/";
+    public static final String EXHIBITIONREGISTEROTP_URL = COMMON_URL + "exhibition/customerregistergenerateOtp";
     public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "exhibition/article/";
     public static final String TRENDINGARTICLE_URL = COMMON_URL + "trending/article/";
     public static final String MULTISTORE_URL = COMMON_URL + "store/multistorelisting";
@@ -117,6 +118,8 @@ public class Constant {
     public static final String EXNOTINTERESTEDLINK = "35";
     public static final String EXGOINGLINK = "36";
     public static final String EXNOTGOINGLINK = "37";
+    public static final String DEEPLINKINGKEY = "38";
+    public static final String NOTIFICATIONKEY = "39";
 
     //Trape types
     public static final String TRAPE = "1";

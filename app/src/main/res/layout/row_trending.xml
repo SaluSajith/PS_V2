@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/pager_height"
                 android:fitsSystemWindows="true"
+                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/image_slider_item" />
 
             <ImageView
@@ -71,6 +72,7 @@
                     android:src="@drawable/logo1"
                     android:id="@+id/iv_profile"
                     android:layout_margin="@dimen/padding_xxxsmall"
+                    android:visibility="gone"
                     android:layout_gravity="center"/>
 
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
@@ -126,13 +128,14 @@
                         android:id="@+id/txt_description"
                         android:layout_width="match_parent"
                         android:text=""
-                        android:maxLines="7"
-                        android:minLines="2"
-                        android:inputType="textMultiLine"
+                        android:maxLines="4"
+                        android:minLines="3"
                         android:layout_height="wrap_content"
                         style="@style/textview_small"
+                        android:inputType="textMultiLine|textNoSuggestions"
                         android:gravity="left"
                         android:layout_marginLeft="0dp"
+                        android:ellipsize="end"
                         app:pret_typeface="@string/font_merriweather_light"/>
                 </LinearLayout>
 

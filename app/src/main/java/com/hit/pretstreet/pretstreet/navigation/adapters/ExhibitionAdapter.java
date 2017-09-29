@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -25,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.CircularImageView;
@@ -38,6 +40,7 @@ import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import java.util.ArrayList;
@@ -49,7 +52,7 @@ import butterknife.ButterKnife;
  * Created by User on 04/08/2017.
  */
 
-public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.ViewHolder>{
+public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private static Context context;
     static int mPosition;
@@ -65,11 +68,48 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
     private static final int LIKE = 22;
     private static int selected_id = 22;
 
-    public ExhibitionAdapter(Activity activity, ExhibitionFragment context, ArrayList<TrendingItems> list) {
+    private OnLoadMoreListener mOnLoadMoreListener;
+    private boolean isLoading;
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
+    private final RequestManager glide;
+
+    public ExhibitionAdapter(final RequestManager glide, RecyclerView mRecyclerView, Activity activity, ExhibitionFragment context, ArrayList<TrendingItems> list) {
         this.context = activity;
         this.list = list;
+        this.glide = glide;
         this.zoomedViewListener = (ZoomedViewListener) context;
         this.trendingHolderInvoke = (TrendingHolderInvoke)activity;
+
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    if (mOnLoadMoreListener != null) {
+                        mOnLoadMoreListener.onLoadMore();
+                    }
+                    isLoading = true;
+                }
+            }
+            /*@Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    glide.resumeRequests();
+                }
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    glide.pauseRequests();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }*/
+        });
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
+        this.mOnLoadMoreListener = mOnLoadMoreListener;
     }
 
     @Override
@@ -78,23 +118,16 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(final ExhibitionAdapter.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(RecyclerView.ViewHolder holder1, int position) {
+        ViewHolder holder = (ViewHolder) holder1;
         TrendingItems trendingItems = list.get(position);
         setViewText(holder.txt_date, trendingItems.getArticledate());
         setViewText(holder.txt_shopname, trendingItems.getTitle());
         setViewText(holder.txt_description, trendingItems.getArticle());
         setViewText(holder.txt_location, trendingItems.getArea());
 
-        if(trendingItems.getLoadmoreFlag())
-            holder.ll_progress.setVisibility(View.VISIBLE);
-        else
-            holder.ll_progress.setVisibility(View.GONE);
         try {
-            Glide.with(context)
-                    .load(trendingItems.getImagearray().get(0))
-                    .fitCenter()
-                    .into(holder.iv_banner);
+            loadImage(glide, trendingItems.getImagearray().get(0), holder.iv_banner);
         }catch (Exception e){}
 
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
@@ -231,9 +264,23 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                 break;
         }
     }
+/*
 
-    public void loadMoreView(boolean visibility){
-        if(list.size()>1)
-            list.get(list.size()-1).setLoadmoreFlag(visibility);
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        ExhibitionAdapter.ViewHolder holder1 = (ExhibitionAdapter.ViewHolder) holder;
+        if(holder != null) {
+            Glide.clear(holder1.iv_banner);
+        }
+        super.onViewRecycled(holder);
+    }
+*/
+
+    public void setLoaded() {
+        isLoading = false;
+    }
+
+    static void loadImage(RequestManager glide, String url, ImageView view) {
+        glide.load(url).fitCenter().into(view);
     }
 }

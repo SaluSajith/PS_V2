@@ -20,6 +20,7 @@ public class PreferenceServices {
     public static final String LONGITUTE = "LONGITUTE";
     public static final String LOGINTYPE = "LOGINTYPE";
     public static final String DEVICESIZE = "DEVICESIZE";
+    public static final String NOTIFCOUNT = "NOTIFCOUNT";
 
 
     public static final String HOMEMAINCATLIST = "HOMEMAINCATLIST";
@@ -78,6 +79,16 @@ public class PreferenceServices {
     public void setIdQueryparam(String idQueryparam) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(ID_QUERYPARAM, idQueryparam);
+        editor.apply();
+    }
+
+    public int getNotifCOunt() {
+        return getPrefs().getInt(NOTIFCOUNT, 0);
+    }
+
+    public void updateNotif(int value) {
+        SharedPreferences.Editor editor = getPrefs().edit();
+        editor.putInt(NOTIFCOUNT, value);
         editor.apply();
     }
 

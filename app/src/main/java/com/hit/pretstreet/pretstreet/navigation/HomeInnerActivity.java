@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -47,7 +49,9 @@ import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
@@ -72,6 +76,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
     private static final int TRENDINGARTICLE_FRAGMENT = 12;
+    private static final int PRIVACY_FRAGMENT = 7;
 
     JsonRequestController jsonRequestController;
     HomeFragmentController homeFragmentController;
@@ -84,12 +89,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     @BindView(R.id.iv_header)ImageView iv_header;
     @BindView(R.id.iv_filter)ImageView iv_filter;
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
-    @BindView(R.id.nsv_header)NestedScrollView nsv_header;
+    @BindView(R.id.nsv_header)AppBarLayout nsv_header;
 
-    int pageCount = 1;
+    private String number;
+    private JSONObject registerJson;
+
     boolean requestCalled = false;
-    boolean loadmore = true, first = true;
-    private static String catTag = "";
+    boolean first = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +113,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        checkDevice();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
@@ -119,7 +126,6 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
         iv_search.setVisibility(View.GONE);
         fl_content.bringToFront();
-        refreshListviewOnScrolling();
 
         Intent intent = getIntent();
         int fragmentId = intent.getIntExtra("fragment", 0);
@@ -131,41 +137,17 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         showSortScreem();
     }
 
-    private void refreshListviewOnScrolling(){
-        nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (v.getChildAt(v.getChildCount() - 1) != null) {
-                    if (scrollY > oldScrollY) {
-                        if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
-                            if(!requestCalled){
-                                requestCalled = true;
-                                first = false;
-                                if(loadmore) {
-                                    pageCount++;
-                                    if(currentFragment == TRENDING_FRAGMENT) {
-                                        getTrendinglist(pageCount);
-                                        trendingFragment.update_loadmore_adapter(true);
-                                    } else {
-                                        exhibitionFragment.update_loadmore_adapter(true);
-                                        getExhibitionlist(pageCount);
-                                    }
-                                }
-                            }
-                            if(!loadmore)
-                                displaySnackBar("No more data available!");
-                        }
-                    }
-                }
-            }
-        });
+    private void checkDevice(){
+        String manufacturer = android.os.Build.MANUFACTURER;
+        if(manufacturer.equalsIgnoreCase("samsung")){
+            nsv_header.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
     }
 
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
             case TRENDING_FRAGMENT:
-                pageCount = 1;
+                first = true;
                 currentFragment = TRENDING_FRAGMENT;
                 tv_cat_name.setText("Trending");
                 iv_filter.setVisibility(View.GONE);
@@ -175,7 +157,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 changeFragment(trendingFragment, b);
                 break;
             case EXHIBITION_FRAGMENT:
-                pageCount = 1;
+                first = true;
                 currentFragment = EXHIBITION_FRAGMENT;
                 tv_cat_name.setText("Exhibition");
                 iv_filter.setVisibility(View.GONE);
@@ -185,7 +167,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 changeFragment(exhibitionFragment, b);
                 break;
             case TRENDINGARTICLE_FRAGMENT:
-                pageCount = 0;
+                first = true;
                 currentFragment = TRENDINGARTICLE_FRAGMENT;
                 iv_filter.setVisibility(View.GONE);
                 toolbar.setVisibility(View.GONE);
@@ -230,34 +212,54 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             //displaySnackBar(response.getString("CustomerMessage"));
             switch (url){
                 case TRENDING_URL:
-                    first = true;
+                    first = false;
                     requestCalled = false;
-                    trendingFragment.update_loadmore_adapter(false);
+                    //trendingFragment.update_loadmore_adapter(false);
                     ArrayList<TrendingItems> trendingItemses = homeFragmentController.getTrendingList(response);
                     trendingCallback.bindData(trendingItemses);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideDialog();
+                        }
+                    }, 1000);
                     break;
                 case EXHIBITION_URL:
-                    first = true;
+                    first = false;
                     requestCalled = false;
-                    exhibitionFragment.update_loadmore_adapter(false);
                     ArrayList<TrendingItems> exHItemses = homeFragmentController.getExhibitionList(response);
                     trendingCallback.bindData(exHItemses);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideDialog();
+                        }
+                    }, 1000);
                     break;
                 case TRENDINGLIKE_URL:
                     JSONObject object = response.getJSONObject("Data");
                     trendingFragment.updateLikeStatus(object.getInt("LikeStatus"),
                             object.getString("Id"));
+                    hideDialog();
                     break;
                 case EXHIBITIONLIKE_URL:
                     object = response.getJSONObject("Data");
                     exhibitionFragment.updateLikeStatus(object.getInt("LikeStatus"),
                             object.getString("Id"));
+                    hideDialog();
                     break;
                 case EXHIBITIONREGISTER_URL:
                     object = response.getJSONObject("Data");
                     displaySnackBar(response.getString("CustomerMessage"));
                     exhibitionFragment.updateLikeStatus(object.getInt("LikeStatus"),
                             object.getString("Id"));
+                    hideDialog();
+                    break;
+                case EXHIBITIONREGISTEROTP_URL:
+                    String otpValue = response.getJSONObject("Data").getString("OTP");
+                    showOTPScreem(otpValue);
+                    hideDialog();
+                    break;
                 default: break;
             }
         } catch (JSONException e) {
@@ -267,7 +269,6 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void onResponse(JSONObject response) {
-        this.hideDialog();
         handleResponse(response);
     }
 
@@ -283,10 +284,23 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void loadStoreDetails(int position, StoreListModel storeListModel) {
-        Intent intent = new Intent(HomeInnerActivity.this, StoreDetailsActivity.class);
-        intent.putExtra(Constant.PARCEL_KEY, storeListModel);
-        intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-        startActivity(intent);
+        String pagetypeid = storeListModel.getPageTypeId();
+        switch (pagetypeid){
+            case MULTISTOREPAGE:
+                Intent intent = new Intent(HomeInnerActivity.this, MultistoreActivity.class);
+                intent.putExtra(Constant.ID_KEY, storeListModel.getId());
+                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
+                startActivity(intent);
+                break;
+            case STOREDETAILSPAGE:
+                intent = new Intent(HomeInnerActivity.this, StoreDetailsActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, storeListModel);
+                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -312,18 +326,75 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
         LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
         String phone = loginSession.getMobile();
+        registerJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
+                Id + "", getIntent().getStringExtra(PRE_PAGE_KEY), phone);
         if(phone.trim().length()==0||phone.equalsIgnoreCase("null")){
-            showRegisterPopup(Id);
+            showRegisterPopup();
         }
         else {
             HomeInnerActivity.this.showProgressDialog(getResources().getString(R.string.loading));
-            JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
-                    Id + "", getIntent().getStringExtra(PRE_PAGE_KEY), phone);
-            jsonRequestController.sendRequest(this, resultJson, EXHIBITIONREGISTER_URL);
+            jsonRequestController.sendRequest(this, registerJson, EXHIBITIONREGISTER_URL);
         }
     }
 
-    public void showRegisterPopup(final int id) {
+
+    public void showOTPScreem(final String otpValue) {
+
+        final Dialog popupDialog = new Dialog(this);
+        popupDialog.setCanceledOnTouchOutside(false);
+        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_otp_screen, null);
+        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        final EdittextPret edt_otp = (EdittextPret) view.findViewById(R.id.edt_otp);
+        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+
+        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
+        rl.setPadding(0, 0, 0, 0);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, 0, 0);
+        rl.setLayoutParams(lp);
+        popupDialog.setContentView(view);
+
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        popupDialog.getWindow().setAttributes(params);
+        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        popupDialog.show();
+
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupDialog.dismiss();
+            }
+        });
+
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edt_otp.getText().toString().length() < 1) {
+                    displaySnackBar("Enter OTP value");
+                    edt_otp.requestFocus();
+                }
+                else {
+                    popupDialog.dismiss();
+                    if (otpValue.equals(edt_otp.getText().toString())) {
+                        HomeInnerActivity.this.showProgressDialog(getResources().getString(R.string.loading));
+                        registerJson = homeFragmentController.getRegisterJson_UpdatePhone(registerJson, number);
+                        jsonRequestController.sendRequest(HomeInnerActivity.this, registerJson, EXHIBITIONREGISTER_URL);
+                    } else {
+                        displaySnackBar("Wrong OTP");
+                    }
+                }
+            }
+        });
+
+    }
+
+    public void showRegisterPopup() {
 
         final Dialog popupDialog = new Dialog(HomeInnerActivity.this);
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -348,21 +419,31 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             }
         });
 
+        TextViewPret tv_privacy = (TextViewPret) view.findViewById(R.id.tv_privacy);
+        tv_privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), NavigationItemsActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra("fragment", PRIVACY_FRAGMENT);
+                startActivity(intent);
+            }
+        });
+
         ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String regexStr = "^[789]\\d{9}$";
-                String number = edt_phone.getText().toString();
+                number = edt_phone.getText().toString();
                 if(number.length()<10 || number.length()>13 || number.matches(regexStr)==false  ) {
                     edt_phone.setError("Invalid phone number!");
                 }
                 else{
                     popupDialog.dismiss();
-                    HomeInnerActivity.this.showProgressDialog(getResources().getString(R.string.loading));
-                    JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
-                            id + "", getIntent().getStringExtra(PRE_PAGE_KEY), number);
-                    jsonRequestController.sendRequest(HomeInnerActivity.this, resultJson, EXHIBITIONREGISTER_URL);
+                    showProgressDialog(getResources().getString(R.string.loading));
+                    JSONObject otpObject = homeFragmentController.getOTPVerificationJson(number);
+                    jsonRequestController.sendRequest(HomeInnerActivity.this, otpObject, EXHIBITIONREGISTEROTP_URL);
                 }
             }
         });
@@ -406,13 +487,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 intent.putExtra(Constant.PRE_PAGE_KEY, STORELISTINGPAGE);
                 startActivity(intent);
                 break;
-            case Constant.MULTISTOREPAGE:
+            case MULTISTOREPAGE:
                 intent = new Intent(HomeInnerActivity.this, MultistoreActivity.class);
                 intent.putExtra(Constant.ID_KEY, trendingItems.getId());//TODO : check id
                 intent.putExtra(Constant.PRE_PAGE_KEY, prePage);
                 startActivity(intent);
                 break;
-            case Constant.STOREDETAILSPAGE:
+            case STOREDETAILSPAGE:
                 StoreListModel storeListModel =  new StoreListModel();
                 storeListModel.setId(trendingItems.getId());
                 intent = new Intent(HomeInnerActivity.this, StoreDetailsActivity.class);

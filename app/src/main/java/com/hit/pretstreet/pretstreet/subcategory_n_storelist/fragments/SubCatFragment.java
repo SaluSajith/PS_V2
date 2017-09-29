@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +79,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
 
     @SuppressLint("InflateParams")
     private void loadSubCatPage(final ArrayList<HomeCatItems> homeCatItemses) {
-
+        showProgressDialog(getResources().getString(R.string.loading));
         ll_main_cat.setVisibility(View.VISIBLE);
         ll_main_cat.removeAllViews();
         ArrayList<HomeCatItems> homeSubCategories = homeCatItemses;
@@ -144,6 +145,13 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
             ll_main_cat.addView(view);
         }
         ll_sub.setVisibility(View.VISIBLE);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                destroyDialog();
+            }
+        }, 500);
     }
 
     @Override

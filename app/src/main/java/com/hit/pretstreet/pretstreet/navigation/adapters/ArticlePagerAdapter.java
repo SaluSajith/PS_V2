@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
@@ -25,11 +26,12 @@ public class ArticlePagerAdapter extends PagerAdapter {
 
     private Context mContext;
     private ArrayList<String> mResources;
-    //private ArrayList<ProductImageItem> mImagearray;
+    private final RequestManager glide;
 
-    public ArticlePagerAdapter(Context mContext, ArrayList<String> mResources) {
+    public ArticlePagerAdapter(final RequestManager glide, Context mContext, ArrayList<String> mResources) {
         this.mContext = mContext;
         this.mResources = mResources;
+        this.glide = glide;
     }
 
     @Override
@@ -50,11 +52,12 @@ public class ArticlePagerAdapter extends PagerAdapter {
         if((mResources.get(position)).length()==0){
             imageView.setImageResource(R.mipmap.ic_launcher);
         }else {
-            Glide.with(mContext)
+            /*Glide.with(mContext)
                     .load(mResources.get(position))
                     .placeholder(R.drawable.default_banner)
                     .fitCenter()
-                    .into(imageView);
+                    .into(imageView);*/
+            loadImage(glide, mResources.get(position), imageView);
         }
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -72,5 +75,10 @@ public class ArticlePagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
+    }
+
+
+    static void loadImage(RequestManager glide, String url, ImageView view) {
+        glide.load(url).fitCenter().into(view);
     }
 }

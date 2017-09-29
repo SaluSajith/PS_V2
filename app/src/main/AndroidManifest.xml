@@ -101,13 +101,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD3xZ0gey4QDckVaIlkFSz9UtkjHqOTTIY" />
-        <!-- android:value="AIzaSyC9zfZnqFROGAy0BfV0jWVazvzcr5il8ds" /> -->
-        <!-- android:value="AIzaSyC5oAbU5rMUtQ7-IyutXsqmXAX_K-c_kSc" /> -->
 
         <activity
             android:name=".sociallogin.GoogleLoginActivity"
-            android:theme="@style/Theme.AppCompat.Translucent" />
-        <activity android:name=".ui.ArticleActivity" />
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.ArticleActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".navigation.HomeActivity"
             android:screenOrientation="portrait" />
@@ -119,7 +120,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationitems.NavigationItemsActivity"
-            android:hardwareAccelerated="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".splashnlogin.DefaultLocationActivity"
@@ -128,14 +128,10 @@
             android:name=".subcategory_n_storelist.SubCatActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".subcategory_n_storelist.StoreListingActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".storedetails.FullscreenGalleryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigation.HomeInnerActivity"
-            android:hardwareAccelerated="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".location.StoreLocationMapScreen"
@@ -145,6 +141,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigation.TrendingArticleActivity"
+            android:theme="@style/AppTheme.NoActionBar1"
             android:screenOrientation="portrait" />
         <activity
             android:name=".search.MultistoreActivity"
@@ -159,31 +156,38 @@
             android:name=".subcategory_n_storelist.FilterActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".subcategory_n_storelist.StoreListingActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".splashnlogin.DeepLinkActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <data android:scheme="pretstreet" />
-
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        <receiver
+            android:name=".core.helpers.InstallReferrerReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
         <service android:name=".core.helpers.GPSTracker" />
         <service android:name=".sociallogin.TokenService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".sociallogin.MyFirebaseMessagingService">
+        <service android:name=".sociallogin.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

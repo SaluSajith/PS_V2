@@ -48,10 +48,19 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
     public void onBindViewHolder(final GalleryHolder holder, final int position) {
 
         holder.name.setText("");
+        /*Glide.with(context)
+                .load(urls.get(position))
+                .placeholder(R.drawable.cloud_sad)
+                .error(R.drawable.cloud_sad)
+                .fitCenter()
+                .override(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT)
+                .into(holder.image);*/
+
         Glide.with(context)
                 .load(urls.get(position))
-               // .load(urls.get(position))
                 .asBitmap()
+                .placeholder(R.drawable.default_gallery)
+                .error(R.drawable.cloud_sad)
                 .fitCenter()
                 .into(holder.image);
 

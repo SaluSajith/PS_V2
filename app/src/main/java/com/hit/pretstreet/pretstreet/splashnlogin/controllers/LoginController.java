@@ -346,10 +346,8 @@ public class LoginController {
         } catch (JSONException e1) {
             e1.printStackTrace();
         }
-
         return list;
     }
-
 
     public static ArrayList<HomeCatItems> getSubCatContent(JSONObject mResponse){
         final ArrayList<HomeCatItems> list = new ArrayList<>();

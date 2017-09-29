@@ -1,15 +1,22 @@
 package com.hit.pretstreet.pretstreet.navigationitems.controllers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
+import android.os.Handler;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
+import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
+import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
+import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.models.SearchModel;
+import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
@@ -18,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -37,7 +46,9 @@ public class NavItemsController {
 
     public NavItemsController(Context context) {
         this.context = context;
-        loginCallbackInterface = (NavigationItemsActivity)context;
+        try {
+            loginCallbackInterface = (NavigationItemsActivity) context;
+        }catch (Exception e){}
     }
 
     public static void validateAddStoreFields(EdittextPret edt_storename,
@@ -260,10 +271,8 @@ public class NavItemsController {
         } catch (JSONException e) {
         } catch (Exception e) {
         }
-
         return jsonBody;
     }
-
 
     public static JSONObject getStaticPageJson() {
 
@@ -275,13 +284,14 @@ public class NavItemsController {
 
         return jsonBody;
     }
+
     public static JSONObject getFollowinglistJson(String catId, String pagecount, String pageid) {
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("Limit", Constant.LIMIT);
             jsonBody.put("CategoryId", catId);
-            jsonBody.put("Pageid", pagecount);
+            jsonBody.put("Offset", pagecount);
             jsonBody.put("PreviousPageTypeId", pageid);
             jsonBody.put("ClickTypeId", "");
 
@@ -313,6 +323,12 @@ public class NavItemsController {
         return  searchModels;
     }
 
+    public static ArrayList<TrendingItems> getNotifList(){
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        ArrayList<TrendingItems> notifModels = databaseHelper.fetchNotifList();
+        return  notifModels;
+    }
+
     public static String getStaticHtmlData(JSONObject response){
         String html = null;
         try {
@@ -342,18 +358,9 @@ public class NavItemsController {
                 storeListModel.setLocation(jsonArray.getJSONObject(i).getString("Location"));
                 storeListModel.setImageSource(jsonArray.getJSONObject(i).getString("ImageSource"));
                 String flag = jsonArray.getJSONObject(i).getString("Flags");
-                if(flag.contains("0"))
-                    storeListModel.setSaleflag(true);
-                else
-                    storeListModel.setSaleflag(false);
-                if(flag.contains("1"))
-                    storeListModel.setOfferflag(true);
-                else
-                    storeListModel.setOfferflag(false);
-                if(flag.contains("2"))
-                    storeListModel.setNewflag(true);
-                else
-                    storeListModel.setNewflag(false);
+                storeListModel.setSaleflag(flag.contains("0")==true ? true : false);
+                storeListModel.setOfferflag(flag.contains("1")==true ? true : false);
+                storeListModel.setNewflag(flag.contains("2")==true ? true : false);
                 storeListModel.setBannerFlag(jsonArray.getJSONObject(i).getInt("BannerFlag") == 0 ? false : true);
 
                 storeListModels.add(storeListModel);
@@ -363,5 +370,34 @@ public class NavItemsController {
         }
 
         return  storeListModels;
+    }
+
+    public void updateSession(JSONObject response){
+
+        try {
+            JSONObject object = response.getJSONObject("Data");
+            SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
+
+            LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
+            loginSession.setFname(object.getString("FirstName"));
+            loginSession.setLname(object.getString("LastName"));
+            loginSession.setEmail(object.getString("UserEmail"));
+            loginSession.setMobile(object.getString("UserMobile"));
+
+            if(object.has("UserProfilePicture")) {
+                String url = "";
+                try {
+                    url = URLDecoder.decode(object.getString("UserProfilePicture"), "UTF-8")+"";
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                loginSession.setProfile_pic(url);
+            }
+            sharedPreferencesHelper.createLoginSession(loginSession);
+            PreferenceServices.instance().saveUserName(object.getString("FirstName")+" "+object.getString("LastName"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

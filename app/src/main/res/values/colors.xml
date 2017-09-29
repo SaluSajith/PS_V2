@@ -9,11 +9,13 @@
     <color name="category_bg">#313131</color>
     <color name="light_gray">#b4b7ba</color>
     <color name="menu_bg">#1c1c1c</color>
-    <color name="yellow">#ffffdf5d</color>
-    <color name="yellow_trans">#ddffdf5d</color>
-    <color name="yellow_indicator">#E6AD02</color>
+    <color name="yellow">#fffdd037</color>
+    <color name="yellow_trans">#ddfdd037</color>
+    <color name="yellow_indicator">#fffdd037</color>
+    <color name="yellow_storelist_scroll">#FDC80B</color>
+    <color name="yellow_storelist">#FFDF5D</color>
 
-    <!--<color name="yellow">#ffffdf5d</color>-->
+    <!--<color name="yellow">#ffffdf5d</color>E6AD02-->
     <color name="black">#000000</color>
     <color name="green">#088e11</color>
     <color name="red">#c41313</color>
@@ -24,5 +26,13 @@
     <color name="trending_grey">#eaeaea</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <color name="color1">#DC143C</color>
+    <color name="color2">#FFD700</color>
+    <color name="color3">#088e11</color>
+    <color name="color4">#088E81</color>
+    <color name="color5">#0243BA</color>
+    <color name="color6">#7203c1</color>
+    <color name="color7">#f41e9e</color>
 
 </resources>

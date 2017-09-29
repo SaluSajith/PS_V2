@@ -3,10 +3,12 @@ package com.hit.pretstreet.pretstreet.navigation.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
@@ -18,6 +20,7 @@ import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 
 import java.util.ArrayList;
 
@@ -32,8 +35,13 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
         implements TrendingCallback, ZoomedViewListener {
 
     @BindView(R.id.rv_trending) RecyclerView rv_trending;
+    @BindView(R.id.ll_empty) View ll_empty;
     ExhibitionAdapter adapter;
     ArrayList<TrendingItems> exHItems;
+
+    int pageCount = 1;
+    boolean loadmore = true;
+    boolean requestCalled = false;
 
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,20 +53,39 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
 
     private void init(){
         exHItems = new ArrayList<>();
-        adapter = new ExhibitionAdapter(getActivity(),ExhibitionFragment.this, exHItems);
+        Utility.setListLayoutManager_(rv_trending, getActivity());
+        adapter = new ExhibitionAdapter(Glide.with(this), rv_trending, getActivity(),ExhibitionFragment.this, exHItems);
         rv_trending.setAdapter(adapter);
-        Utility.setListLayoutManager(rv_trending, getActivity());
-        ((HomeInnerActivity)getActivity()).getExhibitionlist(1);
+        ((HomeInnerActivity)getActivity()).getExhibitionlist(pageCount);
+        refreshListviewOnScrolling();
+    }
+
+    private void refreshListviewOnScrolling(){
+        adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if(loadmore) {
+                    pageCount++;
+                    requestCalled = true;
+                    ((HomeInnerActivity)getActivity()).getExhibitionlist(pageCount);
+                }
+                else ((HomeInnerActivity)getActivity()).displaySnackBar("No more data available!");
+            }
+        });
     }
 
     @Override
     public void bindData(ArrayList<TrendingItems> exHItems) {
         this.exHItems.addAll(exHItems);
         adapter.notifyDataSetChanged();
-    }
-
-    public void update_loadmore_adapter(boolean b){
-        adapter.loadMoreView(b);
+        if(exHItems.size()==0)
+            loadmore = false;
+        else
+            loadmore = true;
+        adapter.setLoaded();
+        if(this.exHItems.size()==0)
+            ll_empty.setVisibility(View.VISIBLE);
+        else ll_empty.setVisibility(View.INVISIBLE);
     }
 
     @Override

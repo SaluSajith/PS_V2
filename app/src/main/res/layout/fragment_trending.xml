@@ -3,22 +3,21 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<!--
-    <com.hit.pretstreet.pretstreet.core.customview.EmptyView
-        android:id="@+id/ev_Empty"
-        android:visibility="invisible"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:setTitleText="@string/error_message_title"
-        app:setSubTitleText="@string/error_message_subtitle"
-        app:titleStyle="@style/erro_title"
-        app:subTitleStyle="@style/erro_sub_title"/>-->
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/light_gray">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_trending"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:scrollbars="none"
-        android:background="@color/light_gray"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
+
+        <include
+            android:id="@+id/ll_empty"
+            layout="@layout/empty_view"
+            android:visibility="invisible"/>
 </FrameLayout>

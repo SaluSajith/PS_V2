@@ -2,6 +2,7 @@ package com.hit.pretstreet.pretstreet.search;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,11 +20,9 @@ import com.hit.pretstreet.pretstreet.search.fragments.SearchResultsFragment;
 import com.hit.pretstreet.pretstreet.search.interfaces.RecentCallback;
 import com.hit.pretstreet.pretstreet.search.interfaces.SearchDataCallback;
 import com.hit.pretstreet.pretstreet.search.models.SearchModel;
-import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.FilterActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
@@ -183,22 +182,41 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                 case AUTOSEARCH_URL:
                     ArrayList<SearchModel> searchModels = searchController.getAutoSearchList(response);
                     searchDataCallback.setAutosearchList(searchModels);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideDialog();
+                        }
+                    }, 1000);
                     break;
                 case SEARCH_URL:
                     ArrayList <StoreListModel> storeListModels = searchController.getSearchList(response);
                     if(storeListModels.size()==0)
                         loadmore = false;
                     searchDataCallback.setSearchList(storeListModels, loadmore);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideDialog();
+                        }
+                    }, 1000);
                     break;
                 case RECENTSEARCH_URL:
                     searchDataCallback.setRecentsearchList(searchController.getRecentViewList(response),
                             searchController.getRecentSearchList(response),
                             searchController.getCategoryList(response));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideDialog();
+                        }
+                    }, 1000);
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
                     JSONObject object = response.getJSONObject("Data");
                     storeList_recyclerAdapter.updateFollowStatus(object.getInt("FollowingStatus"),
                             object.getString("StoreId"));
+                    hideDialog();
                     break;
                 default: break;
             }
@@ -208,7 +226,6 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
     }
     @Override
     public void onResponse(JSONObject response) {
-        this.hideDialog();
         handleResponse(response);
     }
 
@@ -288,7 +305,6 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                 Bundle bundle = data.getExtras();
                 dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
                 arrayFilter = subCategoryController.createFilterModel(dataModel);
-
                 searchFragment.refreshSearchResult();
             }
         } catch (Exception ex) { }

@@ -3,18 +3,21 @@ package com.hit.pretstreet.pretstreet.navigationitems;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -26,8 +29,6 @@ import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
-import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
-import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigationitems.controllers.NavItemsController;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
@@ -36,10 +37,10 @@ import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
@@ -58,14 +59,13 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTAT
 public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, View.OnClickListener, ButtonClickCallbackStoreList, LoginCallbackInterface {
 
-    @BindView(R.id.content) FrameLayout fl_content;
-    @BindView(R.id.nsv_header)NestedScrollView nsv_header;
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
     @BindView(R.id.tv_location) TextViewPret tv_location;
     @BindView(R.id.ll_scroll) LinearLayout ll_scroll;
     @BindView(R.id.rv_storelist)RecyclerView rv_storelist;
     @BindView(R.id.ll_header) LinearLayout ll_header;
     @BindView(R.id.ll_location) LinearLayout ll_location;
+    @BindView(R.id.nsv_header)AppBarLayout nsv_header;
     @BindView(R.id.ll_empty) View ll_empty;
 
     JsonRequestController jsonRequestController;
@@ -87,7 +87,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
 
-    int pageCount=0;
+    int pageCount=1;
     boolean requestCalled = false;
     boolean loadmore = true, first = true;
     String catTag = "";
@@ -104,6 +104,9 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         ButterKnife.bind(this);
         PreferenceServices.init(this);
         storeListModels = new ArrayList<>();
+        Utility.setListLayoutManager_(rv_storelist, FollowingActivity.this);
+        rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, FollowingActivity.this, storeListModels);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
@@ -116,41 +119,35 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
         iv_search.setVisibility(View.GONE);
         ll_scroll.setVisibility(View.VISIBLE);
-        ll_header.bringToFront();
+        nsv_header.bringToFront();
+
+        FrameLayout.LayoutParams layoutParams =
+                (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
+        layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_small), 0, 0);
+        ll_scroll.setLayoutParams(layoutParams);
 
         String title = getIntent().getStringExtra("mSubTitle");
         tv_cat_name.setText(title);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
-        Utility.setListLayoutManager(rv_storelist, FollowingActivity.this);
-        rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
-
-        /*Get shoplist details of selected category*/
-        getFollowingData("0", true); //For ALL catid =0
-        //createScrollingHeader();
+        getFollowingData("0", true); //For ALL catid = 0
         refreshListviewOnScrolling();
     }
 
     private void refreshListviewOnScrolling(){
-        nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-
+        storeList_recyclerAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (v.getChildAt(v.getChildCount() - 1) != null) {
-                    if (scrollY > oldScrollY) {
-                        if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-                            if(!requestCalled){
-                                requestCalled = true;
-                                first = false;
-                                if(loadmore)
-                                    pageCount++;
-                                    getFollowingData(catTag, false);
-                            }
-                            if(!loadmore)
-                                displaySnackBar("No more stores available!");
-                        }
+            public void onLoadMore() {
+                if (!requestCalled) {
+                    requestCalled = true;
+                    first = false;
+                    if (loadmore) {
+                        pageCount++;
+                        getFollowingData(catTag, false);
                     }
                 }
+                if (!loadmore)
+                    displaySnackBar("No more stores available!");
             }
         });
     }
@@ -211,43 +208,50 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
                     ArrayList<SearchModel> homeSubCategories = navItemsController.getCategoryListHeader(response);
                     createScrollingHeader(homeSubCategories);
                     storeListModels.addAll(navItemsController.getCategoryList(response));
+                    loadmore = false;
                     setAdapter();
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
                     JSONObject object = response.getJSONObject("Data");
                     storeList_recyclerAdapter.updateFollowStatus(object.getInt("FollowingStatus"),
                             object.getString("StoreId"));
+                    this.hideDialog();
                     break;
                 default: break;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        this.hideDialog();
     }
 
     private void setAdapter(){
         if(first) {
-            storeList_recyclerAdapter = new StoreList_RecyclerAdapter(FollowingActivity.this, storeListModels);
             rv_storelist.setAdapter(storeList_recyclerAdapter);
         } else
             storeList_recyclerAdapter.notifyDataSetChanged();
         if(storeListModels.size()==0)
             ll_empty.setVisibility(View.VISIBLE);
         else ll_empty.setVisibility(View.INVISIBLE);
+        storeList_recyclerAdapter.setLoaded();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideDialog();
+            }
+        }, 1000);
     }
 
     @Override
     protected void setUpController() {
         jsonRequestController = new JsonRequestController(this);
-        //navItemsController = new NavItemsController(this);
+        navItemsController = new NavItemsController(this);
         subCategoryController = new SubCategoryController(this);
     }
 
     @Override
     public void onResponse(JSONObject response) {
         handleResponse(response);
-        //this.hideDialog();
+        //this.hideDialog();man
     }
 
     @Override
@@ -269,7 +273,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         textViewPret.setTextColor(ContextCompat.getColor(FollowingActivity.this, R.color.black));
 
         catTag = textViewPret.getTag().toString()+"";
-        pageCount = 0;
+        pageCount = 1;
         first = true;
         rv_storelist.setAdapter(null);
         storeListModels.clear();

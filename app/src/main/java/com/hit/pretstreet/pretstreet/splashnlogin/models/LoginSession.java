@@ -8,6 +8,11 @@ public class LoginSession {
 
     private String regid="", mobile="", fname="", lname="", email="", gender="", social_id="",
             social_type="", profile_pic="", sessionid="", password="", dob="";
+    public LoginSession() {
+        regid="";
+        email="";
+        mobile="";
+    }
 
     public String getEmail() {
         return email;

@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -60,7 +61,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
-        Utility.setListLayoutManager(rv_trendingarticle, getApplicationContext());
+        Utility.setListLayoutManager_(rv_trendingarticle, getApplicationContext());
 
         TrendingItems trendingItems = (TrendingItems)getIntent()
                 .getSerializableExtra(Constant.PARCEL_KEY);
@@ -77,14 +78,12 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, TRENDINGLIKE_URL);
-        /*Integer resource = (Integer) ib_like.getTag();
-        if(resource == R.drawable.grey_heart) {
-            ib_like.setImageResource(R.drawable.red_heart);
-            ib_like.setTag(R.drawable.red_heart);
-        } else {
-            ib_like.setImageResource(R.drawable.grey_heart);
-            ib_like.setTag(R.drawable.grey_heart);
-        }*/
+    }
+
+
+    @OnClick(R.id.iv_back)
+    public void onBackPress() {
+        onBackPressed();
     }
 
     private void getTrendingArticle(String prepage, String clicktype, String trid){

@@ -59,6 +59,8 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(false);
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setCancelable(false);
     }
 
     /**

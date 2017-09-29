@@ -96,7 +96,7 @@
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/filter"
                 android:layout_marginRight="5dp"
-                android:tint="@color/yellow_indicator"
+                android:tint="@color/yellow_storelist_scroll"
                 android:layout_centerVertical="true"
                 android:layout_alignRight="@+id/linearLayout"
                 android:layout_alignEnd="@+id/linearLayout"

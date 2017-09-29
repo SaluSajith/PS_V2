@@ -5,6 +5,6 @@
     <size
         android:height="5dp" />
 
-    <solid android:color="@color/yellow" />
+    <solid android:color="@color/yellow_storelist" />
 
 </shape>

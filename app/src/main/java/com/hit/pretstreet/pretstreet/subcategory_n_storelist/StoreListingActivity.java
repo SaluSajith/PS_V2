@@ -1,21 +1,13 @@
 package com.hit.pretstreet.pretstreet.subcategory_n_storelist;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.CursorJoiner;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Looper;
-import android.os.Parcelable;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.media.MediaBrowserServiceCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -25,8 +17,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -37,7 +29,6 @@ import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
-import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
@@ -45,11 +36,13 @@ import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
+import com.hit.pretstreet.pretstreet.search.fragments.SearchResultsFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -58,13 +51,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import needle.Needle;
-import needle.UiRelatedTask;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
@@ -82,11 +72,14 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTAT
 public class StoreListingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallbackStoreList, View.OnClickListener {
 
-    @BindView(R.id.content) FrameLayout fl_content;
+    @BindView(R.id.content)
+    FrameLayout fl_content;
     @BindView(R.id.nsv_header)AppBarLayout nsv_header;
-    @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
+    @BindView(R.id.tv_cat_name)
+    TextViewPret tv_cat_name;
     @BindView(R.id.tv_location) TextViewPret tv_location;
-    @BindView(R.id.ll_scroll) LinearLayout ll_scroll;
+    @BindView(R.id.ll_scroll)
+    LinearLayout ll_scroll;
     @BindView(R.id.rv_storelist)RecyclerView rv_storelist;
     @BindView(R.id.ll_header) LinearLayout ll_header;
     @BindView(R.id.ll_location) LinearLayout ll_location;
@@ -115,7 +108,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     boolean requestCalled = false;
     boolean loadmore = true, first = true;
     private static String catTag = "";
-    int previousCount = 0;
 
     private static ArrayList<StoreListModel> storeListModels;
     private ArrayList<FilterDataModel> dataModel;
@@ -134,8 +126,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         arrayFilter = new JSONArray();
         dataModel = new ArrayList<>();
         storeListModels = new ArrayList<>();
-        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(StoreListingActivity.this, storeListModels);
-        storeList_recyclerAdapter.setHasStableIds(true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
@@ -178,6 +168,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
         Utility.setListLayoutManager_(rv_storelist, StoreListingActivity.this);
+        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, StoreListingActivity.this, storeListModels);
+        storeList_recyclerAdapter.setHasStableIds(true);
         rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
         /*Get shoplist details of selected category*/
@@ -186,49 +178,26 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private void refreshListviewOnScrolling(){
-
-        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv_storelist.getLayoutManager();
-        rv_storelist.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        storeList_recyclerAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-               /* totalItemCount = linearLayoutManager.getItemCount();
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                    if (onLoadMoreListener != null) {
-                        onLoadMoreListener.onLoadMore();
-                    }
-                    isLoading = true;
-                }*/
+            public void onLoadMore() {
+                Log.e("haint", "Load More");
+                if(!requestCalled){
+                    requestCalled = true;
+                    first = false;
+                    if(loadmore) {
+                        getShoplist(catTag, false);
+                    }}
+                if(!loadmore)
+                    displaySnackBar("No more stores available!");
             }
         });
-        /*nsv_header.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (v.getChildAt(v.getChildCount() - 1) != null) {
-                    if (scrollY > oldScrollY) {
-                        if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
-                            //if (scrollY == v.getMeasuredHeight() ) {
-                            if(!requestCalled){
-                                requestCalled = true;
-                                first = false;
-                                if(loadmore) {
-                                    storeList_recyclerAdapter.loadMoreView(true);
-                                    getShoplist(catTag, false);
-                                }}
-                            if(!loadmore)
-                                displaySnackBar("No more stores available!");
-                        }
-                    }
-                }
-            }
-        });*/
     }
 
     private void getShoplist(String mCatid, boolean first){
         loadmore = true;
         String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
+        String limit = "0";
         JSONObject resultJson = subCategoryController.getShoplistJson(mCatid, ++pageCount+"", pageid, arrayFilter);
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
@@ -328,51 +297,24 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             switch (url){
                 case STORELISTING_URL:
                     requestCalled = false;
-                    storeList_recyclerAdapter.loadMoreView(false);
                     new JSONParsing().execute(response.toString());
-                    /*Needle.onBackgroundThread().execute(new UiRelatedTask() {
-                        @Override
-                        protected Object doWork() {
-                            previousCount = storeListModels.size();
-                            ArrayList <StoreListModel> storeListMode = subCategoryController.getList(response);
-                            storeListModels.addAll(storeListMode);
-                            if(storeListMode.size()==0)
-                                loadmore = false;
-                            return storeListMode;
-                        }
-                        @Override
-                        protected void thenDoUiRelatedWork(Object o) {
-                            progressDialog.dismiss();
-                            setAdapter();
-                        }
-                    });*/
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
                     JSONObject object = response.getJSONObject("Data");
                     storeList_recyclerAdapter.updateFollowStatus(object.getInt("FollowingStatus"),
                             object.getString("StoreId"));
+                    this.hideDialog();
                     break;
                 default: break;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        this.hideDialog();
     }
 
     private class JSONParsing extends AsyncTask<String, Void, String> {
-        //ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            /*progressDialog = new ProgressDialog(StoreListingActivity.this);
-            progressDialog.setMessage("Its loading....");
-            progressDialog.show();*/
-        }
-
         @Override
         protected String doInBackground(String... params) {
-            previousCount = storeListModels.size();
             try {
                 JSONObject jsonObject = new JSONObject(params[0]);
                 ArrayList <StoreListModel> storeListMode = subCategoryController.getList(jsonObject);
@@ -387,7 +329,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
         @Override
         protected void onPostExecute(String result) {
-            //progressDialog.dismiss();
             setAdapter();
         }
     }
@@ -397,13 +338,18 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             rv_storelist.setAdapter(storeList_recyclerAdapter);
         }
         else
-            //storeList_recyclerAdapter.notifyItemRangeInserted(previousCount, Integer.parseInt(Constant.LIMIT));
             storeList_recyclerAdapter.notifyDataSetChanged();
+        storeList_recyclerAdapter.setLoaded();
         if(storeListModels.size()==0)
             ll_empty.setVisibility(View.VISIBLE);
         else ll_empty.setVisibility(View.INVISIBLE);
 
-        hideDialog();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideDialog();
+            }
+        }, 1000);
     }
 
     @Override
@@ -428,10 +374,10 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     public void onClick(View v) {
         for (int i=0;i<txtname.length;i++) {
             txtname[i].setBackgroundColor(ContextCompat.getColor(StoreListingActivity.this, R.color.transparent));
-            txtname[i].setTextColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_indicator));
+            txtname[i].setTextColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_storelist_scroll));
         }
         TextViewPret textViewPret = (TextViewPret) v;
-        textViewPret.setBackgroundColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_indicator));
+        textViewPret.setBackgroundColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_storelist_scroll));
         textViewPret.setTextColor(ContextCompat.getColor(StoreListingActivity.this, R.color.black));
 
         catTag = textViewPret.getTag().toString()+"";
@@ -510,6 +456,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                 Bundle bundle = data.getExtras();
                 dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
                 arrayFilter = subCategoryController.createFilterModel(dataModel);
+                storeListModels.clear();
                 getShoplist(catTag, true);
             }
         } catch (Exception ex) { }

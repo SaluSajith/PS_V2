@@ -36,6 +36,7 @@ import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
+import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
@@ -64,11 +65,13 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.DEEPLINKINGKEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_OTP_URL;
@@ -115,7 +118,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     SignupFragment signupFragment;
     LoginFragment loginFragment;
 
-    private String DEEPLINKINGKEY = "38";
+
     boolean notif = false;
 
     @Override
@@ -154,17 +157,47 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         if (getIntent().getExtras() != null && notif == false) {
             notif = true;
             //for (String key : getIntent().getExtras().keySet()) {
-               // String value = getIntent().getExtras().getString(key);
-               // Log.d("TOKEN", "Key: " + key + " Value: " + value);
+            // String value = getIntent().getExtras().getString(key);
+            // Log.d("TOKEN", "Key: " + key + " Value: " + value);
             try {
-                String valueOne = getIntent().getExtras().getString("share");
-                String id = getIntent().getExtras().getString("id");
-                if (valueOne.trim().length() != 0 && id.trim().length() != 0)
-                    forwardDeepLink(valueOne, id);
+                if(getIntent().getExtras().containsKey("image")){
+                    saveNotification(getIntent());
+                    /*for (String key : getIntent().getExtras().keySet()) {
+                        String value = getIntent().getExtras().getString(key);
+                        Log.d("TOKEN", "Key: " + key + " Value: " + value);
+                    }*/
+                }else {
+                    String valueOne = getIntent().getExtras().getString("share");
+                    String id = getIntent().getExtras().getString("id");
+                    Log.d("TOKEN", "valueOne: " + valueOne + " id: " + id);
+                    if (valueOne.trim().length() != 0 && id.trim().length() != 0)
+                        forwardDeepLink(valueOne, id);
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }
-            //}
+        }
+    }
+
+    private void saveNotification(Intent intent){
+        try {
+            TrendingItems trendingItems = new TrendingItems();
+            trendingItems.setId(intent.getExtras().getString("id"));
+            trendingItems.setTitle(intent.getExtras().getString("title"));
+            trendingItems.setArticle(intent.getExtras().getString("body"));
+            trendingItems.setShareUrl(intent.getExtras().getString("share"));
+            trendingItems.setLogoImage("");
+            ArrayList arrayList = new ArrayList();
+            arrayList.add(intent.getExtras().getString("image"));
+            trendingItems.setImagearray(arrayList);
+
+            DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+            databaseHelper.saveNotif(trendingItems);
+
+            int size = PreferenceServices.getInstance().getNotifCOunt();
+            PreferenceServices.getInstance().updateNotif(size + 1);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -248,7 +281,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     private void getGoogleResponse(GoogleSignInAccount signInAccount) {
         JSONObject resultJson = loginController.getGoogleLoginDetails(signInAccount);
-        String googleImageUrl = String.valueOf(signInAccount.getPhotoUrl());
+        //String googleImageUrl = String.valueOf(signInAccount.getPhotoUrl());
         jsonRequestController.sendRequest(this, resultJson, SOCIAL_LOGIN_URL);
     }
 
@@ -424,19 +457,20 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     private Runnable mEndSplash = new Runnable() {
         public void run() {
-                if (!isFinishing()) {
-                    splashHandler.removeCallbacks(this);
-                    if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
+            if (!isFinishing()) {
+                splashHandler.removeCallbacks(this);
+                if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
+                    if(PreferenceServices.getInstance().geUsertName().equalsIgnoreCase(""))
                         changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
+                } else {
+                    if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
+                            || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
+                        startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
                     } else {
-                        if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
-                                || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
-                            startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
-                        } else {
-                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                        }
-                        finish();
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     }
+                    finish();
+                }
             }
         }
     };

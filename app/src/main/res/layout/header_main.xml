@@ -129,7 +129,8 @@
                     android:id="@+id/iv_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="@dimen/padding_xlarge"
                     android:background="@drawable/search"
                     android:contentDescription="Search"/>
             </LinearLayout>
@@ -139,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/padding_small"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:srcCompat="@drawable/notification"
                 android:layout_marginTop="-15dp"
                 android:layout_below="@+id/linearLayout"
@@ -149,14 +150,12 @@
 
             <com.hit.pretstreet.pretstreet.core.customview.NotificationBadge
                 android:id="@+id/badge"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="top"
                 app:nbMaxTextLength="2"
-                android:visibility="invisible"
                 app:nbTextColor="@color/white"
-                app:nbTextSize="@dimen/textsize_small"
-                app:nbBackground="@color/transparent"
+                app:nbBackground="@drawable/red_circle"
                 android:layout_alignTop="@+id/iv_notif"
                 android:layout_alignRight="@+id/linearLayout"
                 android:layout_alignEnd="@+id/linearLayout" />

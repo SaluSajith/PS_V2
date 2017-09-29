@@ -25,10 +25,13 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
+import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
+import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
 import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
+import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.controllers.NavItemsController;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.AboutFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.AccountFragment;
@@ -37,15 +40,21 @@ import com.hit.pretstreet.pretstreet.navigationitems.fragments.ChangePasswordFra
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.ContactUsFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.HtmlFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.NotificationFragment;
+import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.fragments.LoginFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.fragments.SignupFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
+import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +66,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 
 public class NavigationItemsActivity extends AbstractBaseAppCompatActivity implements
-        ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface {
+        ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface, TrendingCallback {
 
     private int currentFragment = 0;
     private static final int ACCOUNT_FRAGMENT = 0;
@@ -84,7 +93,6 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     HtmlFragment htmlFragment;
 
     @BindView(R.id.content) FrameLayout fl_content;
-    @BindView(R.id.nsv_header)NestedScrollView nsv_header;
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
 
     @Override
@@ -156,10 +164,9 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         }
     }
 
-    public void getNotificationlist(String offset, String pageCount, String pageid){
-        JSONObject resultJson = navItemsController.getNoitficationlistJson(offset, pageCount, pageid);
-        this.showProgressDialog(getResources().getString(R.string.loading));
-        jsonRequestController.sendRequest(this, resultJson, TRENDING_URL);
+    public void getNotificationlist(){
+        ArrayList<TrendingItems> trendingItemses = navItemsController.getNotifList();
+        trendingCallback.bindData(trendingItemses);
     }
 
     private void delayedBackpress(String msg){
@@ -299,6 +306,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
                     delayedBackpress(msg);
                     break;
                 case UPDATE_ACCOUNT_URL:
+                    navItemsController.updateSession(response);
                     delayedBackpress(msg);
                     break;
                 case UPDATEPASSWORD_ACCOUNT_URL:
@@ -407,4 +415,53 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             }
         }
     }
+
+    @Override
+    public void bindData(ArrayList<TrendingItems> trendingItems) {
+        forwardDeepLink(trendingItems.get(0).getShareUrl(), trendingItems.get(0).getId());
+    }
+
+    private void forwardDeepLink(String valueOne, String id){
+        Intent intent;
+        switch (valueOne){  //TODO nullpointer excp
+            case "store":
+                StoreListModel storeListModel =  new StoreListModel();
+                storeListModel.setId(id);
+                intent = new Intent(NavigationItemsActivity.this, StoreDetailsActivity.class);
+                intent.putExtra(PARCEL_KEY, storeListModel);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(CLICKTYPE_KEY, NOTIFICATIONKEY);
+                startActivity(intent);
+                break;
+            case "trending":
+                TrendingItems trendingItems = new TrendingItems();
+                trendingItems.setId(id);
+                trendingItems.setPagetypeid("");
+                trendingItems.setClicktype("");
+                intent = new Intent(NavigationItemsActivity.this, TrendingArticleActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, "");
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                startActivity(intent);
+                break;
+            case "exhibition":
+                trendingItems = new TrendingItems();
+                trendingItems.setId(id);
+                trendingItems.setPagetypeid("");
+                trendingItems.setClicktype("");
+                intent = new Intent(NavigationItemsActivity.this, ExhibitionDetailsActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
+                startActivity(intent);
+                break;
+            case "multistore":
+                intent = new Intent(NavigationItemsActivity.this, MultistoreActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(ID_KEY, id);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+    }
+
 }

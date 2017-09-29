@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rl_details"
-    android:background="@color/white">
+    android:background="@color/white"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,8 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_margin="@dimen/padding_xlarge">
+            android:gravity="center">
 
             <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
                 android:layout_width="wrap_content"
@@ -84,6 +84,7 @@
                 android:id="@+id/btn_follow"
                 android:minHeight="30dp"
                 android:minWidth="60dp"
+                android:layout_margin="@dimen/padding_xlarge"
                 android:paddingLeft="@dimen/padding_large"
                 android:paddingRight="@dimen/padding_large"
                 app:pret_typeface="@string/font_merriweather_regular"/>
@@ -99,7 +100,6 @@
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="@dimen/padding_standard"
                 android:gravity="center"
                 android:id="@+id/ll_call"
                 android:layout_gravity="center">
@@ -117,6 +117,7 @@
                     style="@style/textview_normal"
                     android:text="Call"
                     android:lines="2"
+                    android:layout_margin="0dp"
                     app:pret_typeface="@string/font_merriweather_regular"/>
             </LinearLayout>
 
@@ -124,7 +125,6 @@
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="@dimen/padding_standard"
                 android:gravity="center"
                 android:id="@+id/ll_address"
                 android:layout_gravity="center">
@@ -142,6 +142,7 @@
                     style="@style/textview_normal"
                     android:text="Address"
                     android:lines="2"
+                    android:layout_margin="0dp"
                     app:pret_typeface="@string/font_merriweather_regular"/>
             </LinearLayout>
 
@@ -149,7 +150,6 @@
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="@dimen/padding_standard"
                 android:gravity="center"
                 android:id="@+id/ll_getdirec"
                 android:layout_gravity="center">
@@ -166,8 +166,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/textview_normal"
-                    android:text="Get \nDirections"
+                    android:text="@string/get_dir"
                     android:lines="2"
+                    android:inputType="none"
+                    android:layout_margin="0dp"
                     android:gravity="center"
                     app:pret_typeface="@string/font_merriweather_regular"/>
             </LinearLayout>
@@ -208,6 +210,7 @@
                 style="@style/textview_normal"
                 android:id="@+id/tv_about"
                 android:gravity="left"
+                android:inputType="textMultiLine|textNoSuggestions"
                 android:layout_marginLeft="0dp"
                 android:layout_marginBottom="@dimen/padding_large"
                 android:textColor="@color/yellow_indicator"
@@ -262,6 +265,7 @@
             style="@style/textview_small"
             android:id="@+id/tv_openinghrs"
             android:gravity="left"
+            android:inputType="textMultiLine|textNoSuggestions"
             android:layout_marginBottom="@dimen/padding_standard"
             app:pret_typeface="@string/font_merriweather_light"/>
 

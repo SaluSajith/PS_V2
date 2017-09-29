@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 
 import java.util.ArrayList;
 
@@ -25,6 +28,7 @@ import butterknife.ButterKnife;
 public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticleAdapter.ArticleViewHolder>{
     private Context context;
     ArrayList<TrendingItems> artItems;
+    TrendingCallback trendingCallback;
 
     public TrendingArticleAdapter(Context context, ArrayList<TrendingItems> artItems) {
         this.context = context;
@@ -46,7 +50,7 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
     public void onBindViewHolder(ArticleViewHolder holder, int position) {
 
         TrendingItems trendingItems = artItems.get(position);
-        setViewText(holder.txt_shopname, trendingItems.getTitle());
+        setViewText(holder.txt_shopname, trendingItems.getId()+" "+trendingItems.getTitle());
         setViewText(holder.txt_description, trendingItems.getArticle());
 
         Glide.with(context)
@@ -60,19 +64,30 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
         textView.setText(text);
     }
 
-    public class ArticleViewHolder extends RecyclerView.ViewHolder {
+    public class ArticleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         @BindView(R.id.iv_banner)ImageView iv_banner;
         @BindView(R.id.txt_shopname)TextViewPret txt_shopname;
         @BindView(R.id.txt_description)TextViewPret txt_description;
 
-        int viewType;
-        private int mLastPosition;
-
         public ArticleViewHolder(View itemView) {
             super(itemView);
-            this.viewType = viewType;
             ButterKnife.bind(this, itemView);
+
+            iv_banner.setOnClickListener(this);
+            txt_shopname.setOnClickListener(this);
+            txt_description.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            TrendingItems notifItems = artItems.get(getAdapterPosition());
+            if(notifItems.isNotifPage()){
+                trendingCallback = (NavigationItemsActivity)context;
+                ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
+                trendingItemses.add(notifItems);
+                trendingCallback.bindData(trendingItemses);
+            }
         }
     }
 }

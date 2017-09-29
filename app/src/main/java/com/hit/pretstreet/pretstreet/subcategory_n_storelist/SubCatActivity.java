@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -18,20 +17,15 @@ import android.widget.LinearLayout;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
-import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
-import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
-import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.fragments.SubCatFragment;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.SubCatTrapeClick;
 
@@ -148,6 +142,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
                         nsv_header.setBackgroundColor(Color.BLACK);
                         ArrayList<HomeCatItems> homeCatItemses = loginController.getSubCatContent(response);
                         subCatTrapeClick.onSubTrapeClick(homeCatItemses, "");
+                        this.hideDialog();
                         break;
                     default: break;
                 }
@@ -170,7 +165,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void onResponse(JSONObject response) {
-        this.hideDialog();
+        //this.hideDialog();
         handleResponse(response);
     }
 
