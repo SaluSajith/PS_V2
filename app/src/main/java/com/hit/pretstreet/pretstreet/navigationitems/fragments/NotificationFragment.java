@@ -3,6 +3,7 @@ package com.hit.pretstreet.pretstreet.navigationitems.fragments;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class NotificationFragment extends AbstractBaseFragment<NavigationItemsAc
     }
 
     private void init(){
+        Log.d("FCM h", ""+PreferenceServices.getInstance().getNotifCOunt());
         PreferenceServices.getInstance().updateNotif(0);
         Utility.setListLayoutManager_(rv_trending, getActivity());
         rv_trending.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));

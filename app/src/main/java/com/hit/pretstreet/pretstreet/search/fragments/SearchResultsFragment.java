@@ -56,7 +56,6 @@ public class SearchResultsFragment extends AbstractBaseFragment<WelcomeActivity>
         super.onDestroyView();
         storeList_recyclerAdapter = null;
         storeListModels.clear();
-
         pageCount=1;
         requestCalled = false;
         loadmore = true;
@@ -151,5 +150,11 @@ public class SearchResultsFragment extends AbstractBaseFragment<WelcomeActivity>
         storeListModels.addAll(searchModels);
         setAdapter();
         storeList_recyclerAdapter.setLoaded();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("", "");
     }
 }

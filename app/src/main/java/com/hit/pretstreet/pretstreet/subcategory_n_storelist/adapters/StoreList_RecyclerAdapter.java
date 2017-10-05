@@ -5,6 +5,7 @@ import android.graphics.Matrix;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
     static int mPosition;
     private Context context;
-    private static ArrayList<StoreListModel> mItems;
+    private ArrayList<StoreListModel> mItems;
     private static TextViewPret textViewPret;
     private ButtonClickCallbackStoreList buttonClickCallback;
 
@@ -162,25 +163,27 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
         shopsHolder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == true ? "Unfollow" : "Follow");
         shopsHolder.tv_closeStatus.setText(storeListModel.getOpenStatus() == false ? "Closed" : "Open");
-        shopsHolder.img_sale.setVisibility(storeListModel.getSaleflag() == false ? View.GONE : View.VISIBLE);
-        shopsHolder.img_offer.setVisibility(storeListModel.getOfferflag() == false ? View.GONE : View.VISIBLE);
-        shopsHolder.img_newarrival.setVisibility(storeListModel.getNewflag() == false ? View.GONE : View.VISIBLE);
+        setVisibility(shopsHolder.img_sale, storeListModel.getSaleflag());
+        setVisibility(shopsHolder.img_offer, storeListModel.getOfferflag());
+        setVisibility(shopsHolder.img_newarrival, storeListModel.getNewflag());
+        setVisibility(shopsHolder.iv_banner, storeListModel.getBannerFlag());
 
-        shopsHolder.iv_banner.setVisibility(storeListModel.getBannerFlag() == false ? View.GONE : View.VISIBLE);
-        loadImage(glide, storeListModel.getImageSource(), shopsHolder.iv_banner);
         if(storeListModel.getBannerFlag()) {
             shopsHolder.iv_banner.setVisibility(View.VISIBLE);
             loadImage(glide, storeListModel.getImageSource(), shopsHolder.iv_banner);
         } else shopsHolder.iv_banner.setVisibility(View.GONE);
 
     }
-
+    private void setVisibility(View view, boolean b){
+        if(b) view.setVisibility(View.VISIBLE);
+        else view.setVisibility(View.GONE);
+    }
     @Override
     public long getItemId(int position) {
         return position;
     }
 
-    public static void updateFollowStatus(int status, String storeid) {
+    public void updateFollowStatus(int status, String storeid) {
         textViewPret.setText(status == 0 ? "Follow" : "Unfollow");
         if (mItems.get(mPosition).getId().equals(storeid))
             mItems.get(mPosition).setFollowingStatus(status == 1 ? false : true);
@@ -219,9 +222,11 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    StoreListModel storeListModel = mItems.get(position);
-                    buttonClickCallback.buttonClick(storeListModel);
+                        int position = getAdapterPosition();
+                    if(position<mItems.size()) {
+                        StoreListModel storeListModel = mItems.get(position);
+                        buttonClickCallback.buttonClick(storeListModel);
+                    }else ;
                 }
             });
         }
@@ -229,24 +234,27 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         @Override
         public void onClick(View view) {
             int id = view.getId();
-            StoreListModel storeListModel = mItems.get(getAdapterPosition());
-            switch (id) {
-                case R.id.img_follow_unfollow:
-                    mPosition = getAdapterPosition();
-                    textViewPret = (TextViewPret) view;
-                    buttonClickCallback.updateFollowStatus(storeListModel.getId());
-                    break;
-                case R.id.img_store_photo:
-                    buttonClickCallback.buttonClick(storeListModel);
-                    break;
-                case R.id.iv_banner:
-                    buttonClickCallback.buttonClick(storeListModel);
-                    break;
-                case R.id.txt_storename:
-                    buttonClickCallback.buttonClick(storeListModel);
-                    break;
-                default:
-                    break;
+            int position = getAdapterPosition();
+            if(position<=mItems.size()) {
+                StoreListModel storeListModel = mItems.get(position);
+                switch (id) {
+                    case R.id.img_follow_unfollow:
+                        mPosition = position;
+                        textViewPret = (TextViewPret) view;
+                        buttonClickCallback.updateFollowStatus(storeListModel.getId());
+                        break;
+                    case R.id.img_store_photo:
+                        buttonClickCallback.buttonClick(storeListModel);
+                        break;
+                    case R.id.iv_banner:
+                        buttonClickCallback.buttonClick(storeListModel);
+                        break;
+                    case R.id.txt_storename:
+                        buttonClickCallback.buttonClick(storeListModel);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

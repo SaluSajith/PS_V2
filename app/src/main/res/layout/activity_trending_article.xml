@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/ll_title"
-            android:layout_margin="15dp">
+            >
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -29,7 +29,8 @@
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/back"
                 android:layout_marginLeft="10dp"
-                android:contentDescription="Back" />
+                android:contentDescription="Back"
+                android:padding="10dp"/>
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                 android:id="@+id/txt_name"
@@ -39,7 +40,8 @@
                 android:layout_gravity="left"
                 android:gravity="left"
                 android:maxLines="2"
-                app:pret_typeface="@string/font_merriweather_bold" />
+                app:pret_typeface="@string/font_merriweather_bold"
+                android:padding="15dp"/>
         </LinearLayout>
 
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret

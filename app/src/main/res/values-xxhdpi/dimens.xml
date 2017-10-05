@@ -16,7 +16,10 @@
     <dimen name="padding_xhuge">45dp</dimen>
     <dimen name="padding_xxhuge">20dp</dimen>
 
-    <dimen name="margin_xxlarge">19dp</dimen>//
+    <dimen name="padding_subcat_s">5dp</dimen>
+    <dimen name="padding_subcat">5dp</dimen>
+    <dimen name="margin_xxlarge">19dp</dimen>
+    <dimen name="margin_about">0dp</dimen>
 
     <dimen name="button_radius_standard">10dp</dimen>
     <dimen name="button_radius_small">5dp</dimen>
@@ -62,7 +65,7 @@
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>
-    <dimen name="content_overlapmargin">-50dp</dimen>
+    <dimen name="content_overlapmargin">-58dp</dimen>
     <dimen name="content_overlapmargin_activity">-40dp</dimen>
     <dimen name="content_overlapmargin_hometrape">-30dp</dimen>
 
@@ -73,12 +76,12 @@
 
     <dimen name="changepass_height">320dp</dimen>
     <dimen name="myaccount_height">550dp</dimen>
-    <dimen name="about_height">670dp</dimen>
+    <dimen name="about_height">580dp</dimen>
 
     <dimen name="header_margin">20dp</dimen>
     <dimen name="horiscroll_margin">-30dp</dimen>
 
-    <dimen name="storelist_img_height">130dp</dimen>
+    <dimen name="storelist_img_height">125dp</dimen>
     <dimen name="storelist_img_width">140dp</dimen>
     <dimen name="storelist_banner_height">150dp</dimen>
     <dimen name="storelist_banner_height_firstrow">140dp</dimen>

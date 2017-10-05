@@ -11,11 +11,11 @@
     <color name="menu_bg">#1c1c1c</color>
     <color name="yellow">#fffdd037</color>
     <color name="yellow_trans">#ddfdd037</color>
-    <color name="yellow_indicator">#fffdd037</color>
+    <color name="yellow_indicator">#fffdd037</color>//
     <color name="yellow_storelist_scroll">#FDC80B</color>
     <color name="yellow_storelist">#FFDF5D</color>
+    <color name="yellow_storeli1st">#FEDF5D</color>
 
-    <!--<color name="yellow">#ffffdf5d</color>E6AD02-->
     <color name="black">#000000</color>
     <color name="green">#088e11</color>
     <color name="red">#c41313</color>

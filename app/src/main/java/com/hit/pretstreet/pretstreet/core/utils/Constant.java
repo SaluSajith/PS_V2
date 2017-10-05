@@ -20,8 +20,8 @@ public class Constant {
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
     //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
-    //public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";
-    public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
+    public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";   //test
+    //public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
     public static final String LOGIN_OTP_URL = COMMON_URL + "customer/customerlogingenerateOtp";
@@ -57,7 +57,6 @@ public class Constant {
     public static final String TC_URL = COMMON_URL + "customer/staticpageTnC";
     public static final String ABOUT_URL = COMMON_URL + "customer/staticpageAbout";
     public static final String TRACK_URL = COMMON_URL + "customer/storeDetailsTracking";
-
     //updated after 5/9/2017
 
     public static final String INDEX_PATH = COMMON_URL + "store/trendingArticle";

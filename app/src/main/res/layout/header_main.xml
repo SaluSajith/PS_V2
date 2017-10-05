@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/fixed_top"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:id="@+id/imageView6"
                 android:contentDescription=""/>
 
@@ -83,6 +83,7 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/logo"
                 android:rotation="1"
+                android:paddingLeft="5dp"
                 android:layout_below="@+id/linearLayout"
                 android:layout_alignLeft="@+id/linearLayout"
                 android:layout_alignStart="@+id/linearLayout"
@@ -95,8 +96,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:orientation="horizontal"
-                android:layout_marginLeft="@dimen/padding_xlarge"
-                android:layout_marginRight="@dimen/padding_standard"
+                android:layout_marginLeft="@dimen/padding_large"
+                android:layout_marginRight="@dimen/padding_large"
                 android:gravity="top"
                 android:id="@+id/linearLayout">
 
@@ -104,7 +105,7 @@
                     android:id="@+id/iv_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/padding_standard"
+                    android:layout_marginRight="5dp"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/menu"
                     android:contentDescription="Menu"/>
@@ -114,24 +115,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="-10dp"
                     app:srcCompat="@drawable/logo1"
                     android:contentDescription=""/>
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="" />
-
                 <ImageView
                     android:id="@+id/iv_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="@dimen/padding_xlarge"
-                    android:background="@drawable/search"
+                    android:layout_width="20dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/search"
                     android:contentDescription="Search"/>
             </LinearLayout>
 
@@ -139,14 +137,14 @@
                 android:id="@+id/iv_notif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/padding_small"
+                android:layout_gravity="center"
                 android:visibility="visible"
                 app:srcCompat="@drawable/notification"
-                android:layout_marginTop="-15dp"
-                android:layout_below="@+id/linearLayout"
+                android:layout_centerVertical="true"
                 android:layout_alignRight="@+id/linearLayout"
                 android:layout_alignEnd="@+id/linearLayout"
-                android:contentDescription="Notification"/>
+                android:contentDescription="Filter"/>
+
 
             <com.hit.pretstreet.pretstreet.core.customview.NotificationBadge
                 android:id="@+id/badge"
@@ -157,8 +155,7 @@
                 app:nbTextColor="@color/white"
                 app:nbBackground="@drawable/red_circle"
                 android:layout_alignTop="@+id/iv_notif"
-                android:layout_alignRight="@+id/linearLayout"
-                android:layout_alignEnd="@+id/linearLayout" />
+                android:layout_alignRight="@+id/linearLayout" />
         </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

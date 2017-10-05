@@ -113,7 +113,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
-        checkDevice();
+        //checkDevice();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
@@ -125,7 +125,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         });
         ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
         iv_search.setVisibility(View.GONE);
-        fl_content.bringToFront();
+        nsv_header.bringToFront();
 
         Intent intent = getIntent();
         int fragmentId = intent.getIntExtra("fragment", 0);
@@ -136,13 +136,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     public void filterResult(){
         showSortScreem();
     }
-
+/*
     private void checkDevice(){
         String manufacturer = android.os.Build.MANUFACTURER;
         if(manufacturer.equalsIgnoreCase("samsung")){
             nsv_header.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
-    }
+    }*/
 
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
@@ -160,7 +160,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 first = true;
                 currentFragment = EXHIBITION_FRAGMENT;
                 tv_cat_name.setText("Exhibition");
-                iv_filter.setVisibility(View.GONE);
+                iv_filter.setVisibility(View.VISIBLE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 exhibitionFragment = new ExhibitionFragment();
                 trendingCallback = exhibitionFragment;

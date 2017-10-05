@@ -29,9 +29,9 @@ public class Utility {
         recyclerView.setLayoutManager(llm);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(20);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        //recyclerView.setItemViewCacheSize(20);
+        //recyclerView.setDrawingCacheEnabled(true);
+        //recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         return llm;
     }
 
@@ -41,9 +41,9 @@ public class Utility {
         recyclerView.setLayoutManager(llm);
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(20);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        //recyclerView.setItemViewCacheSize(20);
+        //recyclerView.setDrawingCacheEnabled(true);
+        //recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         return llm;
     }
 

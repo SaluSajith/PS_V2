@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:overScrollMode="never"
     android:background="@android:color/white">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <com.hit.pretstreet.pretstreet.core.customview.NestedWebView
+            android:id="@+id/webview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="10sp"
+            android:layout_marginTop="50dp"
+            android:fillViewport="true"
+            android:focusable="true"
+            android:isScrollContainer="false"
+            android:visibility="visible"
+            android:scrollbars="none"
+            android:requiresFadingEdge="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
             android:id="@+id/txt_content"
             android:layout_width="wrap_content"

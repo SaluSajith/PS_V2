@@ -115,9 +115,9 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
             else if(catName.length()>6&&catName.length()<=10)
                 lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 0, -3, 0);
             else if(catName.length()>10&&catName.length()<14)
-                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 4, -3, 0);
+                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_subcat_s) + 4, -3, 0);
             else if(catName.length()>=14)
-                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 7, -3, 0);
+                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_subcat) + 7, -3, 0);
             txt_cat_name.setLayoutParams(lp);
 
             Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);

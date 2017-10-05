@@ -191,10 +191,10 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
             index = 0;
             for (SearchModel object : homeSubCategories) {
                 txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_indicator));
+                txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
                 index++;
             }
-            txtname[0].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_indicator));
+            txtname[0].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
             txtname[0].setTextColor(ContextCompat.getColor(this, R.color.black));
         }
     }
@@ -266,10 +266,10 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     public void onClick(View v) {
         for (int i=0;i<txtname.length;i++) {
             txtname[i].setBackgroundColor(ContextCompat.getColor(FollowingActivity.this, R.color.transparent));
-            txtname[i].setTextColor(ContextCompat.getColor(FollowingActivity.this, R.color.yellow_indicator));
+            txtname[i].setTextColor(ContextCompat.getColor(FollowingActivity.this, R.color.yellow_storelist_scroll));
         }
         TextViewPret textViewPret = (TextViewPret) v;
-        textViewPret.setBackgroundColor(ContextCompat.getColor(FollowingActivity.this, R.color.yellow_indicator));
+        textViewPret.setBackgroundColor(ContextCompat.getColor(FollowingActivity.this, R.color.yellow_storelist_scroll));
         textViewPret.setTextColor(ContextCompat.getColor(FollowingActivity.this, R.color.black));
 
         catTag = textViewPret.getTag().toString()+"";

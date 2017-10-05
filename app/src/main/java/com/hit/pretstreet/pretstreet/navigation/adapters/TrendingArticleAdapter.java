@@ -50,7 +50,7 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
     public void onBindViewHolder(ArticleViewHolder holder, int position) {
 
         TrendingItems trendingItems = artItems.get(position);
-        setViewText(holder.txt_shopname, trendingItems.getId()+" "+trendingItems.getTitle());
+        setViewText(holder.txt_shopname, trendingItems.getTitle());
         setViewText(holder.txt_description, trendingItems.getArticle());
 
         Glide.with(context)

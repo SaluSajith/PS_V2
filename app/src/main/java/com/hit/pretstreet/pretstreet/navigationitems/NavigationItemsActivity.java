@@ -114,7 +114,6 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         PreferenceServices.init(this);
 
         View ll_header = findViewById(R.id.ll_header);
-        Toolbar toolbar = (Toolbar) ll_header.findViewById(R.id.toolbar);
         ImageView iv_menu = (ImageView) ll_header.findViewById(R.id.iv_back);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override

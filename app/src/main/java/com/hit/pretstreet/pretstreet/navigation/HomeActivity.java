@@ -59,6 +59,7 @@ import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
+import com.hit.pretstreet.pretstreet.navigationitems.fragments.AboutFragment;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
@@ -132,10 +133,8 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         try {
             int size = PreferenceServices.getInstance().getNotifCOunt();
             Log.d("FCM h", ""+PreferenceServices.getInstance().getNotifCOunt());
-           if(size>0) {
-                badge_home.setNumber(size);
-                mBadge.setNumber(size);
-            }
+            badge_home.setNumber(size);
+            mBadge.setNumber(size);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -307,8 +306,12 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
         LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
         if (PreferenceServices.getInstance().geUsertName().equalsIgnoreCase("")) {
-            //TODO : get Username Api
-            tv_profile.setText("");
+            try {
+                AboutFragment aboutFragment = new AboutFragment();
+                aboutFragment.onLogoutPressed();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         else{
             tv_profile.setText(PreferenceServices.getInstance().geUsertName());
@@ -331,7 +334,8 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
         } catch (android.content.ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
     }
 

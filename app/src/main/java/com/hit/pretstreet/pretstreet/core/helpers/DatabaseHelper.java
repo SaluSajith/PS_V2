@@ -82,17 +82,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public long saveNotif(TrendingItems trendingItems) {
-        db = this.getWritableDatabase();
+        long l = 0;
+        try {
+            db = this.getWritableDatabase();
 
-        values = new ContentValues();
-        values.put(KEY_ID, trendingItems.getId());
-        values.put(KEY_TITLE, trendingItems.getTitle());
-        values.put(KEY_DESC, trendingItems.getArticle());
-        values.put(KEY_IMAGE, (trendingItems.getImagearray().size()>0 ? trendingItems.getImagearray().get(0) : ""));
-        values.put(KEY_SHARE, trendingItems.getShareUrl());
-        values.put(KEY_ICON, trendingItems.getLogoImage());
-        long l = db.insert(TABLE_NOTIFICATION, null, values);
-        db.close();
+            values = new ContentValues();
+            values.put(KEY_ID, trendingItems.getId());
+            values.put(KEY_TITLE, trendingItems.getTitle());
+            values.put(KEY_DESC, trendingItems.getArticle());
+            values.put(KEY_IMAGE, (trendingItems.getImagearray().size()>0 ? trendingItems.getImagearray().get(0) : ""));
+            values.put(KEY_SHARE, trendingItems.getShareUrl());
+            values.put(KEY_ICON, trendingItems.getLogoImage());
+            l = db.insert(TABLE_NOTIFICATION, null, values);
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return l;
     }
     public long saveSearches(String sid, String sname, String address) {

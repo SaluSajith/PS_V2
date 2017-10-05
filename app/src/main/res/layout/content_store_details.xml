@@ -183,8 +183,9 @@
             android:text="@string/book"
             android:id="@+id/tv_book_app"
             android:gravity="center"
+            android:visibility="gone"
             android:layout_marginBottom="@dimen/padding_large"
-            android:background="@color/yellow"
+            android:background="@color/yellow_storelist"
             android:padding="@dimen/padding_standard"
             app:pret_typeface="@string/font_merriweather_regular"/>
 
@@ -230,6 +231,7 @@
             android:layout_height="wrap_content"
             style="@style/textview_normal"
             android:text="Testimonials"
+            android:visibility="invisible"
             android:id="@+id/tv_testimonials_heading"
             android:layout_margin="@dimen/padding_large"
             android:textSize="@dimen/textsize_large"
@@ -272,7 +274,7 @@
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/yellow"
+            android:background="@color/yellow_storelist"
             style="@style/textview_normal"
             android:text="  Photos  "
             android:id="@+id/tv_heading_photos"

@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/fixed_top"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:id="@+id/imageView3"
             android:contentDescription=""/>
 

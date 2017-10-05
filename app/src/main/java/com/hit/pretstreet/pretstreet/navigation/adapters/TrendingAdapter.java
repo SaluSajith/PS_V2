@@ -107,7 +107,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TrendingItems trendingItems = list.get(position);
         setViewText(holder.txt_date, trendingItems.getArticledate());
         //setViewText(holder.txt_title, trendingItems.getTitle());
-        holder.txt_title.setVisibility(View.GONE);
+        holder.txt_title.setVisibility(View.VISIBLE);
         setViewText(holder.txt_description, trendingItems.getArticle());
 
         if(trendingItems.getBanner()){
@@ -238,7 +238,12 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
                     break;
                 case R.id.txt_title:
-                    trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
+                    storeListModel = new StoreListModel();
+                    storeListModel.setId(trendingItems.getTitleid());
+                    storeListModel.setTitle(trendingItems.getTitle());
+                    storeListModel.setPageTypeId(trendingItems.getTitlepagetype());
+                    trendingHolderInvoke.loadStoreDetails(getAdapterPosition(),
+                            storeListModel);
                     break;
                 case R.id.iv_banner:
                     if(trendingItems.getBanner()){

@@ -56,15 +56,23 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/padding_large"/>
-
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:id="@+id/txt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View store"
+                android:textSize="10dp"
+                android:textColor="@color/yellow_indicator"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/padding_small"
+                android:layout_marginBottom="0dp"
+                app:pret_typeface="@string/font_merriweather_regular" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginLeft="@dimen/padding_large"
-                android:layout_marginRight="@dimen/padding_large"
-                android:layout_marginTop="@dimen/padding_small"
-                android:gravity="center">
+                android:layout_marginRight="@dimen/padding_large">
 
                 <ImageView
                     android:layout_width="45dp"
@@ -74,7 +82,6 @@
                     android:layout_margin="@dimen/padding_xxxsmall"
                     android:visibility="gone"
                     android:layout_gravity="center"/>
-
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:id="@+id/txt_shopname"
                     android:layout_width="0dp"
@@ -82,12 +89,12 @@
                     android:layout_height="match_parent"
                     android:text="Z Studio"
                     android:maxLines="2"
-                    android:layout_marginTop="@dimen/padding_small"
                     style="@style/textview_title"
-                    android:gravity="left"
-                    android:layout_gravity="center"
+                    android:gravity="left|top"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginRight="0dp"
                     app:pret_typeface="@string/font_merriweather_bold" />
+
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:id="@+id/txt_date"
                     android:layout_width="wrap_content"
@@ -113,16 +120,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginRight="@dimen/padding_large">
-                    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                        android:id="@+id/txt_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="4 trends to follow"
-                        android:maxLines="2"
-                        style="@style/textview_normal"
-                        android:gravity="left"
-                        android:layout_marginLeft="0dp"
-                        app:pret_typeface="@string/font_merriweather_regular" />
 
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                         android:id="@+id/txt_description"

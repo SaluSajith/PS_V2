@@ -9,6 +9,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +37,6 @@ import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
-import com.hit.pretstreet.pretstreet.search.fragments.SearchResultsFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
@@ -72,14 +72,11 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTAT
 public class StoreListingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallbackStoreList, View.OnClickListener {
 
-    @BindView(R.id.content)
-    FrameLayout fl_content;
+    @BindView(R.id.content) FrameLayout fl_content;
     @BindView(R.id.nsv_header)AppBarLayout nsv_header;
-    @BindView(R.id.tv_cat_name)
-    TextViewPret tv_cat_name;
+    @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
     @BindView(R.id.tv_location) TextViewPret tv_location;
-    @BindView(R.id.ll_scroll)
-    LinearLayout ll_scroll;
+    @BindView(R.id.ll_scroll) LinearLayout ll_scroll;
     @BindView(R.id.rv_storelist)RecyclerView rv_storelist;
     @BindView(R.id.ll_header) LinearLayout ll_header;
     @BindView(R.id.ll_location) LinearLayout ll_location;
@@ -170,7 +167,13 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         Utility.setListLayoutManager_(rv_storelist, StoreListingActivity.this);
         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, StoreListingActivity.this, storeListModels);
         storeList_recyclerAdapter.setHasStableIds(true);
+        rv_storelist.setAdapter(storeList_recyclerAdapter);
         rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+
+        RecyclerView.ItemAnimator animator = rv_storelist.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator) {
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+        }
 
         /*Get shoplist details of selected category*/
         createScrollingHeader();
@@ -281,12 +284,12 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         for (HomeCatItems object: homeSubCategories) {
             index++;
             if(txtname[index].getText().toString().trim().equalsIgnoreCase(getIntent().getStringExtra("mTitle").trim())){
-                txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_indicator));
+                txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
                 txtname[index].setTextColor(ContextCompat.getColor(this, R.color.black));
                 txtname[index].performClick();
             }else{
                 txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_indicator));
+                txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
             }
         }
     }
@@ -340,8 +343,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         else
             storeList_recyclerAdapter.notifyDataSetChanged();
         storeList_recyclerAdapter.setLoaded();
-        if(storeListModels.size()==0)
-            ll_empty.setVisibility(View.VISIBLE);
+
+        if(storeListModels.size()==0) ll_empty.setVisibility(View.VISIBLE);
         else ll_empty.setVisibility(View.INVISIBLE);
 
         new Handler().postDelayed(new Runnable() {

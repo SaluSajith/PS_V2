@@ -66,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
-                    android:drawableRight="@drawable/search"
+                    android:drawableRight="@drawable/search_icon"
                     android:hint="Search for"
                     android:lines="1"
                     android:layout_marginLeft="@dimen/padding_small"

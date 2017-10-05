@@ -150,17 +150,17 @@ public class SharedPreferencesHelper {
      * Get stored session data
      * */
     public LoginSession getUserDetails(){
-       LoginSession userDetails = new LoginSession();
-        userDetails.setRegid(pref.getString(KEY_REG_ID, null));
-        userDetails.setMobile(pref.getString(KEY_MOBILE, null));
-        userDetails.setFname(pref.getString(KEY_FNAME, null));
-        userDetails.setLname(pref.getString(KEY_LNAME, null));
-        userDetails.setEmail(pref.getString(KEY_EMAIL, null));
-        userDetails.setGender(pref.getString(KEY_GENDER, null));
-        userDetails.setSocial_id(pref.getString(KEY_SOCIALID, null));
-        userDetails.setSocial_type(pref.getString(KEY_SOCIALTYPE, null));
-        userDetails.setProfile_pic(pref.getString(KEY_PIC, null));
-        userDetails.setSessionid(pref.getString(KEY_SESSION, null));
+        LoginSession userDetails = new LoginSession();
+        userDetails.setRegid(pref.getString(KEY_REG_ID, ""));
+        userDetails.setMobile(pref.getString(KEY_MOBILE, ""));
+        userDetails.setFname(pref.getString(KEY_FNAME, ""));
+        userDetails.setLname(pref.getString(KEY_LNAME, ""));
+        userDetails.setEmail(pref.getString(KEY_EMAIL, ""));
+        userDetails.setGender(pref.getString(KEY_GENDER, ""));
+        userDetails.setSocial_id(pref.getString(KEY_SOCIALID, ""));
+        userDetails.setSocial_type(pref.getString(KEY_SOCIALTYPE, ""));
+        userDetails.setProfile_pic(pref.getString(KEY_PIC, ""));
+        userDetails.setSessionid(pref.getString(KEY_SESSION, ""));
 
         return userDetails;
     }
@@ -179,7 +179,7 @@ public class SharedPreferencesHelper {
         editor.remove(KEY_SOCIALID);
         editor.remove(KEY_SOCIALTYPE);
         editor.remove(KEY_PIC);
-//        editor.clear();
+//      editor.clear();
         editor.commit();
     }
 

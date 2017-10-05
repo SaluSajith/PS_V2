@@ -11,7 +11,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="padding_xxxsmall">1dp</dimen>
-    <dimen name="padding_xxsmall">2dp</dimen>
+    <dimen name="padding_xxsmall">4dp</dimen>
     <dimen name="padding_xsmall">3dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_standard">5dp</dimen>
@@ -23,7 +23,10 @@
     <dimen name="padding_xhuge">45dp</dimen>
     <dimen name="padding_xxhuge">20dp</dimen>
 
+    <dimen name="padding_subcat_s">3dp</dimen>
+    <dimen name="padding_subcat">3dp</dimen>
     <dimen name="margin_xxlarge">16dp</dimen>//
+    <dimen name="margin_about">10dp</dimen>//
     <dimen name="home_trapediv_padding">16dp</dimen>
 
     <dimen name="button_radius_standard">10dp</dimen>
@@ -71,8 +74,8 @@
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>
-    <dimen name="content_overlapmargin">0dp</dimen>
-    <dimen name="content_overlapmargin_activity">-40dp</dimen>
+    <dimen name="content_overlapmargin">-10dp</dimen>
+    <dimen name="content_overlapmargin_activity">-30dp</dimen>
     <dimen name="content_overlapmargin_hometrape">-30dp</dimen>
 
     <!--Inner Pages-->
@@ -86,7 +89,7 @@
 
     <dimen name="contactus_height">250dp</dimen>
     <dimen name="myaccount_height">470dp</dimen>
-    <dimen name="about_height">570dp</dimen>
+    <dimen name="about_height">500dp</dimen>
 
     <dimen name="header_margin">20dp</dimen>
     <dimen name="horiscroll_margin">-30dp</dimen>

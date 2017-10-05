@@ -459,10 +459,12 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         public void run() {
             if (!isFinishing()) {
                 splashHandler.removeCallbacks(this);
-                if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
-                    if(PreferenceServices.getInstance().geUsertName().equalsIgnoreCase(""))
-                        changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
-                } else {
+                //if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
+                SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+                LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
+                if(loginSession.getSessionid().trim().length()==0||loginSession.getRegid().trim().length()==0)
+                    changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
+                else {
                     if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
                             || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
                         startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));

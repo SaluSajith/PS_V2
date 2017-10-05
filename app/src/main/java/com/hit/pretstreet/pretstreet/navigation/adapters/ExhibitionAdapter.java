@@ -231,9 +231,10 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     if(trendingItems.getBanner()){
                         trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.EXHIBITIONPAGE);
                     }else {
-                        ArrayList<String> mImagearray = new ArrayList<>();
+                        ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
+                        /*ArrayList<String> mImagearray = new ArrayList<>();
                         mImagearray.add(trendingItems.getImagearray().get(0));
-                        zoomedViewListener.onClicked(0, mImagearray);
+                        zoomedViewListener.onClicked(0, mImagearray);*/
                     }
                     break;
                 default:
