@@ -75,6 +75,8 @@ import butterknife.OnClick;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONLIKE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONREGISTER_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXNOTGOINGLINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
 
@@ -140,6 +142,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     private void initUi(){
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        exhibitionDetailsModel = new StoreDetailsModel();
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager
                 (3, LinearLayoutManager.VERTICAL);
@@ -192,6 +195,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
         try {
             tv_about_heading.setVisibility(exhibitionDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_about.setVisibility(exhibitionDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
             tv_imgsrc.setVisibility(exhibitionDetailsModel.getImageSource().length() > 0 ? View.VISIBLE : View.GONE);
             tv_product.setVisibility(exhibitionDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
             tv_time.setVisibility(exhibitionDetailsModel.getTimingToday().length() > 0 ? View.VISIBLE : View.GONE);
@@ -221,8 +225,11 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             for (Object timing : arrayListTimings) {
                 strTiming.append(timing + "<br/>" + "<br/>");
             }
-            sourceString = strTiming.toString();
-            tv_openinghrs.setText(Html.fromHtml(sourceString));
+            String sourceStringTime = strTiming.toString();
+            if(sourceStringTime.trim().length()==0)
+                tv_openinghrs.setVisibility(View.GONE);
+            else
+                tv_openinghrs.setText(Html.fromHtml(sourceStringTime));
             setupGallery(exhibitionDetailsModel.getArrayListImages());
         }catch (Exception e){}
     }
@@ -508,7 +515,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
                     break;
                 case EXHIBITIONLIKE_URL:
                     JSONObject object = response.getJSONObject("Data");
-                    exhibitionDetailsModel.setFollowingStatus(object.getInt("LikeStatus")== 0 ? true : false);
+                    exhibitionDetailsModel.setFollowingStatus(object.getInt("LikeStatus")== 0 ? false : true);
                     ib_like.setTag(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
                     ib_like.setImageResource(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
                     break;
@@ -535,11 +542,24 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        Bundle b = new Bundle();
+        b.putString(ID_KEY, exhibitionDetailsModel.getId());
+        int likeStatus = exhibitionDetailsModel.getFollowingStatus() == true ? 1 : 0;
+        b.putString(PARCEL_KEY, likeStatus+"");
+        intent.putExtras(b);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     public static float dpToPixels(int dp, Context context) {
         return dp * (context.getResources().getDisplayMetrics().density);
     }

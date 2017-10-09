@@ -38,12 +38,10 @@ public class TrendingArticle extends AbstractBaseFragment<HomeInnerActivity> imp
     }
 
     private void init(){
-
         Utility.setListLayoutManager(rv_trending, getActivity());
         /*rv_trending.addItemDecoration(new DividerDecoration(getActivity(),
                 ContextCompat.getColor(getActivity(), R.color.trending_grey), 5.0f));*/
         ((HomeInnerActivity)getActivity()).getTrendinglist(1); //TODO
-
     }
 
     @Override

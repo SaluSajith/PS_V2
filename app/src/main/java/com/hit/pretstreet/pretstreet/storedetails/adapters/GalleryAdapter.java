@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryHolder> {
     private Context context;
-    ArrayList<String> urls;
-    ImageClickCallback imageClickCallback;
+    private ArrayList<String> urls;
+    private ImageClickCallback imageClickCallback;
 
     public GalleryAdapter(Context context,ArrayList<String> urls) {
         this.context = context;

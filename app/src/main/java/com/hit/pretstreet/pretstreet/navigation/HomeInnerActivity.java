@@ -76,6 +76,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
     private static final int TRENDINGARTICLE_FRAGMENT = 12;
+    private static final int EXHIBITION_DETAILS = 13;
     private static final int PRIVACY_FRAGMENT = 7;
 
     JsonRequestController jsonRequestController;
@@ -136,7 +137,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     public void filterResult(){
         showSortScreem();
     }
-/*
+    /*
     private void checkDevice(){
         String manufacturer = android.os.Build.MANUFACTURER;
         if(manufacturer.equalsIgnoreCase("samsung")){
@@ -160,7 +161,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 first = true;
                 currentFragment = EXHIBITION_FRAGMENT;
                 tv_cat_name.setText("Exhibition");
-                iv_filter.setVisibility(View.VISIBLE);
+                iv_filter.setVisibility(View.GONE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 exhibitionFragment = new ExhibitionFragment();
                 trendingCallback = exhibitionFragment;
@@ -180,14 +181,14 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     public void getTrendinglist(int offset){
         JSONObject resultJson = homeFragmentController.getTrendinglistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
         if(first)
-        this.showProgressDialog(getResources().getString(R.string.loading));
+            this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, TRENDING_URL);
     }
 
     public void getExhibitionlist(int offset){
         JSONObject resultJson = homeFragmentController.getExhibitionlistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
         if(first)
-        this.showProgressDialog(getResources().getString(R.string.loading));
+            this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, EXHIBITION_URL);
     }
 
@@ -461,7 +462,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             Intent intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
             intent.putExtra(Constant.PARCEL_KEY, trendingItems);
             intent.putExtra(Constant.PRE_PAGE_KEY, Constant.TRENDINGPAGE);
-            startActivity(intent);
+            startActivityForResult(intent, TRENDINGARTICLE_FRAGMENT);
         }
     }
 
@@ -469,7 +470,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         Intent intent = new Intent(HomeInnerActivity.this, ExhibitionDetailsActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, trendingItems);
         intent.putExtra(Constant.PRE_PAGE_KEY, Constant.EXHIBITIONPAGE);
-        startActivity(intent);
+        startActivityForResult(intent, EXHIBITION_DETAILS);
     }
 
     private void openNext(TrendingItems trendingItems, String prePage){
@@ -479,13 +480,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             case ARTICLEPAGE:
                 intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                startActivity(intent);
+                startActivityForResult(intent, TRENDINGARTICLE_FRAGMENT);
                 break;
             case EXARTICLEPAGE:
                 intent = new Intent(HomeInnerActivity.this, ExhibitionDetailsActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, trendingItems);
                 intent.putExtra(Constant.PRE_PAGE_KEY, STORELISTINGPAGE);
-                startActivity(intent);
+                startActivityForResult(intent, EXHIBITION_DETAILS);
                 break;
             case MULTISTOREPAGE:
                 intent = new Intent(HomeInnerActivity.this, MultistoreActivity.class);
@@ -536,5 +537,28 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.HOMEPAGE));
         intent.putExtra(Constant.POSITION_KEY, position);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (resultCode == RESULT_OK) {
+                int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
+                String storeId = data.getStringExtra(ID_KEY);
+                switch (requestCode) {
+                    case TRENDINGARTICLE_FRAGMENT:
+                        trendingFragment.updateLikeStatus(status, storeId);
+                        break;
+                    case EXHIBITION_DETAILS:
+                        exhibitionFragment.updateLikeStatus(status, storeId);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -41,6 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.R.id.imageView;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 /**
  * Created by User on 03/08/2017.
@@ -49,10 +50,9 @@ import static com.hit.pretstreet.pretstreet.R.id.imageView;
 public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     Context context, fragContext;
-    int dotsCount = 0;
+    private int dotsCount = 0;
     static int mPosition;
-    private static ImageView imageViewPret;
-    private static ArrayList<TrendingItems> list;
+    private ArrayList<TrendingItems> list;
     ArticlePagerAdapter mAdapter;
     TrendingHolderInvoke trendingHolderInvoke;
     private ZoomedViewListener zoomedViewListener;
@@ -66,7 +66,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int lastVisibleItem, totalItemCount;
     private final RequestManager glide;
 
-    public TrendingAdapter(final RequestManager glide, RecyclerView mRecyclerView, Activity activity, TrendingFragment context, ArrayList<TrendingItems> list) {
+    public TrendingAdapter(final RequestManager glide, RecyclerView mRecyclerView,
+                           Activity activity, TrendingFragment context, ArrayList<TrendingItems> list) {
         this.context = activity;
         this.list = list;
         this.glide = glide;
@@ -107,7 +108,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TrendingItems trendingItems = list.get(position);
         setViewText(holder.txt_date, trendingItems.getArticledate());
         //setViewText(holder.txt_title, trendingItems.getTitle());
-        holder.txt_title.setVisibility(View.VISIBLE);
+        holder.txt_title.setVisibility(trendingItems.getTitleid().trim().length()>0 ? View.GONE : View.GONE);
         setViewText(holder.txt_description, trendingItems.getArticle());
 
         if(trendingItems.getBanner()){
@@ -118,10 +119,19 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         else {
             switch (trendingItems.getImagearray().size()) {
                 case 0:
+                    holder.pager_indicator.setVisibility(View.INVISIBLE);
                     holder.iv_banner.setVisibility(View.VISIBLE);
                     holder.iv_banner.setImageResource(R.mipmap.ic_launcher);
                     break;
+                case 1:
+                    holder.pager_indicator.setVisibility(View.INVISIBLE);
+                    holder.iv_banner.setVisibility(View.GONE);
+                    mAdapter = new ArticlePagerAdapter(glide, context, trendingItems.getImagearray());
+                    holder.article_images.setAdapter(mAdapter);
+                    holder.article_images.setCurrentItem(0);
+                    break;
                 default:
+                    holder.pager_indicator.setVisibility(View.VISIBLE);
                     holder.iv_banner.setVisibility(View.GONE);
                     mAdapter = new ArticlePagerAdapter(glide, context, trendingItems.getImagearray());
                     holder.article_images.setAdapter(mAdapter);
@@ -133,12 +143,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }
         String udata = trendingItems.getTitle()+"";
-        SpannableString content = new SpannableString(udata);
-        content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
-        holder.txt_shopname.setText(content.toString());
-
+        holder.txt_shopname.setText(udata);
         loadImage(glide, trendingItems.getLogoImage(), holder.iv_profile);
-
         holder.iv_like.setImageResource(trendingItems.getLike() == true ?
                 R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
@@ -193,16 +199,16 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.txt_shopname)TextViewPret txt_shopname;
         @BindView(R.id.txt_description)TextViewPret txt_description;
 
-        @BindView(R.id.pager_article)ViewPager article_images;
-        @BindView(R.id.viewPagerCountDots)LinearLayout pager_indicator;
         @BindView(R.id.ll_desc)LinearLayout ll_desc;
         @BindView(R.id.ll_progress) LinearLayout ll_progress;
-        ImageView[] dots;
+        @BindView(R.id.pager_article)ViewPager article_images;
+        @BindView(R.id.viewPagerCountDots)LinearLayout pager_indicator;
+        private ImageView[] dots;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            imageViewPret =  new ImageView(context);
+            //imageViewPret =  new ImageView(context);
 
             iv_like.setOnClickListener(this);
             iv_share.setOnClickListener(this);
@@ -220,13 +226,14 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             switch (viewId) {
                 case R.id.iv_like:
                     mPosition = getAdapterPosition();
-                    imageViewPret = (ImageView) view;
+                   // imageViewPret = (ImageView) view;
                     trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), TRENDING_FRAGMENT);
                     break;
                 case R.id.iv_share:
                     trendingHolderInvoke.shareurl(trendingItems.getShareUrl());
                     break;
                 case R.id.txt_shopname:
+                    //trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
                     StoreListModel storeListModel = new StoreListModel();
                     storeListModel.setId(trendingItems.getTitleid());
                     storeListModel.setTitle(trendingItems.getTitle());
@@ -235,7 +242,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             storeListModel);
                     break;
                 case R.id.txt_description:
-                    trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
+                    mPosition = getAdapterPosition();
+                    trendingHolderInvoke.openTrendingArticle(trendingItems, TRENDINGPAGE);
                     break;
                 case R.id.txt_title:
                     storeListModel = new StoreListModel();
@@ -247,7 +255,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     break;
                 case R.id.iv_banner:
                     if(trendingItems.getBanner()){
-                        trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
+                        mPosition = getAdapterPosition();
+                        trendingHolderInvoke.openTrendingArticle(trendingItems, TRENDINGPAGE);
                     } else {
                         ArrayList<String> mImagearray = new ArrayList<>();
                         mImagearray.add(trendingItems.getImagearray().get(0));
@@ -280,9 +289,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onPageScrollStateChanged(int state) {
         }
     }
-/*
 
-    @Override
+/* @Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         ViewHolder holder1 = (ViewHolder) holder;
         if(holder != null) {
@@ -293,9 +301,9 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 */
 
-    public static void updateLikeStatus(int status, String storeid) {
-        imageViewPret.setImageResource(status == 1 ?
-                R.drawable.red_heart : R.drawable.grey_heart);
+    public void updateLikeStatus(int status, String storeid) {
+        /*imageViewPret.setImageResource(status == 1 ?
+                R.drawable.red_heart : R.drawable.grey_heart);*/
         if(list.get(mPosition).getId().equals(storeid))
             list.get(mPosition).setLike(status == 0 ? false : true);
     }

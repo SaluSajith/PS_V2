@@ -216,6 +216,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                     JSONObject object = response.getJSONObject("Data");
                     storeList_recyclerAdapter.updateFollowStatus(object.getInt("FollowingStatus"),
                             object.getString("StoreId"));
+                    storeList_recyclerAdapter.notifyDataSetChanged();
                     hideDialog();
                     break;
                 default: break;

@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.widget.NestedScrollView;
@@ -22,7 +23,11 @@ import com.hit.pretstreet.pretstreet.navigation.adapters.TrendingAdapter;
 import com.hit.pretstreet.pretstreet.navigation.adapters.TrendingArticleAdapter;
 import com.hit.pretstreet.pretstreet.navigation.controllers.DetailsPageController;
 import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
+import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,13 +38,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONLIKE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGARTICLE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 
 public class TrendingArticleActivity extends AbstractBaseAppCompatActivity implements
-        ApiListenerInterface {
+        ApiListenerInterface, TrendingCallback {
 
     @BindView(R.id.rv_trendingarticle)RecyclerView rv_trendingarticle;
     @BindView(R.id.txt_description)TextViewPret txt_description;
@@ -50,6 +61,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     DetailsPageController detailsPageController;
 
     String mId = "";
+    private TrendingItems trendingItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +75,11 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
         PreferenceServices.init(this);
         Utility.setListLayoutManager_(rv_trendingarticle, getApplicationContext());
 
-        TrendingItems trendingItems = (TrendingItems)getIntent()
-                .getSerializableExtra(Constant.PARCEL_KEY);
+        trendingItems = (TrendingItems)getIntent()
+                .getSerializableExtra(PARCEL_KEY);
         String pagekey = trendingItems.getPagetypeid();
         String clicktype = trendingItems.getClicktype();
-        String mId = trendingItems.getId();
+        mId = trendingItems.getId();
         getTrendingArticle(pagekey, clicktype, mId);
     }
 
@@ -80,10 +92,21 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
         jsonRequestController.sendRequest(this, resultJson, TRENDINGLIKE_URL);
     }
 
-
     @OnClick(R.id.iv_back)
     public void onBackPress() {
         onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        Bundle b = new Bundle();
+        b.putString(ID_KEY, trendingItems.getId());
+        int likeStatus = trendingItems.getLike() == true ? 1 : 0;
+        b.putString(PARCEL_KEY, likeStatus+"");
+        intent.putExtras(b);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private void getTrendingArticle(String prepage, String clicktype, String trid){
@@ -106,6 +129,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
                     ib_like.setTag(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
                     ib_like.setImageResource(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
                     ArrayList<TrendingItems> trendingArticle = detailsPageController.getTrendingArticle(response);
+                    trendingItems.setLike(detailsPageController.getLikeStatus(response));
                     setupArticle(trendingArticle);
                     this.hideDialog();
                     break;
@@ -114,6 +138,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
                     JSONObject object = response.getJSONObject("Data");
                     ib_like.setTag(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
                     ib_like.setImageResource(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
+                    trendingItems.setLike(object.getInt("LikeStatus") == 0 ? false : true);
                     break;
                 default: break;
             }
@@ -138,5 +163,30 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     public void onError(String error) {
         this.hideDialog();
         displaySnackBar( error);
+    }
+
+    @Override
+    public void bindData(ArrayList<TrendingItems> trendingItems) {
+        Intent intent;
+        String pagetypeid = trendingItems.get(0).getPagetypeid();
+        String id = trendingItems.get(0).getId();
+        switch (pagetypeid){
+            case MULTISTOREPAGE:
+                intent = new Intent(TrendingArticleActivity.this, MultistoreActivity.class);
+                intent.putExtra(ID_KEY, id);
+                intent.putExtra(Constant.PRE_PAGE_KEY, ARTICLEPAGE);
+                startActivity(intent);
+                break;
+            case STOREDETAILSPAGE:
+                StoreListModel storeListModel =  new StoreListModel();
+                storeListModel.setId(id);
+                intent = new Intent(TrendingArticleActivity.this, StoreDetailsActivity.class);
+                intent.putExtra(PARCEL_KEY, storeListModel);
+                intent.putExtra(Constant.PRE_PAGE_KEY, ARTICLEPAGE);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 }

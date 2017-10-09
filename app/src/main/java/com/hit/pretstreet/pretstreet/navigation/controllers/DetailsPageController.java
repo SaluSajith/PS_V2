@@ -135,6 +135,8 @@ public class DetailsPageController {
                 trendingItems.setTitle(jsonArray.getJSONObject(i).getString("Title"));
                 trendingItems.setLogoImage(jsonArray.getJSONObject(i).getString("ImageSource"));
                 trendingItems.setArticle(jsonArray.getJSONObject(i).getString("Description"));
+                trendingItems.setPagetypeid(jsonArray.getJSONObject(i).getString("PageTypeId"));
+                trendingItems.setId(jsonArray.getJSONObject(i).getString("Id"));
                 itemsArrayList.add(trendingItems);
             }
         }catch (JSONException e1) {

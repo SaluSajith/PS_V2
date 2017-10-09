@@ -102,5 +102,6 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
 
     public void updateLikeStatus(int status, String storeid) {
         adapter.updateLikeStatus(status, storeid);
+        adapter.notifyDataSetChanged();
     }
 }

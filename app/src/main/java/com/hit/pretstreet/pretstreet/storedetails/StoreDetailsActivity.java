@@ -77,6 +77,7 @@ import butterknife.OnClick;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.BOOK_APPOINTMENT_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CALLEDLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CALLLINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REPORT_ERROR_URL;
@@ -91,6 +92,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     StoreDetailsController storeDetailsController;
 
     private static final int ABOUTDESIGNER_FRAGMENT = 101;
+    private static final int STORE_DETAILS = 14;
 
     @BindView(R.id.tv_product) TextViewPret tv_product;
     @BindView(R.id.tv_about) TextViewPret tv_about;
@@ -136,6 +138,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        storeDetailsModel = new StoreDetailsModel();
         initUi();
     }
 
@@ -714,4 +717,15 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         showBookPopup();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        Bundle b = new Bundle();
+        b.putString(ID_KEY, storeDetailsModel.getId());
+        int likeStatus = storeDetailsModel.getFollowingStatus() == true ? 1 : 0;
+        b.putString(PARCEL_KEY, likeStatus+"");
+        intent.putExtras(b);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 }

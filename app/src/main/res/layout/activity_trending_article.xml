@@ -12,22 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:background="@color/white"
+        android:background="@color/black"
         app:expandedTitleTextAppearance="@android:color/transparent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/ll_title"
-            >
+            android:id="@+id/ll_title" >
 
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_back"
+                app:srcCompat="@drawable/back"
                 android:contentDescription="Back"
                 android:padding="10dp"/>
 
@@ -37,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:textColor="@color/white"
                 android:gravity="left"
                 android:maxLines="2"
                 app:pret_typeface="@string/font_merriweather_bold"
@@ -51,6 +51,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:gravity="left"
+            android:textColor="@color/white"
             android:inputType="textMultiLine|textNoSuggestions"
             android:maxLines="3"
             android:text="Text"

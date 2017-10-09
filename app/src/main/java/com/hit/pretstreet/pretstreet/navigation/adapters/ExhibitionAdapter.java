@@ -56,9 +56,9 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private static Context context;
     static int mPosition;
-    private static ImageView imageViewPret;
-    private static TextViewPret textViewPret;
-    private static ArrayList<TrendingItems> list;
+    private ImageView imageViewPret;
+    private TextViewPret textViewPret;
+    private ArrayList<TrendingItems> list;
     private TrendingHolderInvoke trendingHolderInvoke;
     private ZoomedViewListener zoomedViewListener;
 
@@ -74,7 +74,9 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private int lastVisibleItem, totalItemCount;
     private final RequestManager glide;
 
-    public ExhibitionAdapter(final RequestManager glide, RecyclerView mRecyclerView, Activity activity, ExhibitionFragment context, ArrayList<TrendingItems> list) {
+    public ExhibitionAdapter(final RequestManager glide, RecyclerView mRecyclerView,
+                             Activity activity, ExhibitionFragment context,
+                             ArrayList<TrendingItems> list) {
         this.context = activity;
         this.list = list;
         this.glide = glide;
@@ -195,6 +197,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
+                    mPosition = getAdapterPosition();
                     TrendingItems trendingItems = list.get(position);
                     ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                 }
@@ -222,15 +225,18 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     trendingHolderInvoke.registerInvoke(Integer.parseInt(trendingItems.getId()));
                     break;
                 case R.id.txt_shopname:
+                    mPosition = getAdapterPosition();
                     ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                     break;
                 case R.id.txt_description:
+                    mPosition = getAdapterPosition();
                     ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                     break;
                 case R.id.iv_banner:
                     if(trendingItems.getBanner()){
-                        trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.EXHIBITIONPAGE);
+                       // trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.EXHIBITIONPAGE);
                     }else {
+                        mPosition = getAdapterPosition();
                         ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                         /*ArrayList<String> mImagearray = new ArrayList<>();
                         mImagearray.add(trendingItems.getImagearray().get(0));
@@ -243,7 +249,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public static void updateLikeStatus(int status, String storeid) {
+    public void updateLikeStatus(int status, String storeid) {
         switch (selected_id){
             case ReGISTER:
                 if(status==1){
@@ -256,8 +262,8 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     list.get(mPosition).setRegister(status == 0 ? false : true);
                 break;
             case LIKE:
-                imageViewPret.setImageResource(status == 1 ?
-                        R.drawable.red_heart : R.drawable.grey_heart);
+                /*imageViewPret.setImageResource(status == 1 ?
+                        R.drawable.red_heart : R.drawable.grey_heart);*/
                 if(list.get(mPosition).getId().equals(storeid))
                     list.get(mPosition).setLike(status == 0 ? false : true);
                 break;

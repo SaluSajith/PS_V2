@@ -40,9 +40,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     static int mPosition;
     private Context context;
     private ArrayList<StoreListModel> mItems;
-    private static TextViewPret textViewPret;
     private ButtonClickCallbackStoreList buttonClickCallback;
-
     private OnLoadMoreListener mOnLoadMoreListener;
 
     private final int VIEW_TYPE_LOADING = 3;
@@ -174,20 +172,21 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         } else shopsHolder.iv_banner.setVisibility(View.GONE);
 
     }
+
     private void setVisibility(View view, boolean b){
         if(b) view.setVisibility(View.VISIBLE);
         else view.setVisibility(View.GONE);
     }
+
     @Override
     public long getItemId(int position) {
         return position;
     }
 
     public void updateFollowStatus(int status, String storeid) {
-        textViewPret.setText(status == 0 ? "Follow" : "Unfollow");
-        if (mItems.get(mPosition).getId().equals(storeid))
-            mItems.get(mPosition).setFollowingStatus(status == 1 ? false : true);
-        else ;
+        if (mItems.get(mPosition).getId().equals(storeid)) {
+            mItems.get(mPosition).setFollowingStatus(status == 1 ? true : false);
+        } else ;
     }
 
     class ShopsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -210,7 +209,6 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         ShopsHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            textViewPret = new TextViewPret(context);
             img_follow_unfollow.setOnClickListener(this);
             img_store_photo.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
@@ -222,9 +220,9 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        int position = getAdapterPosition();
-                    if(position<mItems.size()) {
-                        StoreListModel storeListModel = mItems.get(position);
+                    mPosition = getAdapterPosition();
+                    if(mPosition<mItems.size()) {
+                        StoreListModel storeListModel = mItems.get(mPosition);
                         buttonClickCallback.buttonClick(storeListModel);
                     }else ;
                 }
@@ -237,10 +235,9 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             int position = getAdapterPosition();
             if(position<=mItems.size()) {
                 StoreListModel storeListModel = mItems.get(position);
+                mPosition = position;
                 switch (id) {
                     case R.id.img_follow_unfollow:
-                        mPosition = position;
-                        textViewPret = (TextViewPret) view;
                         buttonClickCallback.updateFollowStatus(storeListModel.getId());
                         break;
                     case R.id.img_store_photo:

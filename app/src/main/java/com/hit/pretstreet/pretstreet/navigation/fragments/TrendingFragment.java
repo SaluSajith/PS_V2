@@ -87,5 +87,6 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
 
     public void updateLikeStatus(int status, String storeid) {
         adapter.updateLikeStatus(status, storeid);
+        adapter.notifyDataSetChanged();
     }
 }

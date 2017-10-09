@@ -362,7 +362,6 @@ public class NavItemsController {
                 storeListModel.setOfferflag(flag.contains("1")==true ? true : false);
                 storeListModel.setNewflag(flag.contains("2")==true ? true : false);
                 storeListModel.setBannerFlag(jsonArray.getJSONObject(i).getInt("BannerFlag") == 0 ? false : true);
-
                 storeListModels.add(storeListModel);
             }
         }catch (JSONException e1) {

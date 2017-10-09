@@ -59,6 +59,7 @@ import butterknife.OnClick;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
@@ -68,6 +69,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
+import static java.lang.Integer.parseInt;
 
 public class StoreListingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallbackStoreList, View.OnClickListener {
@@ -100,6 +102,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private static final int TERMS_FRAGMENT = 8;
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
+    private static final int STORE_DETAILS = 14;
+    private static final int FILTER_PAGE = 15;
 
     int pageCount=0;
     boolean requestCalled = false;
@@ -234,7 +238,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         bundle.putString(ID_KEY, getIntent().getStringExtra(ID_KEY));
         bundle.putSerializable(PARCEL_KEY, this.dataModel);
         intent.putExtras(bundle);
-        startActivityForResult(intent, Integer.parseInt(Constant.FILTERPAGE));
+        startActivityForResult(intent, parseInt(FILTERPAGE));
     }
 
     @SuppressLint("InflateParams")
@@ -306,6 +310,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                     JSONObject object = response.getJSONObject("Data");
                     storeList_recyclerAdapter.updateFollowStatus(object.getInt("FollowingStatus"),
                             object.getString("StoreId"));
+                    storeList_recyclerAdapter.notifyDataSetChanged();
                     this.hideDialog();
                     break;
                 default: break;
@@ -398,7 +403,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                 Intent intent = new Intent(StoreListingActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(PARCEL_KEY, storeListModel);
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                startActivity(intent);
+                startActivityForResult(intent, STORE_DETAILS);
                 break;
             case TRENDINGPAGE:
                 selectedFragment = TRENDING_FRAGMENT;
@@ -455,12 +460,24 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == Integer.parseInt(Constant.FILTERPAGE) && resultCode  == RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
-                arrayFilter = subCategoryController.createFilterModel(dataModel);
-                storeListModels.clear();
-                getShoplist(catTag, true);
+            if(resultCode  == RESULT_OK) {
+                switch (requestCode) {
+                    case FILTER_PAGE :
+                        Bundle bundle = data.getExtras();
+                        dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
+                        arrayFilter = subCategoryController.createFilterModel(dataModel);
+                        storeListModels.clear();
+                        getShoplist(catTag, true);
+                    break;
+                    case STORE_DETAILS :
+                        int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
+                        String storeId = data.getStringExtra(ID_KEY);
+                        storeList_recyclerAdapter.updateFollowStatus(status, storeId);
+                        storeList_recyclerAdapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        break;
+                }
             }
         } catch (Exception ex) { }
     }

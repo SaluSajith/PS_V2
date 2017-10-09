@@ -69,6 +69,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     @BindView(R.id.rv_storelist)RecyclerView rv_storelist;
 
     String shareText;
+    StoreList_RecyclerAdapter storeList_recyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void setAdapter(ArrayList<StoreListModel> storeListModels){
-        StoreList_RecyclerAdapter storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, MultistoreActivity.this, storeListModels);
+        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, MultistoreActivity.this, storeListModels);
         rv_storelist.setAdapter(storeList_recyclerAdapter);
         storeList_recyclerAdapter.setLoaded();
     }
@@ -146,6 +147,12 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                     ArrayList<StoreListModel> storeListModels = searchController.getList(response);
                     setAdapter(storeListModels);
                     break;
+                case UPDATEFOLLOWSTATUS_URL:
+                    JSONObject object = response.getJSONObject("Data");
+                    storeList_recyclerAdapter.updateFollowStatus(object.getInt("FollowingStatus"),
+                            object.getString("StoreId"));
+                    storeList_recyclerAdapter.notifyDataSetChanged();
+                break;
                 default: break;
             }
         } catch (JSONException e) {
@@ -169,7 +176,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        //getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -119,7 +119,6 @@ public class SearchResultsFragment extends AbstractBaseFragment<WelcomeActivity>
         });
     }
 
-
     private void setAdapter(){
         if(storeListModels.size()==0)
             ll_empty.setVisibility(View.VISIBLE);

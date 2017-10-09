@@ -100,6 +100,7 @@ public class StoreDetailsController {
         StoreDetailsModel storeDetailsModel = new StoreDetailsModel();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
+            storeDetailsModel.setId(jsonObject.getString("StoreId"));
             storeDetailsModel.setStoreName(jsonObject.getString("StoreName"));
             storeDetailsModel.setAreaCity(jsonObject.getString("AreaCity"));
             storeDetailsModel.setFollowingCount(jsonObject.getString("FollowingCount"));
