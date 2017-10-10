@@ -41,6 +41,7 @@ import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.DividerDecoration;
+import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.NotificationBadge;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
@@ -118,6 +119,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     LoginController loginController;
 
     boolean homeopened = false;
+    Context context;
 
     @Override
     protected void onResume() {
@@ -132,7 +134,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         NotificationBadge mBadge = (NotificationBadge) navigationView.findViewById(R.id.badge);
         try {
             int size = PreferenceServices.getInstance().getNotifCOunt();
-            Log.d("FCM h", ""+PreferenceServices.getInstance().getNotifCOunt());
             badge_home.setNumber(size);
             mBadge.setNumber(size);
         } catch (Exception e) {
@@ -155,6 +156,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     private void init() {
         PreferenceServices.init(this);
+        context = getApplicationContext();
         View includedlayout = findViewById(R.id.includedlayout);
         ButterKnife.bind(this, includedlayout);
 
@@ -246,8 +248,8 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         navDrawerAdapter = new NavDrawerAdapter(HomeActivity.this, navArray, HomeActivity.this);
         RecyclerView rv_nav = (RecyclerView) findViewById(R.id.rv_nav);
         Utility.setListLayoutManager(rv_nav, HomeActivity.this);
-        rv_nav.addItemDecoration(new DividerDecoration(getApplicationContext(),
-                ContextCompat.getColor(getApplicationContext(), R.color.trending_grey), 0.5f));
+        rv_nav.addItemDecoration(new DividerDecoration(context,
+                ContextCompat.getColor(context, R.color.trending_grey), 0.5f));
         rv_nav.setNestedScrollingEnabled(false);
         rv_nav.getItemAnimator().setChangeDuration(0);
         rv_nav.setAdapter(navDrawerAdapter);
@@ -272,7 +274,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                Intent intent = new Intent(context, SearchActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra(ID_KEY, "0");
                 startActivity(intent);
@@ -303,7 +305,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             }
         });
 
-        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
         LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
         if (PreferenceServices.getInstance().geUsertName().equalsIgnoreCase("")) {
             try {
@@ -315,13 +317,13 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         }
         else{
             tv_profile.setText(PreferenceServices.getInstance().geUsertName());
-            Glide.with(getApplicationContext()).load(loginSession.getProfile_pic()).asBitmap()
+            Glide.with(context).load(loginSession.getProfile_pic()).asBitmap()
                     .placeholder(R.drawable.profilepic)
                     .centerCrop().into(new BitmapImageViewTarget(iv_profile) {
                 @Override
                 protected void setResource(Bitmap resource) {
                     RoundedBitmapDrawable circularBitmapDrawable =
-                            RoundedBitmapDrawableFactory.create(getApplicationContext().getResources(), resource);
+                            RoundedBitmapDrawableFactory.create(context.getResources(), resource);
                     circularBitmapDrawable.setCircular(true);
                     iv_profile.setImageDrawable(circularBitmapDrawable);
                 }
@@ -330,7 +332,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     private void rateUs(){
-        final String appPackageName = getApplicationContext().getPackageName();
+        final String appPackageName = context.getPackageName();
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
         } catch (android.content.ActivityNotFoundException anfe) {
@@ -418,10 +420,10 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     private void forceUpdate(String serverVersion){
         //Force Update Option
-        PackageManager manager = getApplicationContext().getPackageManager();
+        PackageManager manager = context.getPackageManager();
         PackageInfo info = null;
         try {
-            info = manager.getPackageInfo(getApplicationContext().getPackageName(), 0);
+            info = manager.getPackageInfo(context.getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -434,7 +436,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     public void showUpdateScreem() {
 
         final Dialog popupDialog = new Dialog(HomeActivity.this);
-        LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.popup_update, null);
         ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
 
@@ -510,7 +512,14 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @Override
     public void onError(String error) {
         this.hideDialog();
-        displaySnackBar( error);
+        EmptyFragment emptyFragment = new EmptyFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("error", error);
+        bundle.putString("retry", "1");
+        bundle.putString("pageid", HOMEPAGE);
+        emptyFragment.setArguments(bundle);
+        changeFragment(emptyFragment, false);
+        //displaySnackBar(error);
     }
 
     private void handleResponse(JSONObject response){
@@ -543,7 +552,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 break;
             case STORELISTINGPAGE:
                 ArrayList<HomeCatItems> homeCatItemses = new ArrayList<>();
-                intent = new Intent(getApplicationContext(), StoreListingActivity.class);
+                intent = new Intent(context, StoreListingActivity.class);
                 intent.putExtra("contentData",  homeCatItemses);//TODO
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("mCatId", catContentData.getCategoryId());
@@ -583,11 +592,15 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     @Override
     public void buttonClick(int id) {
-        Intent intent = new Intent(getApplicationContext(), StoreListingActivity.class);
+        Intent intent = new Intent(context, StoreListingActivity.class);
         intent.putExtra("contentData", "");
         intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
         intent.putExtra("mCatId", id);
         intent.putExtra("mSubTitle", "");
         startActivity(intent);
+    }
+
+    public void refreshPage(){
+        getHomePage();
     }
 }

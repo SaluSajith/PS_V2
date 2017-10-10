@@ -157,6 +157,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                 getIntent().getStringExtra(PRE_PAGE_KEY), mCatID, pageCount, mCaType, arrayFilter);
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, SEARCH_URL);
     }
+
     public void openSearchResult(String mStr, String mCatId, String mCattype){
         mStrSearch = mStr;
         mCatID = mCatId;

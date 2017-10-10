@@ -26,7 +26,7 @@
                 android:id="@+id/ll_header"></include>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/content"
                 android:layout_marginTop="@dimen/content_overlapmargin_hometrape"
                 android:layout_below="@+id/ll_header">

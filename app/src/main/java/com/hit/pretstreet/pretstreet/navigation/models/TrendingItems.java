@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class TrendingItems implements Serializable {
 
     String id="", storeLink="", logoImage="", title="", article="", articledate="", pagetype="", pagetypeid="", storeid="", clicktype="";
-    String storeName="", shareUrl="", area="", titlepagetype="", titleid="";
-    boolean like=false, banner=false, register=false, NotifPage = false;
+    String storeName="", shareUrl="", area="", titlepagetype="", titleid="", register="";
+    boolean like=false, banner=false, NotifPage = false;
     String latitude="", longitude="";
     ArrayList<String> imagearray = new ArrayList<>();
 
@@ -142,10 +142,11 @@ public class TrendingItems implements Serializable {
         return clicktype;
     }
 
-    public void setRegister(boolean register) {
+    public void setRegister(String register) {
         this.register = register;
     }
-    public Boolean getRegisterFlag() {
+
+    public String getRegisterFlag() {
         return register;
     }
 

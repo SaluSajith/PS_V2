@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
+import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
@@ -38,6 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
@@ -172,7 +174,13 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     @Override
     public void onError(String error) {
         this.hideDialog();
-        displaySnackBar(error);
+        EmptyFragment emptyFragment = new EmptyFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("error", error);
+        bundle.putString("retry", "1");
+        bundle.putString("pageid", SUBCATPAGE);
+        emptyFragment.setArguments(bundle);
+        changeFragment(emptyFragment, false);
     }
 
     @Override
@@ -195,5 +203,9 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     public void onDestroy() {
         super.onDestroy();
         Runtime.getRuntime().gc();
+    }
+
+    public void refreshPage(){
+        setupFragment(SUBCAT_FRAGMENT, false);
     }
 }

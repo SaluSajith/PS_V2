@@ -82,6 +82,7 @@ public class Constant {
     public static final String FOLLOWINGPAGE = "12";
     public static final String SEARCHPAGE = "14";
     public static final String FILTERPAGE = "15";
+    public static final String SIGNUPPAGE = "16";
 
     //Clicktype constants
     public static final String HOMEPAGELINK = "1";

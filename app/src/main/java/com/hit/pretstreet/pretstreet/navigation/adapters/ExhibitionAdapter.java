@@ -135,17 +135,21 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
 
-        if(trendingItems.getRegisterFlag() == false){
+        if(trendingItems.getRegisterFlag().contains("0")){
             holder.bt_register.setEnabled(true);
             holder.bt_register.setText("Register");
             holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.dark_gray));
             holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
         }
-        else {
+        else if(trendingItems.getRegisterFlag().contains("1")){
             holder.bt_register.setEnabled(false);
             holder.bt_register.setText("Registered");
             holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.white));
             holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+        }
+        else{
+            holder.bt_register.setEnabled(false);
+            holder.bt_register.setVisibility(View.GONE);
         }
     }
 
@@ -259,7 +263,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     textViewPret.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
                 }
                 if(list.get(mPosition).getId().equals(storeid))
-                    list.get(mPosition).setRegister(status == 0 ? false : true);
+                    list.get(mPosition).setRegister(status+"");
                 break;
             case LIKE:
                 /*imageViewPret.setImageResource(status == 1 ?

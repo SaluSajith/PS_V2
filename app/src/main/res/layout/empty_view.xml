@@ -12,8 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_error_outline_yellow_24dp"
-        />
+        app:srcCompat="@drawable/ic_error_outline_yellow_24dp"/>
 
     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
         android:layout_width="wrap_content"
@@ -26,4 +25,12 @@
         style="@style/textview_normal"
         android:id="@+id/tv_msg"/>
 
+    <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+        android:id="@+id/btn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry"
+        style="@style/button_standard"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 </LinearLayout>

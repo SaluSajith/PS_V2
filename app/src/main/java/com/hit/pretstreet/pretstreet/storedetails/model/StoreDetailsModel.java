@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class StoreDetailsModel {
 
     String Id = "", StoreName = "", AreaCity = "", FollowingCount = "", Flags = "", Address = "", Latitude = "", Longitude = "", About = "",
-            Products = "", ImageSource = "", TimingToday = "", BaseImage = "", Share = "", Description = "";
-    boolean OpenStatus = false, FollowingStatus = false, RegisterStatus = false, AppointmentFlag = false;
+            Products = "", ImageSource = "", TimingToday = "", BaseImage = "", Share = "", Description = "", RegisterStatus = "";
+    boolean OpenStatus = false, FollowingStatus = false, AppointmentFlag = false;
     ArrayList<String> Phone = new ArrayList<>();
     ArrayList<Testimonials> arrayListTesti = new ArrayList<>();
     ArrayList<String> arrayListTimings = new ArrayList<>();
@@ -178,11 +178,11 @@ public class StoreDetailsModel {
         return Share;
     }
 
-    public void setRegisterStatus(boolean registerStatus) {
+    public void setRegisterStatus(String registerStatus) {
         RegisterStatus = registerStatus;
     }
 
-    public boolean getRegisterStatus() {
+    public String getRegisterStatus() {
         return RegisterStatus;
     }
 

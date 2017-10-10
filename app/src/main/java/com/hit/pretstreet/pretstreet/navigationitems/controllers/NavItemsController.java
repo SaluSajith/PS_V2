@@ -2,8 +2,10 @@ package com.hit.pretstreet.pretstreet.navigationitems.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Handler;
+import android.util.Base64;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
@@ -25,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -130,7 +133,8 @@ public class NavItemsController {
                                               EdittextPret edt_lastname,
                                               EdittextPret edt_email,
                                               EdittextPret edt_dob,
-                                              EdittextPret edt_mobile) {
+                                              EdittextPret edt_mobile,
+                                              Bitmap bitmap) {
 
         String firstname = edt_firstname.getText().toString().trim();
         String lname = edt_lastname.getText().toString().trim();
@@ -175,6 +179,13 @@ public class NavItemsController {
                 jsonBody.put("UserMobile", mobile);
                 jsonBody.put("DOB", dob);
 
+                //converting image to base64 string
+                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageBytes = baos.toByteArray();
+                final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                jsonBody.put("image", imageString);*/
+
                 jsonBody = Constant.addConstants(jsonBody, context);
 
             } catch (JSONException e) {
@@ -186,8 +197,8 @@ public class NavItemsController {
     }
 
     public static void validateUpdatePassFields(EdittextPret et_currPas,
-                                      EdittextPret et_newPas,
-                                        EdittextPret et_confPas) {
+                                                EdittextPret et_newPas,
+                                                EdittextPret et_confPas) {
         String message = "Fields cannot be empty";
         EdittextPret edittextPret ;
 

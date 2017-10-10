@@ -48,7 +48,7 @@ public class AddStoreFragment extends AbstractBaseFragment<NavigationItemsActivi
     Location location = null;
 
     private GoogleApiClient mGoogleApiClient;
-    private int PLACE_PICKER_REQUEST = 1;
+    private static final int PLACE_PICKER_REQUEST = 112;
 
     @Override
     public void onDestroy() {

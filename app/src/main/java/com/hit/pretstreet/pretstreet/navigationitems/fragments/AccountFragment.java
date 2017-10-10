@@ -24,6 +24,7 @@ import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.controllers.NavItemsController;
+import com.hit.pretstreet.pretstreet.navigationitems.interfaces.ContentBindingInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
@@ -39,7 +40,8 @@ import butterknife.OnClick;
  * Created by User on 7/14/2017.
  */
 
-public class AccountFragment extends AbstractBaseFragment<WelcomeActivity> {
+public class AccountFragment extends AbstractBaseFragment<WelcomeActivity>
+        implements ContentBindingInterface{
 
     @BindView(R.id.civ_profile)ImageView civ_profile;
     @BindView(R.id.edt_fname) EdittextPret edt_fname;
@@ -49,6 +51,8 @@ public class AccountFragment extends AbstractBaseFragment<WelcomeActivity> {
     @BindView(R.id.edt_mobile) EdittextPret edt_mobile;
 
     NavItemsController navItemsController;
+    Bitmap bitmap = null;
+
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myaccount, container, false);
@@ -73,12 +77,17 @@ public class AccountFragment extends AbstractBaseFragment<WelcomeActivity> {
                 .centerCrop().into(new BitmapImageViewTarget(civ_profile) {
             @Override
             protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable =
-                        RoundedBitmapDrawableFactory.create(getActivity().getResources(), resource);
-                circularBitmapDrawable.setCircular(true);
-                civ_profile.setImageDrawable(circularBitmapDrawable);
+                bitmap = resource;
+                civ_profile.setImageDrawable(getRoundedBitmap(resource));
             }
         });
+    }
+
+    private RoundedBitmapDrawable getRoundedBitmap(Bitmap resource){
+        RoundedBitmapDrawable circularBitmapDrawable =
+                RoundedBitmapDrawableFactory.create(getActivity().getResources(), resource);
+        circularBitmapDrawable.setCircular(true);
+        return circularBitmapDrawable;
     }
 
     @OnClick(R.id.edt_dob)
@@ -103,8 +112,12 @@ public class AccountFragment extends AbstractBaseFragment<WelcomeActivity> {
     @OnClick(R.id.btn_submit)
     public void onSubmitPressed() {
         navItemsController.validateRegisterFields(edt_fname, edt_lname,
-                edt_email, edt_dob,
-                edt_mobile);
+                edt_email, edt_dob, edt_mobile, bitmap);
+    }
+
+    @OnClick(R.id.civ_profile)
+    public void onChooseImage() {
+        ((NavigationItemsActivity) getActivity()).chooseProfileImage();
     }
 
     @OnClick(R.id.btn_changepass)
@@ -116,4 +129,9 @@ public class AccountFragment extends AbstractBaseFragment<WelcomeActivity> {
         editText.setError(message);
     }
 
+    @Override
+    public void updateImage(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        civ_profile.setImageDrawable(getRoundedBitmap(bitmap));
+    }
 }

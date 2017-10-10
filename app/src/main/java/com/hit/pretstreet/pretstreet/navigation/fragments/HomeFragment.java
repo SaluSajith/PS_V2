@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -135,73 +136,79 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
 
                 switch (contentType){
                     case TRAPE:
-                        LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View view;
-                        if (i % 2 == 0) {
-                            view = infl.inflate(R.layout.row_sub_cat_list1, null);
-                        } else {
-                            view = infl.inflate(R.layout.row_sub_cat_list2, null);
-                        }
-                        RelativeLayout rl_dd = (RelativeLayout) view.findViewById(R.id.rl_dd);
-                        TextViewPret txt_cat_name = (TextViewPret) view.findViewById(R.id.txt_cat_name);
-                        ImageView mImageView = (ImageView) view.findViewById(R.id.img_cat_image);
-                        txt_cat_name.setMaxLines(1);
-
-                        LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT);
-                        if (i != 0) {
-                            relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin_hometrape), 0, 0);
-                        }
-                        rl_dd.setLayoutParams(relativeParams);
-                        rl_dd.requestLayout();
-
-                        final HomeCatContentData homeContentData = list.get(i).getHomeContentData();
-                        txt_cat_name.setText(homeContentData.getCategoryName());
-                        txt_cat_name.getBackground().setFilterBitmap(true);
-                        if (homeContentData.getCategoryName().length() == 0)
-                            txt_cat_name.setVisibility(View.GONE);
-
-                        String catName = homeContentData.getCategoryName();
-                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
-                        if (catName.length() > 3 && catName.length() <= 6)
-                            lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) - 2, -3, 0);
-                        else if (catName.length() > 6 && catName.length() <= 10)
-                            lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 0, -3, 0);
-                        else if (catName.length() > 10 && catName.length() <= 15)
-                            lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 4, -3, 0);
-                        else if (catName.length() >= 15)
-                            lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 7, -3, 0);
-                        txt_cat_name.setLayoutParams(lp);
-
-                        final int finalI = i;
-                        if(finalI==list.size()-1){
-                            Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_malls);
-                            Matrix matrix = new Matrix();
-                            matrix.preScale(-1.0f, 1.0f);
-                            Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
-                            if (finalI % 2 != 0)
-                                loadImage(homeContentData.getImageSource(), mImageView, mask1, R.drawable.mask_malls);
-                            else
-                                loadImage(homeContentData.getImageSource(), mImageView, mask2, R.drawable.mask_malls);
-                        }else {
-                            Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
-                            Matrix matrix = new Matrix();
-                            matrix.preScale(-1.0f, 1.0f);
-                            Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
-                            if (finalI % 2 == 0)
-                                loadImage(homeContentData.getImageSource(), mImageView, mask1, R.drawable.mask_home);
-                            else
-                                loadImage(homeContentData.getImageSource(), mImageView, mask2, R.drawable.brand2);
-                        }
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                buttonClickCallback.onTrapeClick(homeContentData,
-                                        list.get(finalI).getHomeContentData().getCategoryName());
+                        try {
+                            LayoutInflater infl = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            View view;
+                            if (i % 2 == 0) {
+                                view = infl.inflate(R.layout.row_sub_cat_list1, null);
+                            } else {
+                                view = infl.inflate(R.layout.row_sub_cat_list2, null);
                             }
-                        });
+                            RelativeLayout rl_dd = (RelativeLayout) view.findViewById(R.id.rl_dd);
+                            TextViewPret txt_cat_name = (TextViewPret) view.findViewById(R.id.txt_cat_name);
+                            ImageView mImageView = (ImageView) view.findViewById(R.id.img_cat_image);
+                            txt_cat_name.setMaxLines(1);
+
+                            LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT);
+                            if (i != 0) {
+                                relativeParams.setMargins(0, (int) getActivity().getResources().getDimension(R.dimen.content_overlapmargin_hometrape), 0, 0);
+                            }
+                            rl_dd.setLayoutParams(relativeParams);
+                            rl_dd.requestLayout();
+
+                            final HomeCatContentData homeContentData = list.get(i).getHomeContentData();
+                            txt_cat_name.setText(homeContentData.getCategoryName());
+                            txt_cat_name.getBackground().setFilterBitmap(true);
+                            if (homeContentData.getCategoryName().length() == 0)
+                                txt_cat_name.setVisibility(View.GONE);
+
+                            String catName = homeContentData.getCategoryName();
+                            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
+                            if (catName.length() > 3 && catName.length() <= 6)
+                                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) - 2, -3, 0);
+                            else if (catName.length() > 6 && catName.length() <= 10)
+                                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 0, -3, 0);
+                            else if (catName.length() > 10 && catName.length() <= 15)
+                                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 4, -3, 0);
+                            else if (catName.length() >= 15)
+                                lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) + 7, -3, 0);
+                            txt_cat_name.setLayoutParams(lp);
+
+                            final int finalI = i;
+                            if(finalI==list.size()-1){
+                                Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_malls);
+                                Matrix matrix = new Matrix();
+                                matrix.preScale(-1.0f, 1.0f);
+                                Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
+                                if (finalI % 2 != 0)
+                                    loadImage(homeContentData.getImageSource(), mImageView, mask1, R.drawable.mask_malls);
+                                else
+                                    loadImage(homeContentData.getImageSource(), mImageView, mask2, R.drawable.mask_malls);
+                            }else {
+                                Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
+                                Matrix matrix = new Matrix();
+                                matrix.preScale(-1.0f, 1.0f);
+                                Bitmap mask2 = Bitmap.createBitmap(mask1, 0, 0, mask1.getWidth(), mask1.getHeight(), matrix, true);
+                                if (finalI % 2 == 0)
+                                    loadImage(homeContentData.getImageSource(), mImageView, mask1, R.drawable.mask_home);
+                                else
+                                    loadImage(homeContentData.getImageSource(), mImageView, mask2, R.drawable.brand2);
+                            }
+                            view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    buttonClickCallback.onTrapeClick(homeContentData,
+                                            list.get(finalI).getHomeContentData().getCategoryName());
+                                }
+                            });
                             ll_main_cat.addView(view);
-                        ll_main_cat.setVisibility(View.VISIBLE);
+                            ll_main_cat.setVisibility(View.VISIBLE);
+                        } catch (Resources.NotFoundException e) {
+                            e.printStackTrace();
+                        } catch (OutOfMemoryError e){
+                            e.printStackTrace();
+                        }
 
                         break;
                     case SHOPBYMOODS:

@@ -51,7 +51,7 @@ public class ArticlePagerAdapter extends PagerAdapter {
         final ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
         if((mResources.get(position)).length()==0){
             imageView.setImageResource(R.mipmap.ic_launcher);
-        }else {
+        } else {
             /*Glide.with(mContext)
                     .load(mResources.get(position))
                     .placeholder(R.drawable.default_banner)
@@ -63,22 +63,18 @@ public class ArticlePagerAdapter extends PagerAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> mImagearray = new ArrayList<>();
-                mImagearray.add(mResources.get(position));
-                ((HomeInnerActivity)mContext).onClicked(0, mImagearray);
+                ((HomeInnerActivity)mContext).onClicked(position, mResources);
             }
         });
         container.addView(itemView);
-
         return itemView;
     }
+
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
     }
-
-
-    static void loadImage(RequestManager glide, String url, ImageView view) {
+    void loadImage(RequestManager glide, String url, ImageView view) {
         glide.load(url).fitCenter().into(view);
     }
 }

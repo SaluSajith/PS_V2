@@ -81,6 +81,7 @@
     <string name="book">Book Appointment</string>
     <string name="book_btn">Book</string>
     <string name="get_dir">Get \nDirections</string>
+    <string name="retry">Retry</string>
 
     <string-array name="cattype">
         <item name="Product"></item>

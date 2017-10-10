@@ -1,9 +1,11 @@
 package com.hit.pretstreet.pretstreet.splashnlogin;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -13,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +34,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -41,12 +45,15 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
+import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
+import com.hit.pretstreet.pretstreet.sociallogin.GoogleLoginActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.TokenService;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.fragments.LoginFragment;
@@ -80,6 +87,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_OTP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SIGNUPPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SOCIAL_LOGIN_URL;
 
 /**
@@ -100,6 +108,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     private static final int LOGIN_CLICK_CODE = 2;
     private static int SIGNUP = 0;
     private static int LOGIN = 1;
+    private static final int TERMS_FRAGMENT = 8;
 
     @BindView(R.id.content) FrameLayout fl_content;
     @BindView(R.id.content_splash) FrameLayout fl_content_splash;
@@ -113,11 +122,11 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     private String otpValue;
     Dialog popupDialog;
+    Context context;
     JSONObject registerJson, loginJson;
 
     SignupFragment signupFragment;
     LoginFragment loginFragment;
-
 
     boolean notif = false;
 
@@ -128,7 +137,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         init();
         changeFragment(new SplashFragment(), false, SPLASH_FRAGMENT);
         fl_content_splash.bringToFront();
-
     }
 
     @Override
@@ -141,11 +149,12 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         ButterKnife.bind(this);
         PreferenceServices.init(this);
         splashHandler = new Handler();
+        context = getApplicationContext();
         DURATION = Integer.valueOf(getString(R.string.splash_duration));
         splashHandler.postDelayed(mChangeSplash, DURATION);
         splashHandler.postDelayed(mEndSplash, SPLASH_DURATION_END);
 
-        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
         try {
             if (sharedPreferencesHelper.getString("TOKEN", "").equalsIgnoreCase("")) {
                 TokenService tokenService = new TokenService();
@@ -191,7 +200,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             arrayList.add(intent.getExtras().getString("image"));
             trendingItems.setImagearray(arrayList);
 
-            DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+            DatabaseHelper databaseHelper = new DatabaseHelper(context);
             databaseHelper.saveNotif(trendingItems);
 
             int size = PreferenceServices.getInstance().getNotifCOunt();
@@ -430,7 +439,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 }
                 loginSession.setProfile_pic(url);
             }
-            SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+            SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
             sharedPreferencesHelper.createLoginSession(loginSession);
             PreferenceServices.instance().saveUserId(object.getString("UserId"));
             PreferenceServices.instance().saveUserName(object.getString("UserFirstName")+" "+object.getString("UserLastName"));
@@ -441,9 +450,9 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 public void run() {
                     if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
                             || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
-                        startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
+                        startActivity(new Intent(context, DefaultLocationActivity.class));
                     } else {
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        startActivity(new Intent(context, HomeActivity.class));
                     }
                     finish();
                 }
@@ -460,16 +469,16 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             if (!isFinishing()) {
                 splashHandler.removeCallbacks(this);
                 //if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
-                SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+                SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
                 LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
                 if(loginSession.getSessionid().trim().length()==0||loginSession.getRegid().trim().length()==0)
                     changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
                 else {
                     if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
                             || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
-                        startActivity(new Intent(getApplicationContext(), DefaultLocationActivity.class));
+                        startActivity(new Intent(context, DefaultLocationActivity.class));
                     } else {
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        startActivity(new Intent(context, HomeActivity.class));
                     }
                     finish();
                 }
@@ -485,6 +494,38 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     };
 
+    public void googleClick(){
+        if (ContextCompat.checkSelfPermission(PretStreet.getInstance(), Manifest.permission.GET_ACCOUNTS)
+                == PackageManager.PERMISSION_GRANTED) {
+            Intent googleLoginIntent = new Intent(context, GoogleLoginActivity.class);
+            startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
+        } else {
+            askCompactPermission(Manifest.permission.GET_ACCOUNTS, new PermissionResult() {
+                @Override
+                public void permissionGranted() {
+                    Intent googleLoginIntent = new Intent(context, GoogleLoginActivity.class);
+                    startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
+                }
+                @Override
+                public void permissionDenied() {
+                }
+            });
+        }
+    }
+
+    public void facebookClick(){
+        Intent facebookLoginIntent = new Intent(context, FacebookLoginScreen.class);
+        facebookLoginIntent.putExtra("cat", "Login");
+        facebookLoginIntent.putExtra("Type", "FirstLogin");
+        startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
+    }
+
+    public void termsClick(){
+        Intent intent = new Intent(context, NavigationItemsActivity.class);
+        intent.putExtra(PRE_PAGE_KEY, SIGNUPPAGE);
+        intent.putExtra("fragment", TERMS_FRAGMENT);
+        startActivity(intent);
+    }
 
     public void showOTPScreem(final JSONObject jsonObject, final String url) {
 

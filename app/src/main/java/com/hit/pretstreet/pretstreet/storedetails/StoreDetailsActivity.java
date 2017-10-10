@@ -125,6 +125,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     String mStoreId, shareUrl;
     Dialog popupDialog;
+    Context context;
     private StoreDetailsModel storeDetailsModel;
 
     @Override
@@ -152,6 +153,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     private void initUi(){
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        context = getApplicationContext();
         tv_reportError.setVisibility(View.VISIBLE);
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager
@@ -186,7 +188,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     @OnClick(R.id.tv_about)
     public void aboutShop(){
-        Intent intent = new Intent(getApplicationContext(), NavigationItemsActivity.class);
+        Intent intent = new Intent(context, NavigationItemsActivity.class);
         intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
         intent.putExtra("fragment", ABOUTDESIGNER_FRAGMENT);
         intent.putExtra("NAME", storeDetailsModel.getStoreName());
@@ -410,8 +412,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
-        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.transparent)); // transperent color = #00000000
-        collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(context, R.color.transparent)); // transperent color = #00000000
+        collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(context, R.color.white));
         loadBackdrop(image);
     }
 
@@ -439,7 +441,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {
         final Dialog popupDialog = new Dialog(StoreDetailsActivity.this);
-        LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") final View view = li.inflate(R.layout.popup_phone_number, null);
         TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
         RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
@@ -517,14 +519,14 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     private void dialPhone(String phone){
         logTracking(CALLEDLINK);
         MyPhoneListener phoneListener = new MyPhoneListener();
-        TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
         try {
             String uri = "tel:" + phone;
             Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(uri));
             startActivity(dialIntent);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Call Failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Call Failed", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
@@ -546,8 +548,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                     if (onCall == true) {
                         displaySnackBar("Restart app after call");
                         // restart our application
-                        Intent restart = getApplicationContext().getPackageManager().
-                                getLaunchIntentForPackage(getApplicationContext().getPackageName());
+                        Intent restart = context.getPackageManager().
+                                getLaunchIntentForPackage(context.getPackageName());
                         restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(restart);
                         onCall = false;
@@ -561,7 +563,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     public void showAddress(StoreDetailsModel storeDetailsModel) {
         final Dialog popupDialog = new Dialog(StoreDetailsActivity.this);
-        LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_phone_number, null);
         TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
         ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
@@ -598,7 +600,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 storeDetailsModel.getLongitude().equalsIgnoreCase("")) {
             displaySnackBar("Location not found");
         } else {
-            Intent intent = new Intent(getApplicationContext(), StoreLocationMapScreen.class);
+            Intent intent = new Intent(context, StoreLocationMapScreen.class);
             Bundle b = new Bundle();
             b.putString("name", storeDetailsModel.getStoreName());
             b.putString("address", storeDetailsModel.getAddress());

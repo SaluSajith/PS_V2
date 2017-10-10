@@ -1,8 +1,12 @@
 package com.hit.pretstreet.pretstreet.navigationitems;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,6 +44,7 @@ import com.hit.pretstreet.pretstreet.navigationitems.fragments.ChangePasswordFra
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.ContactUsFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.HtmlFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.NotificationFragment;
+import com.hit.pretstreet.pretstreet.navigationitems.interfaces.ContentBindingInterface;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
@@ -83,13 +88,14 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     private static final int NOTIFICATION_FRAGMENT = 12;
     private static final int CHANGEPASSWORD_FRAGMENT = 13;
     private static final int ABOUTDESIGNER_FRAGMENT = 101;
-
-    private int PLACE_PICKER_REQUEST = 1;
+    private static final int PICK_IMAGE_REQUEST = 111;
+    private static final int PLACE_PICKER_REQUEST = 112;
 
     JsonRequestController jsonRequestController;
     NavItemsController navItemsController;
     LoginController loginController;
     TrendingCallback trendingCallback;
+    ContentBindingInterface bindingInterface;
     HtmlFragment htmlFragment;
 
     @BindView(R.id.content) FrameLayout fl_content;
@@ -182,8 +188,10 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         switch (fragmentId){
             case ACCOUNT_FRAGMENT:
                 currentFragment = ACCOUNT_FRAGMENT;
+                AccountFragment accountFragment = new AccountFragment();
+                bindingInterface = accountFragment;
                 tv_cat_name.setText("MY PROFILE");
-                changeFragment(new AccountFragment(), b);
+                changeFragment(accountFragment, b);
                 break;
             case FOLLOWING_FRAGMENT:
                 currentFragment = FOLLOWING_FRAGMENT;
@@ -404,14 +412,35 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         setupFragment(CHANGEPASSWORD_FRAGMENT, true);
     }
 
+    public void chooseProfileImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                AddStoreFragment addStoreFragment = new AddStoreFragment();
-                addStoreFragment.setLocation(place);
-            }
+        switch (requestCode) {
+            case PLACE_PICKER_REQUEST:
+                    if (resultCode == RESULT_OK) {
+                        Place place = PlacePicker.getPlace(data, this);
+                        AddStoreFragment addStoreFragment = new AddStoreFragment();
+                        addStoreFragment.setLocation(place);
+                    }
+                break;
+            case PICK_IMAGE_REQUEST:
+                if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                    Uri filePath = data.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                        bindingInterface.updateImage(bitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            default: break;
         }
     }
 
@@ -462,5 +491,4 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
                 break;
         }
     }
-
 }

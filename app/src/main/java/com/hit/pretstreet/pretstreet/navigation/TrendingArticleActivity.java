@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -61,6 +62,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     DetailsPageController detailsPageController;
 
     String mId = "";
+    Context context;
     private TrendingItems trendingItems;
 
     @Override
@@ -73,7 +75,8 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
-        Utility.setListLayoutManager_(rv_trendingarticle, getApplicationContext());
+        context = getApplicationContext();
+        Utility.setListLayoutManager_(rv_trendingarticle, context);
 
         trendingItems = (TrendingItems)getIntent()
                 .getSerializableExtra(PARCEL_KEY);
@@ -116,7 +119,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     }
 
     private void setupArticle(ArrayList<TrendingItems> trendingArticle){
-        TrendingArticleAdapter adapter = new TrendingArticleAdapter(getApplicationContext(), trendingArticle);
+        TrendingArticleAdapter adapter = new TrendingArticleAdapter(context, trendingArticle);
         rv_trendingarticle.setAdapter(adapter);
     }
 

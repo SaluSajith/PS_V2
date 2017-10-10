@@ -117,6 +117,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     @BindView(R.id.ll_getdirec) LinearLayout ll_getdirec;
 
     String mStoreId;
+    Context context;
     private StoreDetailsModel exhibitionDetailsModel;
 
     @Override
@@ -142,6 +143,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     private void initUi(){
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        context = getApplicationContext();
         exhibitionDetailsModel = new StoreDetailsModel();
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager
@@ -166,7 +168,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         viewPager.setVisibility(View.GONE);
         tv_testimonials_heading.setVisibility(View.GONE);
         tv_folowerscount.setVisibility(View.GONE);
-        tv_about.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.dark_gray));
+        tv_about.setTextColor(ContextCompat.getColor(context, R.color.dark_gray));
     }
 
     @OnClick(R.id.ib_like)
@@ -203,12 +205,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             tv_photos_heading.setVisibility(exhibitionDetailsModel.getArrayListImages().size() > 0 ? View.VISIBLE : View.GONE);
 
             setupCollapsingHeader(exhibitionDetailsModel.getStoreName(), exhibitionDetailsModel.getBaseImage());
-            tv_book_app.setClickable(exhibitionDetailsModel.getRegisterStatus() == false ? true : false);
-            tv_book_app.setText(exhibitionDetailsModel.getRegisterStatus() == false ? "Register" : "Registered");
-            tv_book_app.setTextColor(exhibitionDetailsModel.getRegisterStatus() == false ?
-                    ContextCompat.getColor(getApplicationContext(), R.color.dark_gray) : ContextCompat.getColor(getApplicationContext(), R.color.white));
-            tv_book_app.setBackgroundColor(exhibitionDetailsModel.getRegisterStatus() == false ?
-                    ContextCompat.getColor(getApplicationContext(), R.color.yellow) : ContextCompat.getColor(getApplicationContext(), R.color.light_gray));
+            setRegisterVisibility(exhibitionDetailsModel.getRegisterStatus());
             tv_storename.setText(exhibitionDetailsModel.getStoreName());
             tv_location.setText(exhibitionDetailsModel.getAreaCity());
             tv_openstatus.setText(exhibitionDetailsModel.getOpenStatus() == false ? "Closed" : "Open now");
@@ -234,13 +231,34 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         }catch (Exception e){}
     }
 
+    private void setRegisterVisibility(String flag){
+        if(flag.contains("0")){
+            tv_book_app.setClickable(true);
+            tv_book_app.setText("Register");
+            tv_book_app.setVisibility(View.VISIBLE);
+            tv_book_app.setTextColor(ContextCompat.getColor(context, R.color.dark_gray));
+            tv_book_app.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
+        }
+        else if(flag.contains("1")){
+            tv_book_app.setClickable(false);
+            tv_book_app.setText("Registered");
+            tv_book_app.setVisibility(View.VISIBLE);
+            tv_book_app.setTextColor(ContextCompat.getColor(context, R.color.white));
+            tv_book_app.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+        }
+        else{
+            tv_book_app.setEnabled(false);
+            tv_book_app.setVisibility(View.GONE);
+        }
+    }
+
     private void setupCollapsingHeader(String title, String img){
 
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
-        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.transparent)); // transperent color = #00000000
-        collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(context, R.color.transparent)); // transperent color = #00000000
+        collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(context, R.color.white));
         loadBackdrop(img);
     }
 
@@ -254,7 +272,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(getApplicationContext()).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_banner).into(imageView);
+        Glide.with(context).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_banner).into(imageView);
     }
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {
@@ -262,7 +280,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             displaySnackBar("Number not found");
         } else {
             final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
-            LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             @SuppressLint("InflateParams") final View view = li.inflate(R.layout.popup_phone_number, null);
             TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
             RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
@@ -342,14 +360,14 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             displaySnackBar("Number not found");
         } else {
             MyPhoneListener phoneListener = new MyPhoneListener();
-            TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
             try {
                 String uri = "tel:" + phone;
                 Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(uri));
                 startActivity(dialIntent);
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Call Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Call Failed", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }
@@ -372,8 +390,8 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
                     if (onCall == true) {
                         displaySnackBar("Restart app after call");
                         // restart our application
-                        Intent restart = getApplicationContext().getPackageManager().
-                                getLaunchIntentForPackage(getApplicationContext().getPackageName());
+                        Intent restart = context.getPackageManager().
+                                getLaunchIntentForPackage(context.getPackageName());
                         restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(restart);
                         onCall = false;
@@ -391,7 +409,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             displaySnackBar("Address not found");
         } else {
             final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
-            LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_phone_number, null);
             TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
             ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
@@ -429,7 +447,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             displaySnackBar("Location not found");
         } else {
             try {
-                Intent intent = new Intent(getApplicationContext(), StoreLocationMapScreen.class);
+                Intent intent = new Intent(context, StoreLocationMapScreen.class);
                 Bundle b = new Bundle();
                 b.putString("name", storeDetailsModel.getStoreName());
                 b.putString("address", storeDetailsModel.getAddress());
@@ -443,7 +461,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     @OnClick(R.id.tv_book_app)
     public void onRegisterPressed() {
-        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
         LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
         String phone = loginSession.getMobile();
         if(phone.trim().length()==0||phone.equalsIgnoreCase("null")){
@@ -518,6 +536,16 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
                     exhibitionDetailsModel.setFollowingStatus(object.getInt("LikeStatus")== 0 ? false : true);
                     ib_like.setTag(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
                     ib_like.setImageResource(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
+                    break;
+                case EXHIBITIONREGISTER_URL:
+                    object = response.getJSONObject("Data");
+                    displaySnackBar(response.getString("CustomerMessage"));
+                    if(object.getInt("LikeStatus")==1){
+                        tv_book_app.setEnabled(false);
+                        tv_book_app.setText("Registered");
+                        tv_book_app.setTextColor(ContextCompat.getColor(context, R.color.white));
+                        tv_book_app.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+                    }
                     break;
                 default: break;
             }

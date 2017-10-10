@@ -25,7 +25,7 @@
     <dimen name="button_radius_small">5dp</dimen>
 
     <dimen name="textsize_small">9dp</dimen>
-    <dimen name="textsize_standard">11dp</dimen>
+    <dimen name="textsize_standard">12dp</dimen>
     <dimen name="textsize_large">12dp</dimen>
     <dimen name="textsize_xlarge">16dp</dimen>
     <dimen name="textsize_xxlarge">20dp</dimen>

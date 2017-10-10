@@ -87,6 +87,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
 
+    Context context;
     int pageCount=1;
     boolean requestCalled = false;
     boolean loadmore = true, first = true;
@@ -103,9 +104,10 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        context = getApplicationContext();
         storeListModels = new ArrayList<>();
         Utility.setListLayoutManager_(rv_storelist, FollowingActivity.this);
-        rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+        rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(context));
         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, FollowingActivity.this, storeListModels);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -179,7 +181,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
 
             for (SearchModel object : homeSubCategories) {
                 SearchModel searchModel = object;
-                LayoutInflater infl = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater infl = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 @SuppressLint("InflateParams") View view = infl.inflate(R.layout.row_storelistscroll, null);
                 txtname[index] = (TextViewPret) view.findViewById(R.id.tv_catname);
                 txtname[index].setText(searchModel.getCategory());

@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.search;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -69,6 +70,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     @BindView(R.id.rv_storelist)RecyclerView rv_storelist;
 
     String shareText;
+    Context context;
     StoreList_RecyclerAdapter storeList_recyclerAdapter;
 
     @Override
@@ -87,9 +89,10 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     private void initUi(){
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        context = getApplicationContext();
 
         Utility.setListLayoutManager_(rv_storelist, MultistoreActivity.this);
-        rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+        rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(context));
         getShoplist();
     }
 
@@ -111,14 +114,14 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
-        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.transparent)); // transperent color = #00000000
-        collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(context, R.color.transparent)); // transperent color = #00000000
+        collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(context, R.color.white));
         loadBackdrop(imageUrl);
     }
 
     private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(getApplicationContext())
+        Glide.with(context)
                 .load(imageUrl)
                 .asBitmap()
                 .centerCrop()

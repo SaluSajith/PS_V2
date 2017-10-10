@@ -97,6 +97,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     boolean requestCalled = false;
     boolean first = true;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +115,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        context = getApplicationContext();
         //checkDevice();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -279,6 +281,8 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         EmptyFragment emptyFragment = new EmptyFragment();
         Bundle bundle = new Bundle();
         bundle.putString("error", error);
+        bundle.putString("retry", "0");
+        bundle.putString("pageid", TRENDINGPAGE);
         emptyFragment.setArguments(bundle);
         changeFragment(emptyFragment, false);
     }
@@ -324,7 +328,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void registerInvoke(int Id) {
-        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
         LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
         String phone = loginSession.getMobile();
         registerJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
@@ -424,7 +428,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         tv_privacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), NavigationItemsActivity.class);
+                Intent intent = new Intent(context, NavigationItemsActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra("fragment", PRIVACY_FRAGMENT);
                 startActivity(intent);
@@ -509,7 +513,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     public void showSortScreem() {
 
         final Dialog popupDialog = new Dialog(HomeInnerActivity.this);
-        LayoutInflater li = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.popup_ex_sort, null);
         ButtonPret btn_apply = (ButtonPret) view.findViewById(R.id.btn_apply);
         final RadioGroup radioGroup_sortby = (RadioGroup) view.findViewById(R.id.radioGroup);
@@ -532,7 +536,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     public void onClicked(int position, ArrayList<String> mImagearray) {
 
         ArrayList<String> imageModels1 = mImagearray;
-        Intent intent = new Intent(getApplicationContext(), FullscreenGalleryActivity.class);
+        Intent intent = new Intent(context, FullscreenGalleryActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, imageModels1);
         intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.HOMEPAGE));
         intent.putExtra(Constant.POSITION_KEY, position);

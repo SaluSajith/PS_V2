@@ -217,7 +217,7 @@ public class HomeFragmentController {
                 item.setArea(trendingContent.getString("AreaCity"));
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 1 ? true : false);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 1 ? true : false);
-                item.setRegister(trendingContent.getInt("CustomerRegisterStatus") == 1 ? true : false);
+                item.setRegister(trendingContent.getString("CustomerRegisterStatus"));
 
                 String jsonImage = trendingContent.getString("ImageSource");
 
