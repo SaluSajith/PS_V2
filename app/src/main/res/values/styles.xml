@@ -94,7 +94,7 @@
         <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/textsize_standard</item>
+        <item name="android:textSize">@dimen/textsize_large</item>
         <item name="android:padding">@dimen/padding_xsmall</item>
     </style>
 

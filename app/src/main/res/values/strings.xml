@@ -94,4 +94,6 @@
     <string name="view_store">
         <u>View Store</u>
     </string>
+    <string name="internet_error">Cannot connect to Internet...Please check your connection!</string>
+    <string name="timeout_error">Connection TimeOut! Please check your internet connection.</string>
 </resources>

@@ -118,12 +118,15 @@
                     android:layout_marginTop="-10dp"
                     app:srcCompat="@drawable/logo1"
                     android:contentDescription=""/>
+
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:visibility="invisible"
                     android:textColor="@color/yellow"
                     android:text="'βeta Version'" />
+
                 <ImageView
                     android:id="@+id/iv_search"
                     android:layout_width="20dp"

@@ -2,16 +2,13 @@ package com.hit.pretstreet.pretstreet.storedetails;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
-import com.hit.pretstreet.pretstreet.storedetails.model.ImageModel;
 import com.hit.pretstreet.pretstreet.storedetails.view.SlideshowDialogFragment;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import java.util.ArrayList;
 
@@ -40,5 +37,15 @@ public class FullscreenGalleryActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.content, fragment)
                 .commit();
+
+        /*List<CustomImage> images = getImages();
+        new ImageViewer.Builder<>(this, images)
+                .setFormatter(new ImageViewer.Formatter<CustomImage>() {
+                    @Override
+                    public String format(CustomImage customImage) {
+                        return customImage.getUrl();
+                    }
+                })
+                .show();*/
     }
 }

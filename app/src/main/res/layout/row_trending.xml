@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="0sp"
+    card_view:cardElevation="2sp"
     android:layout_marginBottom="@dimen/divider_space_xlarge"
     android:paddingBottom="@dimen/divider_space_xlarge"
     app:cardUseCompatPadding="true"
@@ -35,9 +35,10 @@
             <ImageView
                 android:id="@+id/iv_banner"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/pager_height"
+                android:layout_height="wrap_content"
+                android:maxHeight="@dimen/detail_backdrop_maxheight"
                 android:visibility="visible"
-                android:scaleType="center"
+                android:scaleType="fitXY"
                 android:clickable="true"
                 android:contentDescription="Image"/>
 
@@ -47,7 +48,8 @@
             android:id="@+id/ll_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/padding_xxlarge">
 
             <LinearLayout
                 android:id="@+id/viewPagerCountDots"
@@ -125,14 +127,16 @@
                         android:maxLines="4"
                         android:minLines="3"
                         android:text=""
-                        app:pret_typeface="@string/font_merriweather_light" />
+                        android:lineSpacingExtra="5dp"
+                        android:layout_marginBottom="3dp"
+                        app:pret_typeface="@string/font_merriweather_regular" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/padding_large"
-                    android:gravity="bottom"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <ImageView
@@ -146,7 +150,6 @@
                         android:id="@+id/iv_share"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginBottom="@dimen/padding_small"
                         android:contentDescription="Share"
                         android:src="@drawable/ic_share" />
                 </LinearLayout>

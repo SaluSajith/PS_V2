@@ -179,8 +179,10 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     String valueOne = getIntent().getExtras().getString("share");
                     String id = getIntent().getExtras().getString("id");
                     Log.d("TOKEN", "valueOne: " + valueOne + " id: " + id);
-                    if (valueOne.trim().length() != 0 && id.trim().length() != 0)
-                        forwardDeepLink(valueOne, id);
+                    if (valueOne.trim().length() != 0 && id.trim().length() != 0) {
+                        forwardDeepLink(valueOne, id, DEEPLINKINGKEY);
+                        finish();
+                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -208,50 +210,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void forwardDeepLink(String valueOne, String id){
-        Intent intent;
-        switch (valueOne){  //TODO nullpointer excp
-            case "store":
-                StoreListModel storeListModel =  new StoreListModel();
-                storeListModel.setId(id);
-                intent = new Intent(WelcomeActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(PARCEL_KEY, storeListModel);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                intent.putExtra(CLICKTYPE_KEY, DEEPLINKINGKEY);
-                startActivity(intent);
-                break;
-            case "trending":
-                TrendingItems trendingItems = new TrendingItems();
-                trendingItems.setId(id);
-                trendingItems.setPagetypeid("");
-                trendingItems.setClicktype("");
-                intent = new Intent(WelcomeActivity.this, TrendingArticleActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, "");
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                startActivity(intent);
-                break;
-            case "exhibition":
-                trendingItems = new TrendingItems();
-                trendingItems.setId(id);
-                trendingItems.setPagetypeid("");
-                trendingItems.setClicktype("");
-                intent = new Intent(WelcomeActivity.this, ExhibitionDetailsActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
-                startActivity(intent);
-                break;
-            case "multistore":
-                intent = new Intent(WelcomeActivity.this, MultistoreActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                intent.putExtra(ID_KEY, id);
-                startActivity(intent);
-                break;
-            default:
-                break;
-        }
-        finish();
     }
 
     private void changeFragment(Fragment fragment, boolean addBackstack, int content) {
@@ -314,7 +272,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     GoogleSignInAccount account = data.getParcelableExtra("responsejson");
                     getGoogleResponse(account);
                 } else {
-                    Log.e("TAG", "Google  LOGIN FAIL");
                     displaySnackBar("Login failed!");
                 }
                 break;
@@ -346,7 +303,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         else if(id == LOGIN_CLICK_CODE){
             currentFragment = LOGIN_FRAGMENT;
             loginFragment = new LoginFragment();
-            changeFragment(new LoginFragment(), true, LOGIN_FRAGMENT);
+            changeFragment(loginFragment, true, LOGIN_FRAGMENT);
         }
     }
 

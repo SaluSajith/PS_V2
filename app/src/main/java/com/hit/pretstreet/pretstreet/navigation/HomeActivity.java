@@ -163,58 +163,13 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
         if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0) {
-            forwardDeepLink();
+            String valueOne = PreferenceServices.getInstance().getShareQueryparam();
+            String id = PreferenceServices.getInstance().getIdQueryparam();
+            forwardDeepLink(valueOne, id, SHARE);
+            PreferenceServices.getInstance().setIdQueryparam("");
+            PreferenceServices.getInstance().setShareQueryparam("");
             return;
         }
-    }
-
-    private void forwardDeepLink(){
-        Intent intent;
-
-        String valueOne = PreferenceServices.getInstance().getShareQueryparam();
-        String id = PreferenceServices.getInstance().getIdQueryparam();
-        switch (valueOne){
-            case "store":
-                StoreListModel storeListModel =  new StoreListModel();
-                storeListModel.setId(id);
-                intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(PARCEL_KEY, storeListModel);
-                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
-                intent.putExtra(CLICKTYPE_KEY, SHARE);
-                startActivity(intent);
-                break;
-            case "trending":
-                TrendingItems trendingItems = new TrendingItems();
-                trendingItems.setId(id);
-                trendingItems.setPagetypeid("");
-                trendingItems.setClicktype("");
-                intent = new Intent(HomeActivity.this, TrendingArticleActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                intent.putExtra(Constant.PRE_PAGE_KEY, HOMEPAGE);
-                startActivity(intent);
-                break;
-            case "exhibition":
-                trendingItems = new TrendingItems();
-                trendingItems.setId(id);
-                trendingItems.setPagetypeid("");
-                trendingItems.setClicktype("");
-                intent = new Intent(HomeActivity.this, ExhibitionDetailsActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
-                startActivity(intent);
-                break;
-            case "multistore":
-                intent = new Intent(HomeActivity.this, MultistoreActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
-                intent.putExtra(ID_KEY, id);
-                startActivity(intent);
-                break;
-            default:
-                break;
-        }
-        PreferenceServices.getInstance().setIdQueryparam("");
-        PreferenceServices.getInstance().setShareQueryparam("");
-
     }
 
     private void getHomePage(){
@@ -427,14 +382,14 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        String curVersion = info.versionCode + "";
-        if(!serverVersion.equals(curVersion)) {
+        int curVersion = info.versionCode;
+        int srvrVersion = Integer.parseInt(serverVersion);
+        if(curVersion < srvrVersion) {
             showUpdateScreem();
         }
     }
 
     public void showUpdateScreem() {
-
         final Dialog popupDialog = new Dialog(HomeActivity.this);
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.popup_update, null);
@@ -463,8 +418,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
                             ("market://details?id=com.hit.pretstreet.pretstreet")));
                     popupDialog.dismiss();
-                }
-                catch (Exception e){}
+                } catch (Exception e){}
             }
         });
 
@@ -500,7 +454,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             }
             ft.commit();
             homeopened = true;
-        }catch (Exception e){homeopened = false;}
+        } catch (Exception e){ homeopened = false;}
     }
 
     @Override

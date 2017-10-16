@@ -33,9 +33,10 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/rv_storelist"
             android:layout_marginTop="@dimen/content_overlapmargin_hometrape"
+            android:visibility="visible"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </android.support.design.widget.CoordinatorLayout>
@@ -45,6 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"
+        android:paddingTop="50dp"
         android:layout_centerInParent="true">
         <include
             android:id="@+id/ll_empty"

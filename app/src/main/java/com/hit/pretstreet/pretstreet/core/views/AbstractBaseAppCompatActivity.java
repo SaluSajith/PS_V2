@@ -18,11 +18,26 @@ import android.util.Log;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.PageState;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
+import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
+import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
+import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
+import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import java.util.ArrayList;
+
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.DEEPLINKINGKEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 
 /**
  * Created by User on 7/5/2017.
@@ -257,6 +272,48 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
     }
 
 
+    public void forwardDeepLink(String valueOne, String id, String clicktypeId){
+        Intent intent;
+        switch (valueOne){  //TODO nullpointer excp
+            case "store":
+                StoreListModel storeListModel =  new StoreListModel();
+                storeListModel.setId(id);
+                intent = new Intent(this, StoreDetailsActivity.class);
+                intent.putExtra(PARCEL_KEY, storeListModel);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(CLICKTYPE_KEY, clicktypeId);
+                startActivity(intent);
+                break;
+            case "trending":
+                TrendingItems trendingItems = new TrendingItems();
+                trendingItems.setId(id);
+                trendingItems.setPagetypeid("");
+                trendingItems.setClicktype("");
+                intent = new Intent(this, TrendingArticleActivity.class);
+                intent.putExtra(Constant.PRE_PAGE_KEY, "");
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                startActivity(intent);
+                break;
+            case "exhibition":
+                trendingItems = new TrendingItems();
+                trendingItems.setId(id);
+                trendingItems.setPagetypeid("");
+                trendingItems.setClicktype("");
+                intent = new Intent(this, ExhibitionDetailsActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
+                startActivity(intent);
+                break;
+            case "multistore":
+                intent = new Intent(this, MultistoreActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
+                intent.putExtra(ID_KEY, id);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+    }
 
 
     public void askCompactPermission(String permission, PermissionResult permissionResult) {

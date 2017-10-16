@@ -446,49 +446,6 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
 
     @Override
     public void bindData(ArrayList<TrendingItems> trendingItems) {
-        forwardDeepLink(trendingItems.get(0).getShareUrl(), trendingItems.get(0).getId());
-    }
-
-    private void forwardDeepLink(String valueOne, String id){
-        Intent intent;
-        switch (valueOne){  //TODO nullpointer excp
-            case "store":
-                StoreListModel storeListModel =  new StoreListModel();
-                storeListModel.setId(id);
-                intent = new Intent(NavigationItemsActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(PARCEL_KEY, storeListModel);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                intent.putExtra(CLICKTYPE_KEY, NOTIFICATIONKEY);
-                startActivity(intent);
-                break;
-            case "trending":
-                TrendingItems trendingItems = new TrendingItems();
-                trendingItems.setId(id);
-                trendingItems.setPagetypeid("");
-                trendingItems.setClicktype("");
-                intent = new Intent(NavigationItemsActivity.this, TrendingArticleActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, "");
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                startActivity(intent);
-                break;
-            case "exhibition":
-                trendingItems = new TrendingItems();
-                trendingItems.setId(id);
-                trendingItems.setPagetypeid("");
-                trendingItems.setClicktype("");
-                intent = new Intent(NavigationItemsActivity.this, ExhibitionDetailsActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
-                startActivity(intent);
-                break;
-            case "multistore":
-                intent = new Intent(NavigationItemsActivity.this, MultistoreActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
-                intent.putExtra(ID_KEY, id);
-                startActivity(intent);
-                break;
-            default:
-                break;
-        }
+        forwardDeepLink(trendingItems.get(0).getShareUrl(), trendingItems.get(0).getId(), NOTIFICATIONKEY);
     }
 }

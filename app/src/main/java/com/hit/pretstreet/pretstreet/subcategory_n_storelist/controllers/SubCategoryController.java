@@ -3,11 +3,7 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers;
 import android.content.Context;
 
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
-import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
-import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.search.models.SearchModel;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
-import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -15,11 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import needle.Needle;
 
 /**
  * Created by User on 7/27/2017.

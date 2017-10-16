@@ -286,12 +286,32 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                 public void permissionGranted() {
                     getLocation();
                 }
-
                 @Override
                 public void permissionDenied() {
-
                 }
             });
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
+        switch (permsRequestCode) {
+            case 200:
+                getLocation();
+                break;
+            default: break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            switch (requestCode) {
+                case 1:
+                    getLocation();
+                    break;
+            }
         }
     }
 

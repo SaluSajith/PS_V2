@@ -36,6 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -272,7 +273,8 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(context).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_banner).into(imageView);
+        Glide.with(context).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_banner)
+                .diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(imageView);
     }
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {

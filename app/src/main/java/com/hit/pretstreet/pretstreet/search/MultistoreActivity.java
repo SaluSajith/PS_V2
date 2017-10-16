@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -125,6 +126,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                 .load(imageUrl)
                 .asBitmap()
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate()
                 .placeholder(R.drawable.default_banner)
                 .into(imageView);
 

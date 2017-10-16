@@ -26,6 +26,7 @@
                     android:scaleType="fitXY"
                     android:adjustViewBounds="true"
                     android:clickable="false"
+                    android:maxHeight="@dimen/detail_backdrop_maxheight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="Image"/>

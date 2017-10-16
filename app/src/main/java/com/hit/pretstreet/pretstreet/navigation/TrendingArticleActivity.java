@@ -2,14 +2,8 @@ package com.hit.pretstreet.pretstreet.navigation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.hit.pretstreet.pretstreet.R;
@@ -20,13 +14,13 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.navigation.adapters.TrendingAdapter;
 import com.hit.pretstreet.pretstreet.navigation.adapters.TrendingArticleAdapter;
 import com.hit.pretstreet.pretstreet.navigation.controllers.DetailsPageController;
-import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
+import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -40,15 +34,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONLIKE_URL;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGARTICLE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 
 public class TrendingArticleActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, TrendingCallback {

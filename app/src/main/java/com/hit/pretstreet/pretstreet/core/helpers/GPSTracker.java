@@ -14,6 +14,8 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
+
 /**
  * Created by user on 13/7/2017
  */
@@ -29,7 +31,7 @@ public class GPSTracker extends Service implements LocationListener {
     double latitude; // latitude
     double longitude; // longitude
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 50; // 10 meters
     // The minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
     // Declaring a Location Manager
@@ -42,6 +44,7 @@ public class GPSTracker extends Service implements LocationListener {
     public GPSTracker(){
         mContext = null;
     }
+
     public Location getLocation() {
         try {
             locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
@@ -69,6 +72,7 @@ public class GPSTracker extends Service implements LocationListener {
                         if (location != null) {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
+                            return location;
                         }
                     }
                 }
@@ -86,6 +90,7 @@ public class GPSTracker extends Service implements LocationListener {
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
+                                return location;
                             }
                         }
                     }
@@ -95,7 +100,6 @@ public class GPSTracker extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return location;
     }
 
@@ -103,8 +107,6 @@ public class GPSTracker extends Service implements LocationListener {
         if (location != null) {
             latitude = location.getLatitude();
         }
-
-        // return latitude
         return latitude;
     }
 
@@ -112,8 +114,6 @@ public class GPSTracker extends Service implements LocationListener {
         if (location != null) {
             longitude = location.getLongitude();
         }
-
-        // return longitude
         return longitude;
     }
 
@@ -129,8 +129,9 @@ public class GPSTracker extends Service implements LocationListener {
 
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                mContext.startActivity(intent);
+                /*Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                mContext.startActivity(intent);*/
+                ((DefaultLocationActivity)mContext).startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1);
             }
         });
 

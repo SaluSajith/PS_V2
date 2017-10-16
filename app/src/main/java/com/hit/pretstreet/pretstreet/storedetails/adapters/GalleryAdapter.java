@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
 import com.hit.pretstreet.pretstreet.storedetails.model.ImageModel;
@@ -60,6 +61,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
                 .load(urls.get(position))
                 .asBitmap()
                 .placeholder(R.drawable.default_gallery)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.cloud_sad)
                 .fitCenter()
                 .into(holder.image);

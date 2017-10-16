@@ -15,8 +15,8 @@
         android:scrollbars="none"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <include
-            android:id="@+id/ll_empty"
-            layout="@layout/empty_view"
-            android:visibility="invisible"/>
+    <include
+        android:id="@+id/ll_empty"
+        layout="@layout/empty_view"
+        android:visibility="visible"/>
 </FrameLayout>

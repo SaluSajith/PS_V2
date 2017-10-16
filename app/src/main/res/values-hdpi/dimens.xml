@@ -34,8 +34,8 @@
 
     <dimen name="textsize_small">10dp</dimen>
     <dimen name="textsize_standard">12dp</dimen>
-    <dimen name="textsize_large">10dp</dimen>
-    <dimen name="textsize_xlarge">16dp</dimen>
+    <dimen name="textsize_large">14dp</dimen>
+    <dimen name="textsize_xlarge">15dp</dimen>
     <dimen name="textsize_xxlarge">20dp</dimen>
     <dimen name="textsize_xxxlarge">24dp</dimen>
 

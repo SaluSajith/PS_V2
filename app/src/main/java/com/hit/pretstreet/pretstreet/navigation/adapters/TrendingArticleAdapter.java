@@ -12,10 +12,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 
 import java.util.ArrayList;
 
@@ -27,13 +30,18 @@ import butterknife.ButterKnife;
  */
 
 public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticleAdapter.ArticleViewHolder>{
+
     private Context context;
     ArrayList<TrendingItems> artItems;
     TrendingCallback trendingCallback;
+    //private ZoomedViewListener zoomedViewListener;
 
     public TrendingArticleAdapter(Context context, ArrayList<TrendingItems> artItems) {
         this.context = context;
         this.artItems = artItems;
+        /*if(context.getClass().getSimpleName().equals(TrendingArticleActivity.class.getSimpleName()))
+            this.zoomedViewListener = ((HomeInnerActivity) activity);
+        else this.zoomedViewListener = (ZoomedViewListener) context.getApplicationContext();*/
     }
 
     @Override
@@ -101,9 +109,10 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
         @Override
         public void onClick(View v) {
             int viewId = v.getId();
+            TrendingItems notifItems = artItems.get(getAdapterPosition());
             switch (viewId){
                 case R.id.txt_title:
-                    TrendingItems notifItems = artItems.get(getAdapterPosition());
+
                     if(!notifItems.isNotifPage()) {
                         trendingCallback = (TrendingArticleActivity) context;
                         ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
@@ -111,6 +120,11 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
                         trendingCallback.bindData(trendingItemses);
                     }
                     break;
+                /*case R.id.iv_banner:
+                    ArrayList<String> mImagearray = new ArrayList<>();
+                    mImagearray.add(notifItems.getImagearray().get(0));
+                    zoomedViewListener.onClicked(0, mImagearray);
+                    break;*/
                 default:
                     break;
             }

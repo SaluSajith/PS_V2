@@ -54,25 +54,22 @@ import butterknife.ButterKnife;
 
 public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private static Context context;
     static int mPosition;
-    private ImageView imageViewPret;
+    private static Context context;
     private TextViewPret textViewPret;
     private ArrayList<TrendingItems> list;
     private TrendingHolderInvoke trendingHolderInvoke;
-    private ZoomedViewListener zoomedViewListener;
 
-    private static final int EXHIBITION_FRAGMENT = 11;
-
-    private static final int ReGISTER = 21;
     private static final int LIKE = 22;
     private static int selected_id = 22;
+    private static final int ReGISTER = 21;
+    private static final int EXHIBITION_FRAGMENT = 11;
 
-    private OnLoadMoreListener mOnLoadMoreListener;
     private boolean isLoading;
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
     private final RequestManager glide;
+    private OnLoadMoreListener mOnLoadMoreListener;
 
     public ExhibitionAdapter(final RequestManager glide, RecyclerView mRecyclerView,
                              Activity activity, ExhibitionFragment context,
@@ -80,7 +77,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.context = activity;
         this.list = list;
         this.glide = glide;
-        this.zoomedViewListener = (ZoomedViewListener) context;
         this.trendingHolderInvoke = (TrendingHolderInvoke)activity;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
@@ -140,12 +136,14 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.bt_register.setText("Register");
             holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.dark_gray));
             holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
+            holder.bt_register.setVisibility(View.VISIBLE);
         }
         else if(trendingItems.getRegisterFlag().contains("1")){
             holder.bt_register.setEnabled(false);
             holder.bt_register.setText("Registered");
             holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.white));
             holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+            holder.bt_register.setVisibility(View.VISIBLE);
         }
         else{
             holder.bt_register.setEnabled(false);
@@ -170,6 +168,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
 
+        int viewType;
         @BindView(R.id.iv_like)ImageView iv_like;
         @BindView(R.id.iv_share)ImageView iv_share;
         @BindView(R.id.iv_banner)ImageView iv_banner;
@@ -183,12 +182,9 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         @BindView(R.id.ll_desc)LinearLayout ll_desc;
         @BindView(R.id.ll_progress) LinearLayout ll_progress;
 
-        int viewType;
-
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
             this.viewType = viewType;
-            imageViewPret =  new ImageView(context);
             ButterKnife.bind(this, itemView);
 
             iv_like.setOnClickListener(this);
@@ -216,7 +212,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 case R.id.iv_like:
                     mPosition = getAdapterPosition();
                     selected_id = LIKE;
-                    imageViewPret = (ImageView) view;
                     trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
                     break;
                 case R.id.iv_share:
@@ -238,7 +233,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     break;
                 case R.id.iv_banner:
                     if(trendingItems.getBanner()){
-                       // trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.EXHIBITIONPAGE);
+                        trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.EXHIBITIONPAGE);
                     }else {
                         mPosition = getAdapterPosition();
                         ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
@@ -275,9 +270,8 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
         }
     }
-/*
 
-    @Override
+/*@Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         ExhibitionAdapter.ViewHolder holder1 = (ExhibitionAdapter.ViewHolder) holder;
         if(holder != null) {
@@ -286,12 +280,11 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         super.onViewRecycled(holder);
     }
 */
-
     public void setLoaded() {
         isLoading = false;
     }
 
     static void loadImage(RequestManager glide, String url, ImageView view) {
-        glide.load(url).fitCenter().into(view);
+        glide.load(url).into(view);
     }
 }

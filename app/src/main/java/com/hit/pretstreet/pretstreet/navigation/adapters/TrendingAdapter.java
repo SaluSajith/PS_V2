@@ -2,18 +2,9 @@ package com.hit.pretstreet.pretstreet.navigation.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +12,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -40,7 +28,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hit.pretstreet.pretstreet.R.id.imageView;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 /**
@@ -71,7 +58,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.context = activity;
         this.list = list;
         this.glide = glide;
-        //this.zoomedViewListener = (ZoomedViewListener) context;
+        this.zoomedViewListener = ((HomeInnerActivity) activity);
         this.trendingHolderInvoke = (TrendingHolderInvoke)activity;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
@@ -108,7 +95,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TrendingItems trendingItems = list.get(position);
         setViewText(holder.txt_date, trendingItems.getArticledate());
         //setViewText(holder.txt_title, trendingItems.getTitle());
-        holder.txt_title.setVisibility(trendingItems.getTitleid().trim().length()>0 ? View.GONE : View.GONE);
+        holder.txt_title.setVisibility(trendingItems.getTitleid().trim().length()>0 ? View.VISIBLE : View.GONE);
         setViewText(holder.txt_description, trendingItems.getArticle());
 
         if(trendingItems.getBanner()){
@@ -121,18 +108,19 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 case 0:
                     holder.pager_indicator.setVisibility(View.INVISIBLE);
                     holder.iv_banner.setVisibility(View.VISIBLE);
+                    holder.article_images.setVisibility(View.GONE);
                     holder.iv_banner.setImageResource(R.mipmap.ic_launcher);
                     break;
                 case 1:
+                    loadImage(glide, trendingItems.getImagearray().get(0), holder.iv_banner);
                     holder.pager_indicator.setVisibility(View.INVISIBLE);
-                    holder.iv_banner.setVisibility(View.GONE);
-                    mAdapter = new ArticlePagerAdapter(glide, context, trendingItems.getImagearray());
-                    holder.article_images.setAdapter(mAdapter);
-                    holder.article_images.setCurrentItem(0);
+                    holder.iv_banner.setVisibility(View.VISIBLE);
+                    holder.article_images.setVisibility(View.GONE);
                     break;
                 default:
                     holder.pager_indicator.setVisibility(View.VISIBLE);
                     holder.iv_banner.setVisibility(View.GONE);
+                    holder.article_images.setVisibility(View.VISIBLE);
                     mAdapter = new ArticlePagerAdapter(glide, context, trendingItems.getImagearray());
                     holder.article_images.setAdapter(mAdapter);
                     holder.article_images.setCurrentItem(0);
@@ -203,12 +191,12 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.ll_progress) LinearLayout ll_progress;
         @BindView(R.id.pager_article)ViewPager article_images;
         @BindView(R.id.viewPagerCountDots)LinearLayout pager_indicator;
+
         private ImageView[] dots;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            //imageViewPret =  new ImageView(context);
 
             iv_like.setOnClickListener(this);
             iv_share.setOnClickListener(this);
@@ -226,14 +214,12 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             switch (viewId) {
                 case R.id.iv_like:
                     mPosition = getAdapterPosition();
-                   // imageViewPret = (ImageView) view;
                     trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), TRENDING_FRAGMENT);
                     break;
                 case R.id.iv_share:
                     trendingHolderInvoke.shareurl(trendingItems.getShareUrl());
                     break;
                 case R.id.txt_shopname:
-                    //trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.TRENDINGPAGE);
                     StoreListModel storeListModel = new StoreListModel();
                     storeListModel.setId(trendingItems.getTitleid());
                     storeListModel.setTitle(trendingItems.getTitle());
@@ -274,15 +260,16 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onPageSelected(int position) {
+            //article_images.reMeasureCurrentPage(article_images.getCurrentItem());
             if(list.get(getAdapterPosition()).getImagearray().size()>1)
-            try {
-                for (int i = 0; i < list.get(getAdapterPosition()).getImagearray().size(); i++) {
-                    dots[i].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_unselected));
+                try {
+                    for (int i = 0; i < list.get(getAdapterPosition()).getImagearray().size(); i++) {
+                        dots[i].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_unselected));
+                    }
+                    dots[position].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_selected));
                 }
-                dots[position].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_selected));
-            }
-            catch (IllegalStateException e){}
-            catch (Exception e){}
+                catch (IllegalStateException e){}
+                catch (Exception e){}
         }
 
         @Override
@@ -290,20 +277,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-/* @Override
-    public void onViewRecycled(RecyclerView.ViewHolder holder) {
-        ViewHolder holder1 = (ViewHolder) holder;
-        if(holder != null) {
-            Glide.clear(holder1.iv_banner);
-            Glide.clear(holder1.iv_profile);
-        }
-        super.onViewRecycled(holder);
-    }
-*/
-
     public void updateLikeStatus(int status, String storeid) {
-        /*imageViewPret.setImageResource(status == 1 ?
-                R.drawable.red_heart : R.drawable.grey_heart);*/
         if(list.get(mPosition).getId().equals(storeid))
             list.get(mPosition).setLike(status == 0 ? false : true);
     }
@@ -314,19 +288,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     static void loadImage(RequestManager glide, String url, ImageView view) {
         glide.load(url).fitCenter().into(view);
-
-        /*glide.load(url).asBitmap().into(new BitmapImageViewTarget(view) {
-            @Override
-            protected void setResource(final Bitmap resource) {
-                try {
-                    BitmapFactory.Options o = new BitmapFactory.Options();
-                    o.inSampleSize = 2;
-                    Bitmap.createScaledBitmap()
-                    Bitmap b = BitmapFactory.decodeBFile(resource, o);
-                    imageView.setImageBitmap(result);
-                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                } catch (Exception e){}
-            }
-        });*/
     }
+
 }

@@ -24,12 +24,19 @@
     <dimen name="button_radius_standard">10dp</dimen>
     <dimen name="button_radius_small">5dp</dimen>
 
-    <dimen name="textsize_small">10dp</dimen>
-    <dimen name="textsize_standard">12dp</dimen>
+    <!--<dimen name="textsize_small">10dp</dimen>
+    <dimen name="textsize_standard">13dp</dimen>
     <dimen name="textsize_large">12dp</dimen>
     <dimen name="textsize_xlarge">16dp</dimen>
     <dimen name="textsize_xxlarge">20dp</dimen>
-    <dimen name="textsize_xxxlarge">24dp</dimen>
+    <dimen name="textsize_xxxlarge">24dp</dimen>-->
+
+    <dimen name="textsize_small">10sp</dimen>
+    <dimen name="textsize_standard">12sp</dimen>
+    <dimen name="textsize_large">13sp</dimen>
+    <dimen name="textsize_xlarge">15sp</dimen>
+    <dimen name="textsize_xxlarge">20sp</dimen>
+    <dimen name="textsize_xxxlarge">25sp</dimen>
 
     <dimen name="divider_space_small">2dp</dimen>
     <dimen name="divider_space_standard">5dp</dimen>
@@ -53,7 +60,7 @@
 
     <dimen name="welcome_margintop">0dp</dimen>
     <dimen name="google_margintop">2dp</dimen>
-    <dimen name="pager_height">270dp</dimen>
+    <dimen name="pager_height">280dp</dimen>
     <dimen name="nav_header_height">120dp</dimen>
     <dimen name="searchpage_topmargin">60dp</dimen>
 

@@ -28,8 +28,6 @@ import butterknife.OnClick;
 
 public class WelcomeFragment extends AbstractBaseFragment<WelcomeActivity> {
 
-    private static final int FACEBOOK_LOGIN_REQUEST_CODE = 1;
-    private static final int GOOGLE_LOGIN_REQUEST_CODE = 2;
     private static final int SIGNUP_CLICK = 1;
     private static final int LOGIN_CLICK = 2;
 
@@ -69,31 +67,11 @@ public class WelcomeFragment extends AbstractBaseFragment<WelcomeActivity> {
 
     @OnClick(R.id.btn_facebook)
     public void onFacebookPressed() {
-        Intent facebookLoginIntent = new Intent(getActivity(), FacebookLoginScreen.class);
-        facebookLoginIntent.putExtra("cat", "Login");
-        facebookLoginIntent.putExtra("Type", "FirstLogin");
-        getActivity().startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
+        ((WelcomeActivity)getActivity()).facebookClick();
     }
 
     @OnClick(R.id.btn_google)
     public void onGooglePressed() {
-        if (ContextCompat.checkSelfPermission(PretStreet.getInstance(), Manifest.permission.GET_ACCOUNTS)
-                == PackageManager.PERMISSION_GRANTED) {
-            Intent googleLoginIntent = new Intent(getActivity(), GoogleLoginActivity.class);
-            getActivity().startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
-        } else {
-            askCompactPermission(Manifest.permission.GET_ACCOUNTS, new PermissionResult() {
-                @Override
-                public void permissionGranted() {
-                    Intent googleLoginIntent = new Intent(getActivity(), GoogleLoginActivity.class);
-                    getActivity().startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
-                }
-
-                @Override
-                public void permissionDenied() {
-                }
-            });
-        }
+        ((WelcomeActivity)getActivity()).googleClick();
     }
-
 }

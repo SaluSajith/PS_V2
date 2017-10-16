@@ -368,6 +368,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @Override
     public void onResponse(JSONObject response) {
+        ll_empty.setVisibility(View.GONE);
         handleResponse(response);
     }
 
@@ -376,6 +377,11 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         this.hideDialog();
         requestCalled = false;
         displaySnackBar(error);
+        if(storeListModels.size()==0){
+            ll_empty.setVisibility(View.VISIBLE);
+            TextViewPret tv_msg = (TextViewPret) ll_empty.findViewById(R.id.tv_msg);
+            tv_msg.setText(error);
+        }
     }
 
     @Override

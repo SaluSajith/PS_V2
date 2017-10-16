@@ -43,6 +43,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -436,7 +437,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(this).load(imageUrl).asBitmap().placeholder(R.drawable.default_banner).fitCenter().into(imageView);
+        Glide.with(this).load(imageUrl).asBitmap().placeholder(R.drawable.default_banner)
+                .fitCenter().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {
@@ -491,28 +493,24 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 popupDialog.dismiss();
             }
         });
-
         rl_phone1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialPhone(arrayList.get(0));
             }
         });
-
         rl_phone2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialPhone(arrayList.get(1));
             }
         });
-
         rl_phone3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialPhone(arrayList.get(2));
             }
         });
-
         logTracking(CALLLINK);
     }
 
@@ -530,7 +528,6 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             e.printStackTrace();
         }
     }
-
 
     private class MyPhoneListener extends PhoneStateListener {
         private boolean onCall = false;
@@ -625,7 +622,11 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 case BOOK_APPOINTMENT_URL:
                     displaySnackBar(response.getString("CustomerMessage"));
                 case Constant.UPDATEFOLLOWSTATUS_URL:
-                    btn_follow.setText(response.getJSONObject("Data").getInt("FollowingStatus") == 0 ? "Follow" : "Unfollow");
+                    int status = response.getJSONObject("Data").getInt("FollowingStatus");
+                    btn_follow.setText(status == 0 ? "Follow" : "Unfollow");
+                    int count = Integer.parseInt(this.storeDetailsModel.getFollowingCount());
+                    this.storeDetailsModel.setFollowingCount(status == 1 ? (count+1) +"" : (count-1) +"");
+                    tv_folowerscount.setText(this.storeDetailsModel.getFollowingCount() + " followers");
                     break;
                 case REPORT_ERROR_URL:
                     displaySnackBar(response.getString("CustomerMessage"));
@@ -677,18 +678,19 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     public void onError(String error) {
         this.hideDialog();
         displaySnackBar( error);
+        if(tv_storename.getText().toString().trim().length()==0){
+            finish();
+        }
     }
 
     @Override
     public void onClicked(int position, ArrayList<String> imageModels) {
-
         ArrayList<String> imageModels1 = imageModels;
         Intent intent = new Intent(StoreDetailsActivity.this, FullscreenGalleryActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, imageModels1);
         intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.STORELISTINGPAGE));
         intent.putExtra(Constant.POSITION_KEY, position);
         startActivity(intent);
-
     }
 
     @OnClick(R.id.ll_call)
@@ -701,18 +703,15 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         }
     }
 
-
     @OnClick(R.id.ll_address)
     public void onAddressPressed() {
         showAddress(storeDetailsModel);
     }
 
-
     @OnClick(R.id.ll_getdirec)
     public void onDirePressed() {
         showLocation(storeDetailsModel);
     }
-
 
     @OnClick(R.id.tv_book_app)
     public void onBookPressed() {

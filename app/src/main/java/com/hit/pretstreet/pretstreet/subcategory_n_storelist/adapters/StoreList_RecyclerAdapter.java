@@ -80,12 +80,12 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                /*if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     glide.resumeRequests();
                 }
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     glide.pauseRequests();
-                }
+                }*/
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
@@ -186,6 +186,8 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     public void updateFollowStatus(int status, String storeid) {
         if (mItems.get(mPosition).getId().equals(storeid)) {
             mItems.get(mPosition).setFollowingStatus(status == 1 ? true : false);
+            int count = Integer.parseInt(mItems.get(mPosition).getFollowingCount());
+            mItems.get(mPosition).setFollowingCount(status == 1 ? (count+1) +"" : (count-1) +"");
         } else ;
     }
 
@@ -278,7 +280,8 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         }
         super.onViewRecycled(holder);
     }*/
+
     static void loadImage(RequestManager glide, String url, ImageView view) {
-        glide.load(url).centerCrop().diskCacheStrategy(DiskCacheStrategy.RESULT).into(view);
+        glide.load(url).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(view);
     }
 }

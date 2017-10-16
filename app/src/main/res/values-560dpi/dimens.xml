@@ -25,8 +25,8 @@
 
     <dimen name="textsize_small">10sp</dimen>
     <dimen name="textsize_standard">12sp</dimen>
-    <dimen name="textsize_large">14sp</dimen>
-    <dimen name="textsize_xlarge">17sp</dimen>
+    <dimen name="textsize_large">13sp</dimen>
+    <dimen name="textsize_xlarge">16sp</dimen>
     <dimen name="textsize_xxlarge">20sp</dimen>
     <dimen name="textsize_xxxlarge">25sp</dimen>
 
@@ -52,7 +52,7 @@
 
     <dimen name="welcome_margintop">-2dp</dimen>
     <dimen name="google_margintop">1dp</dimen>
-    <dimen name="pager_height">270dp</dimen>
+    <dimen name="pager_height">300dp</dimen>
     <dimen name="nav_header_height">150dp</dimen>
     <dimen name="searchpage_topmargin">60dp</dimen>
 

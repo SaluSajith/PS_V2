@@ -14,7 +14,7 @@ import android.widget.Toast;
  * Created by user on 13/7/2017
  */
 
-public class IncomingSms extends BroadcastReceiver {
+public class IncomingSms {/*extends BroadcastReceiver {
 
     // Get the object of SmsManager
     final SmsManager sms = SmsManager.getDefault();
@@ -50,5 +50,5 @@ public class IncomingSms extends BroadcastReceiver {
             Log.e("SmsReceiver", "Exception smsReceiver" + e);
         }
 
-    }
+    }*/
 }

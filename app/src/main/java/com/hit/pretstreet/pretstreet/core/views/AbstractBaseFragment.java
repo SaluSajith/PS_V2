@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.helpers.UIThreadHandler;
@@ -117,6 +118,8 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
                 .load(url).asBitmap()
                 .placeholder(placeholder)
                 //.centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                //.dontAnimate()
                 .into(new BitmapImageViewTarget(imageView) {
                     @Override
                     protected void setResource(Bitmap resource) {
