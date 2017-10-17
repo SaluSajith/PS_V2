@@ -172,19 +172,6 @@ public class HomeFragmentController {
                     imagearray.add(jsonImagearray.get(j));
                 }
                 item.setImagearray(imagearray);
-                /*if(!trendingContent.getString("ArticleDate").equalsIgnoreCase("")) {
-                    try {
-                        DateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
-                        DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
-                        String inputDateStr = trendingContent.getString("ArticleDate");
-                        Date date = inputFormat.parse(inputDateStr);
-                        String outputDateStr = outputFormat.format(date);
-                        item.setArticledate(outputDateStr);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else*/
                 item.setArticledate(trendingContent.getString("ArticleDate"));
                 if(trendingContent.has("Share"))
                     item.setShareUrl(trendingContent.getString("Share"));

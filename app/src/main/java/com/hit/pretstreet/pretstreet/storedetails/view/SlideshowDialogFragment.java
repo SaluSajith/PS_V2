@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.customview.TouchImageView;
+import com.hit.pretstreet.pretstreet.core.customview.touchImageView.ImageViewTouch;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 
 import java.util.ArrayList;
@@ -104,7 +104,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         public Object instantiateItem(ViewGroup container, int position) {
 
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.gallery_fullscreen_image, container, false);
-            TouchImageView imageViewPreview = (TouchImageView) view.findViewById(R.id.image_preview);
+            ImageViewTouch imageViewPreview = (ImageViewTouch) view.findViewById(R.id.image_preview);
             String image = imageModels.get(position);
             Glide.with(getActivity()).load(image)
                     .thumbnail(0.5f)

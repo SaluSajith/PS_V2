@@ -27,7 +27,7 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager_article"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/pager_height"
+                android:layout_height="@dimen/trending_pager_height"
                 android:fitsSystemWindows="true"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/image_slider_item" />
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:maxHeight="@dimen/detail_backdrop_maxheight"
                 android:visibility="visible"
-                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
                 android:clickable="true"
                 android:contentDescription="Image"/>
 

@@ -114,9 +114,6 @@
             android:name=".storedetails.StoreDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TestActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".navigationitems.NavigationItemsActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -287,7 +287,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     static void loadImage(RequestManager glide, String url, ImageView view) {
-        glide.load(url).fitCenter().into(view);
+        glide.load(url).into(view);
     }
-
 }

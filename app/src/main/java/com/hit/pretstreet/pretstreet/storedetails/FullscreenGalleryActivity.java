@@ -37,15 +37,5 @@ public class FullscreenGalleryActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.content, fragment)
                 .commit();
-
-        /*List<CustomImage> images = getImages();
-        new ImageViewer.Builder<>(this, images)
-                .setFormatter(new ImageViewer.Formatter<CustomImage>() {
-                    @Override
-                    public String format(CustomImage customImage) {
-                        return customImage.getUrl();
-                    }
-                })
-                .show();*/
     }
 }

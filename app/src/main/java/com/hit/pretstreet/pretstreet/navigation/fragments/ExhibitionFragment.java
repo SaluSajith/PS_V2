@@ -3,7 +3,6 @@ package com.hit.pretstreet.pretstreet.navigation.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.hit.pretstreet.pretstreet.navigation.adapters.ExhibitionAdapter;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
-import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 
@@ -85,6 +83,7 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
         adapter.setLoaded();
         if(this.exHItems.size()==0)
             ll_empty.setVisibility(View.VISIBLE);
+
         else ll_empty.setVisibility(View.INVISIBLE);
     }
 
