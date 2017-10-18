@@ -598,26 +598,24 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
         GPSTracker gps = new GPSTracker(this);
         if (gps.canGetLocation())
-            // if(PreferenceServices.getInstance().isAutoDetect())
-            if (isLocationChanged()){
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
-                alertDialog.setTitle("Location Changed!");
-                alertDialog.setMessage("It is detected that your location has been changed!! Do you want to update your location with the current location?");
+            if(PreferenceServices.getInstance().isAutoDetect())
+                if (isLocationChanged()){
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+                    alertDialog.setTitle("Location Changed!");
+                    alertDialog.setMessage("It is detected that your location has been changed!! Do you want to switch?");
 
-                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        getLocation();
-                    }
-                });
-
-                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                alertDialog.show();
-            }
+                    alertDialog.setPositiveButton("Switch location", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getLocation();
+                        }
+                    });
+                    alertDialog.setNegativeButton("No, Thanks", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    alertDialog.show();
+                }
     }
 
     public void getLocation() {
