@@ -16,6 +16,7 @@ public class PreferenceServices {
     public static final String USERON = "USERON";
     public static final String USERNAME = "USERNAME";
     public static final String CURLOCATION = "LOCATION";
+    public static final String LOCATIONTYPE = "LOCATIONTYPE";
     public static final String LATITUTE = "LATITUTE";
     public static final String LONGITUTE = "LONGITUTE";
     public static final String LOGINTYPE = "LOGINTYPE";
@@ -38,6 +39,9 @@ public class PreferenceServices {
 
     public static String SHARE_QUERYPARAM = "SHARE_QUERYPARAM";
     public static String ID_QUERYPARAM = "ID_QUERYPARAM";
+
+    public static String currentloc = "CURRENTLOCATION";
+    public static String dropdownloc = "DROPDOWNLOC";
 
     private static final String PREFS_NAME = "FashionSharedPref";
     private static PreferenceServices mSingleton = new PreferenceServices();
@@ -118,6 +122,16 @@ public class PreferenceServices {
     public void saveCurrentLocation(String id) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(CURLOCATION, id);
+        editor.apply();
+    }
+
+    public boolean isAutoDetect(){
+        return (getPrefs().getString(LOCATIONTYPE, "").equals(currentloc));
+    }
+
+    public void saveLocationType(String type) {
+        SharedPreferences.Editor editor = getPrefs().edit();
+        editor.putString(LOCATIONTYPE, type);
         editor.apply();
     }
 

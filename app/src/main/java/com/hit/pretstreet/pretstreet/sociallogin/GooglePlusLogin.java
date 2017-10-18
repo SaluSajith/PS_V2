@@ -29,7 +29,8 @@ import com.hit.pretstreet.pretstreet.R;
 /**
  * Created by User on 20/07/2017.
  */
-public class GooglePlusLogin extends Activity implements ConnectionCallbacks, OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
+public class GooglePlusLogin extends Activity
+        implements ConnectionCallbacks, OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
 
     public static final int GOOGLEPLUS_LOGIN_RESULT_CODE_SUCCESS = 1;
     public static final int GOOGLEPLUS_LOGIN_RESULT_CODE_FAILURE = 2;

@@ -1,15 +1,20 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +25,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,6 +51,7 @@ import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.NotificationBadge;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
+import com.hit.pretstreet.pretstreet.core.helpers.GPSTracker;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
@@ -76,7 +83,10 @@ import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListMod
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -94,6 +104,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.currentloc;
 
 public class HomeActivity extends AbstractBaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -130,7 +141,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
         View includedlayout = findViewById(R.id.includedlayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        NotificationBadge badge_home = (NotificationBadge)includedlayout.findViewById(R.id.badge);
+        NotificationBadge badge_home = (NotificationBadge) includedlayout.findViewById(R.id.badge);
         NotificationBadge mBadge = (NotificationBadge) navigationView.findViewById(R.id.badge);
         try {
             int size = PreferenceServices.getInstance().getNotifCOunt();
@@ -170,6 +181,9 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             PreferenceServices.getInstance().setShareQueryparam("");
             return;
         }
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+            checkforLocationChange();
     }
 
     private void getHomePage(){
@@ -556,5 +570,90 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     public void refreshPage(){
         getHomePage();
+    }
+
+    boolean isLocationChanged(){
+        boolean locationChanged = false;
+        try {
+            GPSTracker gps = new GPSTracker(this);
+            if (gps.canGetLocation()) {
+                double lat2 = gps.getLatitude();
+                double lng2 = gps.getLongitude();
+
+                double lat1 = Double.parseDouble(PreferenceServices.instance().getLatitute());
+                double lng1 = Double.parseDouble(PreferenceServices.instance().getLongitute());
+
+                if (GPSTracker.distance(lat1, lng1, lat2, lng2) > 10)
+                    locationChanged = true;
+                else locationChanged = false;
+            }
+            else ;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return locationChanged;
+    }
+
+    public void checkforLocationChange(){
+
+        GPSTracker gps = new GPSTracker(this);
+        if (gps.canGetLocation())
+            // if(PreferenceServices.getInstance().isAutoDetect())
+            if (isLocationChanged()){
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+                alertDialog.setTitle("Location Changed!");
+                alertDialog.setMessage("It is detected that your location has been changed!! Do you want to update your location with the current location?");
+
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        getLocation();
+                    }
+                });
+
+                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                alertDialog.show();
+            }
+    }
+
+    public void getLocation() {
+
+        GPSTracker gps = new GPSTracker(this);
+        displaySnackBar("Please wait while fetching your location..");
+        double lat1 = gps.getLatitude();
+        double long1 = gps.getLongitude();
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> list;
+        try {
+            list = geocoder.getFromLocation(lat1, long1, 2);
+            if (list.isEmpty()) {
+                displaySnackBar("Oops! Something went wrong.");
+            } else {
+                Address location = list.get(1);
+                String currentLocation = location.getSubLocality();
+                displaySnackBar( "Location set to " + currentLocation);
+                try{
+                    String locality = location.getLocality();
+                    if(!locality.equalsIgnoreCase("null")) {
+                        if (currentLocation.equals(locality))
+                            PreferenceServices.instance().saveCurrentLocation(currentLocation);
+                        else
+                            PreferenceServices.instance().saveCurrentLocation(currentLocation + ", " + locality);
+                    }
+                }catch (Exception e){
+                    PreferenceServices.instance().saveCurrentLocation(currentLocation);
+                    e.printStackTrace();
+                }
+                PreferenceServices.instance().saveLatitute(lat1 + "");
+                PreferenceServices.instance().saveLongitute(long1 + "");
+                tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

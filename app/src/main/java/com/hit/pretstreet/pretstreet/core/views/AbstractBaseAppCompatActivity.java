@@ -245,8 +245,6 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
             arrayPermissionNotGranted = permissionsNotGranted.toArray(arrayPermissionNotGranted);
             ActivityCompat.requestPermissions(AbstractBaseAppCompatActivity.this, arrayPermissionNotGranted, KEY_PERMISSION);
         }
-
-
     }
 
     @Override

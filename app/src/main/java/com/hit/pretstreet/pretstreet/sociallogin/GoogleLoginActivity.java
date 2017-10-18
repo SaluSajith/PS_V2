@@ -15,7 +15,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.hit.pretstreet.pretstreet.R;
 
-public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class GoogleLoginActivity extends AppCompatActivity
+        implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final int RC_SIGN_IN = 100;
     private static final String TAG = "GoogleLogin";

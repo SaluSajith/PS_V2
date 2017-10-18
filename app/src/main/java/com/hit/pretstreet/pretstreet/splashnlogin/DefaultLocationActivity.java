@@ -51,6 +51,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GETLOCATION_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.currentloc;
+import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.dropdownloc;
 
 public class DefaultLocationActivity extends AbstractBaseAppCompatActivity implements ApiListenerInterface{
 
@@ -60,12 +62,12 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
 
     private double lat1, long1;
     private DatabaseHelper helper;
-    private String currentLocation, strType, PageType, latitude, longitude;
+    private String currentLocation, latitude, longitude;
+
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
     private static final String TYPE_COUNTRIES = "&components=country:in|country:ae";
-    private static final String TYPE_SENSOR = "&types=(cities)";
     static String types = "regions";
     private static final String TYPE_CITIES = "&sensor=false&types=(" + types + ")";
 
@@ -220,6 +222,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
 
         PreferenceServices.instance().saveLatitute(latitude + "");
         PreferenceServices.instance().saveLongitute(longitude + "");
+        PreferenceServices.instance().saveLocationType(dropdownloc);
         this.hideDialog();
         finish();
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
@@ -315,7 +318,8 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
         }
     }
 
-    private void getLocation() {
+    public void getLocation() {
+
         GPSTracker gps = new GPSTracker(this);
         if (gps.canGetLocation()) {
             displaySnackBar("Please wait while fetching your location..");
@@ -345,6 +349,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                     }
                     PreferenceServices.instance().saveLatitute(lat1 + "");
                     PreferenceServices.instance().saveLongitute(long1 + "");
+                    PreferenceServices.instance().saveLocationType(currentloc);
                     this.finish();
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }

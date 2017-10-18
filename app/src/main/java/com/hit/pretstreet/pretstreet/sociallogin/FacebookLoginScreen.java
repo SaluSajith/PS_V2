@@ -35,6 +35,7 @@ import java.util.Arrays;
  * Created by User on 20/07/2017.
  */
 public class FacebookLoginScreen extends Activity {
+
     public static final int FACEBOOK_LOGIN_RESULT_CODE_SUCCESS = 1;
     public static final int FACEBOOK_LOGIN_RESULT_CODE_FAILURE = 2;
     public static final int FACEBOOK_SHARE_RESULT_CODE_SUCCESS = 4;
