@@ -2,9 +2,18 @@ package com.hit.pretstreet.pretstreet.navigation.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
+import android.os.Looper;
+import android.support.annotation.Dimension;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +22,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.android.gms.wallet.fragment.WalletFragmentStyle;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.customview.touchImageView.ImageViewTouch;
@@ -29,7 +40,9 @@ import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +54,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
  * Created by User on 03/08/2017.
  */
 
-public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
 
     Context context, fragContext;
     private int dotsCount = 0;
@@ -66,7 +80,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.list = list;
         this.glide = glide;
         this.zoomedViewListener = ((HomeInnerActivity) activity);
-        this.trendingHolderInvoke = (TrendingHolderInvoke)activity;
+        this.trendingHolderInvoke = (TrendingHolderInvoke) activity;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -102,15 +116,14 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TrendingItems trendingItems = list.get(position);
         setViewText(holder.txt_date, trendingItems.getArticledate());
         //setViewText(holder.txt_title, trendingItems.getTitle());
-        holder.txt_title.setVisibility(trendingItems.getTitleid().trim().length()>0 ? View.VISIBLE : View.GONE);
+        holder.txt_title.setVisibility(trendingItems.getTitleid().trim().length() > 0 ? View.VISIBLE : View.GONE);
         setViewText(holder.txt_description, trendingItems.getArticle());
 
-        if(trendingItems.getBanner()){
+        if (trendingItems.getBanner()) {
             holder.iv_banner.setVisibility(View.VISIBLE);
             holder.article_images.setVisibility(View.GONE);
             loadImage(glide, trendingItems.getImagearray().get(0), holder.iv_banner);
-        }
-        else {
+        } else {
             switch (trendingItems.getImagearray().size()) {
                 case 0:
                     holder.pager_indicator.setVisibility(View.INVISIBLE);
@@ -128,12 +141,11 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.pager_indicator.setVisibility(View.VISIBLE);
                     holder.iv_banner.setVisibility(View.GONE);
                     holder.article_images.setVisibility(View.VISIBLE);
-                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                    final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
                             FrameLayout.LayoutParams.WRAP_CONTENT);
-                    if(trendingItems.getImgHeight()< context.getResources().getDimension(trending_pager_height)) {
-                        params.height = trendingItems.getImgHeight();
-                    } else
-                        params.height = (int) context.getResources().getDimension(R.dimen.trending_pager_height);
+                    DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+                    float scaleWidth = metrics.widthPixels;
+                    params.height = getHeight(trendingItems.getImgHeight(), trendingItems.getImgWidth(), (int) scaleWidth);
                     holder.article_images.setLayoutParams(params);
                     mAdapter = new ArticlePagerAdapter(glide, context, trendingItems.getImagearray());
                     holder.article_images.setAdapter(mAdapter);
@@ -144,7 +156,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     break;
             }
         }
-        String udata = trendingItems.getTitle()+"";
+        String udata = trendingItems.getTitle() + "";
         holder.txt_shopname.setText(udata);
         loadImage(glide, trendingItems.getLogoImage(), holder.iv_profile);
         holder.iv_like.setImageResource(trendingItems.getLike() == true ?
@@ -175,7 +187,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             params.setMargins(4, 0, 4, 0);
             holder.pager_indicator.addView(holder.dots[i], params);
         }
-        if(holder.dots.length>0)
+        if (holder.dots.length > 0)
             holder.dots[0].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_selected));
     }
 
@@ -191,20 +203,32 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener, ViewPager.OnPageChangeListener {
 
-        @BindView(R.id.iv_like)ImageView iv_like;
-        @BindView(R.id.iv_share)ImageView iv_share;
-        @BindView(R.id.iv_banner)ImageView iv_banner;
-        @BindView(R.id.iv_profile)ImageView iv_profile;
+        @BindView(R.id.iv_like)
+        ImageView iv_like;
+        @BindView(R.id.iv_share)
+        ImageView iv_share;
+        @BindView(R.id.iv_banner)
+        ImageView iv_banner;
+        @BindView(R.id.iv_profile)
+        ImageView iv_profile;
 
-        @BindView(R.id.txt_date)TextViewPret txt_date;
-        @BindView(R.id.txt_title)TextViewPret txt_title;
-        @BindView(R.id.txt_shopname)TextViewPret txt_shopname;
-        @BindView(R.id.txt_description)TextViewPret txt_description;
+        @BindView(R.id.txt_date)
+        TextViewPret txt_date;
+        @BindView(R.id.txt_title)
+        TextViewPret txt_title;
+        @BindView(R.id.txt_shopname)
+        TextViewPret txt_shopname;
+        @BindView(R.id.txt_description)
+        TextViewPret txt_description;
 
-        @BindView(R.id.ll_desc)LinearLayout ll_desc;
-        @BindView(R.id.ll_progress) LinearLayout ll_progress;
-        @BindView(R.id.pager_article)ViewPager article_images;
-        @BindView(R.id.viewPagerCountDots)LinearLayout pager_indicator;
+        @BindView(R.id.ll_desc)
+        LinearLayout ll_desc;
+        @BindView(R.id.ll_progress)
+        LinearLayout ll_progress;
+        @BindView(R.id.pager_article)
+        ViewPager article_images;
+        @BindView(R.id.viewPagerCountDots)
+        LinearLayout pager_indicator;
 
         private ImageView[] dots;
 
@@ -254,7 +278,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             storeListModel);
                     break;
                 case R.id.iv_banner:
-                    if(trendingItems.getBanner()){
+                    if (trendingItems.getBanner()) {
                         mPosition = getAdapterPosition();
                         trendingHolderInvoke.openTrendingArticle(trendingItems, TRENDINGPAGE);
                     } else {
@@ -275,15 +299,15 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onPageSelected(int position) {
             //article_images.reMeasureCurrentPage(article_images.getCurrentItem());
-            if(list.get(getAdapterPosition()).getImagearray().size()>1)
+            if (list.get(getAdapterPosition()).getImagearray().size() > 1)
                 try {
                     for (int i = 0; i < list.get(getAdapterPosition()).getImagearray().size(); i++) {
                         dots[i].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_unselected));
                     }
                     dots[position].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_selected));
+                } catch (IllegalStateException e) {
+                } catch (Exception e) {
                 }
-                catch (IllegalStateException e){}
-                catch (Exception e){}
         }
 
         @Override
@@ -292,7 +316,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void updateLikeStatus(int status, String storeid) {
-        if(list.get(mPosition).getId().equals(storeid))
+        if (list.get(mPosition).getId().equals(storeid))
             list.get(mPosition).setLike(status == 0 ? false : true);
     }
 
@@ -302,5 +326,11 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     static void loadImage(RequestManager glide, String url, ImageView view) {
         glide.load(url).into(view);
+    }
+
+    static int getHeight(int h1, int w1, int w2) {
+        int h2 = (w2 * h1) / w1;
+        System.out.println("height  "+ h1 +" "+w1+ " "+ h2 + " "+ w2);
+        return h2;
     }
 }

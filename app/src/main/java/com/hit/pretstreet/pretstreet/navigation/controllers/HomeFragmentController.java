@@ -176,6 +176,7 @@ public class HomeFragmentController {
                 item.setBanner(trendingContent.getInt("BannerFlag") == 0 ? false : true);
                 item.setStoreName(trendingContent.getString("Storename"));
                 item.setImgHeight(Integer.parseInt(trendingContent.getString("MaxImageHeight")));
+                item.setImgWidth(Integer.parseInt(trendingContent.getString("MaxImageWidth")));
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
                 ArrayList imagearray = new ArrayList();
                 for(int j=0;j<jsonImagearray.length();j++) {
