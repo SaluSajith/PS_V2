@@ -32,6 +32,15 @@
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/image_slider_item" />
 
+<!--<com.hit.pretstreet.pretstreet.core.customview.touchImageView.ImageViewTouch
+                android:id="@+id/iv_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="@dimen/detail_backdrop_maxheight"
+                android:visibility="visible"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:contentDescription="Image"/>-->
             <ImageView
                 android:id="@+id/iv_banner"
                 android:layout_width="match_parent"

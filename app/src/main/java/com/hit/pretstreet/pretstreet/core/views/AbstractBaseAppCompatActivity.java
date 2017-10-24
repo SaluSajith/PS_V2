@@ -25,6 +25,7 @@ import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
 import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
@@ -38,6 +39,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SIGNUPPAGE;
 
 /**
  * Created by User on 7/5/2017.
@@ -53,6 +55,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
     private String permissionsAsk[];
 
     private static int DURATION = 2000;
+    private static final int ADDSTORE_FRAGMENT = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -306,6 +309,12 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
                 intent = new Intent(this, MultistoreActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra(ID_KEY, id);
+                startActivity(intent);
+                break;
+            case "addstore":
+                intent = new Intent(this, NavigationItemsActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, SIGNUPPAGE);
+                intent.putExtra("fragment", ADDSTORE_FRAGMENT);
                 startActivity(intent);
                 break;
             default:

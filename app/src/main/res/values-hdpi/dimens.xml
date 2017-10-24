@@ -11,13 +11,13 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="padding_xxxsmall">1dp</dimen>
-    <dimen name="padding_xxsmall">4dp</dimen>
+    <dimen name="padding_xxsmall">0dp</dimen>
     <dimen name="padding_xsmall">3dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_standard">5dp</dimen>
-    <dimen name="padding_large">8dp</dimen>//
-    <dimen name="padding_xlarge">12dp</dimen>//
-    <dimen name="padding_xxlarge">12dp</dimen>//
+    <dimen name="padding_large">8dp</dimen>
+    <dimen name="padding_xlarge">12dp</dimen>
+    <dimen name="padding_xxlarge">12dp</dimen>
     <dimen name="padding_xxxlarge">20dp</dimen>
     <dimen name="padding_huge">30dp</dimen>
     <dimen name="padding_xhuge">45dp</dimen>
@@ -25,8 +25,8 @@
 
     <dimen name="padding_subcat_s">3dp</dimen>
     <dimen name="padding_subcat">3dp</dimen>
-    <dimen name="margin_xxlarge">16dp</dimen>//
-    <dimen name="margin_about">10dp</dimen>//
+    <dimen name="margin_xxlarge">16dp</dimen>
+    <dimen name="margin_about">10dp</dimen>
     <dimen name="home_trapediv_padding">16dp</dimen>
 
     <dimen name="button_radius_standard">10dp</dimen>

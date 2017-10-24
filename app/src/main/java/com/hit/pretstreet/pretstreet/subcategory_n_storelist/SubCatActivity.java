@@ -120,8 +120,8 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         Intent intent = new Intent(SubCatActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }
-    private void changeFragment(Fragment fragment, boolean addBackstack) {
 
+    private void changeFragment(Fragment fragment, boolean addBackstack) {
         FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
         for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
             fm.popBackStack();

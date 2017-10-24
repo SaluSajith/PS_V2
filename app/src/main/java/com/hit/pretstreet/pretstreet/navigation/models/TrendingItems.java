@@ -13,6 +13,7 @@ public class TrendingItems implements Serializable {
     String storeName="", shareUrl="", area="", titlepagetype="", titleid="", register="";
     boolean like=false, banner=false, NotifPage = false;
     String latitude="", longitude="";
+    int imgHeight = 0;
     ArrayList<String> imagearray = new ArrayList<>();
 
     public String getId() {
@@ -185,7 +186,16 @@ public class TrendingItems implements Serializable {
     public void setNotifPage(boolean notifPage) {
         NotifPage = notifPage;
     }
+
     public boolean isNotifPage() {
         return NotifPage;
+    }
+
+    public void setImgHeight(int imgHeight) {
+        this.imgHeight = imgHeight;
+    }
+
+    public int getImgHeight() {
+        return imgHeight;
     }
 }

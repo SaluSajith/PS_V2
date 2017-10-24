@@ -38,7 +38,6 @@ public class SlideshowDialogFragment extends DialogFragment {
     @BindView(R.id.lbl_count) TextViewPret lbl_count;
     @BindView(R.id.iv_back) ImageView iv_back;
 
-    private String TAG = SlideshowDialogFragment.class.getSimpleName();
     private ArrayList<String> imageModels;
     private MyViewPagerAdapter myViewPagerAdapter;
     private int selectedPosition = 0;
@@ -109,25 +108,9 @@ public class SlideshowDialogFragment extends DialogFragment {
             Glide.with(getActivity()).load(image)
                     .thumbnail(0.5f)
                     .crossFade()
+                    .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageViewPreview);
-            /*
-            imageViewPreview.setOnTouchListener(new View.OnTouchListener() {
-                private GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
-                    @Override
-                    public boolean onDoubleTap(MotionEvent e) {
-                        Log.d("TEST", "onDoubleTap");
-                        return super.onDoubleTap(e);
-                    }
-                });
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    Log.d("TEST", "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
-                    gestureDetector.onTouchEvent(event);
-                    return true;
-                }
-            });*/
             container.addView(view);
             return view;
         }
@@ -147,5 +130,4 @@ public class SlideshowDialogFragment extends DialogFragment {
             container.removeView((View) object);
         }
     }
-
 }

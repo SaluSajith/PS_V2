@@ -188,7 +188,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         storeList_recyclerAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                Log.e("haint", "Load More");
                 if(!requestCalled){
                     requestCalled = true;
                     first = false;
@@ -204,7 +203,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private void getShoplist(String mCatid, boolean first){
         loadmore = true;
         String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
-        String limit = "0";
         JSONObject resultJson = subCategoryController.getShoplistJson(mCatid, ++pageCount+"", pageid, arrayFilter);
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
@@ -244,8 +242,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     @SuppressLint("InflateParams")
     private void createScrollingHeader(){
 
-        /*HomeCatContentData catContentData = (HomeCatContentData) getIntent()
-                .getExtras().getSerializable("contentData");*/
         final ArrayList<HomeCatItems> homeSubCategories = (ArrayList<HomeCatItems>) getIntent().getSerializableExtra("contentData");
         int index = 0;
 
@@ -342,14 +338,14 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private void setAdapter(){
-        if(first) {
+        if(first)
             rv_storelist.setAdapter(storeList_recyclerAdapter);
-        }
         else
             storeList_recyclerAdapter.notifyDataSetChanged();
         storeList_recyclerAdapter.setLoaded();
 
         if(storeListModels.size()==0) ll_empty.setVisibility(View.VISIBLE);
+
         else ll_empty.setVisibility(View.INVISIBLE);
 
         new Handler().postDelayed(new Runnable() {

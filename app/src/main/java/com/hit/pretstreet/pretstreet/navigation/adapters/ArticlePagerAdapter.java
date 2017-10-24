@@ -18,7 +18,10 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
@@ -79,12 +82,18 @@ public class ArticlePagerAdapter extends PagerAdapter {
 
     void loadImage(RequestManager glide, String url, final ImageView imageView) {
         glide.load(url).into(imageView);
-       /* glide.load(url).asBitmap().into(new SimpleTarget() {
+        /*glide.load(url).into(new GlideDrawableImageViewTarget(imageView) {
             @Override
-            public void onResourceReady(Object resource, GlideAnimation glideAnimation) {
-                int width = glideDrawable.getIntrinsicWidth();
-                int height = glideDrawable.getIntrinsicHeight();
-                viewHolder.image1.setImageDrawable(glideDrawable);
+            public void onResourceReady(GlideDrawable resource, GlideAnimation glideAnimation) {
+                int width = resource.getIntrinsicWidth();
+                int height = resource.getIntrinsicHeight();
+                imageView.setImageDrawable(resource);
+
+                float[] f = new float[9];
+                imageView.getImageMatrix().getValues(f);
+                float displayedHeight = height * f[Matrix.MSCALE_Y];
+
+                System.out.println("height  " + "  **  " + displayedHeight + " : " + height);
             }
         });*/
     }

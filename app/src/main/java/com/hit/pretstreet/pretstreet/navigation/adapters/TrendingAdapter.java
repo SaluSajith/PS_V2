@@ -8,13 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.customview.touchImageView.ImageViewTouch;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
@@ -28,6 +34,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hit.pretstreet.pretstreet.R.dimen.trending_pager_height;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 /**
@@ -121,6 +128,13 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.pager_indicator.setVisibility(View.VISIBLE);
                     holder.iv_banner.setVisibility(View.GONE);
                     holder.article_images.setVisibility(View.VISIBLE);
+                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT);
+                    if(trendingItems.getImgHeight()< context.getResources().getDimension(trending_pager_height)) {
+                        params.height = trendingItems.getImgHeight();
+                    } else
+                        params.height = (int) context.getResources().getDimension(R.dimen.trending_pager_height);
+                    holder.article_images.setLayoutParams(params);
                     mAdapter = new ArticlePagerAdapter(glide, context, trendingItems.getImagearray());
                     holder.article_images.setAdapter(mAdapter);
                     holder.article_images.setCurrentItem(0);

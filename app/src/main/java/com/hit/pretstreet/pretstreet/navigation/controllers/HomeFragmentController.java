@@ -1,17 +1,25 @@
 package com.hit.pretstreet.pretstreet.navigation.controllers;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -139,6 +147,7 @@ public class HomeFragmentController {
 
         return jsonBody;
     }
+
     public static ArrayList<TrendingItems> getTrendingList(JSONObject response){
         ArrayList<TrendingItems> trendingItems = new ArrayList<>();
         try {
@@ -166,11 +175,61 @@ public class HomeFragmentController {
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 0 ? false : true);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 0 ? false : true);
                 item.setStoreName(trendingContent.getString("Storename"));
+                item.setImgHeight(Integer.parseInt(trendingContent.getString("MaxImageHeight")));
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
                 ArrayList imagearray = new ArrayList();
                 for(int j=0;j<jsonImagearray.length();j++) {
                     imagearray.add(jsonImagearray.get(j));
                 }
+                /*switch (i){
+                    case 1:
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/4.jpg");
+                        break;
+                    case 2:
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
+                        break;
+                    case 3:
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/4.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/5.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/6.jpg");
+                        break;
+                    case 4:
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/7.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/8.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/9.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/10.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/11.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/12.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/13.jpg");
+
+                        break;
+                    case 5:
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/14.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/15.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/16.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/17.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/18.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
+                        break;
+                    case 6:
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/20.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/21.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/1.jpg");
+                        break;
+                    case 7 :
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/2.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/3.jpg");
+                        break;
+                    default:
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/2.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/3.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/4.jpg");
+                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/5.jpg");
+                        break;
+                }*/
                 item.setImagearray(imagearray);
                 item.setArticledate(trendingContent.getString("ArticleDate"));
                 if(trendingContent.has("Share"))
