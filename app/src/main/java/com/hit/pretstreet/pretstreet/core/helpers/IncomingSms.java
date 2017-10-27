@@ -10,19 +10,19 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.SmsListener;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by user on 13/7/2017
  */
 
-public class IncomingSms {/*extends BroadcastReceiver {
-
-    // Get the object of SmsManager
-    final SmsManager sms = SmsManager.getDefault();
-
+public class IncomingSms extends BroadcastReceiver {
+    private static SmsListener mListener;
     @Override
-    public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "ON RECEIVE BROADCAST", Toast.LENGTH_LONG).show();
-        // Retrieves a map of extended data from the intent.
+    public void onReceive (Context context, Intent intent){
         final Bundle bundle = intent.getExtras();
         try {
             if (bundle != null) {
@@ -31,24 +31,30 @@ public class IncomingSms {/*extends BroadcastReceiver {
                     SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
                     String phoneNumber = currentMessage.getDisplayOriginatingAddress();
 
-                    String senderNum = phoneNumber;
-                    String message = currentMessage.getDisplayMessageBody().split(":")[1];
-                    message = message.substring(0, message.length() - 1);
-                    Log.e("SmsReceiver", "senderNum: " + senderNum + "; message: " + message);
-
-                    Intent myIntent = new Intent("otp");
-                    myIntent.putExtra("message",message);
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-
-                    // Show Alert
-                    int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(context, "senderNum: " + senderNum + ", message: " + message, duration);
-                    toast.show();
+                    try {
+                        if(phoneNumber.contains("PretST")){
+                            String messageBody = currentMessage.getMessageBody();
+                            Pattern pattern = Pattern.compile("(\\d{4})");
+                            Matcher matcher = pattern.matcher(messageBody);
+                            //Log.e("SmsReceiver", "phoneNumber.contains(PretST)");
+                            String val = "";
+                            if (matcher.find()) {
+                                //System.out.println("SmsReceiver"+matcher.group(1));
+                                val = matcher.group(1);
+                                if (mListener != null)
+                                mListener.messageReceived(val);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } catch (Exception e) {
-            Log.e("SmsReceiver", "Exception smsReceiver" + e);
+            e.printStackTrace();
         }
-
-    }*/
+    }
+    public static void bindListener(SmsListener listener) {
+        mListener = listener;
+    }
 }

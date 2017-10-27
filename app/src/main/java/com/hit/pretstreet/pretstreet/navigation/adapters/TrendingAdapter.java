@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
@@ -325,12 +326,11 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     static void loadImage(RequestManager glide, String url, ImageView view) {
-        glide.load(url).into(view);
+        glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
     }
 
     static int getHeight(int h1, int w1, int w2) {
         int h2 = (w2 * h1) / w1;
-        System.out.println("height  "+ h1 +" "+w1+ " "+ h2 + " "+ w2);
         return h2;
     }
 }

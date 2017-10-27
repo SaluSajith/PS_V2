@@ -81,77 +81,7 @@ public class ArticlePagerAdapter extends PagerAdapter {
     }
 
     void loadImage(RequestManager glide, String url, final ImageView imageView) {
-        glide.load(url).into(imageView);
-        /*glide.load(url).into(new GlideDrawableImageViewTarget(imageView) {
-            @Override
-            public void onResourceReady(GlideDrawable resource, GlideAnimation glideAnimation) {
-                int width = resource.getIntrinsicWidth();
-                int height = resource.getIntrinsicHeight();
-                imageView.setImageDrawable(resource);
-
-                float[] f = new float[9];
-                imageView.getImageMatrix().getValues(f);
-                float displayedHeight = height * f[Matrix.MSCALE_Y];
-
-                System.out.println("height  " + "  **  " + displayedHeight + " : " + height);
-            }
-        });*/
-    }
-
-
-    public void setPagerHeight(RequestManager glide, String url, ImageView view){
-
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((HomeInnerActivity)mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        final int dwidth = displaymetrics.widthPixels;
-        final int dheight = (int) ((displaymetrics.heightPixels) * 0.45);
-        glide.load(url).asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(new BitmapImageViewTarget(view) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        try {
-                            int width = resource.getWidth();
-                            int height = resource.getHeight();
-                            float scaleWidth = ((float) dwidth) / width;
-                            float scaleHeight = ((float) dheight) / height;
-                            Matrix matrix = new Matrix();
-                            if (width > height)
-                                if (scaleHeight > scaleWidth)
-                                    matrix.postScale(scaleWidth, scaleWidth);
-                                else
-                                    matrix.postScale(scaleHeight, scaleHeight);
-                            else {
-                                if (scaleHeight > scaleWidth)
-                                    matrix.postScale(scaleHeight, scaleHeight);
-                                else
-                                    matrix.postScale(scaleWidth, scaleWidth);
-                            }
-                            Bitmap resizedBitmap = Bitmap.createBitmap(resource, 0, 0, width, height, matrix, false);
-
-                            view.setImageBitmap(resizedBitmap);
-                            view.setScaleType(ImageView.ScaleType.FIT_XY);
-                        } catch (Exception e){}
-                        /*int width = resource.getWidth();
-                        int height = resource.getHeight();
-
-                        float aspectRatio = width/height;
-                        if(aspectRatio>=0.25 && aspectRatio <0.75){
-                            ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                            params.height = height;
-                            viewPager.setLayoutParams(params);
-                        }*//* else if(aspectRatio>=0.75 && aspectRatio <1.25){
-                            ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                            params.height = (int) context.getResources().getDimension(R.dimen.trending_pager_height);
-                            viewPager.setLayoutParams(params);
-                        } else if(aspectRatio >= 1.25){
-
-                        } *//*else{
-                            ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                            params.height = (int) context.getResources().getDimension(R.dimen.trending_pager_height);
-                            viewPager.setLayoutParams(params); */
-                    }
-                });
+        glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
     }
 
 }

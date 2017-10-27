@@ -42,11 +42,12 @@
             android:name="asset_statements"
             android:resource="@string/asset_statements" />
 
-        <!--<receiver android:name=".Items$IncomingSms">
-            <intent-filter>
+        <receiver android:name=".core.helpers.IncomingSms"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter android:priority="999">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
-        </receiver>-->
+        </receiver>
 
         <activity
             android:name=".splashnlogin.WelcomeActivity"

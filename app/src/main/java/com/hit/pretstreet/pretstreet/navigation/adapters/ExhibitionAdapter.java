@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
@@ -284,6 +285,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     static void loadImage(RequestManager glide, String url, ImageView view) {
-        glide.load(url).into(view);
+        glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
     }
 }

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitationResult;
@@ -40,7 +42,9 @@ import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
+import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
+import com.hit.pretstreet.pretstreet.core.helpers.IncomingSms;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
@@ -62,6 +66,7 @@ import com.hit.pretstreet.pretstreet.splashnlogin.fragments.SplashFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.fragments.WelcomeFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.SmsListener;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
@@ -127,6 +132,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     SignupFragment signupFragment;
     LoginFragment loginFragment;
+    EdittextPret edittextPret;
 
     boolean notif = false;
 
@@ -149,6 +155,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         ButterKnife.bind(this);
         PreferenceServices.init(this);
         splashHandler = new Handler();
+        popupDialog = new Dialog(this);
         context = getApplicationContext();
         DURATION = Integer.valueOf(getString(R.string.splash_duration));
         splashHandler.postDelayed(mChangeSplash, DURATION);
@@ -214,23 +221,27 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     private void changeFragment(Fragment fragment, boolean addBackstack, int content) {
 
-        FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
-        for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
-            fm.popBackStack();
+        try {
+            FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
+            for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+                fm.popBackStack();
+            }
+            fl_content.removeAllViews();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
+            ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            if(content==SPLASH_FRAGMENT)
+                ft.add(R.id.content_splash, fragment);
+            else {
+                fl_content_splash.removeAllViews();
+                ft.replace(R.id.content, fragment);
+            }
+            if (addBackstack) {
+                ft.addToBackStack(null);
+            }
+            ft.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        fl_content.removeAllViews();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
-        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        if(content==SPLASH_FRAGMENT)
-            ft.add(R.id.content_splash, fragment);
-        else {
-            fl_content_splash.removeAllViews();
-            ft.replace(R.id.content, fragment);
-        }
-        if (addBackstack) {
-            ft.addToBackStack(null);
-        }
-        ft.commit();
     }
 
     private void setupSocialLogin(String stringJSON){
@@ -364,7 +375,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     case SOCIAL_LOGIN_URL:
                         setupSession(response, "social");
                         break;
-                    default: break;
+                    default:
+                        break;
                 }
             } else {
                 displaySnackBar(response.getString("Message"));
@@ -375,10 +387,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void setupSession(JSONObject response, String loginType){
-
         try {
             JSONObject object = response.getJSONObject("Data");
-
             LoginSession loginSession = new LoginSession();
             loginSession.setRegid(object.getString("UserId"));
             loginSession.setFname(object.getString("UserFirstName"));
@@ -428,8 +438,10 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 //if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
                 SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
                 LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
-                if(loginSession.getSessionid().trim().length()==0||loginSession.getRegid().trim().length()==0)
+                if(loginSession.getSessionid().trim().length()==0||loginSession.getRegid().trim().length()==0) {
                     changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
+                    setupOTPReceiver();
+                }
                 else {
                     if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
                             || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
@@ -484,58 +496,107 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         startActivity(intent);
     }
 
-    public void showOTPScreem(final JSONObject jsonObject, final String url) {
+    private void showOTPScreem(final JSONObject jsonObject, final String url) {
 
-        popupDialog = new Dialog(this);
-        popupDialog.setCanceledOnTouchOutside(false);
-        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if(!popupDialog.isShowing()) {
+            popupDialog = new Dialog(this);
+            popupDialog.setCanceledOnTouchOutside(false);
+            popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_otp_screen, null);
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
-        final EdittextPret edt_otp = (EdittextPret) view.findViewById(R.id.edt_otp);
-        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+            LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_otp_screen, null);
+            ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+            final EdittextPret edt_otp = (EdittextPret) view.findViewById(R.id.edt_otp);
+            edittextPret = edt_otp;
+            ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
 
-        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
-        rl.setPadding(0, 0, 0, 0);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, 0, 0, 0);
-        rl.setLayoutParams(lp);
-        popupDialog.setContentView(view);
+            RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
+            rl.setPadding(0, 0, 0, 0);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 0, 0, 0);
+            rl.setLayoutParams(lp);
+            popupDialog.setContentView(view);
 
-        popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
-        popupDialog.getWindow().setAttributes(params);
-        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupDialog.getWindow().setGravity(Gravity.CENTER);
+            WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+            popupDialog.getWindow().setAttributes(params);
+            popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        popupDialog.show();
+            popupDialog.show();
 
-        img_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupDialog.dismiss();
-            }
-        });
-
-        btn_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edt_otp.getText().toString().length() < 1) {
-                    displaySnackBar("Enter OTP value");
-                    edt_otp.requestFocus();
-                }
-                else {
+            img_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     popupDialog.dismiss();
-                    if (otpValue.equals(edt_otp.getText().toString())) {
-                        showProgressDialog(getResources().getString(R.string.loading));
-                        jsonRequestController.sendRequest(WelcomeActivity.this, jsonObject, url);
+                }
+            });
+
+            btn_send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (edt_otp.getText().toString().length() < 1) {
+                        displaySnackBar("Enter OTP value");
+                        edt_otp.requestFocus();
                     } else {
-                        displaySnackBar("Wrong OTP");
+                        popupDialog.dismiss();
+                        if (otpValue.equals(edt_otp.getText().toString())) {
+                            showProgressDialog(getResources().getString(R.string.loading));
+                            jsonRequestController.sendRequest(WelcomeActivity.this, jsonObject, url);
+                        } else {
+                            displaySnackBar("Wrong OTP");
+                        }
                     }
                 }
+            });
+            final TextViewPret tv_resend = (TextViewPret) view.findViewById(R.id.tv_resend);
+            tv_resend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tv_resend.setClickable(false);
+                    tv_resend.setTextColor(Color.LTGRAY);
+
+                    showProgressDialog(getResources().getString(R.string.loading));
+                    JSONObject otpObject = null;
+                    try {
+                        if (url.contains("login")) {
+                            otpObject = loginController.getOTPVerificationJson(jsonObject.getString("UserMobile"), "");
+                            jsonRequestController.sendRequest(WelcomeActivity.this, otpObject, LOGIN_OTP_URL);
+                        } else {
+                            otpObject = loginController.getOTPVerificationJson(jsonObject.getString("UserMobile"), jsonObject.getString("UserEmail"));
+                            jsonRequestController.sendRequest(WelcomeActivity.this, otpObject, REGISTRATION_OTP_URL);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    private void setupOTPReceiver(){
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECEIVE_SMS)
+                == PackageManager.PERMISSION_GRANTED) {
+        } else {
+            askCompactPermission(Manifest.permission.RECEIVE_SMS, new PermissionResult() {
+                @Override
+                public void permissionGranted() {
+                }
+                @Override
+                public void permissionDenied() {
+                }
+            });
+        }
+        IncomingSms.bindListener(new SmsListener() {
+            @Override
+            public void messageReceived(String messageText) {
+                try {
+                    if(edittextPret!=null)
+                        edittextPret.setText(messageText);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-
     }
 }

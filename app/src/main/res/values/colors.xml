@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="dark_gray">#757779</color>
+    <color name="light_grey">#b5b8ba</color>
     <color name="moods_bg">#585858</color>
     <color name="category_bg">#313131</color>
     <color name="light_gray">#eaeaea</color>

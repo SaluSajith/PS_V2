@@ -1,11 +1,13 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -15,9 +17,11 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,10 +42,12 @@ import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.helpers.IncomingSms;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
+import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
 import com.hit.pretstreet.pretstreet.navigation.fragments.ExhibitionFragment;
 import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
@@ -52,6 +58,7 @@ import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.SmsListener;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
@@ -94,7 +101,9 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     private String number;
     private JSONObject registerJson;
+    private EdittextPret edittextPret;
 
+    Dialog popupDialog;
     boolean requestCalled = false;
     boolean first = true;
     Context context;
@@ -115,6 +124,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
+        popupDialog = new Dialog(this);
         context = getApplicationContext();
         //checkDevice();
 
@@ -343,60 +353,86 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     }
 
 
-    public void showOTPScreem(final String otpValue) {
+    private void showOTPScreem(final String otpValue) {
 
-        final Dialog popupDialog = new Dialog(this);
-        popupDialog.setCanceledOnTouchOutside(false);
-        popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if(!popupDialog.isShowing()) {
+            popupDialog.setCanceledOnTouchOutside(false);
+            popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_otp_screen, null);
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
-        final EdittextPret edt_otp = (EdittextPret) view.findViewById(R.id.edt_otp);
-        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+            LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_otp_screen, null);
+            ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+            final EdittextPret edt_otp = (EdittextPret) view.findViewById(R.id.edt_otp);
+            edittextPret = edt_otp;
+            ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
 
-        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
-        rl.setPadding(0, 0, 0, 0);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, 0, 0, 0);
-        rl.setLayoutParams(lp);
-        popupDialog.setContentView(view);
+            RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
+            rl.setPadding(0, 0, 0, 0);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 0, 0, 0);
+            rl.setLayoutParams(lp);
+            popupDialog.setContentView(view);
 
-        popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
-        popupDialog.getWindow().setAttributes(params);
-        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupDialog.getWindow().setGravity(Gravity.CENTER);
+            WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+            popupDialog.getWindow().setAttributes(params);
+            popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        popupDialog.show();
+            popupDialog.show();
 
-        img_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupDialog.dismiss();
-            }
-        });
-
-        btn_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edt_otp.getText().toString().length() < 1) {
-                    displaySnackBar("Enter OTP value");
-                    edt_otp.requestFocus();
-                }
-                else {
+            img_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     popupDialog.dismiss();
-                    if (otpValue.equals(edt_otp.getText().toString())) {
-                        HomeInnerActivity.this.showProgressDialog(getResources().getString(R.string.loading));
-                        registerJson = homeFragmentController.getRegisterJson_UpdatePhone(registerJson, number);
-                        jsonRequestController.sendRequest(HomeInnerActivity.this, registerJson, EXHIBITIONREGISTER_URL);
+                }
+            });
+
+            btn_send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (edt_otp.getText().toString().length() < 1) {
+                        displaySnackBar("Enter OTP value");
+                        edt_otp.requestFocus();
                     } else {
-                        displaySnackBar("Wrong OTP");
+                        popupDialog.dismiss();
+                        if (otpValue.equals(edt_otp.getText().toString())) {
+                            HomeInnerActivity.this.showProgressDialog(getResources().getString(R.string.loading));
+                            registerJson = homeFragmentController.getRegisterJson_UpdatePhone(registerJson, number);
+                            jsonRequestController.sendRequest(HomeInnerActivity.this, registerJson, EXHIBITIONREGISTER_URL);
+                        } else {
+                            displaySnackBar("Wrong OTP");
+                        }
                     }
                 }
+            });
+            final TextViewPret tv_resend = (TextViewPret) view.findViewById(R.id.tv_resend);
+            tv_resend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tv_resend.setClickable(false);
+                    tv_resend.setTextColor(Color.LTGRAY);
+
+                    showProgressDialog(getResources().getString(R.string.loading));
+                    JSONObject otpObject = homeFragmentController.getOTPVerificationJson(number);
+                    jsonRequestController.sendRequest(HomeInnerActivity.this, otpObject, EXHIBITIONREGISTEROTP_URL);
+                }
+            });
+        }
+    }
+
+    private void setupOTPReceiver(){
+        IncomingSms.bindListener(new SmsListener() {
+            @Override
+            public void messageReceived(String messageText) {
+                try {
+                    if(edittextPret!=null)
+                        edittextPret.setText(messageText);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-
     }
 
     public void showRegisterPopup() {
@@ -446,6 +482,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 }
                 else{
                     popupDialog.dismiss();
+                    setupOTPReceiver();
                     showProgressDialog(getResources().getString(R.string.loading));
                     JSONObject otpObject = homeFragmentController.getOTPVerificationJson(number);
                     jsonRequestController.sendRequest(HomeInnerActivity.this, otpObject, EXHIBITIONREGISTEROTP_URL);
