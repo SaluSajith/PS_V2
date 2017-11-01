@@ -146,12 +146,12 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 });
                 ll_main_cat.addView(view);
             }
-            ll_main_cat.setVisibility(View.VISIBLE);
             ll_sub.setVisibility(View.VISIBLE);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    ll_main_cat.setVisibility(View.VISIBLE);
                     destroyDialog();
                 }
             }, 500);
