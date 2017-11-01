@@ -69,6 +69,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
     private static final int TERMS_FRAGMENT = 8;
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
+    private static final int STORE_DETAILS = 14;
 
     private JsonRequestController jsonRequestController;
     private SearchController searchController;
@@ -152,7 +153,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
 
     public void getSearchResult(int pageCount, boolean first){
         if(first)
-        this.showProgressDialog(getResources().getString(R.string.loading));
+            this.showProgressDialog(getResources().getString(R.string.loading));
         JSONObject resultJson = searchController.getSearchResultJson(mStrSearch,
                 getIntent().getStringExtra(PRE_PAGE_KEY), mCatID, pageCount, mCaType, arrayFilter);
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, SEARCH_URL);
@@ -214,10 +215,14 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                     }, 1000);
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
-                    JSONObject object = response.getJSONObject("Data");
-                    storeList_recyclerAdapter.updateFollowStatus(object.getInt("FollowingStatus"),
-                            object.getString("StoreId"));
-                    storeList_recyclerAdapter.notifyDataSetChanged();
+                    try {
+                        JSONObject object = response.getJSONObject("Data");
+                        storeList_recyclerAdapter.updateFollowStatus(object.getInt("FollowingStatus"),
+                                object.getString("StoreId"));
+                        storeList_recyclerAdapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     hideDialog();
                     break;
                 default: break;
@@ -246,7 +251,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                 intent.putExtra(Constant.PARCEL_KEY, storeListModel);
                 intent.putExtra(CLICKTYPE_KEY, "");
                 intent.putExtra(Constant.PRE_PAGE_KEY, SEARCHPAGE);
-                startActivity(intent);
+                startActivityForResult(intent, STORE_DETAILS);
                 break;
             case Constant.TRENDINGPAGE:
                 selectedFragment = TRENDING_FRAGMENT;
@@ -303,11 +308,19 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == Integer.parseInt(FILTERPAGE) && resultCode  == RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
-                arrayFilter = subCategoryController.createFilterModel(dataModel);
-                searchFragment.refreshSearchResult();
+            if(resultCode  == RESULT_OK) {
+                if (requestCode == Integer.parseInt(FILTERPAGE)) {
+                    Bundle bundle = data.getExtras();
+                    dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
+                    arrayFilter = subCategoryController.createFilterModel(dataModel);
+                    searchFragment.refreshSearchResult();
+                }
+                else if (requestCode == STORE_DETAILS){
+                    int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
+                    String storeId = data.getStringExtra(ID_KEY);
+                    storeList_recyclerAdapter.updateFollowStatus(status, storeId);
+                    storeList_recyclerAdapter.notifyDataSetChanged();
+                }
             }
         } catch (Exception ex) { }
     }

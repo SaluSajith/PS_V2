@@ -75,7 +75,7 @@
     <string name="dob">date of birth:</string>
 
     <!--otp screen-->
-    <string name="send">send</string>
+    <string name="send">Send</string>
 
     <!--store details-->
     <string name="book">Book Appointment</string>

@@ -42,7 +42,7 @@ public class IncomingSms extends BroadcastReceiver {
                                 //System.out.println("SmsReceiver"+matcher.group(1));
                                 val = matcher.group(1);
                                 if (mListener != null)
-                                mListener.messageReceived(val);
+                                mListener.messageReceived(val.trim());
                             }
                         }
                     } catch (Exception e) {

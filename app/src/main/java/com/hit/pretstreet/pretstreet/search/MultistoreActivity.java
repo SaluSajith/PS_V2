@@ -31,6 +31,7 @@ import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
@@ -42,8 +43,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTILINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTORE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
 public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
@@ -61,6 +65,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     private static final int TERMS_FRAGMENT = 8;
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
+    private static final int STORE_DETAILS = 14;
 
     JsonRequestController jsonRequestController;
     SubCategoryController subCategoryController;
@@ -227,7 +232,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                 intent.putExtra(Constant.PARCEL_KEY, storeListModel);
                 intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
                 intent.putExtra(CLICKTYPE_KEY, MULTILINK);
-                startActivity(intent);
+                startActivityForResult(intent, STORE_DETAILS);
                 break;
             case Constant.TRENDINGPAGE:
                 selectedFragment = TRENDING_FRAGMENT;
@@ -257,5 +262,21 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         JSONObject resultJson = subCategoryController.updateFollowCount(id, Constant.MULTISTOREPAGE,  Constant.FOLLOWLINK);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, UPDATEFOLLOWSTATUS_URL);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            if(resultCode  == RESULT_OK) {
+                if (requestCode == STORE_DETAILS){
+                    int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
+                    String storeId = data.getStringExtra(ID_KEY);
+                    storeList_recyclerAdapter.updateFollowStatus(status, storeId);
+                    storeList_recyclerAdapter.notifyDataSetChanged();
+                }
+            }
+        } catch (Exception ex) { }
     }
 }

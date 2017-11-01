@@ -123,9 +123,9 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     private static int DURATION;
     private Handler splashHandler;
-    private static final int SPLASH_DURATION_END = 2000;
+    private static final int SPLASH_DURATION_END = 1500;
 
-    private String otpValue;
+    String otpValue;
     Dialog popupDialog;
     Context context;
     JSONObject registerJson, loginJson;
@@ -133,6 +133,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     SignupFragment signupFragment;
     LoginFragment loginFragment;
     EdittextPret edittextPret;
+    ButtonPret buttonPret;
 
     boolean notif = false;
 
@@ -182,7 +183,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         String value = getIntent().getExtras().getString(key);
                         Log.d("TOKEN", "Key: " + key + " Value: " + value);
                     }*/
-                }else {
+                }else if(getIntent().getExtras().containsKey("share")){
                     String valueOne = getIntent().getExtras().getString("share");
                     String id = getIntent().getExtras().getString("id");
                     Log.d("TOKEN", "valueOne: " + valueOne + " id: " + id);
@@ -509,6 +510,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             final EdittextPret edt_otp = (EdittextPret) view.findViewById(R.id.edt_otp);
             edittextPret = edt_otp;
             ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+            buttonPret = btn_send;
 
             RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
             rl.setPadding(0, 0, 0, 0);
@@ -554,7 +556,19 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 @Override
                 public void onClick(View v) {
                     tv_resend.setClickable(false);
-                    tv_resend.setTextColor(Color.LTGRAY);
+                    tv_resend.setTextColor(ContextCompat.getColor(WelcomeActivity.this, R.color.dark_gray));
+                    edt_otp.setText("");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if(popupDialog.isShowing())
+                                    tv_resend.setText("Seems like mobile network is not available. Please try using Google or Facebook login.");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, 10000);
 
                     showProgressDialog(getResources().getString(R.string.loading));
                     JSONObject otpObject = null;
@@ -563,7 +577,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                             otpObject = loginController.getOTPVerificationJson(jsonObject.getString("UserMobile"), "");
                             jsonRequestController.sendRequest(WelcomeActivity.this, otpObject, LOGIN_OTP_URL);
                         } else {
-                            otpObject = loginController.getOTPVerificationJson(jsonObject.getString("UserMobile"), jsonObject.getString("UserEmail"));
+                            otpObject = loginController.getOTPVerificationJson(jsonObject.getString("UserMobile"),
+                                    jsonObject.getString("UserEmail"));
                             jsonRequestController.sendRequest(WelcomeActivity.this, otpObject, REGISTRATION_OTP_URL);
                         }
                     } catch (JSONException e) {
@@ -591,12 +606,19 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             @Override
             public void messageReceived(String messageText) {
                 try {
-                    if(edittextPret!=null)
+                    if(edittextPret!=null) {
                         edittextPret.setText(messageText);
+                        buttonPret.performClick();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
+        //to avoid crashing in some devices
     }
 }

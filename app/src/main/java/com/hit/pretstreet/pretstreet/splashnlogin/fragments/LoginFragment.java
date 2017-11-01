@@ -1,7 +1,9 @@
 package com.hit.pretstreet.pretstreet.splashnlogin.fragments;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,10 @@ import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
+import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
@@ -30,6 +35,7 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
     @BindView(R.id.btn_login)ButtonPret btn_login;
 
     LoginController loginController;
+
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
@@ -41,11 +47,19 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
     private void init(){
         tv_heading.setPaintFlags(tv_heading.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         loginController = new LoginController((LoginCallbackInterface) getActivity(), getContext());
+
     }
 
     @OnClick(R.id.btn_login)
     public void onLoginPressed() {
+        btn_login.setEnabled(false);
         loginController.validateLoginFields(edt_email_number);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                btn_login.setEnabled(true);
+            }
+        }, 2000);
     }
 
     @OnClick(R.id.btn_facebook)
@@ -63,4 +77,5 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
             editText.setError(message);
         }catch (Exception e){}
     }
+
 }

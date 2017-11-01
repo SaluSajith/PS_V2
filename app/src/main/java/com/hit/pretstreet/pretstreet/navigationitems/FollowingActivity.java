@@ -95,6 +95,16 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     ArrayList<StoreListModel> storeListModels;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        pageCount = 1;
+        first = true;
+        rv_storelist.setAdapter(null);
+        storeListModels.clear();
+        getFollowingData("0", true); //For ALL catid = 0
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_listing);
@@ -132,7 +142,6 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         tv_cat_name.setText(title);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
-        getFollowingData("0", true); //For ALL catid = 0
         refreshListviewOnScrolling();
     }
 

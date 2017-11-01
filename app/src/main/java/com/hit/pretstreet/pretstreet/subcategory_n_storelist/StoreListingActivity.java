@@ -345,7 +345,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         storeList_recyclerAdapter.setLoaded();
 
         if(storeListModels.size()==0) ll_empty.setVisibility(View.VISIBLE);
-
         else ll_empty.setVisibility(View.INVISIBLE);
 
         new Handler().postDelayed(new Runnable() {

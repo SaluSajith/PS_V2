@@ -74,7 +74,7 @@
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
     <dimen name="buttons_layoutheight">220dp</dimen>
-    <dimen name="content_overlapmargin">-10dp</dimen>
+    <dimen name="content_overlapmargin">-5dp</dimen>
     <dimen name="content_overlapmargin_activity">-30dp</dimen>
     <dimen name="content_overlapmargin_hometrape">-30dp</dimen>
 

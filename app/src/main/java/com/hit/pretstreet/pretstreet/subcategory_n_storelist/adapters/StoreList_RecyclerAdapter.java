@@ -184,11 +184,15 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public void updateFollowStatus(int status, String storeid) {
-        if (mItems.get(mPosition).getId().equals(storeid)) {
-            mItems.get(mPosition).setFollowingStatus(status == 1 ? true : false);
-            int count = Integer.parseInt(mItems.get(mPosition).getFollowingCount());
-            mItems.get(mPosition).setFollowingCount(status == 1 ? (count+1) +"" : (count-1) +"");
-        } else ;
+        try {
+            if (mItems.get(mPosition).getId().equals(storeid)) {
+                mItems.get(mPosition).setFollowingStatus(status == 1 ? true : false);
+                int count = Integer.parseInt(mItems.get(mPosition).getFollowingCount());
+                mItems.get(mPosition).setFollowingCount(status == 1 ? (count+1) +"" : (count-1) +"");
+            } else ;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     class ShopsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -222,11 +226,15 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mPosition = getAdapterPosition();
-                    if(mPosition<mItems.size()) {
-                        StoreListModel storeListModel = mItems.get(mPosition);
-                        buttonClickCallback.buttonClick(storeListModel);
-                    }else ;
+                    try {
+                        mPosition = getAdapterPosition();
+                        if(mPosition<mItems.size()) {
+                            StoreListModel storeListModel = mItems.get(mPosition);
+                            buttonClickCallback.buttonClick(storeListModel);
+                        }else ;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }

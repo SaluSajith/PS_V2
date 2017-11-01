@@ -83,7 +83,6 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
 
         try {
             showProgressDialog(getResources().getString(R.string.loading));
-            ll_main_cat.setVisibility(View.VISIBLE);
             ll_main_cat.removeAllViews();
             ArrayList<HomeCatItems> homeSubCategories = homeCatItemses;
             for (int i = 0; i < homeSubCategories.size(); i++) {
@@ -147,6 +146,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 });
                 ll_main_cat.addView(view);
             }
+            ll_main_cat.setVisibility(View.VISIBLE);
             ll_sub.setVisibility(View.VISIBLE);
 
             new Handler().postDelayed(new Runnable() {
@@ -155,10 +155,10 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                     destroyDialog();
                 }
             }, 500);
+
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
-        }
-        catch (OutOfMemoryError e){
+        } catch (OutOfMemoryError e){
             e.printStackTrace();
         }
     }

@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/loginbanner"
         android:layout_marginTop="-30sp"
-        android:rotation="@integer/rotation">
+        android:rotation="@integer/rotation_login">
 
         <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
             android:id="@+id/tv_heading"

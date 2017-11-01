@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -135,18 +136,19 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (!homeopened) {
-            getHomePage();
-        }
-
-        View includedlayout = findViewById(R.id.includedlayout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        NotificationBadge badge_home = (NotificationBadge) includedlayout.findViewById(R.id.badge);
-        NotificationBadge mBadge = (NotificationBadge) navigationView.findViewById(R.id.badge);
         try {
+            if (!homeopened) {
+                getHomePage();
+            }
+            View includedlayout = findViewById(R.id.includedlayout);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            NotificationBadge badge_home = (NotificationBadge) includedlayout.findViewById(R.id.badge);
+            NotificationBadge mBadge = (NotificationBadge) navigationView.findViewById(R.id.badge);
             int size = PreferenceServices.getInstance().getNotifCOunt();
             badge_home.setNumber(size);
             mBadge.setNumber(size);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
