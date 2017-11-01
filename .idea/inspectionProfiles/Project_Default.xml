@@ -4,10 +4,14 @@
     <inspection_tool class="AndroidDomInspection" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="AndroidLintAppCompatCustomView" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="AndroidLintDuplicateIds" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="AndroidLintGradleCompatible" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="AndroidLintIncludeLayoutParam" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="AndroidLintLongLogTag" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="AndroidLintMissingConstraints" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="AndroidLintMissingPrefix" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="AndroidLintNamespaceTypo" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="AndroidLintNewApi" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="AndroidLintParcelCreator" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="AndroidLintReferenceType" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="AndroidLintVectorDrawableCompat" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="AndroidLintWrongViewCast" enabled="false" level="ERROR" enabled_by_default="false" />
