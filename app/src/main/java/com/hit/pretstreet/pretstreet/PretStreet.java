@@ -1,13 +1,14 @@
 package com.hit.pretstreet.pretstreet;
 
-import android.app.Application;
-import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 /**
  * Created by User on 20/07/2017.
@@ -17,12 +18,28 @@ public class PretStreet extends MultiDexApplication {
     public static final String TAG = PretStreet.class.getSimpleName();
     private RequestQueue mRequestQueue;
     private static PretStreet mInstance;
+    private static GoogleAnalytics analytics;
+    private static Tracker tracker;
     // private static Context mAppContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        analytics = GoogleAnalytics.getInstance(this);
+        tracker = analytics.newTracker(R.xml.app_tracker);
+
+        // Provide unhandled exceptions reports. Do that first after creating the global_tracker
+        tracker.enableExceptionReporting(true);
+
+        // Enable Remarketing, Demographics & Interests reports
+        // https://developers.google.com/analytics/devguides/collection/android/display-features
+        tracker.enableAdvertisingIdCollection(true);
+
+        // Enable automatic activity tracking for your app
+        tracker.enableAutoActivityTracking(true);
+
+        tracker.send(new HitBuilders.ScreenViewBuilder().setCustomDimension(1, null).build());
     }
 
     public static synchronized PretStreet getInstance() {
@@ -52,10 +69,11 @@ public class PretStreet extends MultiDexApplication {
         }
     }
 
-    public static String getDeviceId() {
-        String mDeviceId = "";
-        mDeviceId = Settings.Secure.getString(mInstance.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        return mDeviceId;
+    public static GoogleAnalytics analytics() {
+        return analytics;
+    }
+
+    public static Tracker tracker() {
+        return tracker;
     }
 }

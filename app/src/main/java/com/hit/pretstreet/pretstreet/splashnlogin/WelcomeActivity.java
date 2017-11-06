@@ -1,6 +1,8 @@
 package com.hit.pretstreet.pretstreet.splashnlogin;
 
 import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -29,6 +32,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitationResult;
 import com.google.android.gms.appinvite.AppInviteReferral;
@@ -36,6 +42,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.hit.pretstreet.pretstreet.BuildConfig;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
@@ -111,8 +118,9 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     private static final int GOOGLE_LOGIN_REQUEST_CODE = 2;
     private static final int SIGNUP_CLICK_CODE = 1;
     private static final int LOGIN_CLICK_CODE = 2;
-    private static int SIGNUP = 0;
-    private static int LOGIN = 1;
+    private static final int SIGNUP = 0;
+    private static final int LOGIN = 1;
+    private static final int SOCIAL_LOGIN = 2;
     private static final int TERMS_FRAGMENT = 8;
 
     @BindView(R.id.content) FrameLayout fl_content;
@@ -179,10 +187,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             try {
                 if(getIntent().getExtras().containsKey("image")){
                     saveNotification(getIntent());
-                    /*for (String key : getIntent().getExtras().keySet()) {
-                        String value = getIntent().getExtras().getString(key);
-                        Log.d("TOKEN", "Key: " + key + " Value: " + value);
-                    }*/
                 }else if(getIntent().getExtras().containsKey("share")){
                     String valueOne = getIntent().getExtras().getString("share");
                     String id = getIntent().getExtras().getString("id");
@@ -261,6 +265,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     private void getGoogleResponse(GoogleSignInAccount signInAccount) {
         JSONObject resultJson = loginController.getGoogleLoginDetails(signInAccount);
         //String googleImageUrl = String.valueOf(signInAccount.getPhotoUrl());
+        showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, SOCIAL_LOGIN_URL);
     }
 
@@ -364,17 +369,17 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         showOTPScreem(registerJson, REGISTRATION_URL);
                         break;
                     case REGISTRATION_URL:
-                        setupSession(response, "");
+                        setupSession(response, "", currentFragment);
                         break;
                     case LOGIN_OTP_URL:
                         otpValue = response.getJSONObject("Data").getString("OTP");
                         showOTPScreem(loginJson, LOGIN_URL);
                         break;
                     case LOGIN_URL:
-                        setupSession(response, "");
+                        setupSession(response, "", currentFragment);
                         break;
                     case SOCIAL_LOGIN_URL:
-                        setupSession(response, "social");
+                        setupSession(response, "social", SOCIAL_LOGIN);
                         break;
                     default:
                         break;
@@ -387,7 +392,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
-    private void setupSession(JSONObject response, String loginType){
+    private void setupSession(JSONObject response, String loginType, int type){
+        showProgressDialog(getResources().getString(R.string.loading));
         try {
             JSONObject object = response.getJSONObject("Data");
             LoginSession loginSession = new LoginSession();
@@ -413,6 +419,30 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             PreferenceServices.instance().saveUserName(object.getString("UserFirstName")+" "+object.getString("UserLastName"));
             PreferenceServices.instance().saveLoginType(loginType);
 
+            if (BuildConfig.DEBUG){ }
+            else {
+                PretStreet pretStreet = (PretStreet) getApplication();
+                Tracker mTracker = pretStreet.tracker();
+                switch (type) {
+                    case SIGNUP:
+                        mTracker.set("UserTrack", "New Registration " + object.getString("UserEmail"));
+                        break;
+                    case LOGIN:
+                        mTracker.set("UserTrack", "Login " + object.getString("UserEmail"));
+                        break;
+                    case SOCIAL_LOGIN:
+                        mTracker.set("UserTrack", "SocialLogin " + object.getString("UserEmail"));
+                        break;
+                    default:
+                        break;
+                }
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("WelcomePage")
+                        .setAction(mTracker.get("UserTrack"))
+                        .setLabel(mTracker.get("UserTrack"))
+                        .build());
+            }
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -422,6 +452,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     } else {
                         startActivity(new Intent(context, HomeActivity.class));
                     }
+                    hideDialog();
                     finish();
                 }
             }, 1500);

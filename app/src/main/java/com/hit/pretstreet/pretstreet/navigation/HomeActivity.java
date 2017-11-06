@@ -15,7 +15,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,6 +42,10 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -656,4 +659,25 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             e.printStackTrace();
         }
     }
+/*
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        GoogleAnalytics.getInstance(this).setDryRun(true);
+        //Get an Analytics tracker to report app starts & uncaught exceptions etc.
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+
+        PretStreet pretStreet = (PretStreet) getApplication();
+        Tracker mTracker = pretStreet.tracker();
+        Log.i(Constant.TAG, "Setting screen name: " + getLocalClassName());
+        mTracker.setScreenName("Image~" +  getLocalClassName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }*/
 }

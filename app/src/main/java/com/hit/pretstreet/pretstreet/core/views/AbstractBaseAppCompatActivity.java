@@ -16,6 +16,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.hit.pretstreet.pretstreet.BuildConfig;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.PageState;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
@@ -67,6 +69,23 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         setUpController();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (BuildConfig.DEBUG){ }
+        else {
+            GoogleAnalytics.getInstance(this).reportActivityStart(this);
+        }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (BuildConfig.DEBUG) { }
+        else {
+            GoogleAnalytics.getInstance(this).reportActivityStop(this);
+        }
+    }
+
     private void setUpPageState() {
         this.pageState = new PageState(this);
         this.pageState.setOnPageStateListner(new PageState.PageStateListener() {
@@ -78,7 +97,6 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
     }
 
     public void onErrorRefresh() {
-
     }
 
     public void displaySnackBar(String message) {

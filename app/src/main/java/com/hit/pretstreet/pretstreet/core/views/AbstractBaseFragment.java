@@ -150,7 +150,11 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
                             paint.setXfermode(null);
                             imageView.setImageBitmap(result);
                             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                        } catch (Exception e){}
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        } catch (OutOfMemoryError e){
+                            e.printStackTrace();
+                        }
                     }
                 });
     }

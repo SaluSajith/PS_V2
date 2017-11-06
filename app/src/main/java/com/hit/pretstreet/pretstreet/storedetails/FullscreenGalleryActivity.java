@@ -8,13 +8,14 @@ import android.widget.FrameLayout;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.storedetails.view.SlideshowDialogFragment;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 
-public class FullscreenGalleryActivity extends AppCompatActivity {
+public class FullscreenGalleryActivity extends AbstractBaseAppCompatActivity {
 
     @BindView(R.id.content) FrameLayout frameLayout;
 
@@ -37,5 +38,9 @@ public class FullscreenGalleryActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.content, fragment)
                 .commit();
+    }
+
+    @Override
+    protected void setUpController() {
     }
 }

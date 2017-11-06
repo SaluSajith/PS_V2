@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -111,26 +112,67 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
     @Override
     public void onResponse(JSONObject response) {
         try {
+            Log.d("response", response+"");
             this.showProgressDialog(getResources().getString(R.string.loading));
-            JSONArray results = response.getJSONArray("results");
-            Log.e("Address: ", results+"");
-            JSONObject geometry = results.getJSONObject(0).getJSONObject("geometry");
-            JSONObject location = geometry.getJSONObject("location");
-            Address address = new Address(null);
-            address.setLatitude(Double.parseDouble(location.getString("lat")));
-            address.setLongitude(Double.parseDouble(location.getString("lng")));
+            String url = response.getString("URL");
 
-            JSONArray address_components = results.getJSONObject(0).getJSONArray("address_components");
-            for(int i=0;i<address_components.length();i++) {
-                if(address_components.get(i).toString().contains("locality"))
-                    address.setLocality(address_components.getJSONObject(i).getString("short_name"));
+            if(url.contains("address")) {
+                String Status = response.getString("status");
+                if (Status.equalsIgnoreCase("OK")) {
+                    JSONArray results = response.getJSONArray("results");
+                    JSONObject geometry = results.getJSONObject(0).getJSONObject("geometry");
+                    JSONObject location = geometry.getJSONObject("location");
+                    Address address = new Address(null);
+                    String sublocality = "";
+                    address.setLatitude(Double.parseDouble(location.getString("lat")));
+                    address.setLongitude(Double.parseDouble(location.getString("lng")));
+
+                    JSONArray address_components = results.getJSONObject(0).getJSONArray("address_components");
+                    for (int i = 0; i < address_components.length(); i++) {
+                        if (address_components.get(i).toString().contains("locality"))
+                            address.setLocality(address_components.getJSONObject(i).getString("short_name"));
+                        if (address_components.get(i).toString().contains("sublocality_level_1")) {
+                            sublocality = address_components.getJSONObject(i).getString("short_name");
+                        }
+                    }
+                    saveNContinue(address, strSearch);
+                }
+            } else if(url.contains("latlng")){
+                String Status = response.getString("status");
+                if (Status.equalsIgnoreCase("OK")) {
+                    JSONArray results = response.getJSONArray("results");
+                    JSONObject geometry = results.getJSONObject(0).getJSONObject("geometry");
+                    JSONObject location = geometry.getJSONObject("location");
+                    Address address = new Address(null);
+                    String sublocality = "";
+                    address.setLatitude(Double.parseDouble(location.getString("lat")));
+                    address.setLongitude(Double.parseDouble(location.getString("lng")));
+
+                    JSONArray address_components = results.getJSONObject(0).getJSONArray("address_components");
+                    for (int i = 0; i < address_components.length(); i++) {
+                        try {
+                        JSONObject zero2 = address_components.getJSONObject(i);
+                        JSONArray mtypes = zero2.getJSONArray("types");
+                            if (mtypes.toString().contains("sublocality_level_1")) {
+                                sublocality = zero2.getString("long_name");
+                            }
+                            if (mtypes.toString().contains("locality"))
+                                address.setLocality(zero2.getString("long_name"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    saveNContinue(address, sublocality+"");
+                } else{
+                    displaySnackBar("Location not found!");
+                }
             }
-            saveNContinue(address, strSearch);
         } catch (JSONException e) {
             e.printStackTrace();
             this.hideDialog();
             displaySnackBar("Location not found!");
         }
+        hideDialog();
     }
 
     @Override
@@ -186,6 +228,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
             try {
                 String query = URLEncoder.encode(strAddress, "utf-8");
                 String URL = GETLOCATION_URL + "&address="+query;
+                showProgressDialog(getResources().getString(R.string.loading));
                 jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -194,38 +237,42 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
     }
 
     private void saveNContinue(Address location, String strAddress){
-        latitude = String.valueOf(location.getLatitude());
-        longitude = String.valueOf(location.getLongitude());
-        Log.e("Address: ", latitude + ", " + longitude + " " +location);
-        helper. saveLocation(strAddress);
-        String parts[] = new String[0];
-        String place = "";
-        if (strAddress.contains(",")) {
-            parts= strAddress.split(",");
-            place = parts[0];
-            Log.e("Address", parts[0]);
-        }
-        else place = strAddress;
-        displaySnackBar("Location set to " + place);
-        try{
-            String locality = location.getLocality();
-            if(!locality.equalsIgnoreCase("null")) {
-                if (place.equals(locality))
-                    PreferenceServices.instance().saveCurrentLocation(place);
-                else
-                    PreferenceServices.instance().saveCurrentLocation(place + ", " + locality);
+        try {
+            latitude = String.valueOf(location.getLatitude());
+            longitude = String.valueOf(location.getLongitude());
+            Log.e("Address: ", latitude + ", " + longitude + " " +location);
+            helper. saveLocation(strAddress);
+            String parts[] = new String[0];
+            String place = "";
+            if (strAddress.contains(",")) {
+                parts= strAddress.split(",");
+                place = parts[0];
+                Log.e("Address", parts[0]);
             }
-        }catch (Exception e){
-            PreferenceServices.instance().saveCurrentLocation(place);
+            else place = strAddress;
+            displaySnackBar("Location set to " + place);
+            try{
+                String locality = location.getLocality();
+                if(!locality.equalsIgnoreCase("null")) {
+                    if (place.equals(locality))
+                        PreferenceServices.instance().saveCurrentLocation(place);
+                    else
+                        PreferenceServices.instance().saveCurrentLocation(place + ", " + locality);
+                }
+            }catch (Exception e){
+                PreferenceServices.instance().saveCurrentLocation(place);
+                e.printStackTrace();
+            }
+
+            PreferenceServices.instance().saveLatitute(latitude + "");
+            PreferenceServices.instance().saveLongitute(longitude + "");
+            PreferenceServices.instance().saveLocationType(dropdownloc);
+            this.hideDialog();
+            finish();
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        PreferenceServices.instance().saveLatitute(latitude + "");
-        PreferenceServices.instance().saveLongitute(longitude + "");
-        PreferenceServices.instance().saveLocationType(dropdownloc);
-        this.hideDialog();
-        finish();
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
     }
 
     public ArrayList<String> autocomplete(String input) {
@@ -355,14 +402,14 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                /*JSONObject jsonObject = new JSONObject();
+                JSONObject jsonObject = new JSONObject();
                 try {
-                    String query = URLEncoder.encode(strAddress, "utf-8");
-                    String URL = GETLOCATION_URL + "&address="+query;
+                    showProgressDialog(getResources().getString(R.string.loading));
+                    String URL = GETLOCATION_URL + "&latlng=" + lat1 + "," + long1;
                     jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }*/
+                } catch (Exception ee) {
+                    ee.printStackTrace();
+                }
             }
         } else {
             gps.showSettingsAlert();

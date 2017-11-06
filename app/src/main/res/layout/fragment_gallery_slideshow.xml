@@ -23,10 +23,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/back"
+        app:srcCompat="@drawable/back"
         android:layout_gravity="top|start"
-        android:layout_marginTop="@dimen/padding_huge"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:padding="@dimen/padding_xxxlarge"
         android:scaleType="centerCrop"
         android:id="@+id/iv_back"
         android:contentDescription="Back"/>
