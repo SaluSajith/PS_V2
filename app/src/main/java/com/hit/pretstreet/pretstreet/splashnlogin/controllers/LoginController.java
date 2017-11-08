@@ -66,7 +66,7 @@ public class LoginController {
             } else {
                 jsonBody.put("FirstName", "");
             }
-            if (jsonObject.has("first_name")) {
+            if (jsonObject.has("last_name")) {
                 jsonBody.put("LastName", URLEncoder.encode(jsonObject.getString("last_name").toString(), "UTF-8"));
             } else {
                 jsonBody.put("LastName", "");
