@@ -30,7 +30,6 @@
 
     <application
         android:name=".PretStreet"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -155,6 +154,12 @@
         <activity
             android:name=".subcategory_n_storelist.StoreListingActivity"
             android:screenOrientation="portrait" />
+
+
+
+
+        <!--************************** App Analytics start*******************************-->
+        <!--************************** App Analytics *******************************-->
         <activity
             android:name=".splashnlogin.DeepLinkActivity"
             android:exported="true"
@@ -183,13 +188,13 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- Register AnalyticsReceiver and AnalyticsService to support background
-         dispatching on non-Google Play devices. -->
         <receiver android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:enabled="true"
             android:exported="true">
         </receiver>
-        <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
+        <!--<service android:name="com.google.android.gms.analytics.CampaignTrackingService"
+            android:enabled="true"
+            android:exported="false" />-->
         <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
             <intent-filter>
@@ -201,5 +206,9 @@
             android:exported="false"/>
         <meta-data android:name="com.google.android.gms.analytics.globalConfigResource"
             android:resource="@xml/global_tracker" />
+
+        <!--************************** App Analytics end*******************************-->
+
+
     </application>
 </manifest>

@@ -24,7 +24,7 @@
             style="@style/textview_heading"
             android:maxLines="3"
             android:gravity="center"
-            android:inputType="textMultiLine|textCapCharacters"
+            android:inputType="textMultiLine"
             app:pret_typeface="@string/font_merriweather_regular"
             android:id="@+id/tv_storename"
             android:padding="@dimen/padding_standard"/>

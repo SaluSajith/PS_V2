@@ -45,6 +45,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
@@ -103,6 +104,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_INVITE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHARE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
@@ -127,6 +129,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     private static final int TRENDING_FRAGMENT = 10;
     private static final int EXHIBITION_FRAGMENT = 11;
     private static final int NOTIFICATION_FRAGMENT = 12;
+    private static final int REFER_EARN_FRAGMENT = 14;
 
     @BindView(R.id.tv_location) TextViewPret tv_location;
     NavDrawerAdapter navDrawerAdapter;
@@ -216,6 +219,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 new NavDrawerItem("nav_account", "Account"),
                 new NavDrawerItem("nav_following", "Following"),
                 new NavDrawerItem("nav_addstore", "Add Store"),
+                //new NavDrawerItem("nav_invite", "Refer & Earn"),
                 new NavDrawerItem("nav_about", "About Pretstreet"),
                 new NavDrawerItem("nav_contact", "Contact Us/Support")};
 
@@ -386,6 +390,20 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("mSubTitle", "Following");
                 startActivity(intent);
+                break;
+            case "nav_invite":
+                selectedFragment = REFER_EARN_FRAGMENT;
+                intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
+                intent.putExtra("fragment", selectedFragment);
+                startActivity(intent);
+                /*intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+                        .setMessage(getString(R.string.invitation_message))
+                        .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
+                        .setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
+                        .setCallToActionText(getString(R.string.invitation_cta))
+                        .build();
+                startActivityForResult(intent, REQUEST_INVITE);*/
                 break;
             default:
                 break;
@@ -659,25 +677,25 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             e.printStackTrace();
         }
     }
-/*
+
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(Constant.TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
 
-        GoogleAnalytics.getInstance(this).setDryRun(true);
-        //Get an Analytics tracker to report app starts & uncaught exceptions etc.
-        GoogleAnalytics.getInstance(this).reportActivityStart(this);
-
-        PretStreet pretStreet = (PretStreet) getApplication();
-        Tracker mTracker = pretStreet.tracker();
-        Log.i(Constant.TAG, "Setting screen name: " + getLocalClassName());
-        mTracker.setScreenName("Image~" +  getLocalClassName());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        if (requestCode == REQUEST_INVITE) {
+            if (resultCode == RESULT_OK) {
+                // Get the invitation IDs of all sent messages
+                String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+                for (String id : ids) {
+                    Log.d(Constant.TAG, "onActivityResult: sent invitation " + id);
+                }
+            } else {
+                // Sending failed or it was canceled, show failure message to the user
+                // [START_EXCLUDE]
+                displaySnackBar("send_failed");
+                // [END_EXCLUDE]
+            }
+        }
     }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        GoogleAnalytics.getInstance(this).reportActivityStop(this);
-    }*/
 }

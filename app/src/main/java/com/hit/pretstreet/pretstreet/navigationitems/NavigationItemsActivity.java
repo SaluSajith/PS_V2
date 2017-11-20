@@ -44,6 +44,7 @@ import com.hit.pretstreet.pretstreet.navigationitems.fragments.ChangePasswordFra
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.ContactUsFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.HtmlFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.NotificationFragment;
+import com.hit.pretstreet.pretstreet.navigationitems.fragments.ReferEarnFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.interfaces.ContentBindingInterface;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
@@ -87,6 +88,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     private static final int EXHIBITION_FRAGMENT = 11;
     private static final int NOTIFICATION_FRAGMENT = 12;
     private static final int CHANGEPASSWORD_FRAGMENT = 13;
+    private static final int REFER_EARN_FRAGMENT = 14;
     private static final int ABOUTDESIGNER_FRAGMENT = 101;
     private static final int PICK_IMAGE_REQUEST = 111;
     private static final int PLACE_PICKER_REQUEST = 112;
@@ -164,6 +166,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             case CHANGEPASSWORD_FRAGMENT:
                 currentFragment = ACCOUNT_FRAGMENT;
                 tv_cat_name.setText("MY PROFILE");
+                break;
             default:
                 break;
         }
@@ -277,6 +280,12 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
                 currentFragment = CHANGEPASSWORD_FRAGMENT;
                 tv_cat_name.setText("Update Password");
                 changeFragment(new ChangePasswordFragment(), b);
+                break;
+            case REFER_EARN_FRAGMENT:
+                currentFragment = REFER_EARN_FRAGMENT;
+                tv_cat_name.setText("Refer & Earn");
+                changeFragment(new ReferEarnFragment(), b);
+                break;
             default:
                 break;
         }

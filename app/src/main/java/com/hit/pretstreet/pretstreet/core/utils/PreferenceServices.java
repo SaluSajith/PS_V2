@@ -39,6 +39,7 @@ public class PreferenceServices {
 
     public static String SHARE_QUERYPARAM = "SHARE_QUERYPARAM";
     public static String ID_QUERYPARAM = "ID_QUERYPARAM";
+    public static String UTM_QUERYPARAM = "UTM_QUERYPARAM";
 
     public static String currentloc = "CURRENTLOCATION";
     public static String dropdownloc = "DROPDOWNLOC";
@@ -83,6 +84,17 @@ public class PreferenceServices {
     public void setIdQueryparam(String idQueryparam) {
         SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(ID_QUERYPARAM, idQueryparam);
+        editor.apply();
+    }
+
+
+    public String getUTMQueryparam() {
+        return getPrefs().getString(UTM_QUERYPARAM, "");
+    }
+
+    public void setUTMQueryparam(String idQueryparam) {
+        SharedPreferences.Editor editor = getPrefs().edit();
+        editor.putString(UTM_QUERYPARAM, idQueryparam);
         editor.apply();
     }
 

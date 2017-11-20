@@ -52,6 +52,7 @@
     <string name="password">password:</string>
     <string name="signup_mobile">sign up with your mobile number</string>
     <string name="alreadyhaveaccount">already have an account here?</string>
+    <string name="invite">Invite</string>
 
     <!--add store-->
     <string name="storename">store name:</string>

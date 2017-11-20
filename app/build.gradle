@@ -1,16 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.hit.pretstreet.pretstreet"
         minSdkVersion 15
-        targetSdkVersion 25
-        versionName '1.5.6'
+        targetSdkVersion 26
+        versionName '1.5.9'
         multiDexEnabled true
-        versionCode 18
+        versionCode 21
     }
     buildTypes {
         release {
@@ -34,20 +34,21 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:design:26.+'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
-    compile 'com.google.android.gms:play-services:9.8.0'
-    compile 'com.google.android.gms:play-services-analytics:9.8.0'
+    compile 'com.google.android.gms:play-services:11.+'
+    compile 'com.google.android.gms:play-services-analytics:11.+'
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-v4:25.+'
     compile 'com.android.support:cardview-v7:25.1.1'
     compile 'com.android.support:recyclerview-v7:25.1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jakewharton:butterknife:8.5.1'
-    compile 'com.google.firebase:firebase-core:9.0.1'
-    compile 'com.google.firebase:firebase-messaging:9.0.1'
+    compile 'com.google.firebase:firebase-core:11.6.0'
+    compile 'com.google.firebase:firebase-messaging:11.6.0'
+    compile 'com.google.firebase:firebase-invites:11.6.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

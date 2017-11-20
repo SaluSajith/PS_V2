@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/yellow"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="50dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/children"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:id="@+id/txt_frndscount"
+            android:layout_width="match_parent"
+            android:text="Only 3 of your friends are on Pretstreet!"
+            android:layout_height="wrap_content"
+            style="@style/textview_small"
+            android:textSize="@dimen/textsize_large"
+            android:inputType="textNoSuggestions|textMultiLine"
+            app:pret_typeface="@string/font_merriweather_light"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:text="Invite more to get offers from top designers."
+            android:layout_height="match_parent"
+            style="@style/textview_normal"
+            android:layout_marginLeft="5dp"
+            android:textSize="@dimen/textsize_xlarge"
+            app:pret_typeface="@string/font_merriweather_regular"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:text="SEND YOUR INVITE CODE"
+            android:layout_height="match_parent"
+            style="@style/textview_small"
+            android:layout_marginTop="15dp"
+            android:textSize="@dimen/textsize_xlarge"
+            app:pret_typeface="@string/font_merriweather_bold"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:text="TESTER009"
+            android:layout_height="match_parent"
+            android:id="@+id/txt_invitecode"
+            android:layout_marginTop="15dp"
+            style="@style/textview_normal"
+            android:textSize="@dimen/textsize_xxxlarge"
+            android:textColor="@color/yellow"
+            app:pret_typeface="@string/font_merriweather_regular"/>
+
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/textview_normal"
+            android:text="@string/invite"
+            android:id="@+id/tv_book_app"
+            android:layout_gravity="center"
+            android:background="@color/yellow_storelist"
+            android:padding="@dimen/padding_large"
+            android:layout_marginTop="@dimen/padding_xlarge"
+            app:pret_typeface="@string/font_merriweather_regular"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--<android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_designers"
+            android:nestedScrollingEnabled="false"
+            android:layout_below="@+id/txt_cat_name"/>-->
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:id="@+id/txt_cat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="8sp"
+            android:text="REFERRED FRIENDS"
+            android:layout_marginTop="@dimen/padding_large"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textColor="@color/dark_gray"
+            app:pret_typeface="@string/font_redvelvet_regular"/>
+
+    </RelativeLayout>
+
+    <include layout="@layout/row_search_recent"></include>
+    <include layout="@layout/row_search_recent"></include>
+    <include layout="@layout/row_search_recent"></include>
+</LinearLayout>

@@ -6,7 +6,7 @@ import android.util.Log;
 import com.facebook.FacebookBroadcastReceiver;
 
 /**
- * Created by hiral on 10/8/2015.
+ * Created by user on 10/8/2017.
  */
 public class PretStreetFacebookBroadcastReceiver extends
         FacebookBroadcastReceiver {

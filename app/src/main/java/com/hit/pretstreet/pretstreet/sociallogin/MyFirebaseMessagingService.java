@@ -19,7 +19,6 @@ import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 
 import java.util.ArrayList;
 
-
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override

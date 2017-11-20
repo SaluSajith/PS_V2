@@ -1,21 +1,15 @@
 package com.hit.pretstreet.pretstreet.splashnlogin;
 
 import android.Manifest;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,18 +24,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.appinvite.AppInvite;
-import com.google.android.gms.appinvite.AppInviteInvitationResult;
-import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.hit.pretstreet.pretstreet.BuildConfig;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
@@ -52,17 +38,13 @@ import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.helpers.IncomingSms;
-import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
-import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
-import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
-import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
 import com.hit.pretstreet.pretstreet.sociallogin.GoogleLoginActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.TokenService;
@@ -75,8 +57,6 @@ import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.SmsListener;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
-import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -370,6 +350,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         break;
                     case REGISTRATION_URL:
                         setupSession(response, "", currentFragment);
+                        PreferenceServices.getInstance().setUTMQueryparam("");
                         break;
                     case LOGIN_OTP_URL:
                         otpValue = response.getJSONObject("Data").getString("OTP");
@@ -377,6 +358,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         break;
                     case LOGIN_URL:
                         setupSession(response, "", currentFragment);
+                        PreferenceServices.getInstance().setUTMQueryparam("");
                         break;
                     case SOCIAL_LOGIN_URL:
                         setupSession(response, "social", SOCIAL_LOGIN);

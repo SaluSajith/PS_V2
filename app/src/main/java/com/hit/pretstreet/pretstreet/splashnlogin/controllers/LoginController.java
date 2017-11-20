@@ -7,6 +7,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
@@ -22,6 +23,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MALLS;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHARE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYMOODS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYPRO;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SLIDER;
@@ -46,6 +48,7 @@ public class LoginController {
     }
     public LoginController(Context context){
         this.context = context;
+        PreferenceServices.init(context);
     }
 
     public static JSONObject getFacebookLoginData(JSONObject jsonObject) {
@@ -56,26 +59,24 @@ public class LoginController {
             jsonBody.put("UserSocialType", "facebook");
             jsonBody.put("ProfileImage", URLEncoder.encode("https://graph.facebook.com/" +
                     jsonObject.getString("id").toString() + "/picture?type=large", "UTF-8"));
-            if (jsonObject.has("email")) {
+            if (jsonObject.has("email"))
                 jsonBody.put("UserEmail", jsonObject.getString("email").toString());
-            } else {
-                jsonBody.put("UserEmail", "");
-            }
-            if (jsonObject.has("first_name")) {
+            else jsonBody.put("UserEmail", "");
+
+            if (jsonObject.has("first_name"))
                 jsonBody.put("FirstName", URLEncoder.encode(jsonObject.getString("first_name").toString(), "UTF-8"));
-            } else {
-                jsonBody.put("FirstName", "");
-            }
-            if (jsonObject.has("last_name")) {
+            else jsonBody.put("FirstName", "");
+
+            if (jsonObject.has("last_name"))
                 jsonBody.put("LastName", URLEncoder.encode(jsonObject.getString("last_name").toString(), "UTF-8"));
-            } else {
-                jsonBody.put("LastName", "");
-            }
-            if (jsonObject.has("gender")) {
+            else jsonBody.put("LastName", "");
+
+            if (jsonObject.has("gender"))
                 jsonBody.put("gender", jsonObject.getString("gender").toString());
-            } else {
-                jsonBody.put("gender", "");
-            }
+            else jsonBody.put("gender", "");
+
+            String utmparam = PreferenceServices.getInstance().getUTMQueryparam();
+            jsonBody.put("utm_url", utmparam);
 
             jsonBody = Constant.addConstants(jsonBody, context);
             jsonBody = Constant.addDeviceId(jsonBody, context);
@@ -99,6 +100,9 @@ public class LoginController {
             jsonBody.put("FirstName", account.getGivenName());
             jsonBody.put("LastName", account.getFamilyName());
 
+            String utmparam = PreferenceServices.getInstance().getUTMQueryparam();
+            jsonBody.put("utm_url", utmparam);
+
             jsonBody = Constant.addConstants(jsonBody, context);
             jsonBody = Constant.addDeviceId(jsonBody, context);
 
@@ -117,6 +121,9 @@ public class LoginController {
             jsonBody.put("UserEmail", loginSession.getEmail());
             jsonBody.put("UserMobile", loginSession.getMobile());
             jsonBody.put("UserPassword", loginSession.getPassword());
+
+            String utmparam = PreferenceServices.getInstance().getUTMQueryparam();
+            jsonBody.put("utm_url", utmparam);
 
             jsonBody = Constant.addConstants(jsonBody, context);
             jsonBody = Constant.addDeviceId(jsonBody, context);

@@ -366,53 +366,56 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
     }
 
     public void getLocation() {
-
-        GPSTracker gps = new GPSTracker(this);
-        if (gps.canGetLocation()) {
-            displaySnackBar("Please wait while fetching your location..");
-            lat1 = gps.getLatitude();
-            long1 = gps.getLongitude();
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> list;
-            try {
-                list = geocoder.getFromLocation(lat1, long1, 2);
-                if (list.isEmpty()) {
-                    displaySnackBar("Please try again");
-                } else {
-                    Address location = list.get(1);
-                    currentLocation = location.getSubLocality();
-                    displaySnackBar( "Location set to " + currentLocation);
-                    try{
-                        String locality = location.getLocality();
-                        if(!locality.equalsIgnoreCase("null")) {
-                            if (currentLocation.equals(locality))
-                                PreferenceServices.instance().saveCurrentLocation(currentLocation);
-                            else
-                                PreferenceServices.instance().saveCurrentLocation(currentLocation + ", " + locality);
-                        }
-                    }catch (Exception e){
-                        PreferenceServices.instance().saveCurrentLocation(currentLocation);
-                        e.printStackTrace();
-                    }
-                    PreferenceServices.instance().saveLatitute(lat1 + "");
-                    PreferenceServices.instance().saveLongitute(long1 + "");
-                    PreferenceServices.instance().saveLocationType(currentloc);
-                    this.finish();
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                JSONObject jsonObject = new JSONObject();
+        try {
+            GPSTracker gps = new GPSTracker(this);
+            if (gps.canGetLocation()) {
+                displaySnackBar("Please wait while fetching your location..");
+                lat1 = gps.getLatitude();
+                long1 = gps.getLongitude();
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                List<Address> list;
                 try {
-                    showProgressDialog(getResources().getString(R.string.loading));
-                    String URL = GETLOCATION_URL + "&latlng=" + lat1 + "," + long1;
-                    jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
-                } catch (Exception ee) {
-                    ee.printStackTrace();
+                    list = geocoder.getFromLocation(lat1, long1, 2);
+                    if (list.isEmpty()) {
+                        displaySnackBar("Please try again");
+                    } else {
+                        Address location = list.get(1);
+                        currentLocation = location.getSubLocality();
+                        displaySnackBar( "Location set to " + currentLocation);
+                        try{
+                            String locality = location.getLocality();
+                            if(!locality.equalsIgnoreCase("null")) {
+                                if (currentLocation.equals(locality))
+                                    PreferenceServices.instance().saveCurrentLocation(currentLocation);
+                                else
+                                    PreferenceServices.instance().saveCurrentLocation(currentLocation + ", " + locality);
+                            }
+                        }catch (Exception e){
+                            PreferenceServices.instance().saveCurrentLocation(currentLocation);
+                            e.printStackTrace();
+                        }
+                        PreferenceServices.instance().saveLatitute(lat1 + "");
+                        PreferenceServices.instance().saveLongitute(long1 + "");
+                        PreferenceServices.instance().saveLocationType(currentloc);
+                        this.finish();
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        showProgressDialog(getResources().getString(R.string.loading));
+                        String URL = GETLOCATION_URL + "&latlng=" + lat1 + "," + long1;
+                        jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
+                    } catch (Exception ee) {
+                        ee.printStackTrace();
+                    }
                 }
+            } else {
+                gps.showSettingsAlert();
             }
-        } else {
-            gps.showSettingsAlert();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
