@@ -26,6 +26,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
+
 /**
  * Created by User on 03/08/2017.
  */
@@ -38,6 +42,25 @@ public class HomeFragmentController {
     }
 
     public static JSONObject getTrendinglistJson(int offset, String prepage) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("Limit", Constant.LIMIT_S);
+            jsonBody.put("Offset", offset);
+            jsonBody.put("PreviousPageTypeId", prepage);
+            jsonBody.put("ClickTypeId", "");
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {
+        }
+
+        return jsonBody;
+    }
+
+
+    public static JSONObject getGiveawaylistJson(int offset, String prepage) {
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -160,7 +183,8 @@ public class HomeFragmentController {
                 JSONObject trendingContent = jsonArray.getJSONObject(i);
                 item = new TrendingItems();
                 item.setId(trendingContent.getString("Id"));
-                item.setPagetype(trendingContent.getString("PageType"));
+                //item.setPagetype(trendingContent.getString("PageType"));
+                item.setPagetype(TRENDINGPAGE);
                 item.setClicktype(trendingContent.getString("ClickTypeId"));
                 item.setPagetypeid(trendingContent.getString("PageTypeId"));
                 item.setStoreid(trendingContent.getString("StoreId"));
@@ -182,55 +206,64 @@ public class HomeFragmentController {
                 for(int j=0;j<jsonImagearray.length();j++) {
                     imagearray.add(jsonImagearray.get(j));
                 }
-                /*switch (i){
-                    case 1:
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/4.jpg");
-                        break;
-                    case 2:
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
-                        break;
-                    case 3:
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/4.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/5.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/6.jpg");
-                        break;
-                    case 4:
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/7.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/8.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/9.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/10.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/11.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/12.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/13.jpg");
+                item.setImagearray(imagearray);
+                item.setArticledate(trendingContent.getString("ArticleDate"));
+                if(trendingContent.has("Share"))
+                    item.setShareUrl(trendingContent.getString("Share"));
+                trendingItems.add(item);
+            }
+        }catch (JSONException e1) {
+            e1.printStackTrace();
+        }
 
-                        break;
-                    case 5:
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/14.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/15.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/16.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/17.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/18.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/19.jpg");
-                        break;
-                    case 6:
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/20.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/21.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/1.jpg");
-                        break;
-                    case 7 :
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/2.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/3.jpg");
-                        break;
-                    default:
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/2.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/3.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/4.jpg");
-                        imagearray.add("http://13.126.57.85/pretstreetvtwobeta/media/trending/testingimages/5.jpg");
-                        break;
-                }*/
+        return trendingItems;
+    }
+
+    public static String getHeading(JSONObject response){
+        String s = "Giveaway";
+        try {
+            s = response.getString("Heading");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
+    public static ArrayList<TrendingItems> getGiveawayList(JSONObject response){
+        ArrayList<TrendingItems> trendingItems = new ArrayList<>();
+        try {
+            JSONArray jsonArray = response.getJSONArray("Data");
+
+            TrendingItems item;
+            if (trendingItems == null)
+                trendingItems = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject trendingContent = jsonArray.getJSONObject(i);
+                item = new TrendingItems();
+                item.setId(trendingContent.getString("Id"));
+                //item.setPagetype(trendingContent.getString("PageType"));
+                item.setPagetype(GIVEAWAYPAGE);
+                item.setClicktype(trendingContent.getString("ClickTypeId"));
+                item.setPagetypeid(trendingContent.getString("PageTypeId"));
+                item.setStoreid(trendingContent.getString("StoreId"));
+                item.setLogoImage(trendingContent.getString("LogoImage"));
+                item.setTitle(trendingContent.getString("Title"));
+                item.setArticle(trendingContent.getString("ArticleShortDescription"));
+
+                JSONObject jsonObject = trendingContent.getJSONObject("TitleContent");
+                item.setTitleid(jsonObject.getString("RedirectionId"));
+                item.setTitlepagetype(jsonObject.getString("PageTypeId"));
+
+                item.setLike(trendingContent.getInt("CustomerLikeStatus") == 0 ? false : true);
+                item.setBanner(trendingContent.getInt("BannerFlag") == 0 ? false : true);
+                item.setStoreName(trendingContent.getString("Storename"));
+                item.setImgHeight(Integer.parseInt(trendingContent.getString("MaxImageHeight")));
+                item.setImgWidth(Integer.parseInt(trendingContent.getString("MaxImageWidth")));
+                JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
+                ArrayList imagearray = new ArrayList();
+                for(int j=0;j<jsonImagearray.length();j++) {
+                    imagearray.add(jsonImagearray.get(j));
+                }
                 item.setImagearray(imagearray);
                 item.setArticledate(trendingContent.getString("ArticleDate"));
                 if(trendingContent.has("Share"))
@@ -255,7 +288,8 @@ public class HomeFragmentController {
                 JSONObject trendingContent = jsonArray.getJSONObject(i);
                 item = new TrendingItems();
                 item.setId(trendingContent.getString("Id"));
-                item.setPagetype(trendingContent.getString("PageType"));
+                //item.setPagetype(trendingContent.getString("PageType"));
+                item.setPagetype(EXHIBITIONPAGE);
                 item.setClicktype(trendingContent.getString("ClickTypeId"));
                 item.setPagetypeid(trendingContent.getString("PageTypeId"));
                 item.setTitle(trendingContent.getString("Title"));

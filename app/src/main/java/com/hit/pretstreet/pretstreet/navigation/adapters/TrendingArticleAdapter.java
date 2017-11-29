@@ -34,14 +34,20 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
     private Context context;
     ArrayList<TrendingItems> artItems;
     TrendingCallback trendingCallback;
-    //private ZoomedViewListener zoomedViewListener;
+    private ZoomedViewListener zoomedViewListener;
 
     public TrendingArticleAdapter(Context context, ArrayList<TrendingItems> artItems) {
         this.context = context;
         this.artItems = artItems;
-        /*if(context.getClass().getSimpleName().equals(TrendingArticleActivity.class.getSimpleName()))
-            this.zoomedViewListener = ((HomeInnerActivity) activity);
-        else this.zoomedViewListener = (ZoomedViewListener) context.getApplicationContext();*/
+        try {
+            if(context.getClass().getSimpleName().equals(TrendingArticleActivity.class.getSimpleName()))
+                this.zoomedViewListener = ((TrendingArticleActivity) context);
+            else if(context.getClass().getSimpleName().equals(NavigationItemsActivity.class.getSimpleName()))
+                this.zoomedViewListener = ((NavigationItemsActivity) context);
+            else this.zoomedViewListener = (ZoomedViewListener) context.getApplicationContext();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -112,19 +118,48 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
             TrendingItems notifItems = artItems.get(getAdapterPosition());
             switch (viewId){
                 case R.id.txt_title:
-
                     if(!notifItems.isNotifPage()) {
                         trendingCallback = (TrendingArticleActivity) context;
                         ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
                         trendingItemses.add(notifItems);
                         trendingCallback.bindData(trendingItemses);
                     }
+                    else{
+                        trendingCallback = (NavigationItemsActivity)context;
+                        ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
+                        trendingItemses.add(notifItems);
+                        trendingCallback.bindData(trendingItemses);
+                    }
                     break;
-                /*case R.id.iv_banner:
-                    ArrayList<String> mImagearray = new ArrayList<>();
-                    mImagearray.add(notifItems.getImagearray().get(0));
-                    zoomedViewListener.onClicked(0, mImagearray);
-                    break;*/
+                case R.id.iv_banner:
+                    if(!notifItems.isNotifPage()) {
+                        ArrayList<String> mImagearray = new ArrayList<>();
+                        mImagearray.add(artItems.get(getAdapterPosition()).getLogoImage());
+                        zoomedViewListener.onClicked(0, mImagearray);
+                    }
+                    else{
+                        trendingCallback = (NavigationItemsActivity)context;
+                        ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
+                        trendingItemses.add(notifItems);
+                        trendingCallback.bindData(trendingItemses);
+                    }
+                    break;
+                case R.id.txt_description:
+                    if(notifItems.isNotifPage()) {
+                        trendingCallback = (NavigationItemsActivity)context;
+                        ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
+                        trendingItemses.add(notifItems);
+                        trendingCallback.bindData(trendingItemses);
+                    }
+                    break;
+                case R.id.txt_shopname:
+                    if(notifItems.isNotifPage()) {
+                        trendingCallback = (NavigationItemsActivity)context;
+                        ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
+                        trendingItemses.add(notifItems);
+                        trendingCallback.bindData(trendingItemses);
+                    }
+                    break;
                 default:
                     break;
             }

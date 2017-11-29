@@ -25,6 +25,8 @@ import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
+import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
+import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.DEEPLINKINGKEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
@@ -58,6 +61,8 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
 
     private static int DURATION = 2000;
     private static final int ADDSTORE_FRAGMENT = 3;
+    private static final int TRENDING_FRAGMENT = 10;
+    private static final int EXHIBITION_FRAGMENT = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,6 +300,9 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         Intent intent;
         switch (valueOne){  //TODO nullpointer excp
             case "store":
+                if(id.equals("0")){
+                    return;
+                }
                 StoreListModel storeListModel =  new StoreListModel();
                 storeListModel.setId(id);
                 intent = new Intent(this, StoreDetailsActivity.class);
@@ -304,26 +312,45 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case "trending":
-                TrendingItems trendingItems = new TrendingItems();
-                trendingItems.setId(id);
-                trendingItems.setPagetypeid("");
-                trendingItems.setClicktype("");
-                intent = new Intent(this, TrendingArticleActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, "");
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                startActivity(intent);
+                if(id.equals("0")){
+                    intent = new Intent(this, HomeInnerActivity.class);
+                    intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
+                    intent.putExtra("fragment", TRENDING_FRAGMENT);
+                    startActivity(intent);
+                }
+                else {
+                    TrendingItems trendingItems = new TrendingItems();
+                    trendingItems.setId(id);
+                    trendingItems.setPagetypeid("");
+                    trendingItems.setClicktype("");
+                    intent = new Intent(this, TrendingArticleActivity.class);
+                    intent.putExtra(Constant.PRE_PAGE_KEY, "");
+                    intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                    startActivity(intent);
+                }
                 break;
             case "exhibition":
-                trendingItems = new TrendingItems();
-                trendingItems.setId(id);
-                trendingItems.setPagetypeid("");
-                trendingItems.setClicktype("");
-                intent = new Intent(this, ExhibitionDetailsActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
-                startActivity(intent);
+                if(id.equals("0")){
+                    intent = new Intent(this, HomeInnerActivity.class);
+                    intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
+                    intent.putExtra("fragment", EXHIBITION_FRAGMENT);
+                    startActivity(intent);
+                }
+                else {
+                    TrendingItems trendingItems = new TrendingItems();
+                    trendingItems.setId(id);
+                    trendingItems.setPagetypeid("");
+                    trendingItems.setClicktype("");
+                    intent = new Intent(this, ExhibitionDetailsActivity.class);
+                    intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                    intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
+                    startActivity(intent);
+                }
                 break;
             case "multistore":
+                if(id.equals("0")){
+                    return;
+                }
                 intent = new Intent(this, MultistoreActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
                 intent.putExtra(ID_KEY, id);

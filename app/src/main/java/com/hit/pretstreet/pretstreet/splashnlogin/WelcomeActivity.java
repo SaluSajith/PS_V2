@@ -629,6 +629,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             }
         });
     }
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //No call for super(). Bug on API Level > 11.

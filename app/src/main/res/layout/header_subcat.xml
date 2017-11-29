@@ -23,18 +23,19 @@
             android:orientation="horizontal"
             android:layout_gravity="center"
             android:gravity="center"
-            android:paddingLeft="@dimen/activity_horizontal_margin">
+            android:paddingLeft="@dimen/padding_large">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:rotation="-4"
+                android:id="@+id/ll_location_"
                 android:orientation="horizontal">
 
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mumbai"
+                    android:text="Andheri East, Mumbai"
                     style="@style/textview_small"
                     android:layout_gravity="top"
                     android:gravity="top"

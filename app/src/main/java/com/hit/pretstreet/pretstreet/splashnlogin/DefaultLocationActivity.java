@@ -164,7 +164,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                     }
                     saveNContinue(address, sublocality+"");
                 } else{
-                    displaySnackBar("Location not found!");
+                    displaySnackBar("Location not found!!");
                 }
             }
         } catch (JSONException e) {
@@ -177,6 +177,8 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
 
     @Override
     public void onError(String error) {
+        hideDialog();
+        displaySnackBar(error);
     }
 
     private class doInBackground extends AsyncTask<Void, Void, Boolean> {
@@ -193,7 +195,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (resultList==null) {
-                displaySnackBar("Please try after sometime");
+                displaySnackBar("Please check your internet connection!");
             } else {
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(),
                         android.R.layout.simple_list_item_1, android.R.id.text1, resultList);
@@ -377,7 +379,8 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                 try {
                     list = geocoder.getFromLocation(lat1, long1, 2);
                     if (list.isEmpty()) {
-                        displaySnackBar("Please try again");
+                        //displaySnackBar("Please try again");
+                        getLatlng();
                     } else {
                         Address location = list.get(1);
                         currentLocation = location.getSubLocality();
@@ -402,20 +405,24 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        showProgressDialog(getResources().getString(R.string.loading));
-                        String URL = GETLOCATION_URL + "&latlng=" + lat1 + "," + long1;
-                        jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
-                    } catch (Exception ee) {
-                        ee.printStackTrace();
-                    }
+                    getLatlng();
                 }
             } else {
                 gps.showSettingsAlert();
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void getLatlng(){
+        try {
+            JSONObject jsonObject = new JSONObject();
+            showProgressDialog(getResources().getString(R.string.loading));
+            String URL = GETLOCATION_URL + "&latlng=" + lat1 + "," + long1;
+            jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
+        } catch (Exception ee) {
+            ee.printStackTrace();
         }
     }
 }

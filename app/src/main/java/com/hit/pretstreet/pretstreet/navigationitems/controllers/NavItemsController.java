@@ -34,6 +34,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.FOLLOWINGPAGE;
+
 /**
  * Created by User on 16/08/2017.
  */
@@ -359,7 +361,7 @@ public class NavItemsController {
             StoreListModel storeListModel;
             for (int i = 0; i < jsonArray.length(); i++) {
                 storeListModel = new StoreListModel();
-                storeListModel.setPageType(jsonArray.getJSONObject(i).getString("PageType"));
+                storeListModel.setPageType(FOLLOWINGPAGE);
                 storeListModel.setPageTypeId(jsonArray.getJSONObject(i).getString("PageTypeId"));
                 storeListModel.setId(jsonArray.getJSONObject(i).getString("Id"));
                 storeListModel.setTitle(jsonArray.getJSONObject(i).getString("Title"));

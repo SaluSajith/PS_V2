@@ -162,13 +162,13 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         FrameLayout.LayoutParams layoutParams =
                 (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
         if(title.equalsIgnoreCase("JEWELLERS"))
-            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_small), 0, 0);
+            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xsmall), 0, 0);
         else
             layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxsmall), 0, 0);
         ll_scroll.setLayoutParams(layoutParams);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
-        Utility.setListLayoutManager_(rv_storelist, StoreListingActivity.this);
+        Utility.setListLayoutManager(rv_storelist, StoreListingActivity.this);
         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, StoreListingActivity.this, storeListModels);
         storeList_recyclerAdapter.setHasStableIds(true);
         rv_storelist.setAdapter(storeList_recyclerAdapter);
@@ -211,6 +211,12 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @OnClick(R.id.tv_location)
     public void onTvLocationPressed() {
+        Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.ll_location_)
+    public void onIv_LocationPressed() {
         Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }
@@ -473,7 +479,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                     case STORE_DETAILS :
                         int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
                         String storeId = data.getStringExtra(ID_KEY);
-                        storeList_recyclerAdapter.updateFollowStatus(status, storeId);
+                        storeList_recyclerAdapter.updateFollowStatus_fromDetails(status, storeId, data.getStringExtra("followcount"));
                         storeList_recyclerAdapter.notifyDataSetChanged();
                         break;
                     default:

@@ -50,6 +50,7 @@ import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
 import com.hit.pretstreet.pretstreet.navigation.fragments.ExhibitionFragment;
+import com.hit.pretstreet.pretstreet.navigation.fragments.GiveawayFragment;
 import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
@@ -80,16 +81,12 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, TrendingHolderInvoke, ZoomedViewListener {
 
     private int currentFragment = 0;
-    private static final int TRENDING_FRAGMENT = 10;
-    private static final int EXHIBITION_FRAGMENT = 11;
-    private static final int TRENDINGARTICLE_FRAGMENT = 12;
-    private static final int EXHIBITION_DETAILS = 13;
-    private static final int PRIVACY_FRAGMENT = 7;
 
     JsonRequestController jsonRequestController;
     HomeFragmentController homeFragmentController;
     TrendingCallback trendingCallback;
     TrendingFragment trendingFragment;
+    GiveawayFragment giveawayFragment;
     ExhibitionFragment exhibitionFragment;
     Toolbar toolbar;
 
@@ -169,6 +166,16 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 trendingCallback = trendingFragment;
                 changeFragment(trendingFragment, b);
                 break;
+            case GIVEAWAY_FRAGMENT:
+                first = true;
+                currentFragment = GIVEAWAY_FRAGMENT;
+                tv_cat_name.setText("Giveaway");
+                iv_filter.setVisibility(View.GONE);
+                iv_header.setImageResource(R.drawable.header_yellow);
+                giveawayFragment = new GiveawayFragment();
+                trendingCallback = giveawayFragment;
+                changeFragment(giveawayFragment, b);
+                break;
             case EXHIBITION_FRAGMENT:
                 first = true;
                 currentFragment = EXHIBITION_FRAGMENT;
@@ -195,6 +202,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, TRENDING_URL);
+    }
+
+    public void getGiveawaylist(int offset){
+        JSONObject resultJson = homeFragmentController.getGiveawaylistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        if(first)
+            this.showProgressDialog(getResources().getString(R.string.loading));
+        jsonRequestController.sendRequest(this, resultJson, GIVEAWAY_URL);
     }
 
     public void getExhibitionlist(int offset){
@@ -230,6 +244,19 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                     //trendingFragment.update_loadmore_adapter(false);
                     ArrayList<TrendingItems> trendingItemses = homeFragmentController.getTrendingList(response);
                     trendingCallback.bindData(trendingItemses);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideDialog();
+                        }
+                    }, 1000);
+                    break;
+                case GIVEAWAY_URL:
+                    first = false;
+                    requestCalled = false;
+                    tv_cat_name.setText(homeFragmentController.getHeading(response));
+                    ArrayList<TrendingItems> giveawayItemses = homeFragmentController.getGiveawayList(response);
+                    trendingCallback.bindData(giveawayItemses);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -503,7 +530,10 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             Intent intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
             intent.putExtra(Constant.PARCEL_KEY, trendingItems);
             intent.putExtra(Constant.PRE_PAGE_KEY, Constant.TRENDINGPAGE);
-            startActivityForResult(intent, TRENDINGARTICLE_FRAGMENT);
+            if(trendingItems.getPagetypeid().equals(ARTICLEPAGE))
+                startActivityForResult(intent, TRENDINGARTICLE_FRAGMENT);
+            else if(trendingItems.getPagetypeid().equals(GIVEAWAYARTICLEPAGE))
+                startActivity(intent);
         }
     }
 
@@ -522,6 +552,11 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, trendingItems);
                 startActivityForResult(intent, TRENDINGARTICLE_FRAGMENT);
+                break;
+            case GIVEAWAYARTICLEPAGE:
+                intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
+                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                startActivity(intent);
                 break;
             case EXARTICLEPAGE:
                 intent = new Intent(HomeInnerActivity.this, ExhibitionDetailsActivity.class);
@@ -571,7 +606,6 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void onClicked(int position, ArrayList<String> mImagearray) {
-
         ArrayList<String> imageModels1 = mImagearray;
         Intent intent = new Intent(context, FullscreenGalleryActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, imageModels1);
@@ -589,10 +623,18 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 String storeId = data.getStringExtra(ID_KEY);
                 switch (requestCode) {
                     case TRENDINGARTICLE_FRAGMENT:
-                        trendingFragment.updateLikeStatus(status, storeId);
+                        try {
+                            trendingFragment.updateLikeStatus(status, storeId);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case EXHIBITION_DETAILS:
-                        exhibitionFragment.updateLikeStatus(status, storeId);
+                        try {
+                            exhibitionFragment.updateLikeStatus(status, storeId);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     default:
                         break;

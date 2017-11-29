@@ -201,7 +201,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                         public void run() {
                             hideDialog();
                         }
-                    }, 1000);
+                    }, 2500);
                     break;
                 case RECENTSEARCH_URL:
                     searchDataCallback.setRecentsearchList(searchController.getRecentViewList(response),
@@ -318,7 +318,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                 else if (requestCode == STORE_DETAILS){
                     int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
                     String storeId = data.getStringExtra(ID_KEY);
-                    storeList_recyclerAdapter.updateFollowStatus(status, storeId);
+                    storeList_recyclerAdapter.updateFollowStatus_fromDetails(status, storeId, data.getStringExtra("followcount"));
                     storeList_recyclerAdapter.notifyDataSetChanged();
                 }
             }

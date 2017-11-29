@@ -597,14 +597,18 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 storeDetailsModel.getLongitude().equalsIgnoreCase("")) {
             displaySnackBar("Location not found");
         } else {
-            Intent intent = new Intent(context, StoreLocationMapScreen.class);
-            Bundle b = new Bundle();
-            b.putString("name", storeDetailsModel.getStoreName());
-            b.putString("address", storeDetailsModel.getAddress());
-            b.putDouble("lat", Double.parseDouble(storeDetailsModel.getLatitude()));
-            b.putDouble("long", Double.parseDouble(storeDetailsModel.getLongitude()));
-            intent.putExtras(b);
-            startActivity(intent);
+            try {
+                Intent intent = new Intent(context, StoreLocationMapScreen.class);
+                Bundle b = new Bundle();
+                b.putString("name", storeDetailsModel.getStoreName());
+                b.putString("address", storeDetailsModel.getAddress());
+                b.putDouble("lat", Double.parseDouble(storeDetailsModel.getLatitude()));
+                b.putDouble("long", Double.parseDouble(storeDetailsModel.getLongitude()));
+                intent.putExtras(b);
+                startActivity(intent);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
         logTracking(VIEWONMAPLINK);
     }
@@ -625,6 +629,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                     int status = response.getJSONObject("Data").getInt("FollowingStatus");
                     btn_follow.setText(status == 0 ? "Follow" : "Unfollow");
                     int count = Integer.parseInt(this.storeDetailsModel.getFollowingCount());
+                    this.storeDetailsModel.setFollowingStatus(status == 1 ? false : true);
                     this.storeDetailsModel.setFollowingCount(status == 1 ? (count+1) +"" : (count-1) +"");
                     tv_folowerscount.setText(this.storeDetailsModel.getFollowingCount() + " followers");
                     break;
@@ -723,8 +728,9 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         Intent intent = new Intent();
         Bundle b = new Bundle();
         b.putString(ID_KEY, storeDetailsModel.getId());
-        int likeStatus = storeDetailsModel.getFollowingStatus() == true ? 1 : 0;
+        int likeStatus = storeDetailsModel.getFollowingStatus() == true ? 0 : 1;
         b.putString(PARCEL_KEY, likeStatus+"");
+        b.putString("followcount", storeDetailsModel.getFollowingCount()+"");
         intent.putExtras(b);
         setResult(RESULT_OK, intent);
         finish();

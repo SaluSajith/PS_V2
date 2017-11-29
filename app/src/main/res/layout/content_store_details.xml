@@ -267,6 +267,7 @@
             style="@style/textview_small"
             android:id="@+id/tv_openinghrs"
             android:gravity="left"
+            android:lineSpacingExtra="-5dp"
             android:inputType="textMultiLine|textNoSuggestions"
             android:layout_marginBottom="@dimen/padding_standard"
             app:pret_typeface="@string/font_merriweather_light"/>

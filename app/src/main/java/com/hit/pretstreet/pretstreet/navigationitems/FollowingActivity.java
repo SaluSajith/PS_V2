@@ -97,11 +97,17 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        pageCount = 1;
-        first = true;
-        rv_storelist.setAdapter(null);
-        storeListModels.clear();
-        getFollowingData("0", true); //For ALL catid = 0
+        try {
+            pageCount = 1;
+            first = true;
+            rv_storelist.setAdapter(null);
+            storeListModels.clear();
+           /* txtname[0].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
+            txtname[0].setTextColor(ContextCompat.getColor(this, R.color.black));*/
+            getFollowingData("0", true); //For ALL catid = 0
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -135,7 +141,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
 
         FrameLayout.LayoutParams layoutParams =
                 (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
-        layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_small), 0, 0);
+        layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxsmall), 0, 0);
         ll_scroll.setLayoutParams(layoutParams);
 
         String title = getIntent().getStringExtra("mSubTitle");
@@ -295,6 +301,12 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     public void buttonClick(StoreListModel storeListModel) {
         switch (storeListModel.getPageTypeId()){
             case Constant.STOREDETAILSPAGE:
+                for (int index = 0;index<txtname.length;index++) {
+                    txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                    txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
+                }
+                txtname[0].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
+                txtname[0].setTextColor(ContextCompat.getColor(this, R.color.black));
                 Intent intent = new Intent(FollowingActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, storeListModel);
                 intent.putExtra(CLICKTYPE_KEY, "");

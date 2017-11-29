@@ -3,15 +3,17 @@ package com.hit.pretstreet.pretstreet.navigation.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
+
 /**
  * Created by User on 5/9/2017.
  */
 
 public class TrendingItems implements Serializable {
 
-    String id="", storeLink="", logoImage="", title="", article="", articledate="", pagetype="", pagetypeid="", storeid="", clicktype="";
+    String id="", storeLink="", logoImage="", title="", article="", articledate="", pagetype = TRENDINGPAGE, pagetypeid="", storeid="", clicktype="";
     String storeName="", shareUrl="", area="", titlepagetype="", titleid="", register="";
-    boolean like=false, banner=false, NotifPage = false;
+    boolean like = false, banner = false, NotifPage = false;
     String latitude="", longitude="";
     int imgHeight = 0, imgWidth = 0;
     ArrayList<String> imagearray = new ArrayList<>();

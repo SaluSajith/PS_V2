@@ -61,7 +61,7 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
     @Override
     public void onResume() {
         super.onResume();
-        ((SearchActivity)getActivity()).getRecentPage(this, "5");//TODO
+        ((SearchActivity)getActivity()).getRecentPage(this, "5");//TODO All
     }
 
     @Override

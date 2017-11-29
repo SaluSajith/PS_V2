@@ -57,7 +57,6 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
     Context context, fragContext;
     private int dotsCount = 0;
     static int mPosition;
@@ -160,8 +159,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         String udata = trendingItems.getTitle() + "";
         holder.txt_shopname.setText(udata);
         loadImage(glide, trendingItems.getLogoImage(), holder.iv_profile);
-        holder.iv_like.setImageResource(trendingItems.getLike() == true ?
-                R.drawable.red_heart : R.drawable.grey_heart);
+        holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
     }
 
@@ -204,32 +202,20 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener, ViewPager.OnPageChangeListener {
 
-        @BindView(R.id.iv_like)
-        ImageView iv_like;
-        @BindView(R.id.iv_share)
-        ImageView iv_share;
-        @BindView(R.id.iv_banner)
-        ImageView iv_banner;
-        @BindView(R.id.iv_profile)
-        ImageView iv_profile;
+        @BindView(R.id.iv_like) ImageView iv_like;
+        @BindView(R.id.iv_share) ImageView iv_share;
+        @BindView(R.id.iv_banner) ImageView iv_banner;
+        @BindView(R.id.iv_profile) ImageView iv_profile;
 
-        @BindView(R.id.txt_date)
-        TextViewPret txt_date;
-        @BindView(R.id.txt_title)
-        TextViewPret txt_title;
-        @BindView(R.id.txt_shopname)
-        TextViewPret txt_shopname;
-        @BindView(R.id.txt_description)
-        TextViewPret txt_description;
+        @BindView(R.id.txt_date) TextViewPret txt_date;
+        @BindView(R.id.txt_title) TextViewPret txt_title;
+        @BindView(R.id.txt_shopname) TextViewPret txt_shopname;
+        @BindView(R.id.txt_description) TextViewPret txt_description;
 
-        @BindView(R.id.ll_desc)
-        LinearLayout ll_desc;
-        @BindView(R.id.ll_progress)
-        LinearLayout ll_progress;
-        @BindView(R.id.pager_article)
-        ViewPager article_images;
-        @BindView(R.id.viewPagerCountDots)
-        LinearLayout pager_indicator;
+        @BindView(R.id.ll_desc) LinearLayout ll_desc;
+        @BindView(R.id.ll_progress) LinearLayout ll_progress;
+        @BindView(R.id.pager_article) ViewPager article_images;
+        @BindView(R.id.viewPagerCountDots) LinearLayout pager_indicator;
 
         private ImageView[] dots;
 
@@ -239,10 +225,10 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             iv_like.setOnClickListener(this);
             iv_share.setOnClickListener(this);
-            txt_shopname.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
-            txt_description.setOnClickListener(this);
             txt_title.setOnClickListener(this);
+            txt_shopname.setOnClickListener(this);
+            txt_description.setOnClickListener(this);
             article_images.setOnPageChangeListener(this);
         }
 
@@ -329,8 +315,11 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
     }
 
-    static int getHeight(int h1, int w1, int w2) {
+    private int getHeight(int h1, int w1, int w2) {
         int h2 = (w2 * h1) / w1;
+        int h = (int) this.context.getResources().getDimension(R.dimen.trending_pager_height);
+        if(h2>h)
+            h2 = h;
         return h2;
     }
 }

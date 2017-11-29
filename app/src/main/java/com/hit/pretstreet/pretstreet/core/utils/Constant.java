@@ -20,8 +20,8 @@ public class Constant {
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
     //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
-    public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";   //test
-    //public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
+    //public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";   //test
+    public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
     public static final String LOGIN_OTP_URL = COMMON_URL + "customer/customerlogingenerateOtp";
@@ -33,6 +33,7 @@ public class Constant {
     public static final String UPDATEFOLLOWSTATUS_URL = COMMON_URL + "store/followStore/";
     public static final String STOREDETAILS_URL = COMMON_URL + "store/storedetails/";
     public static final String TRENDING_URL = COMMON_URL + "trending/listing/";
+    public static final String GIVEAWAY_URL = COMMON_URL + "giveaway/listing/";
     public static final String TRENDINGLIKE_URL = COMMON_URL + "trending/trendinglike/";
     public static final String EXHIBITION_URL = COMMON_URL + "exhibition/listing/";
     public static final String EXHIBITIONLIKE_URL = COMMON_URL + "exhibition/exhibitionlike/";
@@ -40,6 +41,7 @@ public class Constant {
     public static final String EXHIBITIONREGISTEROTP_URL = COMMON_URL + "exhibition/customerregistergenerateOtp";
     public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "exhibition/article/";
     public static final String TRENDINGARTICLE_URL = COMMON_URL + "trending/article/";
+    public static final String GIVEAWAYARTICLE_URL = COMMON_URL + "giveaway/article/";
     public static final String MULTISTORE_URL = COMMON_URL + "store/multistorelisting";
     public static final String AUTOSEARCH_URL = COMMON_URL + "category/autoSearch";
     public static final String SEARCH_URL = COMMON_URL + "category/search";
@@ -83,6 +85,8 @@ public class Constant {
     public static final String SEARCHPAGE = "14";
     public static final String FILTERPAGE = "15";
     public static final String SIGNUPPAGE = "16";
+    public static final String GIVEAWAYPAGE = "18";
+    public static final String GIVEAWAYARTICLEPAGE = "19";
 
     //Clicktype constants
     public static final String HOMEPAGELINK = "1";
@@ -139,6 +143,28 @@ public class Constant {
     public static final int REQUEST_INVITE = 400;
 
 
+    //Fragments
+    public static final int ACCOUNT_FRAGMENT = 0;
+    public static final int FOLLOWING_FRAGMENT = 1;
+    public static final int ABOUT_FRAGMENT = 2;
+    public static final int ADDSTORE_FRAGMENT = 3;
+    public static final int CONTACTUS_FRAGMENT = 4;
+    public static final int FEEDBACK_FRAGMENT = 5;
+    public static final int ABOUTUS_FRAGMENT = 6;
+    public static final int PRIVACY_FRAGMENT = 7;
+    public static final int TERMS_FRAGMENT = 8;
+    public static final int TRENDING_FRAGMENT = 10;
+    public static final int EXHIBITION_FRAGMENT = 11;
+    public static final int TRENDINGARTICLE_FRAGMENT = 12;
+    public static final int EXHIBITION_DETAILS = 13;
+    public static final int REFER_EARN_FRAGMENT = 14;
+    public static final int NOTIFICATION_FRAGMENT = 15;
+    public static final int GIVEAWAY_FRAGMENT = 16;
+    public static final int CHANGEPASSWORD_FRAGMENT = 17;
+    public static final int ABOUTDESIGNER_FRAGMENT = 101;
+    public static final int PICK_IMAGE_REQUEST = 111;
+    public static final int PLACE_PICKER_REQUEST = 112;
+
     public static JSONObject addConstants(JSONObject jsonObject, Context context){
 
         JSONObject jsonBody = jsonObject;
@@ -166,7 +192,6 @@ public class Constant {
         try {
             SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
             jsonBody.put("DeviceId", sharedPreferencesHelper.getString("TOKEN", ""));
-
         } catch (JSONException e) {
         } catch (Exception e) {}
         return jsonBody;

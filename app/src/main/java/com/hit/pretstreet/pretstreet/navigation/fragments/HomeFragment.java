@@ -62,6 +62,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYMOODS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYPRO;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SLIDER;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TERMS_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE;
 
 /**
@@ -70,8 +71,6 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE;
 
 public class HomeFragment extends AbstractBaseFragment<HomeActivity>
         implements ViewPager.OnPageChangeListener, View.OnClickListener{
-
-    private static final int TERMS_FRAGMENT = 8;
 
     @BindView(R.id.ll_pager) LinearLayout ll_pager;
     @BindView(R.id.ll_main_cat) LinearLayout ll_main_cat;

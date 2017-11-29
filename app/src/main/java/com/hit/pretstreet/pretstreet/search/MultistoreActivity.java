@@ -273,7 +273,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                 if (requestCode == STORE_DETAILS){
                     int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
                     String storeId = data.getStringExtra(ID_KEY);
-                    storeList_recyclerAdapter.updateFollowStatus(status, storeId);
+                    storeList_recyclerAdapter.updateFollowStatus_fromDetails(status, storeId, data.getStringExtra("followcount"));
                     storeList_recyclerAdapter.notifyDataSetChanged();
                 }
             }

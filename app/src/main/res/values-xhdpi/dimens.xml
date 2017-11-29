@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="padding_xxxsmall">1dp</dimen>
-    <dimen name="padding_xxsmall">2dp</dimen>
+    <dimen name="padding_xxsmall">1dp</dimen>
     <dimen name="padding_xsmall">3dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_standard">4dp</dimen>
@@ -84,5 +84,5 @@
     <dimen name="storelist_img_height">110dp</dimen>
     <dimen name="storelist_img_width">100dp</dimen>
     <dimen name="storelist_banner_height">120dp</dimen>
-    <dimen name="storelist_banner_height_firstrow">150dp</dimen>
+    <dimen name="storelist_banner_height_firstrow">140dp</dimen>
 </resources>

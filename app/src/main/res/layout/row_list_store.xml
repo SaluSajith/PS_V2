@@ -76,7 +76,6 @@
                     android:layout_marginLeft="@dimen/padding_small"
                     android:layout_marginTop="@dimen/padding_small"
                     android:contentDescription="Image"/>
-
             </LinearLayout>
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
@@ -97,7 +96,7 @@
                 android:text="Bandra West, Mumbai"
                 style="@style/textview_small"
                 android:inputType="textNoSuggestions"
-                android:textSize="@dimen/textsize_small"
+                android:textSize="@dimen/textsize_standard"
                 app:pret_typeface="@string/font_merriweather_light"/>
 
             <View
@@ -212,7 +211,7 @@
     <ImageView
         android:id="@+id/iv_banner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/storelist_banner_height"
+        android:layout_height="@dimen/storelist_banner_height_firstrow"
         android:scaleType="matrix"
         android:adjustViewBounds="true"
         android:contentDescription="Image"/>

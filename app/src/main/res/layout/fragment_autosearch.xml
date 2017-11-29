@@ -47,7 +47,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:entries="@array/cattype"
-                    android:prompt="@string/stores" />
+                    android:prompt="@string/stores"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <LinearLayout

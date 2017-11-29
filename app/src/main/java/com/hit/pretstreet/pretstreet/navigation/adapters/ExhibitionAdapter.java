@@ -271,15 +271,15 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-/*@Override
+    /*@Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         ExhibitionAdapter.ViewHolder holder1 = (ExhibitionAdapter.ViewHolder) holder;
         if(holder != null) {
             Glide.clear(holder1.iv_banner);
         }
         super.onViewRecycled(holder);
-    }
-*/
+    }*/
+
     public void setLoaded() {
         isLoading = false;
     }

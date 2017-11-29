@@ -195,6 +195,17 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
+    public void updateFollowStatus_fromDetails(int status, String storeid, String count) {
+        try {
+            if (mItems.get(mPosition).getId().equals(storeid)) {
+                mItems.get(mPosition).setFollowingStatus(status == 1 ? true : false);
+                mItems.get(mPosition).setFollowingCount(count);
+            } else ;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
     class ShopsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.ll_progress) LinearLayout ll_progress;

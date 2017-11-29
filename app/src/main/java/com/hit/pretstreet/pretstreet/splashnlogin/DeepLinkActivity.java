@@ -33,6 +33,7 @@ public class DeepLinkActivity extends AppCompatActivity {
             try {
                 String valueOne = uri.getQueryParameter("share");
                 String id = uri.getQueryParameter("id");
+                Log.e("DeepLinkActivity TAG", "data saved "+ valueOne + id);
                 PreferenceServices.getInstance().setIdQueryparam(id);
                 PreferenceServices.getInstance().setShareQueryparam(valueOne);
 

@@ -1,19 +1,14 @@
 package com.hit.pretstreet.pretstreet.navigationitems;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,12 +24,8 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
-import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
-import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
-import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
-import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
+import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.controllers.NavItemsController;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.AboutFragment;
@@ -46,16 +37,11 @@ import com.hit.pretstreet.pretstreet.navigationitems.fragments.HtmlFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.NotificationFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.ReferEarnFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.interfaces.ContentBindingInterface;
-import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
-import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
-import com.hit.pretstreet.pretstreet.splashnlogin.fragments.LoginFragment;
-import com.hit.pretstreet.pretstreet.splashnlogin.fragments.SignupFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
-import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
+import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,29 +55,11 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.*;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CONTACTUS_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FEEDBACK_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 
 public class NavigationItemsActivity extends AbstractBaseAppCompatActivity implements
-        ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface, TrendingCallback {
+        ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface, TrendingCallback, ZoomedViewListener{
 
     private int currentFragment = 0;
-    private static final int ACCOUNT_FRAGMENT = 0;
-    private static final int FOLLOWING_FRAGMENT = 1;
-    private static final int ABOUT_FRAGMENT = 2;
-    private static final int ADDSTORE_FRAGMENT = 3;
-    private static final int CONTACTUS_FRAGMENT = 4;
-    private static final int FEEDBACK_FRAGMENT = 5;
-    private static final int ABOUTUS_FRAGMENT = 6;
-    private static final int PRIVACY_FRAGMENT = 7;
-    private static final int TERMS_FRAGMENT = 8;
-    private static final int TRENDING_FRAGMENT = 10;
-    private static final int EXHIBITION_FRAGMENT = 11;
-    private static final int NOTIFICATION_FRAGMENT = 12;
-    private static final int CHANGEPASSWORD_FRAGMENT = 13;
-    private static final int REFER_EARN_FRAGMENT = 14;
-    private static final int ABOUTDESIGNER_FRAGMENT = 101;
-    private static final int PICK_IMAGE_REQUEST = 111;
-    private static final int PLACE_PICKER_REQUEST = 112;
 
     JsonRequestController jsonRequestController;
     NavItemsController navItemsController;
@@ -456,5 +424,15 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     @Override
     public void bindData(ArrayList<TrendingItems> trendingItems) {
         forwardDeepLink(trendingItems.get(0).getShareUrl(), trendingItems.get(0).getId(), NOTIFICATIONKEY);
+    }
+
+    @Override
+    public void onClicked(int position, ArrayList<String> mImagearray) {
+        ArrayList<String> imageModels1 = mImagearray;
+        Intent intent = new Intent(getApplicationContext(), FullscreenGalleryActivity.class);
+        intent.putExtra(Constant.PARCEL_KEY, imageModels1);
+        intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.HOMEPAGE));
+        intent.putExtra(Constant.POSITION_KEY, position);
+        startActivity(intent);
     }
 }

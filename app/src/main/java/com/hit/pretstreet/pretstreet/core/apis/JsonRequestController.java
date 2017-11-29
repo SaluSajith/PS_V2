@@ -43,7 +43,6 @@ public class JsonRequestController {
     }
     public void sendRequest(Activity activity, JSONObject jsonObject, final String url){
         //Utility.hide_keyboard(activity);
-
         Log.d("URL", url + jsonObject+"");
         requestBody = jsonObject.toString();
         stringRequest = new StringRequest(Request.Method.POST, url,
@@ -90,7 +89,6 @@ public class JsonRequestController {
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
             }
-
             @Override
             public byte[] getBody() {
                 try {
@@ -105,7 +103,6 @@ public class JsonRequestController {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PretStreet.getInstance().addToRequestQueue(stringRequest, tag_str_obj);
     }
-
 
     public void sendRequestGoogle(Activity activity, JSONObject jsonObject, final String url){
         //Utility.hide_keyboard(activity);

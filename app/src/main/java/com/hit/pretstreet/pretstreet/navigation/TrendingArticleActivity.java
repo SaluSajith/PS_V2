@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.hit.pretstreet.pretstreet.R;
@@ -34,15 +35,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYARTICLE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGARTICLE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
 
 public class TrendingArticleActivity extends AbstractBaseAppCompatActivity implements
-        ApiListenerInterface, TrendingCallback {
+        ApiListenerInterface, TrendingCallback, ZoomedViewListener {
 
     @BindView(R.id.rv_trendingarticle)RecyclerView rv_trendingarticle;
     @BindView(R.id.txt_description)TextViewPret txt_description;
@@ -66,7 +70,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     private void init() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
-        context = getApplicationContext();
+        context = TrendingArticleActivity.this;
         Utility.setListLayoutManager_(rv_trendingarticle, context);
 
         trendingItems = (TrendingItems)getIntent()
@@ -75,13 +79,14 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
         String clicktype = trendingItems.getClicktype();
         mId = trendingItems.getId();
         getTrendingArticle(pagekey, clicktype, mId);
+        if(trendingItems.getPagetype().equals(GIVEAWAYPAGE))
+            ib_like.setVisibility(View.GONE);
     }
-
 
     @OnClick(R.id.ib_like)
     public void onLikePressed() {
         JSONObject resultJson = detailsPageController.getTrendinglikeJson(mId ,
-                getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+                getIntent().getStringExtra(PRE_PAGE_KEY));
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, TRENDINGLIKE_URL);
     }
@@ -106,7 +111,10 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     private void getTrendingArticle(String prepage, String clicktype, String trid){
         JSONObject resultJson = detailsPageController.getTrendingArticle(prepage, clicktype, trid);
         this.showProgressDialog(getResources().getString(R.string.loading));
-        jsonRequestController.sendRequest(this, resultJson, TRENDINGARTICLE_URL);
+        if(trendingItems.getPagetype().equals(GIVEAWAYPAGE))
+            jsonRequestController.sendRequest(this, resultJson, GIVEAWAYARTICLE_URL);
+        else
+            jsonRequestController.sendRequest(this, resultJson, TRENDINGARTICLE_URL);
     }
 
     private void setupArticle(ArrayList<TrendingItems> trendingArticle){
@@ -123,6 +131,15 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
                     ib_like.setTag(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
                     ib_like.setImageResource(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
                     ArrayList<TrendingItems> trendingArticle = detailsPageController.getTrendingArticle(response);
+                    trendingItems.setLike(detailsPageController.getLikeStatus(response));
+                    setupArticle(trendingArticle);
+                    this.hideDialog();
+                    break;
+                case Constant.GIVEAWAYARTICLE_URL:
+                    txt_name.setText(detailsPageController.getTitle(response));
+                    ib_like.setTag(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
+                    ib_like.setImageResource(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
+                    trendingArticle = detailsPageController.getTrendingArticle(response);
                     trendingItems.setLike(detailsPageController.getLikeStatus(response));
                     setupArticle(trendingArticle);
                     this.hideDialog();
@@ -168,7 +185,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
             case MULTISTOREPAGE:
                 intent = new Intent(TrendingArticleActivity.this, MultistoreActivity.class);
                 intent.putExtra(ID_KEY, id);
-                intent.putExtra(Constant.PRE_PAGE_KEY, ARTICLEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, ARTICLEPAGE);
                 startActivity(intent);
                 break;
             case STOREDETAILSPAGE:
@@ -176,11 +193,21 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
                 storeListModel.setId(id);
                 intent = new Intent(TrendingArticleActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(PARCEL_KEY, storeListModel);
-                intent.putExtra(Constant.PRE_PAGE_KEY, ARTICLEPAGE);
+                intent.putExtra(PRE_PAGE_KEY, ARTICLEPAGE);
                 startActivity(intent);
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onClicked(int position, ArrayList<String> mImagearray) {
+        ArrayList<String> imageModels1 = mImagearray;
+        Intent intent = new Intent(context, FullscreenGalleryActivity.class);
+        intent.putExtra(Constant.PARCEL_KEY, imageModels1);
+        intent.putExtra(PRE_PAGE_KEY, Integer.parseInt(Constant.HOMEPAGE));
+        intent.putExtra(Constant.POSITION_KEY, position);
+        startActivity(intent);
     }
 }

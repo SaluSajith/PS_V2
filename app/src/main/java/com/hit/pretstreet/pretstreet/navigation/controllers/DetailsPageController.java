@@ -97,6 +97,8 @@ public class DetailsPageController {
             JSONArray jsonArray = jsonObject.getJSONArray("Timings");
             ArrayList listArray = new ArrayList();
             for(int i=0;i<jsonArray.length();i++) {
+                if(jsonArray.get(i).toString().trim().length()==0){}
+                else
                 listArray.add(jsonArray.get(i));
             }
             storeDetailsModel.setArrayListTimings(listArray);

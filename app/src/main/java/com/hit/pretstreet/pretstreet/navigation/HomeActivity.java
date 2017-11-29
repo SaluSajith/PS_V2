@@ -97,13 +97,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ABOUT_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ACCOUNT_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CONTACTUS_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAY_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIFICATION_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.REFER_EARN_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_INVITE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHARE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
@@ -117,19 +124,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         NavigationClick, ApiListenerInterface, HomeTrapeClick, ButtonClickCallback {
 
     private int selectedFragment = 0;
-    private static final int ACCOUNT_FRAGMENT = 0;
-    private static final int FOLLOWING_FRAGMENT = 1;
-    private static final int ABOUT_FRAGMENT = 2;
-    private static final int ADDSTORE_FRAGMENT = 3;
-    private static final int CONTACTUS_FRAGMENT = 4;
-    private static final int FEEDBACK_FRAGMENT = 5;
-    private static final int ABOUTUS_FRAGMENT = 6;
-    private static final int PRIVACY_FRAGMENT = 7;
-    private static final int TERMS_FRAGMENT = 8;
-    private static final int TRENDING_FRAGMENT = 10;
-    private static final int EXHIBITION_FRAGMENT = 11;
-    private static final int NOTIFICATION_FRAGMENT = 12;
-    private static final int REFER_EARN_FRAGMENT = 14;
 
     @BindView(R.id.tv_location) TextViewPret tv_location;
     NavDrawerAdapter navDrawerAdapter;
@@ -358,7 +352,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 startActivity(intent);
                 break;
             case "nav_addstore":
-                selectedFragment = ADDSTORE_FRAGMENT;
+                selectedFragment = Constant.ADDSTORE_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
@@ -551,14 +545,21 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 startActivity(intent);
                 break;
             case TRENDINGPAGE:
-                selectedFragment = TRENDING_FRAGMENT;
+                selectedFragment = Constant.TRENDING_FRAGMENT;
+                intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
+                intent.putExtra("fragment", selectedFragment);
+                startActivity(intent);
+                break;
+            case GIVEAWAYPAGE:
+                selectedFragment = GIVEAWAY_FRAGMENT;
                 intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);
                 startActivity(intent);
                 break;
             case EXHIBITIONPAGE:
-                selectedFragment = EXHIBITION_FRAGMENT;
+                selectedFragment = Constant.EXHIBITION_FRAGMENT;
                 intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("fragment", selectedFragment);

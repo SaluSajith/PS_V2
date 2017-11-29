@@ -8,7 +8,9 @@
         android:id="@+id/img_cat_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="Image"/>
+        android:contentDescription="Image"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginRight="-10dp"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
