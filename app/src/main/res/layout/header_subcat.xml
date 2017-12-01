@@ -5,55 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/header_inner_pages"></include>
-
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ll_location"
-            android:background="@drawable/headeryellow"
-            android:layout_marginTop="@dimen/content_overlapmargin_activity"
-            android:layout_marginRight="-5dp"
-            android:layout_marginLeft="-5dp"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingLeft="@dimen/padding_large">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:rotation="-4"
-                android:id="@+id/ll_location_"
-                android:orientation="horizontal">
-
-                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Andheri East, Mumbai"
-                    style="@style/textview_small"
-                    android:layout_gravity="top"
-                    android:gravity="top"
-                    android:lines="1"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="9dp"
-                    android:layout_marginStart="9dp"
-                    android:id="@+id/tv_location"/>
-
-                <ImageView
-                    android:id="@+id/iv_location"
-                    android:layout_width="@dimen/textsize_xlarge"
-                    android:layout_height="@dimen/textsize_xlarge"
-                    android:src="@drawable/ic_expand"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="Location"/>
-            </LinearLayout>
+            android:id="@+id/ll_top">
+            <include layout="@layout/header_inner_pages"/>
         </LinearLayout>
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -62,6 +23,7 @@
             android:layout_marginTop="@dimen/horiscroll_margin"
             android:layout_marginRight="-5dp"
             android:layout_marginLeft="-5dp"
+            android:layout_below="@+id/ll_location"
             android:background="@drawable/header_black"
             android:id="@+id/hs_categories">
             <LinearLayout
@@ -102,5 +64,49 @@
 -->
             </LinearLayout>
         </HorizontalScrollView>
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ll_location"
+            android:background="@drawable/headeryellow"
+            android:layout_marginTop="@dimen/content_overlapmargin_activity"
+            android:layout_marginRight="-5dp"
+            android:layout_marginLeft="-5dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_below="@+id/ll_top"
+            android:paddingLeft="@dimen/padding_large">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:rotation="-4"
+                android:id="@+id/ll_location_"
+                android:orientation="horizontal">
+
+                <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Andheri East, Mumbai"
+                    style="@style/textview_small"
+                    android:layout_gravity="top"
+                    android:gravity="top"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginStart="9dp"
+                    android:id="@+id/tv_location"/>
+
+                <ImageView
+                    android:id="@+id/iv_location"
+                    android:layout_width="@dimen/textsize_xlarge"
+                    android:layout_height="@dimen/textsize_xlarge"
+                    android:src="@drawable/ic_expand"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Location"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

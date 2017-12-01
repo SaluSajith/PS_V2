@@ -457,14 +457,14 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     @OnClick(R.id.tv_location)
     public void onTvLocationPressed() {
-        finish();
+        //finish();
         Intent intent = new Intent(HomeActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.iv_location)
     public void onLocationPressed() {
-        finish();
+        //finish();
         Intent intent = new Intent(HomeActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }

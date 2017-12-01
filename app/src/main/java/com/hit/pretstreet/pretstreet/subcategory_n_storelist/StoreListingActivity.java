@@ -221,12 +221,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         startActivity(intent);
     }
 
-    @OnClick(R.id.ll_location)
-    public void onIvLocationPressed() {
-        Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
-        startActivity(intent);
-    }
-
     private void openSearchPage(){
         finish();
         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);

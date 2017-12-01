@@ -80,7 +80,7 @@
     <dimen name="header_margin">30dp</dimen>
     <dimen name="horiscroll_margin">-30dp</dimen>
 
-    <dimen name="storelist_img_height">90dp</dimen>
+    <dimen name="storelist_img_height">110dp</dimen>
     <dimen name="storelist_img_width">100dp</dimen>
     <dimen name="storelist_banner_height">110dp</dimen>
     <dimen name="storelist_banner_height_firstrow">140dp</dimen>

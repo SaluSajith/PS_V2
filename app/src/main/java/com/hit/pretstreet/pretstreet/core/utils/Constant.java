@@ -12,16 +12,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by User on 14/3/16.
+ * Created by User on 14/6/17.
  */
 public class Constant {
 
     public static final String GOOGLE_API_KEY = "AIzaSyCAq0CP83saVHVc93LDs_m3xUdpFna0c2c";
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
-    //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";
-    //public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";   //test
-    public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
+    //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";  //not working
+    public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";   //test
+    //public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
     public static final String LOGIN_OTP_URL = COMMON_URL + "customer/customerlogingenerateOtp";
@@ -70,6 +70,7 @@ public class Constant {
     public static final String TAG = "Pretstreetv2";
     public static final int TIMEOUT_LIMIT = 15000;
 
+
     //Pagetype constants
     public static final String HOMEPAGE = "1";
     public static final String SUBCATPAGE = "2";
@@ -87,6 +88,7 @@ public class Constant {
     public static final String SIGNUPPAGE = "16";
     public static final String GIVEAWAYPAGE = "18";
     public static final String GIVEAWAYARTICLEPAGE = "19";
+
 
     //Clicktype constants
     public static final String HOMEPAGELINK = "1";

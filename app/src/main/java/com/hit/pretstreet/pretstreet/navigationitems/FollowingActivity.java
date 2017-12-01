@@ -3,6 +3,7 @@ package com.hit.pretstreet.pretstreet.navigationitems;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
@@ -183,11 +184,11 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         startActivity(intent);
     }
 
-    @OnClick(R.id.ll_location)
+    /*@OnClick(R.id.ll_location)
     public void onIvLocationPressed() {
         Intent intent = new Intent(FollowingActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
-    }
+    }*/
 
     private void createScrollingHeader(ArrayList<SearchModel> homeSubCategories){
         if(txtname==null) {

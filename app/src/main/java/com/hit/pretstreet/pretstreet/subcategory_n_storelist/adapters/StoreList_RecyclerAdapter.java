@@ -20,6 +20,7 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 
 /**
  * Created by User on 7/27/2017.
@@ -148,19 +151,8 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         shopsHolder.txt_storename.setText(storeListModel.getTitle());
         shopsHolder.txt_address.setText(storeListModel.getLocation());
 
-        String strFollowCount = storeListModel.getFollowingCount();
-        if (strFollowCount.length() >= 4) {
-            String convertedCountK = strFollowCount.substring(0, strFollowCount.length() - 3);
-            if (convertedCountK.length() >= 4) {
-                String convertedCount = convertedCountK.substring(0, convertedCountK.length() - 3);
-                shopsHolder.txt_folleowercount.setText(Html.fromHtml(convertedCount + "<sup>M</sup>"));
-            } else shopsHolder.txt_folleowercount.setText(Html.fromHtml(convertedCountK + "<sup>K</sup>"));
-        } else shopsHolder.txt_folleowercount.setText(Html.fromHtml(strFollowCount));
-
         loadImage(glide, storeListModel.getImageSource(), shopsHolder.img_store_photo);
 
-        shopsHolder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == true ? "Unfollow" : "Follow");
-        shopsHolder.tv_closeStatus.setText(storeListModel.getOpenStatus() == false ? "Closed" : "Open");
         setVisibility(shopsHolder.img_sale, storeListModel.getSaleflag());
         setVisibility(shopsHolder.img_offer, storeListModel.getOfferflag());
         setVisibility(shopsHolder.img_newarrival, storeListModel.getNewflag());
@@ -170,6 +162,38 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             shopsHolder.iv_banner.setVisibility(View.VISIBLE);
             loadImage(glide, storeListModel.getImageSource(), shopsHolder.iv_banner);
         } else shopsHolder.iv_banner.setVisibility(View.GONE);
+
+        if(storeListModel.getPageTypeId().equals(MULTISTOREPAGE)){
+            shopsHolder.tv_closeStatus.setVisibility(View.GONE);
+            shopsHolder.img_follow_unfollow.setVisibility(View.GONE);
+            shopsHolder.tv_followerstext.setVisibility(View.GONE);
+            shopsHolder.txt_folleowercount.setVisibility(View.GONE);
+            shopsHolder.seperator.setVisibility(View.GONE);
+            return;
+        }
+        else{
+            shopsHolder.tv_closeStatus.setVisibility(View.VISIBLE);
+            shopsHolder.img_follow_unfollow.setVisibility(View.VISIBLE);
+            shopsHolder.tv_followerstext.setVisibility(View.VISIBLE);
+            shopsHolder.txt_folleowercount.setVisibility(View.VISIBLE);
+            shopsHolder.seperator.setVisibility(View.VISIBLE);
+        }
+        shopsHolder.img_follow_unfollow.setText(storeListModel.getFollowingStatus() == true ? "Unfollow" : "Follow");
+        shopsHolder.tv_closeStatus.setText(storeListModel.getOpenStatus() == false ? "Closed" : "Open");
+
+        String strFollowCount = storeListModel.getFollowingCount();
+        if (strFollowCount.length() >= 4) {
+            String convertedCountK = strFollowCount.substring(0, strFollowCount.length() - 3);
+            if (convertedCountK.length() >= 4) {
+                String convertedCount = convertedCountK.substring(0, convertedCountK.length() - 3);
+                shopsHolder.txt_folleowercount.setText(Html.fromHtml(convertedCount + "<sup>M</sup>"));
+            } else shopsHolder.txt_folleowercount.setText(Html.fromHtml(convertedCountK + "<sup>K</sup>"));
+        } else {
+            shopsHolder.txt_folleowercount.setText(Html.fromHtml(strFollowCount));
+            if(strFollowCount.equals("0")||strFollowCount.matches("1")){
+                shopsHolder.tv_followerstext.setText("follower");
+            }
+        }
 
     }
 
@@ -214,12 +238,14 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         @BindView(R.id.txt_address) TextViewPret txt_address;
         @BindView(R.id.tv_margintop) TextViewPret tv_margintop;
         @BindView(R.id.txt_folleowercount) TextViewPret txt_folleowercount;
+        @BindView(R.id.tv_followerstext) TextViewPret tv_followerstext;
         @BindView(R.id.tv_closeStatus) TextViewPret tv_closeStatus;
         @BindView(R.id.img_store_photo) ImageView img_store_photo;
         @BindView(R.id.iv_banner) ImageView iv_banner;
         @BindView(R.id.img_sale) ImageButton img_sale;
         @BindView(R.id.img_offer) ImageButton img_offer;
         @BindView(R.id.img_newarrival) ImageButton img_newarrival;
+        @BindView(R.id.seperator) View seperator;
 
         Matrix matrix;
 
@@ -230,6 +256,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             img_store_photo.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
             txt_storename.setOnClickListener(this);
+            txt_address.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
             if (context.getClass().getSimpleName().equals(FollowingActivity.class.getSimpleName()))
                 img_follow_unfollow.setVisibility(View.GONE);
@@ -268,6 +295,9 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
                         buttonClickCallback.buttonClick(storeListModel);
                         break;
                     case R.id.txt_storename:
+                        buttonClickCallback.buttonClick(storeListModel);
+                        break;
+                    case R.id.txt_address:
                         buttonClickCallback.buttonClick(storeListModel);
                         break;
                     default:

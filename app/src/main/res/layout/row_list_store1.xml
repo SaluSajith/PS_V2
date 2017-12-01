@@ -104,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height=".5dp"
                 android:layout_margin="@dimen/padding_standard"
+                android:id="@+id/seperator"
                 android:background="@color/dark_gray"/>
 
             <RelativeLayout
@@ -140,6 +141,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight=".6"
+                            android:id="@+id/tv_followerstext"
                             android:text="followers"
                             android:textSize="7dp"
                             app:pret_typeface="@string/font_merriweather_light"/>
