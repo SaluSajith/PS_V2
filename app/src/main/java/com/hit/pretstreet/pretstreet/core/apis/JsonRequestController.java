@@ -20,12 +20,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHECKIP_URL;
 
 /**
  * Created by User on 7/5/2017.
@@ -41,22 +44,40 @@ public class JsonRequestController {
     public JsonRequestController(ApiListenerInterface listenerInterface){
         this.listenerInterface = listenerInterface;
     }
-    public void sendRequest(Activity activity, JSONObject jsonObject, final String url){
+
+    public void sendRequest(final Activity activity, JSONObject jsonObject, final String url){
         //Utility.hide_keyboard(activity);
-        Log.d("URL", url + jsonObject+"");
+        String updatedUrl = url;
+        if(!url.equals(CHECKIP_URL)) {
+            updatedUrl = Constant.getBaseUrl() + url;
+        }
+        Log.d("URL_REQUSET", updatedUrl + jsonObject+"");
         requestBody = jsonObject.toString();
-        stringRequest = new StringRequest(Request.Method.POST, url,
+        stringRequest = new StringRequest(Request.Method.POST, updatedUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.d("Response", response);
                         try {
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                                JSONObject object = new JSONObject(response);
-                                object.put("URL", url);
-                                if (object.getString("Status").equalsIgnoreCase("1"))
+                                if(url.equals(CHECKIP_URL)){
+                                    JSONObject object = new JSONObject();
+                                    object.put("URL", url);
+                                    object.put("BASEURL", response);
+                                    object.put("Status", "1");
+                                    object.put("CustomerMessage","");
+                                    SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(activity);
+                                    sharedPreferencesHelper.putString("BASEURL", response);
                                     listenerInterface.onResponse(object);
-                                else listenerInterface.onError(object.getString("CustomerMessage"));
+                                }
+                                else {
+                                    JSONObject object = new JSONObject(response);
+                                    object.put("URL", url);
+                                    if (object.getString("Status").equalsIgnoreCase("1"))
+                                        listenerInterface.onResponse(object);
+                                    else
+                                        listenerInterface.onError(object.getString("CustomerMessage"));
+                                }
                             }
                             else listenerInterface.onError("Your phone doesn't support this app");
                         } catch (JSONException e) {
@@ -116,8 +137,8 @@ public class JsonRequestController {
                         Log.d("Response", response);
                         try {
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                                JSONObject object = new JSONObject(response);
-                                object.put("URL", url);
+                                    JSONObject object = new JSONObject(response);
+                                    object.put("URL", url);
                                     listenerInterface.onResponse(object);
                             }
                             else listenerInterface.onError("Your phone doesn't support this app");

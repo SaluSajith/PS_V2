@@ -38,6 +38,7 @@ import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.helpers.IncomingSms;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
@@ -69,6 +70,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.AUTOSEARCH_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHECKIP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.DEEPLINKINGKEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
@@ -117,6 +120,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     Dialog popupDialog;
     Context context;
     JSONObject registerJson, loginJson;
+    SharedPreferencesHelper sharedPreferencesHelper;
 
     SignupFragment signupFragment;
     LoginFragment loginFragment;
@@ -147,39 +151,13 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         popupDialog = new Dialog(this);
         context = getApplicationContext();
         DURATION = Integer.valueOf(getString(R.string.splash_duration));
-        splashHandler.postDelayed(mChangeSplash, DURATION);
-        splashHandler.postDelayed(mEndSplash, SPLASH_DURATION_END);
+        sharedPreferencesHelper = new SharedPreferencesHelper(context);
+        //sharedPreferencesHelper.putString("BASEURL", "");
+        getIP();
+    }
 
-        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
-        try {
-            if (sharedPreferencesHelper.getString("TOKEN", "").equalsIgnoreCase("")) {
-                TokenService tokenService = new TokenService();
-                tokenService.onTokenRefresh();
-            }
-            System.out.println("TOKEN" + sharedPreferencesHelper.getString("TOKEN", ""));
-        }catch (Exception e){}
-
-        if (getIntent().getExtras() != null && notif == false) {
-            notif = true;
-            //for (String key : getIntent().getExtras().keySet()) {
-            // String value = getIntent().getExtras().getString(key);
-            // Log.d("TOKEN", "Key: " + key + " Value: " + value);
-            try {
-                if(getIntent().getExtras().containsKey("image")){
-                    saveNotification(getIntent());
-                }else if(getIntent().getExtras().containsKey("share")){
-                    String valueOne = getIntent().getExtras().getString("share");
-                    String id = getIntent().getExtras().getString("id");
-                    Log.d("TOKEN", "valueOne: " + valueOne + " id: " + id);
-                    if (valueOne.trim().length() != 0 && id.trim().length() != 0) {
-                        forwardDeepLink(valueOne, id, DEEPLINKINGKEY);
-                        finish();
-                    }
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+    public void getIP(){
+        jsonRequestController.sendRequest(this, new JSONObject(), CHECKIP_URL);
     }
 
     private void saveNotification(Intent intent){
@@ -272,7 +250,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     displaySnackBar("Login failed!");
                 }
                 break;
-
             default:
                 break;
         }
@@ -342,26 +319,67 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             String url = response.getString("URL");
             strsuccess = response.getString("Status");
             if (strsuccess.equals("1")) {
-                displaySnackBar(response.getString("CustomerMessage"));
                 switch (url){
                     case REGISTRATION_OTP_URL:
+                        displaySnackBar(response.getString("CustomerMessage"));
                         otpValue = response.getJSONObject("Data").getString("OTP");
                         showOTPScreem(registerJson, REGISTRATION_URL);
                         break;
                     case REGISTRATION_URL:
+                        displaySnackBar(response.getString("CustomerMessage"));
                         setupSession(response, "", currentFragment);
                         PreferenceServices.getInstance().setUTMQueryparam("");
                         break;
                     case LOGIN_OTP_URL:
+                        displaySnackBar(response.getString("CustomerMessage"));
                         otpValue = response.getJSONObject("Data").getString("OTP");
                         showOTPScreem(loginJson, LOGIN_URL);
                         break;
                     case LOGIN_URL:
+                        displaySnackBar(response.getString("CustomerMessage"));
                         setupSession(response, "", currentFragment);
                         PreferenceServices.getInstance().setUTMQueryparam("");
                         break;
                     case SOCIAL_LOGIN_URL:
+                        displaySnackBar(response.getString("CustomerMessage"));
                         setupSession(response, "social", SOCIAL_LOGIN);
+                        break;
+                    case CHECKIP_URL:
+                        String s = response.getString("BASEURL");
+                        sharedPreferencesHelper.putString("BASEURL", s);
+                        //System.out.println("BASEURL" + sharedPreferencesHelper.getString("BASEURL", ""));
+                        splashHandler.postDelayed(mChangeSplash, DURATION);
+                        splashHandler.postDelayed(mEndSplash, SPLASH_DURATION_END);
+
+                        try {
+                            if (sharedPreferencesHelper.getString("TOKEN", "").equalsIgnoreCase("")) {
+                                TokenService tokenService = new TokenService();
+                                tokenService.onTokenRefresh();
+                            }
+                            System.out.println("TOKEN" + sharedPreferencesHelper.getString("TOKEN", ""));
+                        }catch (Exception e){}
+
+                        if (getIntent().getExtras() != null && notif == false) {
+                            notif = true;
+                            //for (String key : getIntent().getExtras().keySet()) {
+                            // String value = getIntent().getExtras().getString(key);
+                            // Log.d("TOKEN", "Key: " + key + " Value: " + value);
+                            try {
+                                if(getIntent().getExtras().containsKey("image")){
+                                    saveNotification(getIntent());
+                                }else if(getIntent().getExtras().containsKey("share")){
+                                    String valueOne = getIntent().getExtras().getString("share");
+                                    String id = getIntent().getExtras().getString("id");
+                                    Log.d("TOKEN", "valueOne: " + valueOne + " id: " + id);
+                                    if (valueOne.trim().length() != 0 && id.trim().length() != 0) {
+                                        forwardDeepLink(valueOne, id, DEEPLINKINGKEY);
+                                        finish();
+                                    }
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
                         break;
                     default:
                         break;
@@ -395,7 +413,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 }
                 loginSession.setProfile_pic(url);
             }
-            SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
             sharedPreferencesHelper.createLoginSession(loginSession);
             PreferenceServices.instance().saveUserId(object.getString("UserId"));
             PreferenceServices.instance().saveUserName(object.getString("UserFirstName")+" "+object.getString("UserLastName"));
@@ -450,7 +467,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             if (!isFinishing()) {
                 splashHandler.removeCallbacks(this);
                 //if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
-                SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
                 LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
                 if(loginSession.getSessionid().trim().length()==0||loginSession.getRegid().trim().length()==0) {
                     changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);

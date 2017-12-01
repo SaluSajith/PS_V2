@@ -11,16 +11,21 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.appinvite.FirebaseAppInvite;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
+import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 
 import static com.hit.pretstreet.pretstreet.core.helpers.InstallReferrerReceiver.EXPECTED_PARAMETERS;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHECKIP_URL;
 
-public class DeepLinkActivity extends AppCompatActivity {
+public class DeepLinkActivity extends AppCompatActivity implements ApiListenerInterface {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,9 @@ public class DeepLinkActivity extends AppCompatActivity {
                         "&utm_term=" + uri.getQueryParameter("utm_term")+
                         "&utm_content=" + uri.getQueryParameter("utm_content");
                 PreferenceServices.getInstance().setUTMQueryparam(referrer); //utm param*/
+
+                JsonRequestController jsonRequestController = new JsonRequestController(this);
+                jsonRequestController.sendRequest(this, new JSONObject(), CHECKIP_URL);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -114,6 +122,15 @@ public class DeepLinkActivity extends AppCompatActivity {
         String invitationId = AppInviteReferral.getInvitationId(intent);
         String deepLink = AppInviteReferral.getDeepLink(intent);
         Log.d(Constant.TAG, "Found Referral: " + invitationId + ":" + deepLink);
+
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+    }
+
+    @Override
+    public void onError(String error) {
 
     }
 }

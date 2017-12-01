@@ -81,6 +81,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
             android:drawableLeft="@drawable/searchloc"
+            android:drawablePadding="10dp"
             android:hint="Start typing your location"
             android:padding="15sp"
             android:lines="1"
