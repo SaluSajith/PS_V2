@@ -56,8 +56,7 @@ public class StoreLocationMapScreen extends FragmentActivity {
         latitute = b.getDouble("lat");
         longitute = b.getDouble("long");
         txt_cat.setText(address);
-/*
-        currentLocation = PreferenceServices.getInstance().getCurrentLocation();
+        /* currentLocation = PreferenceServices.getInstance().getCurrentLocation();
         Log.e("Current location:", currentLocation);*/
 
         FragmentManager fm = getFragmentManager();
@@ -87,8 +86,9 @@ public class StoreLocationMapScreen extends FragmentActivity {
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                         Uri.parse("http://maps.google.com/maps/dir?api=1&saddr="+
                                 Double.parseDouble(PreferenceServices.getInstance().getLatitute())+","+
-                                        Double.parseDouble(PreferenceServices.getInstance().getLongitute())+
-                                                        "&daddr=" + address));//+ latitute + ","+ longitute ));
+                                        Double.parseDouble(PreferenceServices.getInstance().getLongitute())
+                                +"&daddr="+ latitute + ","+ longitute ));
+                                                       // +"&daddr=" + address));
                 startActivity(intent);
             }
         });

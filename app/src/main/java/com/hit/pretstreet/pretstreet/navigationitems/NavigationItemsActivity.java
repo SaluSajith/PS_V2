@@ -67,6 +67,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     TrendingCallback trendingCallback;
     ContentBindingInterface bindingInterface;
     HtmlFragment htmlFragment;
+    AddStoreFragment addStoreFragment;
 
     @BindView(R.id.content) FrameLayout fl_content;
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
@@ -172,7 +173,8 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             case ADDSTORE_FRAGMENT:
                 currentFragment = ADDSTORE_FRAGMENT;
                 tv_cat_name.setText("Add Store");
-                changeFragment(new AddStoreFragment(), b);
+                addStoreFragment = new AddStoreFragment();
+                changeFragment(addStoreFragment, b);
                 break;
             case ABOUT_FRAGMENT:
                 currentFragment = ABOUT_FRAGMENT;
@@ -335,7 +337,6 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     @Override
     public void validateCallback(EdittextPret editText, String message, int type) {
         if(type == ADDSTORE_FRAGMENT){
-            AddStoreFragment addStoreFragment = new AddStoreFragment();
             addStoreFragment.onValidationError(editText, message);
         }
         else if (type == CONTACTUS_FRAGMENT){
@@ -402,7 +403,6 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             case PLACE_PICKER_REQUEST:
                     if (resultCode == RESULT_OK) {
                         Place place = PlacePicker.getPlace(data, this);
-                        AddStoreFragment addStoreFragment = new AddStoreFragment();
                         addStoreFragment.setLocation(place);
                     }
                 break;

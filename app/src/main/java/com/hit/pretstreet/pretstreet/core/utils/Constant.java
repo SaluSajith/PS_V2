@@ -25,6 +25,7 @@ public class Constant {
     //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";  //not working
     //public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";   //test
     //public static final String COMMON_URL = "http://35.154.65.154/index.php/mobileapp/";
+
     public static final String COMMON_URL = "";
     public static final String REGISTRATION_OTP_URL = COMMON_URL + "customer/customerregistergenerateOtp";
     public static final String REGISTRATION_URL = COMMON_URL + "customer/customerregister";
@@ -43,9 +44,9 @@ public class Constant {
     public static final String EXHIBITIONLIKE_URL = COMMON_URL + "exhibition/exhibitionlike/";
     public static final String EXHIBITIONREGISTER_URL = COMMON_URL + "exhibition/exhibitionRegister/";
     public static final String EXHIBITIONREGISTEROTP_URL = COMMON_URL + "exhibition/customerregistergenerateOtp";
-    public static final String EXHIBITIONARTICLE_URL = COMMON_URL + "exhibition/article/";
-    public static final String TRENDINGARTICLE_URL = COMMON_URL + "trending/article/";
-    public static final String GIVEAWAYARTICLE_URL = COMMON_URL + "giveaway/article/";
+    public static final String EXHIBITIONARTICLE_URL = COMMON_URL +  "exhibition/article/";
+    public static final String TRENDINGARTICLE_URL = COMMON_URL +  "trending/article/";
+    public static final String GIVEAWAYARTICLE_URL = COMMON_URL +"giveaway/article/";
     public static final String MULTISTORE_URL = COMMON_URL + "store/multistorelisting";
     public static final String AUTOSEARCH_URL = COMMON_URL + "category/autoSearch";
     public static final String SEARCH_URL = COMMON_URL + "category/search";
@@ -63,7 +64,8 @@ public class Constant {
     public static final String TC_URL = COMMON_URL + "customer/staticpageTnC";
     public static final String ABOUT_URL = COMMON_URL + "customer/staticpageAbout";
     public static final String TRACK_URL = COMMON_URL + "customer/storeDetailsTracking";
-    //updated after 5/9/2017
+
+    //UPDATED AFTER 5/9/2017
 
     public static final String INDEX_PATH = COMMON_URL + "store/trendingArticle";
     public static final String GETLOCATION_URL = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true_or_false";
@@ -71,9 +73,8 @@ public class Constant {
     public static final String API = "MAPcabpnPawmassmjrc";
     public static final String LIMIT = "20";
     public static final String LIMIT_S = "10";
-    public static final String TAG = "Pretstreetv2";
+    public static final String TAG = "Pretstreet";
     public static final int TIMEOUT_LIMIT = 15000;
-
 
     //Pagetype constants
     public static final String HOMEPAGE = "1";
@@ -92,7 +93,6 @@ public class Constant {
     public static final String SIGNUPPAGE = "16";
     public static final String GIVEAWAYPAGE = "18";
     public static final String GIVEAWAYARTICLEPAGE = "19";
-
 
     //Clicktype constants
     public static final String HOMEPAGELINK = "1";
@@ -138,7 +138,6 @@ public class Constant {
     public static final String SHOPBYMOODS = "4";
     public static final String MALLS = "5";
 
-
     //Constants
     public static final String PRE_PAGE_KEY = "pagetype";
     public static final String ID_KEY = "id";
@@ -147,7 +146,6 @@ public class Constant {
     public static final String PARCEL_KEY = "data";
     public static final String POSITION_KEY = "position";
     public static final int REQUEST_INVITE = 400;
-
 
     //Fragments
     public static final int ACCOUNT_FRAGMENT = 0;

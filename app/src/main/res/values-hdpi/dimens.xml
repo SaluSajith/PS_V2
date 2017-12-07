@@ -12,8 +12,8 @@
 
     <dimen name="padding_xxxsmall">1dp</dimen>
     <dimen name="padding_xxsmall">0dp</dimen>
-    <dimen name="padding_xsmall">3dp</dimen>
-    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_xsmall">1.5dp</dimen>
+    <dimen name="padding_small">2.5dp</dimen>
     <dimen name="padding_standard">5dp</dimen>
     <dimen name="padding_large">8dp</dimen>
     <dimen name="padding_xlarge">12dp</dimen>
@@ -58,7 +58,7 @@
     <!--<dimen name="home_image_height">329dp</dimen>-->
 
     <dimen name="home_image_height">280dp</dimen>
-    <dimen name="detail_backdrop_maxheight">400dp</dimen>
+    <dimen name="detail_backdrop_maxheight">300dp</dimen>
 
     <dimen name="welcome_margintop">0dp</dimen>
     <dimen name="google_margintop">2dp</dimen>

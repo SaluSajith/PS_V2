@@ -437,8 +437,12 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     private void loadBackdrop(String imageUrl) {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(this).load(imageUrl).asBitmap().placeholder(R.drawable.default_banner)
-                .fitCenter().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(this).load(imageUrl)
+                .asBitmap()
+                .placeholder(R.drawable.default_banner)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
     }
 
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {

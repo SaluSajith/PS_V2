@@ -130,11 +130,10 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         Glide.with(context)
                 .load(imageUrl)
                 .asBitmap()
-                .centerCrop()
+                .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate()
                 .placeholder(R.drawable.default_banner)
                 .into(imageView);
-
     }
 
     @Override

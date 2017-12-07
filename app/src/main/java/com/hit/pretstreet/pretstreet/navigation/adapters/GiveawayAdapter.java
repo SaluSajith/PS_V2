@@ -126,7 +126,8 @@ public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             FrameLayout.LayoutParams.WRAP_CONTENT);
                     DisplayMetrics metrics = context.getResources().getDisplayMetrics();
                     float scaleWidth = metrics.widthPixels;
-                    params.height = getHeight(trendingItems.getImgHeight(), trendingItems.getImgWidth(), (int) scaleWidth);
+                    params.height = (int)scaleWidth;
+                    //params.height = getHeight(trendingItems.getImgHeight(), trendingItems.getImgWidth(), (int) scaleWidth);
                     holder.article_images.setLayoutParams(params);
                     mAdapter = new ArticlePagerAdapter(glide, context, trendingItems.getImagearray());
                     holder.article_images.setAdapter(mAdapter);

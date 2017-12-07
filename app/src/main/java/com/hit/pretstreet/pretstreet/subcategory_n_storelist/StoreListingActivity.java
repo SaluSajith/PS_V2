@@ -161,10 +161,12 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         tv_cat_name.setText(title);
         FrameLayout.LayoutParams layoutParams =
                 (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
-        if(title.equalsIgnoreCase("JEWELLERS"))
+        if(title.equalsIgnoreCase("DESIGNERS")) //TODO dynamic header margin
+            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxsmall), 0, 0);
+        else if(title.equalsIgnoreCase("RETAIL")) //TODO dynamic header margin
             layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xsmall), 0, 0);
         else
-            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxsmall), 0, 0);
+            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_small), 0, 0);
         ll_scroll.setLayoutParams(layoutParams);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
@@ -214,8 +216,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
     }
-
-    @OnClick(R.id.ll_location_)
+    @OnClick(R.id.iv_location)
     public void onIv_LocationPressed() {
         Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
@@ -255,7 +256,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
         if(homeSubCategories.size()>0){
             HomeCatContentData contentData = homeSubCategories.get(0).getHomeContentData();
-            txtname[0].setTag(contentData.getCategoryId());
+            txtname[0].setTag(getIntent().getStringExtra(ID_KEY));
         } else {
             ViewGroup.MarginLayoutParams layoutParams =
                     (ViewGroup.MarginLayoutParams) txtname[0].getLayoutParams();
@@ -468,6 +469,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                         dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
                         arrayFilter = subCategoryController.createFilterModel(dataModel);
                         storeListModels.clear();
+                        pageCount=0;
                         getShoplist(catTag, true);
                     break;
                     case STORE_DETAILS :
@@ -480,7 +482,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                         break;
                 }
             }
-        } catch (Exception ex) { }
+        } catch (Exception ex) {}
     }
 
     @Override

@@ -145,7 +145,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             FrameLayout.LayoutParams.WRAP_CONTENT);
                     DisplayMetrics metrics = context.getResources().getDisplayMetrics();
                     float scaleWidth = metrics.widthPixels;
-                    params.height = getHeight(trendingItems.getImgHeight(), trendingItems.getImgWidth(), (int) scaleWidth);
+                    //params.height = getHeight(trendingItems.getImgHeight(), trendingItems.getImgWidth(), (int) scaleWidth);
+                    params.height = (int)scaleWidth;
                     holder.article_images.setLayoutParams(params);
                     mAdapter = new ArticlePagerAdapter(glide, context, trendingItems.getImagearray());
                     holder.article_images.setAdapter(mAdapter);
@@ -312,7 +313,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     static void loadImage(RequestManager glide, String url, ImageView view) {
-        glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+        glide.load(url).diskCacheStrategy(DiskCacheStrategy.ALL).into(view);
     }
 
     private int getHeight(int h1, int w1, int w2) {

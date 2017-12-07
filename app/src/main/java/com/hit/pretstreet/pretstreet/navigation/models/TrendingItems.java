@@ -192,7 +192,7 @@ public class TrendingItems implements Serializable {
     public boolean isNotifPage() {
         return NotifPage;
     }
-
+    /*
     public void setImgHeight(int imgHeight) {
         this.imgHeight = imgHeight;
     }
@@ -207,5 +207,5 @@ public class TrendingItems implements Serializable {
 
     public int getImgWidth() {
         return imgWidth;
-    }
+    }*/
 }

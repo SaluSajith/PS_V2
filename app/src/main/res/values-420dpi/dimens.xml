@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="padding_xxxsmall">1dp</dimen>
-    <dimen name="padding_xxsmall">2dp</dimen>
-    <dimen name="padding_xsmall">3dp</dimen>
+    <dimen name="padding_xxsmall">2.5dp</dimen>
+    <dimen name="padding_xsmall">3.5dp</dimen>
     <dimen name="padding_small">5dp</dimen>
     <dimen name="padding_standard">5dp</dimen>
     <dimen name="padding_large">10dp</dimen>
@@ -55,7 +55,7 @@
     <dimen name="pager_height">270dp</dimen>
     <dimen name="searchpage_topmargin">60dp</dimen>
     <dimen name="nav_header_height">120dp</dimen>
-    <dimen name="detail_backdrop_height">300dp</dimen>
+    <dimen name="detail_backdrop_height">400dp</dimen>
     <dimen name="detail_backdrop_maxheight">500dp</dimen>
 
     <dimen name="headeryellow_height">137dp</dimen>

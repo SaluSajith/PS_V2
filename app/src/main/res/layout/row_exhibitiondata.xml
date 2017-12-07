@@ -118,10 +118,11 @@
                     android:text="Text"
                     android:layout_height="wrap_content"
                     style="@style/textview_small"
-                    android:inputType="textMultiLine"
+                    android:inputType="textMultiLine|textNoSuggestions"
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:layout_margin="0dp"
+                    android:lineSpacingExtra="5dp"
                     android:gravity="left"
                     app:pret_typeface="@string/font_merriweather_regular"/>
 

@@ -29,6 +29,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PLACE_PICKER_REQUEST;
+
 /**
  * Created by User on 7/12/2017.
  */
@@ -45,10 +47,9 @@ public class AddStoreFragment extends AbstractBaseFragment<NavigationItemsActivi
     @BindView(R.id.edt_about) EdittextPret edt_about;
 
     NavItemsController navItemsController;
-    Location location = null;
+    Location location;
 
     private GoogleApiClient mGoogleApiClient;
-    private static final int PLACE_PICKER_REQUEST = 112;
 
     @Override
     public void onDestroy() {
@@ -66,6 +67,7 @@ public class AddStoreFragment extends AbstractBaseFragment<NavigationItemsActivi
 
     private void init(){
         navItemsController = new NavItemsController(getActivity());
+        location = new Location("");
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getActivity())
@@ -88,7 +90,7 @@ public class AddStoreFragment extends AbstractBaseFragment<NavigationItemsActivi
     public void selectLocation(){
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
-            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+            getActivity().startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
@@ -104,9 +106,13 @@ public class AddStoreFragment extends AbstractBaseFragment<NavigationItemsActivi
     }
 
     public void setLocation(Place place){
-        String placename = String.format("%s", place.getName());
-        location.setLatitude(Double.parseDouble(String.valueOf(place.getLatLng().latitude)));
-        location.setLongitude(Double.parseDouble(String.valueOf(place.getLatLng().longitude)));
-        edt_location.setText(placename);
+        try {
+            String placename = String.format("%s", place.getName());
+            edt_location.setText(placename);
+            location.setLatitude(Double.parseDouble(String.valueOf(place.getLatLng().latitude)));
+            location.setLongitude(Double.parseDouble(String.valueOf(place.getLatLng().longitude)));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 }

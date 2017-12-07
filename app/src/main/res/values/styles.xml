@@ -130,8 +130,8 @@
         <item name="android:textSize">@dimen/textsize_large</item>
         <item name="android:paddingLeft">@dimen/padding_standard</item>
         <item name="android:paddingRight">@dimen/padding_standard</item>
-        <item name="android:paddingTop">@dimen/padding_xsmall</item>
-        <item name="android:paddingBottom">@dimen/padding_xsmall</item>
+        <item name="android:paddingTop">@dimen/padding_xxxsmall</item>
+        <item name="android:paddingBottom">@dimen/padding_xxxsmall</item>
 
     </style>
 

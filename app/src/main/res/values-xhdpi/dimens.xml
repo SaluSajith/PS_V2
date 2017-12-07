@@ -5,8 +5,8 @@
 
     <dimen name="padding_xxxsmall">1dp</dimen>
     <dimen name="padding_xxsmall">2.5dp</dimen>
-    <dimen name="padding_xsmall">3dp</dimen>
-    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_xsmall">3.5dp</dimen>
+    <dimen name="padding_small">4.5dp</dimen>
     <dimen name="padding_standard">4dp</dimen>
     <dimen name="padding_large">8dp</dimen>//
     <dimen name="padding_xlarge">13dp</dimen>//
@@ -16,7 +16,7 @@
     <dimen name="padding_xhuge">45dp</dimen>
     <dimen name="padding_xxhuge">20dp</dimen>
 
-    <dimen name="padding_subcat_s">5dp</dimen>
+    <dimen name="padding_subcat_s">4dp</dimen>
     <dimen name="padding_subcat">4dp</dimen>
     <dimen name="margin_xxlarge">16dp</dimen>
     <dimen name="margin_about">20dp</dimen>

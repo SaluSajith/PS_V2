@@ -285,6 +285,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     static void loadImage(RequestManager glide, String url, ImageView view) {
-        glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+        glide.load(url).diskCacheStrategy(DiskCacheStrategy.NONE).into(view);
     }
 }

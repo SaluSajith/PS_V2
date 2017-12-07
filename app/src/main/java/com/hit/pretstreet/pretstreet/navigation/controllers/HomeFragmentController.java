@@ -199,8 +199,8 @@ public class HomeFragmentController {
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 0 ? false : true);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 0 ? false : true);
                 item.setStoreName(trendingContent.getString("Storename"));
-                item.setImgHeight(Integer.parseInt(trendingContent.getString("MaxImageHeight")));
-                item.setImgWidth(Integer.parseInt(trendingContent.getString("MaxImageWidth")));
+                //item.setImgHeight(Integer.parseInt(trendingContent.getString("MaxImageHeight")));
+                //item.setImgWidth(Integer.parseInt(trendingContent.getString("MaxImageWidth")));
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
                 ArrayList imagearray = new ArrayList();
                 for(int j=0;j<jsonImagearray.length();j++) {
@@ -257,8 +257,8 @@ public class HomeFragmentController {
                 item.setLike(trendingContent.getInt("CustomerLikeStatus") == 0 ? false : true);
                 item.setBanner(trendingContent.getInt("BannerFlag") == 0 ? false : true);
                 item.setStoreName(trendingContent.getString("Storename"));
-                item.setImgHeight(Integer.parseInt(trendingContent.getString("MaxImageHeight")));
-                item.setImgWidth(Integer.parseInt(trendingContent.getString("MaxImageWidth")));
+                //item.setImgHeight(Integer.parseInt(trendingContent.getString("MaxImageHeight")));
+                //item.setImgWidth(Integer.parseInt(trendingContent.getString("MaxImageWidth")));
                 JSONArray jsonImagearray = trendingContent.getJSONArray("ImageSource");
                 ArrayList imagearray = new ArrayList();
                 for(int j=0;j<jsonImagearray.length();j++) {

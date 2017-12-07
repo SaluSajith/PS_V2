@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="@dimen/divider_space_xlarge"
+    android:paddingBottom="@dimen/divider_space_large"
     android:layout_marginLeft="-4dp"
     android:layout_marginRight="-4dp"
     card_view:cardPreventCornerOverlap="false">
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="@dimen/padding_large"
+            android:layout_margin="@dimen/padding_standard"
             android:id="@+id/ll_desc">
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
@@ -54,7 +54,7 @@
                 android:id="@+id/txt_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_xlarge"
+                android:layout_marginBottom="@dimen/padding_large"
                 android:text="@string/view_store"
                 android:gravity="center"
                 android:textColor="@color/dark_gray"

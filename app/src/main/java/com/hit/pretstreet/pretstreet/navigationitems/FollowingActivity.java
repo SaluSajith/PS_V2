@@ -142,7 +142,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
 
         FrameLayout.LayoutParams layoutParams =
                 (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
-        layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxsmall), 0, 0);
+        layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xsmall), 0, 0);
         ll_scroll.setLayoutParams(layoutParams);
 
         String title = getIntent().getStringExtra("mSubTitle");

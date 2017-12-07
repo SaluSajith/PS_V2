@@ -77,7 +77,6 @@ public class SubCategoryController {
 
     public static JSONArray createFilterModel(ArrayList<FilterDataModel> filterDataModels){
 
-        JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
         StringBuilder stringBuilder;
         try {
@@ -93,9 +92,10 @@ public class SubCategoryController {
                 }
 
                 jsonArray.put(stringBuilder.toString().replaceAll(", $", ""));
-                jsonBody.put(filterDataModel.getHeaderTitle(),jsonArray);
-
-                jsonArray1.put(i, jsonBody);
+                if(stringBuilder.toString().length()>0) {
+                    jsonBody.put(filterDataModel.getHeaderTitle(), jsonArray);
+                    jsonArray1.put(i, jsonBody);
+                }
             }
             //jsonObject.put("Filter", jsonArray1);
         } catch (JSONException e) {
