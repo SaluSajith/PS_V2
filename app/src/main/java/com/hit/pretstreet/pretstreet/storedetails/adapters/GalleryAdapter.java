@@ -57,14 +57,20 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
                 .override(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT)
                 .into(holder.image);*/
 
-        Glide.with(context)
-                .load(urls.get(position))
-                .asBitmap()
-                .placeholder(R.drawable.default_gallery)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(R.drawable.cloud_sad)
-                .fitCenter()
-                .into(holder.image);
+        try {
+            Glide.with(context)
+                    .load(urls.get(position))
+                    .asBitmap()
+                    .placeholder(R.drawable.default_gallery)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(R.drawable.cloud_sad)
+                    .fitCenter()
+                    .into(holder.image);
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         holder.image.setOnClickListener(new View.OnClickListener() {

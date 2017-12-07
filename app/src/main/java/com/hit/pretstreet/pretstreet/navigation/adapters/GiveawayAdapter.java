@@ -289,7 +289,13 @@ public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     static void loadImage(RequestManager glide, String url, ImageView view) {
-        glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+        try {
+            glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private int getHeight(int h1, int w1, int w2) {

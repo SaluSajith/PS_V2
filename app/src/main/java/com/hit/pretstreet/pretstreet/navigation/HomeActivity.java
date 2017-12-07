@@ -15,6 +15,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -124,6 +125,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         NavigationClick, ApiListenerInterface, HomeTrapeClick, ButtonClickCallback {
 
     private int selectedFragment = 0;
+    boolean doubleBackToExitPressedOnce = false;
 
     @BindView(R.id.tv_location) TextViewPret tv_location;
     NavDrawerAdapter navDrawerAdapter;
@@ -320,6 +322,19 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            /*if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+            this.doubleBackToExitPressedOnce = true;
+            displaySnackBar("Click again to exit");
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);*/
         }
     }
 
