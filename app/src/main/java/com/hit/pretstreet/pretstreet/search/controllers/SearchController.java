@@ -43,7 +43,7 @@ public class SearchController {
         return jsonBody;
     }
 
-    public static JSONObject getMultiStoreListJson(String Id, String prePage, String clicktype) {
+    public static JSONObject getMultiStoreListJson(String Id, String prePage, String clicktype, int offset) {
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -51,7 +51,7 @@ public class SearchController {
             jsonBody.put("ClickTypeId", clicktype);
             jsonBody.put("Id", Id);
             jsonBody.put("Limit", Constant.LIMIT);
-            jsonBody.put("Offset", 1);//TODO change : add pagination
+            jsonBody.put("Offset", offset);
 
             jsonBody = Constant.addConstants(jsonBody, context);
 

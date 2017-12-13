@@ -264,7 +264,17 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     @Override
     public void onError(String error) {
         this.hideDialog();
-        displaySnackBar( error);
+        displaySnackBar(error);
+        if(error.contains("mobile number")&&error.contains("already registered")){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    currentFragment = LOGIN_FRAGMENT;
+                    loginFragment = new LoginFragment();
+                    changeFragment(loginFragment, true, LOGIN_FRAGMENT);
+                }
+            }, 1500);
+        }
     }
 
     @Override

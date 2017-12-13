@@ -74,7 +74,7 @@ public class Constant {
     public static final String LIMIT = "20";
     public static final String LIMIT_S = "10";
     public static final String TAG = "Pretstreet";
-    public static final int TIMEOUT_LIMIT = 15000;
+    public static final int TIMEOUT_LIMIT = 10000;
 
     //Pagetype constants
     public static final String HOMEPAGE = "1";

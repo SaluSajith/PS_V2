@@ -3,6 +3,7 @@ package com.hit.pretstreet.pretstreet.search;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -31,6 +33,7 @@ import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -45,6 +48,7 @@ import butterknife.ButterKnife;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.LIMIT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTILINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTORE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
@@ -77,7 +81,12 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
 
     String shareText;
     Context context;
+    ArrayList<StoreListModel> storeListModels;
     StoreList_RecyclerAdapter storeList_recyclerAdapter;
+
+    int pageCount = 1;
+    boolean loadmore = true;
+    boolean requestCalled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,23 +105,36 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         ButterKnife.bind(this);
         PreferenceServices.init(this);
         context = getApplicationContext();
+        storeListModels = new ArrayList<>();
 
         Utility.setListLayoutManager_(rv_storelist, MultistoreActivity.this);
         rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(context));
+        setAdapter();
+        refreshListviewOnScrolling();
         getShoplist();
     }
 
     private void getShoplist(){
         String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
         String mCatid = getIntent().getStringExtra(Constant.ID_KEY);
-        JSONObject resultJson = searchController.getMultiStoreListJson(mCatid, pageid, "1");//caat, prepage, clicktype, id
+        JSONObject resultJson = searchController.getMultiStoreListJson(mCatid, pageid, "1", pageCount);//caat, prepage, clicktype, id
+        if(pageCount ==1)
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, MULTISTORE_URL);
     }
 
-    private void setAdapter(ArrayList<StoreListModel> storeListModels){
+    private void setAdapter(){
         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, MultistoreActivity.this, storeListModels);
         rv_storelist.setAdapter(storeList_recyclerAdapter);
+    }
+
+    private void notifyListData(ArrayList<StoreListModel> storeListModels){
+        storeList_recyclerAdapter.notifyDataSetChanged();
+        //adapter.setHasStableIds(true);
+        if(storeListModels.size()<Integer.parseInt(LIMIT))
+            loadmore = false;
+        else
+            loadmore = true;
         storeList_recyclerAdapter.setLoaded();
     }
 
@@ -123,6 +145,20 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(context, R.color.transparent)); // transperent color = #00000000
         collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(context, R.color.white));
         loadBackdrop(imageUrl);
+    }
+
+    private void refreshListviewOnScrolling(){
+        storeList_recyclerAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if(loadmore) {
+                    pageCount++;
+                    requestCalled = true;
+                    getShoplist();
+                }
+                else; //displaySnackBar("No more data available!");
+            }
+        });
     }
 
     private void loadBackdrop(String imageUrl) {
@@ -149,12 +185,24 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
             switch (url){
                 case Constant.MULTISTORE_URL:
                     JSONObject jsonObject = response.getJSONObject("Data");
-                    tv_name.setText(jsonObject.getString("MultistoreTitle"));
-                    tv_storecount.setText(jsonObject.getString("MultistoreCount")+" Stores");
-                    setupCollapsingHeader(jsonObject.getString("MultistoreTitle"), jsonObject.getString("MultistoreImageSource"));
-                    shareText = jsonObject.getString("Share");
-                    ArrayList<StoreListModel> storeListModels = searchController.getList(response);
-                    setAdapter(storeListModels);
+                    if(pageCount==1) {
+                        tv_name.setText(jsonObject.getString("MultistoreTitle"));
+                        try {
+                            int storeCount = Integer.parseInt(jsonObject.getString("MultistoreCount"));
+                            tv_storecount.setText( storeCount==1  ? storeCount+ " Store" : storeCount+ " Stores");
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        setupCollapsingHeader(jsonObject.getString("MultistoreTitle"), jsonObject.getString("MultistoreImageSource"));
+                        shareText = jsonObject.getString("Share");
+                    }
+                    ArrayList<StoreListModel> refreshedStoreListModels = searchController.getList(response);
+                    if(refreshedStoreListModels.size()>0) {
+                        storeListModels.addAll(refreshedStoreListModels);
+                        notifyListData(storeListModels);
+                    }
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
                     JSONObject object = response.getJSONObject("Data");

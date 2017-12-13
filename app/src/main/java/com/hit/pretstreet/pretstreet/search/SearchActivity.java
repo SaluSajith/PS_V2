@@ -201,7 +201,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                         public void run() {
                             hideDialog();
                         }
-                    }, 2500);
+                    }, 1000);
                     break;
                 case RECENTSEARCH_URL:
                     searchDataCallback.setRecentsearchList(searchController.getRecentViewList(response),

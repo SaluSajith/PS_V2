@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.hit.pretstreet.pretstreet.R;
@@ -41,13 +43,20 @@ public class GoogleLoginActivity extends AppCompatActivity
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        /*if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+        } else { }
 
+*/
         signIn();
     }
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        /*startActivityForResult(AccountPicker.newChooseAccountIntent(null,
+                null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null),
+                REQ_ACCPICK);*/
     }
 
     @Override
@@ -73,6 +82,16 @@ public class GoogleLoginActivity extends AppCompatActivity
             Intent intent = getIntent();
             intent.putExtra("responsejson", acct);
             setResult(RESULT_OK, intent);
+
+            try {
+                // google logout
+                if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             finish();
 
         } else {

@@ -143,6 +143,7 @@ public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         loadImage(glide, trendingItems.getLogoImage(), holder.iv_profile);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
         holder.txt_title.setVisibility(trendingItems.getTitleid().trim().length() > 0 ? View.VISIBLE : View.GONE);
+        holder.txt_shopname.setVisibility(udata.trim().length() > 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override

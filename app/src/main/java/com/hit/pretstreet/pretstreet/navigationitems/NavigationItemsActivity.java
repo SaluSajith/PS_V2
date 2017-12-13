@@ -111,33 +111,37 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        switch (currentFragment){
-            case CONTACTUS_FRAGMENT:
-                currentFragment = ABOUT_FRAGMENT;
-                tv_cat_name.setText("About Pretstreet");
-                break;
-            case FEEDBACK_FRAGMENT:
-                currentFragment = ABOUT_FRAGMENT;
-                tv_cat_name.setText("About Pretstreet");
-                break;
-            case ABOUTUS_FRAGMENT:
-                currentFragment = ABOUT_FRAGMENT;
-                tv_cat_name.setText("About Pretstreet");
-                break;
-            case PRIVACY_FRAGMENT:
-                currentFragment = ABOUT_FRAGMENT;
-                tv_cat_name.setText("About Pretstreet");
-                break;
-            case TERMS_FRAGMENT:
-                currentFragment = ABOUT_FRAGMENT;
-                tv_cat_name.setText("About Pretstreet");
-                break;
-            case CHANGEPASSWORD_FRAGMENT:
-                currentFragment = ACCOUNT_FRAGMENT;
-                tv_cat_name.setText("MY PROFILE");
-                break;
-            default:
-                break;
+        try {
+            switch (currentFragment){
+                case CONTACTUS_FRAGMENT:
+                    currentFragment = ABOUT_FRAGMENT;
+                    tv_cat_name.setText("About Pretstreet");
+                    break;
+                case FEEDBACK_FRAGMENT:
+                    currentFragment = ABOUT_FRAGMENT;
+                    tv_cat_name.setText("About Pretstreet");
+                    break;
+                case ABOUTUS_FRAGMENT:
+                    currentFragment = ABOUT_FRAGMENT;
+                    tv_cat_name.setText("About Pretstreet");
+                    break;
+                case PRIVACY_FRAGMENT:
+                    currentFragment = ABOUT_FRAGMENT;
+                    tv_cat_name.setText("About Pretstreet");
+                    break;
+                case TERMS_FRAGMENT:
+                    currentFragment = ABOUT_FRAGMENT;
+                    tv_cat_name.setText("About Pretstreet");
+                    break;
+                case CHANGEPASSWORD_FRAGMENT:
+                    currentFragment = ACCOUNT_FRAGMENT;
+                    tv_cat_name.setText("MY PROFILE");
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -131,9 +131,9 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                     for (int i = 0; i < address_components.length(); i++) {
                         if (address_components.get(i).toString().contains("locality"))
                             address.setLocality(address_components.getJSONObject(i).getString("short_name"));
-                        if (address_components.get(i).toString().contains("sublocality_level_1")) {
+                        /*if (address_components.get(i).toString().contains("sublocality_level_1")) {
                             sublocality = address_components.getJSONObject(i).getString("short_name");
-                        }
+                        }*/
                     }
                     saveNContinue(address, strSearch);
                 }
@@ -164,13 +164,13 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                     }
                     saveNContinue(address, sublocality+"");
                 } else{
-                    displaySnackBar("Location not found!!");
+                    displaySnackBar("Location not found!! Please try again");
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
             this.hideDialog();
-            displaySnackBar("Location not found!");
+            displaySnackBar("Location not found! Please try again");
         }
         hideDialog();
     }
