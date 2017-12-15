@@ -46,14 +46,14 @@
 
         <RelativeLayout
             android:id="@+id/rl_notification"
-            android:layout_width="60dp"
-            android:layout_height="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:visibility="visible">
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/iv_notification"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="right|center_vertical"
@@ -62,16 +62,11 @@
 
             <com.hit.pretstreet.pretstreet.core.customview.NotificationBadge
                 android:id="@+id/badge"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignEnd="@+id/iv_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignRight="@+id/iv_notification"
-                android:layout_gravity="top|end"
-                android:visibility="visible"
-                app:nbBackground="@drawable/red_circle"
-                app:nbMaxTextLength="2"
-                app:nbTextColor="@color/white" />
+                android:visibility="visible" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

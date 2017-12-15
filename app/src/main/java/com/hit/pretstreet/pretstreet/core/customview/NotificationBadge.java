@@ -58,7 +58,7 @@ public class NotificationBadge extends FrameLayout {
             mTvBadgeText.setTextColor(mBadgeTextColor);
 
             mBadgeTextSize = a.getDimensionPixelSize(R.styleable.NotificationBadge_nbTextSize, (int)dpToPx(DEFAULT_TEXT_SIZE));
-            mTvBadgeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mBadgeTextSize);
+            //mTvBadgeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mBadgeTextSize);
 
             mAnimationEnabled = a.getBoolean(R.styleable.NotificationBadge_nbAnimationEnabled, DEFAULT_ANIMATION_ENABLED);
 

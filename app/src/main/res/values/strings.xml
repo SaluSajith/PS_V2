@@ -5,6 +5,7 @@
     <string name="facebookapp_id">322404801527783</string>//112206959218432
     <string name="tracking_id">UA-103583589-1</string>
     <string name="method_checksocial">check_face_google_exits</string>
+    <string name="default_notification_channel_id">default</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

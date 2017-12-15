@@ -139,8 +139,8 @@
 
             <ImageView
                 android:id="@+id/iv_notif"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:visibility="visible"
                 app:srcCompat="@drawable/notification"
@@ -152,12 +152,9 @@
 
             <com.hit.pretstreet.pretstreet.core.customview.NotificationBadge
                 android:id="@+id/badge"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                app:nbMaxTextLength="2"
-                app:nbTextColor="@color/white"
-                app:nbBackground="@drawable/red_circle"
                 android:layout_alignTop="@+id/iv_notif"
                 android:layout_alignRight="@+id/linearLayout" />
         </RelativeLayout>

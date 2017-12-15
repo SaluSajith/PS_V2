@@ -23,6 +23,7 @@
     <dimen name="button_radius_standard">10dp</dimen>
     <dimen name="button_radius_small">5dp</dimen>
 
+    <dimen name="textsize_xsmall">8sp</dimen>
     <dimen name="textsize_small">10sp</dimen>
     <dimen name="textsize_standard">12sp</dimen>
     <dimen name="textsize_large">13sp</dimen>
@@ -83,4 +84,6 @@
     <dimen name="storelist_img_height">125dp</dimen>
     <dimen name="storelist_img_width">140dp</dimen>
     <dimen name="storelist_banner_height">150dp</dimen>
+
+    <dimen name="notif_icon">35dp</dimen>
 </resources>

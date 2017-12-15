@@ -75,6 +75,10 @@ public class Constant {
     public static final String LIMIT_S = "10";
     public static final String TAG = "Pretstreet";
     public static final int TIMEOUT_LIMIT = 10000;
+    // id to handle the notification in the notification tray
+    public static final int NOTIFICATION_ID = 100;
+    public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
+    public static final String PUSH_NOTIFICATION = "pushNotification";
 
     //Pagetype constants
     public static final String HOMEPAGE = "1";

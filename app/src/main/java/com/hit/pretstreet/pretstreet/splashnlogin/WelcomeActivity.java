@@ -3,16 +3,25 @@ package com.hit.pretstreet.pretstreet.splashnlogin;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -62,7 +71,9 @@ import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -129,6 +140,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     boolean notif = false;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,6 +190,9 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
             int size = PreferenceServices.getInstance().getNotifCOunt();
             PreferenceServices.getInstance().updateNotif(size + 1);
+
+            PreferenceServices.getInstance().setIdQueryparam(intent.getExtras().getString("id"));
+            PreferenceServices.getInstance().setShareQueryparam(intent.getExtras().getString("share"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -377,7 +393,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                             try {
                                 if(getIntent().getExtras().containsKey("image")){
                                     saveNotification(getIntent());
-                                }else if(getIntent().getExtras().containsKey("share")){
+                                } else if(getIntent().getExtras().containsKey("share")){
                                     String valueOne = getIntent().getExtras().getString("share");
                                     String id = getIntent().getExtras().getString("id");
                                     Log.d("TOKEN", "valueOne: " + valueOne + " id: " + id);

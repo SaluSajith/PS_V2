@@ -121,7 +121,8 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TrendingItems trendingItems = list.get(position);
         setViewText(holder.txt_date, trendingItems.getArticledate());
         setViewText(holder.txt_shopname, trendingItems.getTitle());
-        setViewText(holder.txt_description, trendingItems.getArticle());
+        setViewText(holder.txt_description, "");
+        //setViewText(holder.txt_description, trendingItems.getArticle());
         setViewText(holder.txt_location, trendingItems.getArea());
 
         try {

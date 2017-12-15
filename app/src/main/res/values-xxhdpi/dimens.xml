@@ -31,7 +31,8 @@
     <dimen name="textsize_xxlarge">20dp</dimen>
     <dimen name="textsize_xxxlarge">24dp</dimen>-->
 
-    <dimen name="textsize_small">10sp</dimen>
+    <dimen name="textsize_xsmall">7sp</dimen>
+    <dimen name="textsize_small">9sp</dimen>
     <dimen name="textsize_standard">12sp</dimen>
     <dimen name="textsize_large">13sp</dimen>
     <dimen name="textsize_xlarge">15sp</dimen>
@@ -92,4 +93,6 @@
     <dimen name="storelist_img_width">140dp</dimen>
     <dimen name="storelist_banner_height">150dp</dimen>
     <dimen name="storelist_banner_height_firstrow">140dp</dimen>
+
+    <dimen name="notif_icon">30dp</dimen>
 </resources>

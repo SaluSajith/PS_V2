@@ -37,14 +37,18 @@ import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListMod
 
 import java.util.ArrayList;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ADDSTORE_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.DEEPLINKINGKEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAY_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SIGNUPPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_FRAGMENT;
 
 /**
  * Created by User on 7/5/2017.
@@ -60,9 +64,6 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
     private String permissionsAsk[];
 
     private static int DURATION = 2000;
-    private static final int ADDSTORE_FRAGMENT = 3;
-    private static final int TRENDING_FRAGMENT = 10;
-    private static final int EXHIBITION_FRAGMENT = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -311,7 +312,26 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
                 intent.putExtra(CLICKTYPE_KEY, clicktypeId);
                 startActivity(intent);
                 break;
+            /*case "giveaway":
+                if(id.equals("0")){
+                    intent = new Intent(this, HomeInnerActivity.class);
+                    intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
+                    intent.putExtra("fragment", GIVEAWAY_FRAGMENT);
+                    startActivity(intent);
+                }
+                else {
+                    TrendingItems trendingItems = new TrendingItems();
+                    trendingItems.setId(id);
+                    trendingItems.setPagetypeid("");
+                    trendingItems.setClicktype("");
+                    intent = new Intent(this, TrendingArticleActivity.class);
+                    intent.putExtra(Constant.PRE_PAGE_KEY, "");
+                    intent.putExtra(Constant.PARCEL_KEY, trendingItems);
+                    startActivity(intent);
+                }
+                break;*/
             case "trending":
+                Log.d("FCM_deeplinking fn", "Received " +valueOne +id);
                 if(id.equals("0")){
                     intent = new Intent(this, HomeInnerActivity.class);
                     intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);

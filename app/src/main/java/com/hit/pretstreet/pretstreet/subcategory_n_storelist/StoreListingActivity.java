@@ -59,6 +59,7 @@ import butterknife.OnClick;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
@@ -68,6 +69,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 import static java.lang.Integer.parseInt;
 
@@ -91,17 +93,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     ImageView iv_filter;
 
     private int selectedFragment = 0;
-    private static final int ACCOUNT_FRAGMENT = 0;
-    private static final int FOLLOWING_FRAGMENT = 1;
-    private static final int ABOUT_FRAGMENT = 2;
-    private static final int ADDSTORE_FRAGMENT = 3;
-    private static final int CONTACTUS_FRAGMENT = 4;
-    private static final int FEEDBACK_FRAGMENT = 5;
-    private static final int ABOUTUS_FRAGMENT = 6;
-    private static final int PRIVACY_FRAGMENT = 7;
-    private static final int TERMS_FRAGMENT = 8;
-    private static final int TRENDING_FRAGMENT = 10;
-    private static final int EXHIBITION_FRAGMENT = 11;
     private static final int STORE_DETAILS = 14;
     private static final int FILTER_PAGE = 15;
 
@@ -170,7 +161,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         ll_scroll.setLayoutParams(layoutParams);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
-        Utility.setListLayoutManager(rv_storelist, StoreListingActivity.this);
+        Utility.setListLayoutManager_(rv_storelist, StoreListingActivity.this);
         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, StoreListingActivity.this, storeListModels);
         storeList_recyclerAdapter.setHasStableIds(true);
         rv_storelist.setAdapter(storeList_recyclerAdapter);

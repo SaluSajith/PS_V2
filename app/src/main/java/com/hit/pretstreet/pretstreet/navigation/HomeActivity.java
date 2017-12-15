@@ -2,9 +2,11 @@ package com.hit.pretstreet.pretstreet.navigation;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -131,6 +133,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     NavDrawerAdapter navDrawerAdapter;
     JsonRequestController jsonRequestController;
     LoginController loginController;
+    private BroadcastReceiver receiver;
 
     boolean homeopened = false;
     Context context;
@@ -142,15 +145,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             if (!homeopened) {
                 getHomePage();
             }
-            View includedlayout = findViewById(R.id.includedlayout);
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            NotificationBadge badge_home = (NotificationBadge) includedlayout.findViewById(R.id.badge);
-            NotificationBadge mBadge = (NotificationBadge) navigationView.findViewById(R.id.badge);
-            int size = PreferenceServices.getInstance().getNotifCOunt();
-            badge_home.setNumber(size);
-            mBadge.setNumber(size);
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
+            updateNotificationFlag();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -180,6 +175,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0) {
             String valueOne = PreferenceServices.getInstance().getShareQueryparam();
             String id = PreferenceServices.getInstance().getIdQueryparam();
+            Log.d("FCM_home", "Received xx" +valueOne +id);
             forwardDeepLink(valueOne, id, SHARE);
             PreferenceServices.getInstance().setIdQueryparam("");
             PreferenceServices.getInstance().setShareQueryparam("");
@@ -188,6 +184,16 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED)
             checkforLocationChange();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("RECEIVE_NOTIFICATION");
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateNotificationFlag();
+            }
+        };
+        registerReceiver(receiver, filter);
     }
 
     private void getHomePage(){
@@ -302,6 +308,22 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                     iv_profile.setImageDrawable(circularBitmapDrawable);
                 }
             });
+        }
+    }
+
+    private void updateNotificationFlag(){
+        try {
+            View includedlayout = findViewById(R.id.includedlayout);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            NotificationBadge badge_home = (NotificationBadge) includedlayout.findViewById(R.id.badge);
+            NotificationBadge mBadge = (NotificationBadge) navigationView.findViewById(R.id.badge);
+            int size = PreferenceServices.getInstance().getNotifCOunt();
+            badge_home.setNumber(size);
+            //mBadge.setNumber(size);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -713,5 +735,14 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 // [END_EXCLUDE]
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+            receiver = null;
+        }
+        super.onDestroy();
     }
 }

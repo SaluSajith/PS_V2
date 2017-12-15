@@ -85,21 +85,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long l = 0;
         try {
             db = this.getWritableDatabase();
-
-            values = new ContentValues();
-            values.put(KEY_ID, trendingItems.getId());
-            values.put(KEY_TITLE, trendingItems.getTitle());
-            values.put(KEY_DESC, trendingItems.getArticle());
-            values.put(KEY_IMAGE, (trendingItems.getImagearray().size()>0 ? trendingItems.getImagearray().get(0) : ""));
-            values.put(KEY_SHARE, trendingItems.getShareUrl());
-            values.put(KEY_ICON, trendingItems.getLogoImage());
-            l = db.insert(TABLE_NOTIFICATION, null, values);
+            Cursor c = db.rawQuery("SELECT * FROM "+TABLE_NOTIFICATION, null);
+            if(c.getCount()>=5){
+                deleteLastRowNotification();
+            }
+            if(!CheckIsDataAlreadyInDBorNot(TABLE_NOTIFICATION, KEY_ID, trendingItems.getId())) {
+                values = new ContentValues();
+                values.put(KEY_ID, trendingItems.getId());
+                values.put(KEY_TITLE, trendingItems.getTitle());
+                values.put(KEY_DESC, trendingItems.getArticle());
+                values.put(KEY_IMAGE, (trendingItems.getImagearray().size() > 0 ? trendingItems.getImagearray().get(0) : ""));
+                values.put(KEY_SHARE, trendingItems.getShareUrl());
+                values.put(KEY_ICON, trendingItems.getLogoImage());
+                l = db.insert(TABLE_NOTIFICATION, null, values);
+            }
             db.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return l;
     }
+
+    public boolean CheckIsDataAlreadyInDBorNot(String TableName,
+                                               String dbfield, String fieldValue) {
+        String Query = "Select * from " + TableName + " where " + dbfield + " = " + fieldValue;
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
     public long saveSearches(String sid, String sname, String address) {
         db = this.getWritableDatabase();
 
@@ -123,11 +141,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<TrendingItems> fetchNotifList() {
         notif_list.clear();
         db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM NOTIFICATION ", null);
-        if(c.getCount()>=5){
+        Cursor c = db.rawQuery("SELECT * FROM "+TABLE_NOTIFICATION, null);
+        /*if(c.getCount()>=2){
             deleteLastSavedNotifRow();
         }
-        while (c.moveToNext()) {
+        */while (c.moveToNext()) {
             TrendingItems trendingItems = new TrendingItems();
             trendingItems.setId(c.getString(c.getColumnIndex(KEY_ID)));
             trendingItems.setTitle(c.getString(c.getColumnIndex(KEY_TITLE)));
@@ -228,13 +246,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteLastSavedNotifRow() {
-        db = getReadableDatabase();
+        try {
+            db = this.getWritableDatabase();
+            Cursor cursor = db.query(TABLE_NOTIFICATION, null, null, null, null, null, null);
+            // if (cursor.moveToFirst()) {
+            System.out.println("Notif deleteLastSavedNotifRow "  +" "+cursor.getCount());
+            //String rowId = cursor.getString(cursor.getColumnIndex(KEY_ID));
+            //db.delete(TABLE_NOTIFICATION, KEY_ID + "=?", new String[]{rowId});
+            db.rawQuery("DELETE FROM "+TABLE_NOTIFICATION+" WHERE "+KEY_ID+" = (SELECT MAX("+KEY_ID+") FROM "+TABLE_NOTIFICATION+")", null);
+
+            //}
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteLastRowNotification() {
+        //db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_NOTIFICATION, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             String rowId = cursor.getString(cursor.getColumnIndex(KEY_ID));
             db.delete(TABLE_NOTIFICATION, KEY_ID + "=?", new String[]{rowId});
         }
-        db.close();
+        //db.close();
     }
 
 

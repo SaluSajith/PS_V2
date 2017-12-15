@@ -169,11 +169,6 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
                 tv_cat_name.setText("MY PROFILE");
                 changeFragment(accountFragment, b);
                 break;
-            case FOLLOWING_FRAGMENT:
-                currentFragment = FOLLOWING_FRAGMENT;
-                tv_cat_name.setText("Following");
-                changeFragment(new ChangePasswordFragment(), b);
-                break;
             case ADDSTORE_FRAGMENT:
                 currentFragment = ADDSTORE_FRAGMENT;
                 tv_cat_name.setText("Add Store");
@@ -244,8 +239,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
                 break;
             case NOTIFICATION_FRAGMENT:
                 currentFragment = NOTIFICATION_FRAGMENT;
-                tv_cat_name.setText("Notification");
-                //vcb
+                tv_cat_name.setText("Notifications");
                 NotificationFragment notificationFragment = new NotificationFragment();
                 trendingCallback = notificationFragment;
                 changeFragment(notificationFragment, b);

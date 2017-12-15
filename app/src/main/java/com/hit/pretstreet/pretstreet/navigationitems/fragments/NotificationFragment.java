@@ -44,19 +44,19 @@ public class NotificationFragment extends AbstractBaseFragment<NavigationItemsAc
     }
 
     private void init(){
-        Log.d("FCM h", ""+PreferenceServices.getInstance().getNotifCOunt());
+        Log.d("FCM notif fragment", ""+PreferenceServices.getInstance().getNotifCOunt());
         PreferenceServices.getInstance().updateNotif(0);
-        Utility.setListLayoutManager_(rv_trending, getActivity());
+        Utility.setListLayoutManager(rv_trending, getActivity());
         rv_trending.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         ((NavigationItemsActivity)getActivity()).getNotificationlist();
     }
 
     @Override
     public void bindData(ArrayList<TrendingItems> trendingItems) {
-        TrendingArticleAdapter adapter = new TrendingArticleAdapter(getActivity(), trendingItems);
-        rv_trending.setAdapter(adapter);
-        if(trendingItems.size()==0)
-            ll_empty.setVisibility(View.VISIBLE);
-        else ll_empty.setVisibility(View.INVISIBLE);
+            TrendingArticleAdapter adapter = new TrendingArticleAdapter(getActivity(), trendingItems);
+            rv_trending.setAdapter(adapter);
+            if (trendingItems.size() == 0)
+                ll_empty.setVisibility(View.VISIBLE);
+            else ll_empty.setVisibility(View.INVISIBLE);
     }
 }
