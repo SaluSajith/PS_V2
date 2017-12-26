@@ -88,9 +88,9 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     if (mOnLoadMoreListener != null) {
+                        isLoading = true;
                         mOnLoadMoreListener.onLoadMore();
                     }
-                    isLoading = true;
                 }
             }
             /*@Override
@@ -149,6 +149,12 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         else{
             holder.bt_register.setEnabled(false);
             holder.bt_register.setVisibility(View.GONE);
+        }
+
+        if(position == list.size()-1){
+            if (mOnLoadMoreListener != null) {
+                mOnLoadMoreListener.reachedLastItem();
+            }
         }
     }
 

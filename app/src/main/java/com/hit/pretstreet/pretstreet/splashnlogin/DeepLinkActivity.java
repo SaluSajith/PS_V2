@@ -24,6 +24,7 @@ import java.util.Map;
 
 import static com.hit.pretstreet.pretstreet.core.helpers.InstallReferrerReceiver.EXPECTED_PARAMETERS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHECKIP_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.INSTALLREFERRERKEY;
 
 public class DeepLinkActivity extends AppCompatActivity implements ApiListenerInterface {
 
@@ -41,6 +42,7 @@ public class DeepLinkActivity extends AppCompatActivity implements ApiListenerIn
                 Log.e("DeepLinkActivity TAG", "data saved "+ valueOne + id);
                 PreferenceServices.getInstance().setIdQueryparam(id);
                 PreferenceServices.getInstance().setShareQueryparam(valueOne);
+                PreferenceServices.getInstance().setTypeQueryparam(INSTALLREFERRERKEY);
 
                 /*Log.e("DeepLinkActivity TAG", "data saved "+ uri.getQueryParameter("utm_campaign"));
                 Log.e("DeepLinkActivity TAG", "data saved "+ uri.getQueryParameter("utm_source"));

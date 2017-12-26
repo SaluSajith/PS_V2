@@ -1,30 +1,15 @@
 package com.hit.pretstreet.pretstreet.navigation.controllers;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
-import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYPAGE;
@@ -41,14 +26,14 @@ public class HomeFragmentController {
         this.context = context;
     }
 
-    public static JSONObject getTrendinglistJson(int offset, String prepage) {
+    public static JSONObject getTrendinglistJson(int offset, String prepage, String clicktypeid) {
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("Limit", Constant.LIMIT_S);
             jsonBody.put("Offset", offset);
             jsonBody.put("PreviousPageTypeId", prepage);
-            jsonBody.put("ClickTypeId", "");
+            jsonBody.put("ClickTypeId", clicktypeid);
 
             jsonBody = Constant.addConstants(jsonBody, context);
 
@@ -60,14 +45,14 @@ public class HomeFragmentController {
     }
 
 
-    public static JSONObject getGiveawaylistJson(int offset, String prepage) {
+    public static JSONObject getGiveawaylistJson(int offset, String prepage, String clicktypeid) {
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("Limit", Constant.LIMIT_S);
             jsonBody.put("Offset", offset);
             jsonBody.put("PreviousPageTypeId", prepage);
-            jsonBody.put("ClickTypeId", "");
+            jsonBody.put("ClickTypeId", clicktypeid);
 
             jsonBody = Constant.addConstants(jsonBody, context);
 
@@ -78,14 +63,14 @@ public class HomeFragmentController {
         return jsonBody;
     }
 
-    public static JSONObject getExhibitionlistJson(int offset, String prepage) {
+    public static JSONObject getExhibitionlistJson(int offset, String prepage, String clicktypeid) {
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("Limit", Constant.LIMIT_S);
             jsonBody.put("Offset", offset);
             jsonBody.put("PreviousPageTypeId", prepage);
-            jsonBody.put("ClickTypeId", "");
+            jsonBody.put("ClickTypeId", clicktypeid);
 
             jsonBody = Constant.addConstants(jsonBody, context);
 

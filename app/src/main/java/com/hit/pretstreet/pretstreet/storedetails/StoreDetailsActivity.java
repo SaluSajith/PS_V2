@@ -88,28 +88,28 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.VIEWONMAPLINK;
 
 public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback {
+
     JsonRequestController jsonRequestController;
     SubCategoryController subCategoryController;
     StoreDetailsController storeDetailsController;
 
     private static final int ABOUTDESIGNER_FRAGMENT = 101;
-    private static final int STORE_DETAILS = 14;
 
-    @BindView(R.id.tv_product) TextViewPret tv_product;
     @BindView(R.id.tv_about) TextViewPret tv_about;
     @BindView(R.id.tv_imgsrc) TextViewPret tv_imgsrc;
+    @BindView(R.id.tv_product) TextViewPret tv_product;
     @BindView(R.id.tv_book_app) TextViewPret tv_book_app;
-    @BindView(R.id.tv_about_heading) TextViewPret tv_about_heading;
     @BindView(R.id.tv_heading_hrs) TextViewPret tv_heading_hrs;
+    @BindView(R.id.tv_about_heading) TextViewPret tv_about_heading;
     @BindView(R.id.tv_testimonials_heading) TextViewPret tv_testimonials_heading;
 
     @BindView(R.id.tv_time) TextViewPret tv_time;
-    @BindView(R.id.tv_storename) TextViewPret tv_storename;
     @BindView(R.id.tv_location) TextViewPret tv_location;
+    @BindView(R.id.tv_storename) TextViewPret tv_storename;
     @BindView(R.id.tv_openstatus) TextViewPret tv_openstatus;
-    @BindView(R.id.tv_folowerscount) TextViewPret tv_folowerscount;
     @BindView(R.id.tv_openinghrs) TextViewPret tv_openinghrs;
     @BindView(R.id.tv_reportError) TextViewPret tv_reportError;
+    @BindView(R.id.tv_folowerscount) TextViewPret tv_folowerscount;
     @BindView(R.id.tv_heading_photos) TextViewPret tv_heading_photos;
 
     @BindView(R.id.rv_images) RecyclerView rv_images;
@@ -124,9 +124,9 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     @BindView(R.id.ll_address) LinearLayout ll_address;
     @BindView(R.id.ll_getdirec) LinearLayout ll_getdirec;
 
-    String mStoreId, shareUrl;
-    Dialog popupDialog;
     Context context;
+    Dialog popupDialog;
+    String mStoreId, shareUrl;
     private StoreDetailsModel storeDetailsModel;
 
     @Override

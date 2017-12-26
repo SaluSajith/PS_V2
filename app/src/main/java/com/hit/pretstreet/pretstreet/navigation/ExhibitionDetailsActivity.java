@@ -1,7 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.Html;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,7 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,7 +38,6 @@ import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.helpers.ShadowTransformer;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
@@ -54,35 +48,30 @@ import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentControll
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
-import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
-import com.hit.pretstreet.pretstreet.storedetails.adapters.CardFragmentPagerAdapter;
 import com.hit.pretstreet.pretstreet.storedetails.adapters.GalleryAdapter;
-import com.hit.pretstreet.pretstreet.storedetails.controllers.StoreDetailsController;
 import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
 import com.hit.pretstreet.pretstreet.storedetails.model.StoreDetailsModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEREGISTER;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONLIKE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONREGISTER_URL;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXNOTGOINGLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
 
 public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback {
+
     JsonRequestController jsonRequestController;
     HomeFragmentController homeFragmentController;
     DetailsPageController detailsPageController;
@@ -197,8 +186,8 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     private void setupDetailsPage(StoreDetailsModel exhibitionDetailsModel){
 
         try {
-            tv_about_heading.setVisibility(exhibitionDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
-            tv_about.setVisibility(exhibitionDetailsModel.getAbout().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_about_heading.setVisibility(exhibitionDetailsModel.getAbout().trim().length() > 0 ? View.VISIBLE : View.GONE);
+            tv_about.setVisibility(exhibitionDetailsModel.getAbout().trim().length() > 0 ? View.VISIBLE : View.GONE);
             tv_imgsrc.setVisibility(exhibitionDetailsModel.getImageSource().length() > 0 ? View.VISIBLE : View.GONE);
             tv_product.setVisibility(exhibitionDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
             tv_time.setVisibility(exhibitionDetailsModel.getTimingToday().length() > 0 ? View.VISIBLE : View.GONE);
@@ -471,7 +460,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         }
         else {
             this.showProgressDialog(getResources().getString(R.string.loading));
-            JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
+            JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXARTICLEREGISTER,
                     mStoreId + "", getIntent().getStringExtra(PRE_PAGE_KEY), phone);
             jsonRequestController.sendRequest(this, resultJson, EXHIBITIONREGISTER_URL);
         }
@@ -514,7 +503,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
                 else{
                     popupDialog.dismiss();
                     ExhibitionDetailsActivity.this.showProgressDialog(getResources().getString(R.string.loading));
-                    JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
+                    JSONObject resultJson = homeFragmentController.getExhibitionRegisterJson(EXARTICLEREGISTER,
                             mStoreId + "", getIntent().getStringExtra(PRE_PAGE_KEY), number);
                     jsonRequestController.sendRequest(ExhibitionDetailsActivity.this, resultJson, EXHIBITIONREGISTER_URL);
                 }

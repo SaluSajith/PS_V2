@@ -46,29 +46,24 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LIMIT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTILINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTORE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
 public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback, ButtonClickCallbackStoreList {
 
-    private int selectedFragment = 0;
-    private static final int ACCOUNT_FRAGMENT = 0;
-    private static final int FOLLOWING_FRAGMENT = 1;
-    private static final int ABOUT_FRAGMENT = 2;
-    private static final int ADDSTORE_FRAGMENT = 3;
-    private static final int CONTACTUS_FRAGMENT = 4;
-    private static final int FEEDBACK_FRAGMENT = 5;
-    private static final int ABOUTUS_FRAGMENT = 6;
-    private static final int PRIVACY_FRAGMENT = 7;
-    private static final int TERMS_FRAGMENT = 8;
-    private static final int TRENDING_FRAGMENT = 10;
-    private static final int EXHIBITION_FRAGMENT = 11;
     private static final int STORE_DETAILS = 14;
 
     JsonRequestController jsonRequestController;
@@ -115,9 +110,10 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void getShoplist(){
-        String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
+        String pageid = getIntent().getStringExtra(PRE_PAGE_KEY);
+        String clicktypeid = getIntent().getStringExtra(CLICKTYPE_KEY);
         String mCatid = getIntent().getStringExtra(Constant.ID_KEY);
-        JSONObject resultJson = searchController.getMultiStoreListJson(mCatid, pageid, "1", pageCount);//caat, prepage, clicktype, id
+        JSONObject resultJson = searchController.getMultiStoreListJson(mCatid, pageid, clicktypeid, pageCount);//caat, prepage, clicktype, id
         if(pageCount ==1)
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, MULTISTORE_URL);
@@ -157,6 +153,11 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                     getShoplist();
                 }
                 else; //displaySnackBar("No more data available!");
+            }
+
+            @Override
+            public void reachedLastItem() {
+
             }
         });
     }
@@ -265,7 +266,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         ArrayList<String> imageModels1 = imageModels;
         Intent intent = new Intent(MultistoreActivity.this, FullscreenGalleryActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, imageModels1);
-        intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.STORELISTINGPAGE));
+        intent.putExtra(PRE_PAGE_KEY, Integer.parseInt(STORELISTINGPAGE));
         intent.putExtra(Constant.POSITION_KEY, position);
         startActivity(intent);
 
@@ -273,44 +274,15 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void buttonClick(StoreListModel storeListModel) {
-        switch (storeListModel.getPageTypeId()){
-            case Constant.STOREDETAILSPAGE:
-                Intent intent = new Intent(MultistoreActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, storeListModel);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                intent.putExtra(CLICKTYPE_KEY, MULTILINK);
-                startActivityForResult(intent, STORE_DETAILS);
-                break;
-            case Constant.TRENDINGPAGE:
-                selectedFragment = TRENDING_FRAGMENT;
-                intent = new Intent(MultistoreActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case Constant.EXHIBITIONPAGE:
-                selectedFragment = EXHIBITION_FRAGMENT;
-                intent = new Intent(MultistoreActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case Constant.MULTISTOREPAGE:
-                intent = new Intent(MultistoreActivity.this, MultistoreActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                startActivity(intent);
-                break;
-            default: break;
-        }
+        openNext(storeListModel, MULTISTOREPAGE, MULTILINK);
     }
 
     @Override
     public void updateFollowStatus(String id) {
-        JSONObject resultJson = subCategoryController.updateFollowCount(id, Constant.MULTISTOREPAGE,  Constant.FOLLOWLINK);
+        JSONObject resultJson = subCategoryController.updateFollowCount(id, MULTISTOREPAGE,  Constant.FOLLOWLINK);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, UPDATEFOLLOWSTATUS_URL);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

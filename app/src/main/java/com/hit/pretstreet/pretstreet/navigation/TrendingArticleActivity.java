@@ -35,6 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYARTICLE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
@@ -42,6 +43,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDARTICLELINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGARTICLE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
 
@@ -193,6 +195,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
                 storeListModel.setId(id);
                 intent = new Intent(TrendingArticleActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(PARCEL_KEY, storeListModel);
+                intent.putExtra(CLICKTYPE_KEY, TRENDARTICLELINK);
                 intent.putExtra(PRE_PAGE_KEY, ARTICLEPAGE);
                 startActivity(intent);
                 break;

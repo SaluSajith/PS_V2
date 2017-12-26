@@ -15,7 +15,6 @@ public class TrendingItems implements Serializable {
     String storeName="", shareUrl="", area="", titlepagetype="", titleid="", register="";
     boolean like = false, banner = false, NotifPage = false;
     String latitude="", longitude="";
-    int imgHeight = 0, imgWidth = 0;
     ArrayList<String> imagearray = new ArrayList<>();
 
     public String getId() {

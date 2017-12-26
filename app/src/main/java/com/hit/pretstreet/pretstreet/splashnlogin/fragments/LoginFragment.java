@@ -57,7 +57,11 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                btn_login.setEnabled(true);
+                try {
+                    btn_login.setEnabled(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, 2000);
     }

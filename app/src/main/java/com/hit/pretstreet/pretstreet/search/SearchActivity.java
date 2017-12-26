@@ -40,13 +40,21 @@ import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.AUTOSEARCH_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.LIMIT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.RECENTSEARCH_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHLISTLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCH_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
 public class SearchActivity extends AbstractBaseAppCompatActivity
@@ -57,18 +65,6 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
     private static final int AUTOSEARCH_FRAGMENT = 0;
     private static final int SEARCHRESULTS_FRAGMENT = 1;
 
-    private int selectedFragment = 0;
-    private static final int ACCOUNT_FRAGMENT = 0;
-    private static final int FOLLOWING_FRAGMENT = 1;
-    private static final int ABOUT_FRAGMENT = 2;
-    private static final int ADDSTORE_FRAGMENT = 3;
-    private static final int CONTACTUS_FRAGMENT = 4;
-    private static final int FEEDBACK_FRAGMENT = 5;
-    private static final int ABOUTUS_FRAGMENT = 6;
-    private static final int PRIVACY_FRAGMENT = 7;
-    private static final int TERMS_FRAGMENT = 8;
-    private static final int TRENDING_FRAGMENT = 10;
-    private static final int EXHIBITION_FRAGMENT = 11;
     private static final int STORE_DETAILS = 14;
 
     private JsonRequestController jsonRequestController;
@@ -156,6 +152,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
             this.showProgressDialog(getResources().getString(R.string.loading));
         JSONObject resultJson = searchController.getSearchResultJson(mStrSearch,
                 getIntent().getStringExtra(PRE_PAGE_KEY), mCatID, pageCount, mCaType, arrayFilter);
+        jsonRequestController.cancelAllPendingRequests();
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, SEARCH_URL);
     }
 
@@ -193,7 +190,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                     break;
                 case SEARCH_URL:
                     ArrayList <StoreListModel> storeListModels = searchController.getSearchList(response);
-                    if(storeListModels.size()==0)
+                    if(storeListModels.size()<Integer.parseInt(LIMIT))
                         loadmore = false;
                     searchDataCallback.setSearchList(storeListModels, loadmore);
                     new Handler().postDelayed(new Runnable() {
@@ -201,7 +198,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                         public void run() {
                             hideDialog();
                         }
-                    }, 1000);
+                    }, 1500);
                     break;
                 case RECENTSEARCH_URL:
                     searchDataCallback.setRecentsearchList(searchController.getRecentViewList(response),
@@ -245,36 +242,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
 
     @Override
     public void buttonClick(StoreListModel storeListModel) {
-        switch (storeListModel.getPageTypeId()){
-            case Constant.STOREDETAILSPAGE:
-                Intent intent = new Intent(SearchActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, storeListModel);
-                intent.putExtra(CLICKTYPE_KEY, "");
-                intent.putExtra(Constant.PRE_PAGE_KEY, SEARCHPAGE);
-                startActivityForResult(intent, STORE_DETAILS);
-                break;
-            case Constant.TRENDINGPAGE:
-                selectedFragment = TRENDING_FRAGMENT;
-                intent = new Intent(SearchActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SEARCHPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case Constant.EXHIBITIONPAGE:
-                selectedFragment = EXHIBITION_FRAGMENT;
-                intent = new Intent(SearchActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SEARCHPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case Constant.MULTISTOREPAGE:
-                intent = new Intent(SearchActivity.this, MultistoreActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SEARCHPAGE);
-                intent.putExtra(Constant.ID_KEY, storeListModel.getId());
-                startActivity(intent);
-                break;
-            default: break;
-        }
+        openNext(storeListModel, SEARCHPAGE, "");
     }
 
     @Override
@@ -300,6 +268,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         storeListModel.setId(searchModel.getId());
         Intent intent = new Intent(SearchActivity.this, StoreDetailsActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, storeListModel);
+        intent.putExtra(CLICKTYPE_KEY, SEARCHLISTLINK);
         intent.putExtra(Constant.PRE_PAGE_KEY, Constant.SEARCHPAGE);
         startActivity(intent);
     }

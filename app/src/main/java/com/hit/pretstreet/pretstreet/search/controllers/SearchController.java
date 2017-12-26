@@ -66,7 +66,7 @@ public class SearchController {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("CategoryId", catId);
+            jsonBody.put("Id", catId);
             jsonBody.put("Searchfor", cattype);
             jsonBody.put("PreviousPageTypeId", prePage);
             jsonBody.put("ClickTypeId", Constant.AUTOSEARCHLINK);
@@ -104,7 +104,7 @@ public class SearchController {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("CategoryId", catId);
+            jsonBody.put("Id", catId);
             jsonBody.put("Searchfor", cattype);
             jsonBody.put("PreviousPageTypeId", prePage);
             jsonBody.put("ClickTypeId", "");

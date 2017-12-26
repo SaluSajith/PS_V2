@@ -11,6 +11,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
@@ -188,4 +189,11 @@ public class JsonRequestController {
         PretStreet.getInstance().addToRequestQueue(stringRequest, tag_str_obj);
     }
 
+    public void cancelAllPendingRequests(){
+        try {
+            stringRequest.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

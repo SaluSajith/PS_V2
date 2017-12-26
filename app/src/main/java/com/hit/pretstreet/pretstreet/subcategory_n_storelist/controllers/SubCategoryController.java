@@ -24,7 +24,7 @@ public class SubCategoryController {
         this.context = context;
     }
 
-    public static JSONObject getShoplistJson(String catId, String offset, String prepage, JSONArray arrayFilter) {
+    public static JSONObject getShoplistJson(String catId, String offset, String prepage, String clicktype, JSONArray arrayFilter) {
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -32,7 +32,7 @@ public class SubCategoryController {
             jsonBody.put("Limit", Constant.LIMIT);
             jsonBody.put("Offset", offset);
             jsonBody.put("PreviousPageTypeId", prepage);
-            jsonBody.put("ClickTypeId", "");
+            jsonBody.put("ClickTypeId", clicktype);
             jsonBody.put("Filter", arrayFilter);
 
             jsonBody = Constant.addConstants(jsonBody, context);

@@ -6,4 +6,5 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces;
 
 public interface OnLoadMoreListener {
     void onLoadMore();
+    void reachedLastItem();
 }

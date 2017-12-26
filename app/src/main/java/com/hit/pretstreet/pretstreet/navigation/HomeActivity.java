@@ -17,7 +17,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,9 +44,6 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
@@ -108,6 +104,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAY_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGELINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIFICATION_FRAGMENT;
@@ -118,6 +115,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_INVITE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHARE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.currentloc;
@@ -175,10 +173,12 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0) {
             String valueOne = PreferenceServices.getInstance().getShareQueryparam();
             String id = PreferenceServices.getInstance().getIdQueryparam();
-            Log.d("FCM_home", "Received xx" +valueOne +id);
-            forwardDeepLink(valueOne, id, SHARE);
+            String type = PreferenceServices.getInstance().getTypeQueryparam();
+            Log.d("FCM_home", "Received xx" +valueOne +id+type);
+            forwardDeepLink(valueOne, id, type);
             PreferenceServices.getInstance().setIdQueryparam("");
             PreferenceServices.getInstance().setShareQueryparam("");
+            PreferenceServices.getInstance().setTypeQueryparam("");
             return;
         }
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -577,6 +577,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent = new Intent(context, StoreListingActivity.class);
                 intent.putExtra("contentData",  homeCatItemses);//TODO
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
+                intent.putExtra(CLICKTYPE_KEY, HOMEPAGELINK);
                 intent.putExtra("mCatId", catContentData.getCategoryId());
                 intent.putExtra("mSubTitle", title);
                 startActivity(intent);
@@ -612,6 +613,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 storeListModel.setId(catContentData.getMainCatId());
                 intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(PARCEL_KEY, storeListModel );
+                intent.putExtra(CLICKTYPE_KEY, HOMEPAGELINK);
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 startActivity(intent);
                 break;
@@ -624,6 +626,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         Intent intent = new Intent(context, StoreListingActivity.class);
         intent.putExtra("contentData", "");
         intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
+        intent.putExtra(CLICKTYPE_KEY, HOMEPAGELINK);
         intent.putExtra("mCatId", id);
         intent.putExtra("mSubTitle", "");
         startActivity(intent);

@@ -38,6 +38,7 @@ public class PreferenceServices {
     public static final String BASEIMAGE = "BASEIMAGE";
 
     public static String SHARE_QUERYPARAM = "SHARE_QUERYPARAM";
+    public static String TYPE_QUERYPARAM = "TYPE_QUERYPARAM";
     public static String ID_QUERYPARAM = "ID_QUERYPARAM";
     public static String UTM_QUERYPARAM = "UTM_QUERYPARAM";
 
@@ -65,6 +66,16 @@ public class PreferenceServices {
 
     public SharedPreferences getPrefs() {
         return mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    }
+
+    public String getTypeQueryparam() {
+        return getPrefs().getString(TYPE_QUERYPARAM, "");
+    }
+
+    public void setTypeQueryparam(String typeQueryparam) {
+        SharedPreferences.Editor editor = getPrefs().edit();
+        editor.putString(TYPE_QUERYPARAM, typeQueryparam);
+        editor.apply();
     }
 
     public String getShareQueryparam() {

@@ -65,6 +65,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
@@ -92,7 +93,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     TextViewPret[] txtname;
     ImageView iv_filter;
 
-    private int selectedFragment = 0;
     private static final int STORE_DETAILS = 14;
     private static final int FILTER_PAGE = 15;
 
@@ -186,7 +186,12 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                     first = false;
                     if(loadmore) {
                         getShoplist(catTag, false);
-                    }}
+                    }
+                }
+            }
+
+            @Override
+            public void reachedLastItem() {
                 if(!loadmore)
                     displaySnackBar("No more stores available!");
             }
@@ -196,7 +201,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private void getShoplist(String mCatid, boolean first){
         loadmore = true;
         String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
-        JSONObject resultJson = subCategoryController.getShoplistJson(mCatid, ++pageCount+"", pageid, arrayFilter);
+        String clicktypeid = getIntent().getStringExtra(Constant.CLICKTYPE_KEY);
+        JSONObject resultJson = subCategoryController.getShoplistJson(mCatid, ++pageCount+"", pageid, clicktypeid, arrayFilter);
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, STORELISTING_URL);
@@ -391,55 +397,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @Override
     public void buttonClick(StoreListModel storeListModel) {
-        switch (storeListModel.getPageTypeId()){
-            case STOREDETAILSPAGE:
-                Intent intent = new Intent(StoreListingActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(PARCEL_KEY, storeListModel);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                startActivityForResult(intent, STORE_DETAILS);
-                break;
-            case TRENDINGPAGE:
-                selectedFragment = TRENDING_FRAGMENT;
-                intent = new Intent(StoreListingActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case EXHIBITIONPAGE:
-                selectedFragment = EXHIBITION_FRAGMENT;
-                intent = new Intent(StoreListingActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case ARTICLEPAGE:
-                TrendingItems trendingItems = new TrendingItems();
-                trendingItems.setId(storeListModel.getId());
-                trendingItems.setPagetypeid(storeListModel.getPageTypeId());
-                trendingItems.setClicktype("");
-                intent = new Intent(StoreListingActivity.this, TrendingArticleActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                startActivity(intent);
-                break;
-            case EXARTICLEPAGE:
-                trendingItems = new TrendingItems();
-                trendingItems.setId(storeListModel.getId());
-                trendingItems.setPagetypeid(storeListModel.getPageTypeId());
-                trendingItems.setClicktype("");
-                intent = new Intent(StoreListingActivity.this, ExhibitionDetailsActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-                intent.putExtra(Constant.PRE_PAGE_KEY, STORELISTINGPAGE);
-                startActivity(intent);
-                break;
-            case MULTISTOREPAGE:
-                intent = new Intent(StoreListingActivity.this, MultistoreActivity.class);
-                intent.putExtra(Constant.ID_KEY, storeListModel.getId());
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
-                startActivity(intent);
-                break;
-            default: break;
-        }
+        openNext(storeListModel, STORELISTINGPAGE, "");
     }
 
     @Override

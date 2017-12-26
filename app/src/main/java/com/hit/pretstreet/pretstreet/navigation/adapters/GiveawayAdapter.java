@@ -19,7 +19,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
-import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
@@ -31,6 +30,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYLISTLINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLISTLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 /**
@@ -70,9 +72,9 @@ public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     if (mOnLoadMoreListener != null) {
+                        isLoading = true;
                         mOnLoadMoreListener.onLoadMore();
                     }
-                    isLoading = true;
                 }
             }
         });
@@ -144,6 +146,12 @@ public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
         holder.txt_title.setVisibility(trendingItems.getTitleid().trim().length() > 0 ? View.VISIBLE : View.GONE);
         holder.txt_shopname.setVisibility(udata.trim().length() > 0 ? View.VISIBLE : View.GONE);
+
+        if(position == list.size()-1){
+            if (mOnLoadMoreListener != null) {
+                mOnLoadMoreListener.reachedLastItem();
+            }
+        }
     }
 
     @Override
@@ -228,24 +236,26 @@ public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     break;
                 case R.id.txt_shopname:
                     mPosition = getAdapterPosition();
-                    trendingHolderInvoke.openTrendingArticle(trendingItems, TRENDINGPAGE);
+                    trendingHolderInvoke.openTrendingArticle(trendingItems, GIVEAWAYPAGE);
                     break;
                 case R.id.txt_description:
                     mPosition = getAdapterPosition();
-                    trendingHolderInvoke.openTrendingArticle(trendingItems, TRENDINGPAGE);
+                    trendingHolderInvoke.openTrendingArticle(trendingItems, GIVEAWAYPAGE);
                     break;
                 case R.id.txt_title:
                     StoreListModel storeListModel = new StoreListModel();
                     storeListModel.setId(trendingItems.getTitleid());
                     storeListModel.setTitle(trendingItems.getTitle());
-                    storeListModel.setPageTypeId(trendingItems.getTitlepagetype());
+                    storeListModel.setPageType(trendingItems.getTitlepagetype());
+                    storeListModel.setPageTypeId(GIVEAWAYPAGE);
+                    storeListModel.setClickType(GIVEAWAYLISTLINK);
                     trendingHolderInvoke.loadStoreDetails(getAdapterPosition(),
                             storeListModel);
                     break;
                 case R.id.iv_banner:
                     if (trendingItems.getBanner()) {
                         mPosition = getAdapterPosition();
-                        trendingHolderInvoke.openTrendingArticle(trendingItems, TRENDINGPAGE);
+                        trendingHolderInvoke.openTrendingArticle(trendingItems, GIVEAWAYPAGE);
                     } else {
                         ArrayList<String> mImagearray = new ArrayList<>();
                         mImagearray.add(trendingItems.getImagearray().get(0));

@@ -112,9 +112,16 @@ public class SearchResultsFragment extends AbstractBaseFragment<WelcomeActivity>
                     first = false;
                     if(loadmore) {
                         ((SearchActivity)getActivity()).getSearchResult(pageCount, first);
-                    }}
+                    }else;}
+                else;
+               // if(!loadmore)
+                    //((SearchActivity) getActivity()).displaySnackBar("No more stores available!");
+            }
+
+            @Override
+            public void reachedLastItem() {
                 if(!loadmore)
-                    ((SearchActivity) getActivity()).displaySnackBar("No more stores available!");
+                ((SearchActivity) getActivity()).displaySnackBar("No more stores available!");
             }
         });
     }
@@ -149,11 +156,5 @@ public class SearchResultsFragment extends AbstractBaseFragment<WelcomeActivity>
         storeListModels.addAll(searchModels);
         setAdapter();
         storeList_recyclerAdapter.setLoaded();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e("", "");
     }
 }

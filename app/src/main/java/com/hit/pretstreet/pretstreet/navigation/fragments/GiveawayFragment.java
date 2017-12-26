@@ -65,7 +65,15 @@ public class GiveawayFragment extends AbstractBaseFragment<WelcomeActivity>
                     requestCalled = true;
                     ((HomeInnerActivity)getActivity()).getGiveawaylist(pageCount);
                 }
-                else ((HomeInnerActivity)getActivity()).displaySnackBar("No more data available!");
+                else
+                    adapter.setLoaded();
+            }
+
+            @Override
+            public void reachedLastItem() {
+                if(!loadmore) {
+                    ((HomeInnerActivity)getActivity()).displaySnackBar("No more data available!");
+                }
             }
         });
     }

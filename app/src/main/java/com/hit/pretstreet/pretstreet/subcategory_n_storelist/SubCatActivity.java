@@ -39,9 +39,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGLINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
 
 public class SubCatActivity extends AbstractBaseAppCompatActivity implements
@@ -193,6 +196,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         Intent intent = new Intent(getApplicationContext(), StoreListingActivity.class);
         intent.putExtra("contentData", homeCatItemses);
         intent.putExtra(PRE_PAGE_KEY, SUBCATPAGE);
+        intent.putExtra(CLICKTYPE_KEY, SUBCATLINK);
         intent.putExtra(ID_KEY, getIntent().getStringExtra("mSubCatId"));
         intent.putExtra("mTitle", title);
         intent.putExtra("mSubTitle", tv_cat_name.getText().toString());

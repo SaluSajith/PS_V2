@@ -3,19 +3,17 @@ package com.hit.pretstreet.pretstreet.core.helpers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.INSTALLREFERRERKEY;
 
 /**
  * Created by User on 27/09/2017
@@ -84,6 +82,7 @@ public class InstallReferrerReceiver extends BroadcastReceiver {
        for (String key : EXPECTED_PARAMETERS) {
             String value = params.get(key);
             Log.e("InstallReferrerReceiver TAG","value - "+value);
+            PreferenceServices.getInstance().setTypeQueryparam(INSTALLREFERRERKEY);
             if (key.equals("share")) {
                 PreferenceServices.getInstance().setShareQueryparam(value); //storeparam*/
             }

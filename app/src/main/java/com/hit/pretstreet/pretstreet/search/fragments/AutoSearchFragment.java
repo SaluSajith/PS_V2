@@ -42,7 +42,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
  * Created by User on 14/08/2017.
  */
 
-public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> implements SearchDataCallback, Spinner.OnItemSelectedListener{
+public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity>
+        implements SearchDataCallback, Spinner.OnItemSelectedListener{
 
     @BindView(R.id.sp_Type) Spinner sp_Type;
     @BindView(R.id.sp_CatType) Spinner sp_CatType;
@@ -90,12 +91,7 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    try {
-                        if(mStrSearch.length()>=1)
-                        ((SearchActivity) getActivity()).openSearchResult(mStrSearch,
-                                mCatModels.get(sp_CatType.getSelectedItemPosition()).getId(),
-                                sp_Type.getSelectedItemPosition() + "");
-                    }catch (Exception e){}
+                    getSearchData();
                     return true;
                 }
                 return false;
@@ -105,12 +101,7 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
             public void onClick(DrawablePosition target) {
                 switch (target) {
                     case RIGHT:
-                        try {
-                            if(mStrSearch.length()>=1)
-                        ((SearchActivity)getActivity()).openSearchResult(mStrSearch,
-                                mCatModels.get(sp_CatType.getSelectedItemPosition()).getId(),
-                                sp_Type.getSelectedItemPosition()+"");
-                        }catch (Exception e){}
+                        getSearchData();
                         break;
                     default:
                         break;
@@ -121,13 +112,7 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
         edt_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try {
-                    mStrSearch = s.toString();
-                    if(mStrSearch.length()>=1)
-                    ((SearchActivity) getActivity()).getAutoSearch(mStrSearch,
-                            mCatModels.get(sp_CatType.getSelectedItemPosition()).getId(),
-                            sp_Type.getSelectedItemPosition() + "");
-                }catch (Exception e){}
+                getAutoSearchData(s);
             }
             @Override
             public void afterTextChanged(Editable editable) {
@@ -137,6 +122,24 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
                                           int after) {
             }
         });
+    }
+    private void getAutoSearchData(CharSequence s){
+        try {
+            mStrSearch = s.toString();
+            if(mStrSearch.length()>=1)
+                ((SearchActivity) getActivity()).getAutoSearch(mStrSearch,
+                        mCatModels.get(sp_CatType.getSelectedItemPosition()).getId(),
+                        sp_Type.getSelectedItemPosition() + "");
+        }catch (Exception e){}
+    }
+
+    private void getSearchData(){
+        try {
+            if(mStrSearch.length()>=1)
+                ((SearchActivity)getActivity()).openSearchResult(mStrSearch,
+                        mCatModels.get(sp_CatType.getSelectedItemPosition()).getId(),
+                        sp_Type.getSelectedItemPosition()+"");
+        }catch (Exception e){}
     }
 
     private void setupCatTypeSpinner(ArrayList<SearchModel> catModels){
@@ -205,7 +208,6 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
 
     @Override
     public void setSearchList(ArrayList<StoreListModel> searchModels, boolean b) {
-
     }
 
     @Override
@@ -215,6 +217,5 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity> im
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

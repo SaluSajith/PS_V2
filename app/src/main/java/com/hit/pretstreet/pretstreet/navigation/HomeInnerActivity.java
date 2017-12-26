@@ -198,21 +198,27 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     }
 
     public void getTrendinglist(int offset){
-        JSONObject resultJson = homeFragmentController.getTrendinglistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        JSONObject resultJson = homeFragmentController.getTrendinglistJson(offset,
+                getIntent().getStringExtra(Constant.PRE_PAGE_KEY),
+                getIntent().getStringExtra(Constant.CLICKTYPE_KEY));
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, TRENDING_URL);
     }
 
     public void getGiveawaylist(int offset){
-        JSONObject resultJson = homeFragmentController.getGiveawaylistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        JSONObject resultJson = homeFragmentController.getGiveawaylistJson(offset,
+                getIntent().getStringExtra(Constant.PRE_PAGE_KEY),
+                getIntent().getStringExtra(Constant.CLICKTYPE_KEY));
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, GIVEAWAY_URL);
     }
 
     public void getExhibitionlist(int offset){
-        JSONObject resultJson = homeFragmentController.getExhibitionlistJson(offset, getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
+        JSONObject resultJson = homeFragmentController.getExhibitionlistJson(offset,
+                getIntent().getStringExtra(Constant.PRE_PAGE_KEY),
+                getIntent().getStringExtra(Constant.CLICKTYPE_KEY));
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, EXHIBITION_URL);
@@ -326,18 +332,20 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void loadStoreDetails(int position, StoreListModel storeListModel) {
-        String pagetypeid = storeListModel.getPageTypeId();
+        String pagetypeid = storeListModel.getPageType();
         switch (pagetypeid){
             case MULTISTOREPAGE:
                 Intent intent = new Intent(HomeInnerActivity.this, MultistoreActivity.class);
                 intent.putExtra(Constant.ID_KEY, storeListModel.getId());
-                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
+                intent.putExtra(CLICKTYPE_KEY, storeListModel.getClickType());
+                intent.putExtra(Constant.PRE_PAGE_KEY, storeListModel.getPageTypeId());
                 startActivity(intent);
                 break;
             case STOREDETAILSPAGE:
                 intent = new Intent(HomeInnerActivity.this, StoreDetailsActivity.class);
                 intent.putExtra(Constant.PARCEL_KEY, storeListModel);
-                intent.putExtra(Constant.PRE_PAGE_KEY, EXHIBITIONPAGE);
+                intent.putExtra(CLICKTYPE_KEY, storeListModel.getClickType());
+                intent.putExtra(Constant.PRE_PAGE_KEY, storeListModel.getPageTypeId());
                 startActivity(intent);
                 break;
             default:
@@ -368,7 +376,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
         LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
         String phone = loginSession.getMobile();
-        registerJson = homeFragmentController.getExhibitionRegisterJson(EXNOTGOINGLINK,
+        registerJson = homeFragmentController.getExhibitionRegisterJson(EXARTICLEREGISTER,
                 Id + "", getIntent().getStringExtra(PRE_PAGE_KEY), phone);
         if(phone.trim().length()==0||phone.equalsIgnoreCase("null")){
             showRegisterPopup();

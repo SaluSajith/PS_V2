@@ -60,7 +60,11 @@ public class SignupFragment extends AbstractBaseFragment<WelcomeActivity> {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                btn_signup.setEnabled(true);
+                try {
+                    btn_signup.setEnabled(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, 2000);
     }

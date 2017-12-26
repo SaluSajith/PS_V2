@@ -157,8 +157,10 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
             }, 500);
 
         } catch (Resources.NotFoundException e) {
+            destroyDialog();
             e.printStackTrace();
         } catch (OutOfMemoryError e){
+            destroyDialog();
             e.printStackTrace();
         }
     }

@@ -49,6 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.R.dimen.trending_pager_height;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLISTLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 /**
@@ -91,9 +92,9 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     if (mOnLoadMoreListener != null) {
+                        isLoading = true;
                         mOnLoadMoreListener.onLoadMore();
                     }
-                    isLoading = true;
                 }
             }
         });
@@ -162,6 +163,12 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         loadImage(glide, trendingItems.getLogoImage(), holder.iv_profile);
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
+
+        if(position == list.size()-1){
+            if (mOnLoadMoreListener != null) {
+                mOnLoadMoreListener.reachedLastItem();
+            }
+        }
     }
 
     @Override
@@ -249,7 +256,9 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     StoreListModel storeListModel = new StoreListModel();
                     storeListModel.setId(trendingItems.getTitleid());
                     storeListModel.setTitle(trendingItems.getTitle());
-                    storeListModel.setPageTypeId(trendingItems.getTitlepagetype());
+                    storeListModel.setPageType(trendingItems.getTitlepagetype());
+                    storeListModel.setPageTypeId(TRENDINGPAGE);
+                    storeListModel.setClickType(TRENDINGLISTLINK);
                     trendingHolderInvoke.loadStoreDetails(getAdapterPosition(),
                             storeListModel);
                     break;
@@ -261,7 +270,9 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     storeListModel = new StoreListModel();
                     storeListModel.setId(trendingItems.getTitleid());
                     storeListModel.setTitle(trendingItems.getTitle());
-                    storeListModel.setPageTypeId(trendingItems.getTitlepagetype());
+                    storeListModel.setPageType(trendingItems.getTitlepagetype());
+                    storeListModel.setPageTypeId(TRENDINGPAGE);
+                    storeListModel.setClickType(TRENDINGLISTLINK);
                     trendingHolderInvoke.loadStoreDetails(getAdapterPosition(),
                             storeListModel);
                     break;

@@ -56,7 +56,7 @@ public class WelcomeFragment extends AbstractBaseFragment<WelcomeActivity> {
     }
 
     @OnClick(R.id.btn_sign_up)
-    public void onSignupPressed() {
+    public void onSignuppressed() {
         buttonClickCallback.buttonClick(SIGNUP_CLICK);
     }
 

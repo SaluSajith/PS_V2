@@ -72,9 +72,9 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
                 try {
                     if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                         if (mOnLoadMoreListener != null) {
+                            isLoading = true;
                             mOnLoadMoreListener.onLoadMore();
                         }
-                        isLoading = true;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -173,7 +173,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         }
         else{
             shopsHolder.tv_closeStatus.setVisibility(View.VISIBLE);
-            shopsHolder.img_follow_unfollow.setVisibility(View.VISIBLE);
+            //shopsHolder.img_follow_unfollow.setVisibility(View.VISIBLE);
             shopsHolder.tv_followerstext.setVisibility(View.VISIBLE);
             shopsHolder.txt_folleowercount.setVisibility(View.VISIBLE);
             shopsHolder.seperator.setVisibility(View.VISIBLE);
@@ -195,6 +195,12 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             }
         }
 
+
+        if(position == mItems.size()-1){
+            if (mOnLoadMoreListener != null) {
+                mOnLoadMoreListener.reachedLastItem();
+            }
+        }
     }
 
     private void setVisibility(View view, boolean b){
@@ -252,15 +258,17 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         ShopsHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            img_follow_unfollow.setOnClickListener(this);
             img_store_photo.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
             txt_storename.setOnClickListener(this);
             txt_address.setOnClickListener(this);
             iv_banner.setOnClickListener(this);
-            if (context.getClass().getSimpleName().equals(FollowingActivity.class.getSimpleName()))
+            if (context.getClass().getSimpleName().equals(FollowingActivity.class.getSimpleName())) {
                 img_follow_unfollow.setVisibility(View.GONE);
-            else ;
+            } else {
+                img_follow_unfollow.setOnClickListener(this);
+                img_follow_unfollow.setVisibility(View.VISIBLE);
+            }
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

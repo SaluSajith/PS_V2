@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
     private String TAG = "FCM";
     private NotificationUtils notificationUtils;
 
@@ -45,31 +46,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Log.d("FCM_service", "Received");
                 sendNotification(remoteMessage.getNotification().getTitle(),
                         remoteMessage.getNotification().getBody(), remoteMessage);
-                TrendingItems trendingItems = new TrendingItems();
-                trendingItems.setId(remoteMessage.getData().get("id"));
-                trendingItems.setTitle(remoteMessage.getNotification().getTitle());
-                trendingItems.setArticle(remoteMessage.getNotification().getBody());
-                trendingItems.setShareUrl(remoteMessage.getData().get("share"));
-
-                trendingItems.setLogoImage(remoteMessage.getNotification().getIcon());
-                ArrayList arrayList = new ArrayList();
-                arrayList.add(remoteMessage.getData().get("image"));
-                trendingItems.setImagearray(arrayList);
-
-                DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-                databaseHelper.saveNotif(trendingItems);
-
-                int size = PreferenceServices.getInstance().getNotifCOunt();
-                PreferenceServices.getInstance().updateNotif(size + 1);
-
-                Intent i = new Intent("RECEIVE_NOTIFICATION"); sendBroadcast(i);
+                savedata(remoteMessage);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        /*
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.e("FCM", "Notification Body: " + remoteMessage.getNotification().getBody());
@@ -84,38 +67,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 savedata(remoteMessage);
                 sendNotification(remoteMessage.getNotification().getTitle(),
                         remoteMessage.getNotification().getBody(), remoteMessage);
-               *//* JSONObject json = new JSONObject(remoteMessage.getData().toString());
-                handleDataMessage(json);*//*
+                JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                handleDataMessage(json);
             } catch (Exception e) {
                 Log.e("FCM", "Exception: " + e.getMessage());
             }
-        }*/
-    }
-
-    private void savedata(RemoteMessage remoteMessage){
-
-        try {
-            TrendingItems trendingItems = new TrendingItems();
-            trendingItems.setId(remoteMessage.getData().get("id"));
-            trendingItems.setTitle(remoteMessage.getData().get("title"));
-            trendingItems.setArticle(remoteMessage.getData().get("body"));
-            trendingItems.setShareUrl(remoteMessage.getData().get("share"));
-            trendingItems.setLogoImage(remoteMessage.getData().get("image_url"));
-
-            ArrayList arrayList = new ArrayList();
-            arrayList.add(remoteMessage.getData().get("image"));
-            trendingItems.setImagearray(arrayList);
-
-            DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-            databaseHelper.saveNotif(trendingItems);
-
-            int size = PreferenceServices.getInstance().getNotifCOunt();
-            PreferenceServices.getInstance().updateNotif(size + 1);
-
-            Intent i = new Intent("RECEIVE_NOTIFICATION");
-            sendBroadcast(i);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -126,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String title, String messageBody, RemoteMessage remoteMessage) {
 
-        Intent intent = new Intent(this, WelcomeActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("id", remoteMessage.getData().get("id"));
         intent.putExtra("title", remoteMessage.getData().get("title"));
@@ -176,6 +132,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
+    private void savedata(RemoteMessage remoteMessage){
+
+        try {
+            TrendingItems trendingItems = new TrendingItems();
+            trendingItems.setId(remoteMessage.getData().get("id"));
+            trendingItems.setTitle(remoteMessage.getNotification().getTitle());
+            trendingItems.setArticle(remoteMessage.getNotification().getBody());
+            trendingItems.setShareUrl(remoteMessage.getData().get("share"));
+
+            trendingItems.setLogoImage(remoteMessage.getNotification().getIcon());
+            ArrayList arrayList = new ArrayList();
+            arrayList.add(remoteMessage.getData().get("image"));
+            trendingItems.setImagearray(arrayList);
+
+            DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+            databaseHelper.saveNotif(trendingItems);
+
+            int size = PreferenceServices.getInstance().getNotifCOunt();
+            PreferenceServices.getInstance().updateNotif(size + 1);
+
+            Intent i = new Intent("RECEIVE_NOTIFICATION");
+            sendBroadcast(i);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void handleNotification(String message) {
         if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message

@@ -54,7 +54,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.FOLLOWINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FOLLOWING_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
 public class FollowingActivity extends AbstractBaseAppCompatActivity implements
@@ -74,19 +78,6 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     SubCategoryController subCategoryController;
     StoreList_RecyclerAdapter storeList_recyclerAdapter;
     TextViewPret[] txtname;
-
-    private int selectedFragment = 0;
-    private static final int ACCOUNT_FRAGMENT = 0;
-    private static final int FOLLOWING_FRAGMENT = 1;
-    private static final int ABOUT_FRAGMENT = 2;
-    private static final int ADDSTORE_FRAGMENT = 3;
-    private static final int CONTACTUS_FRAGMENT = 4;
-    private static final int FEEDBACK_FRAGMENT = 5;
-    private static final int ABOUTUS_FRAGMENT = 6;
-    private static final int PRIVACY_FRAGMENT = 7;
-    private static final int TERMS_FRAGMENT = 8;
-    private static final int TRENDING_FRAGMENT = 10;
-    private static final int EXHIBITION_FRAGMENT = 11;
 
     Context context;
     int pageCount=1;
@@ -136,7 +127,12 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
             }
         });
         ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
-        iv_search.setVisibility(View.GONE);
+        iv_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSearchPage();
+            }
+        });
         ll_scroll.setVisibility(View.VISIBLE);
         nsv_header.bringToFront();
 
@@ -164,12 +160,23 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
                         getFollowingData(catTag, false);
                     }
                 }
+            }
+
+            @Override
+            public void reachedLastItem() {
                 if (!loadmore)
                     displaySnackBar("No more stores available!");
             }
         });
     }
 
+    private void openSearchPage(){
+        finish();
+        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+        intent.putExtra(PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
+        intent.putExtra(ID_KEY, getIntent().getStringExtra(ID_KEY));
+        startActivity(intent);
+    }
     private void getFollowingData(String catId, boolean first){
         JSONObject resultJson = navItemsController.getFollowinglistJson(catId,
                 pageCount+"", getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
@@ -300,41 +307,20 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void buttonClick(StoreListModel storeListModel) {
-        switch (storeListModel.getPageTypeId()){
-            case Constant.STOREDETAILSPAGE:
-                for (int index = 0;index<txtname.length;index++) {
-                    txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                    txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
-                }
-                txtname[0].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
-                txtname[0].setTextColor(ContextCompat.getColor(this, R.color.black));
-                Intent intent = new Intent(FollowingActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(Constant.PARCEL_KEY, storeListModel);
-                intent.putExtra(CLICKTYPE_KEY, "");
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.FOLLOWINGPAGE);
-                startActivity(intent);
-                break;
-            case Constant.TRENDINGPAGE:
-                selectedFragment = TRENDING_FRAGMENT;
-                intent = new Intent(FollowingActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.FOLLOWINGPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case Constant.EXHIBITIONPAGE:
-                selectedFragment = EXHIBITION_FRAGMENT;
-                intent = new Intent(FollowingActivity.this, HomeInnerActivity.class);
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.FOLLOWINGPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case Constant.MULTISTOREPAGE:
-                intent = new Intent(FollowingActivity.this, MultistoreActivity.class);
-                intent.putExtra(Constant.ID_KEY, storeListModel.getId());
-                intent.putExtra(Constant.PRE_PAGE_KEY, Constant.FOLLOWINGPAGE);
-                startActivity(intent);
-                break;
-            default: break;
+        if(storeListModel.getPageTypeId().equals(STOREDETAILSPAGE)){
+            for (int index = 0;index<txtname.length;index++) {
+                txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
+            }
+            txtname[0].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
+            txtname[0].setTextColor(ContextCompat.getColor(this, R.color.black));
+            Intent intent = new Intent(FollowingActivity.this, StoreDetailsActivity.class);
+            intent.putExtra(Constant.PARCEL_KEY, storeListModel);
+            intent.putExtra(CLICKTYPE_KEY, "");
+            intent.putExtra(Constant.PRE_PAGE_KEY, FOLLOWINGPAGE);
+            startActivity(intent);
+        } else {
+            openNext(storeListModel, FOLLOWINGPAGE, "");
         }
     }
     @Override

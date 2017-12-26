@@ -65,7 +65,15 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
                     requestCalled = true;
                     ((HomeInnerActivity)getActivity()).getTrendinglist(pageCount);
                 }
-               else ((HomeInnerActivity)getActivity()).displaySnackBar("No more data available!");
+                else
+                    adapter.setLoaded();
+            }
+
+            @Override
+            public void reachedLastItem() {
+                if(!loadmore) {
+                    ((HomeInnerActivity)getActivity()).displaySnackBar("No more data available!");
+                }
             }
         });
     }

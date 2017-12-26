@@ -132,8 +132,10 @@ public class Constant {
     public static final String EXNOTINTERESTEDLINK = "35";
     public static final String EXGOINGLINK = "36";
     public static final String EXNOTGOINGLINK = "37";
-    public static final String DEEPLINKINGKEY = "38";
-    public static final String NOTIFICATIONKEY = "39";
+    public static final String NOTIFICATIONKEY = "38";
+    public static final String EXARTICLEREGISTER = "39";
+    public static final String INSTALLREFERRERKEY = "40";
+    public static final String GIVEAWAYLISTLINK = "41";
 
     //Trape types
     public static final String TRAPE = "1";

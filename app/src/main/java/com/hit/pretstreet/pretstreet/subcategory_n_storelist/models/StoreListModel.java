@@ -9,8 +9,9 @@ import java.io.Serializable;
 public class StoreListModel implements Serializable {
 
     private String PageType="", PageTypeId="", Id="", Title="",
-            FollowingCount="", Location="", ImageSource="", Share="";
-    private boolean Saleflag=false, Offerflag=false, Newflag=false, FollowingStatus=false, OpenStatus=false, BannerFlag=false, loadmoreFlag=false;
+            FollowingCount="", Location="", ImageSource="", Share="", ClickType="";
+    private boolean Saleflag=false, Offerflag=false, Newflag=false, FollowingStatus=false,
+            OpenStatus=false, BannerFlag=false, loadmoreFlag=false;
 
     public Boolean getBannerFlag() {
         return BannerFlag;
@@ -130,5 +131,13 @@ public class StoreListModel implements Serializable {
 
     public void setShare(String share) {
         Share = share;
+    }
+
+    public void setClickType(String clickType) {
+        ClickType = clickType;
+    }
+
+    public String getClickType() {
+        return ClickType;
     }
 }

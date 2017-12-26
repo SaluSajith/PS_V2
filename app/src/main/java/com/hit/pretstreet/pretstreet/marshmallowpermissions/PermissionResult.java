@@ -6,7 +6,6 @@ package com.hit.pretstreet.pretstreet.marshmallowpermissions;
 public interface PermissionResult {
 
     void permissionGranted();
-
     void permissionDenied();
 
 }

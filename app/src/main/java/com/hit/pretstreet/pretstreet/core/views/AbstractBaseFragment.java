@@ -27,6 +27,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.hit.pretstreet.pretstreet.BuildConfig;
+import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.helpers.UIThreadHandler;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
@@ -64,15 +69,25 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         pDialog.setCancelable(false);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (BuildConfig.DEBUG){ }
+        else {
+            PretStreet pretStreet = (PretStreet) getActivity().getApplication();
+            Tracker mTracker = pretStreet.tracker();
+            mTracker.set("UserTrack", this.getClass().getSimpleName());
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Fragment")
+                    .setAction(mTracker.get("UserTrack"))
+                    .setLabel(mTracker.get("UserTrack"))
+                    .build());
+        }
+    }
+
     /**
      * Destroys the ScanningViewPresenter when the View is destroyed
      */
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 
     protected void runOnUIThread(Runnable action) {
         this.handler.post(action);

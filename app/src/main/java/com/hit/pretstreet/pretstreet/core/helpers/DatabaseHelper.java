@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -20,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase db;
     private ContentValues values;
     private static final String DATABASE_NAME = "pretstreet_db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String TABLE_RECENT_SEARCH_STORE = "RECENT_SEARCH_STORE";
     ArrayList<HashMap<String, String>> search_list = new ArrayList<>();
@@ -30,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NOTIFICATION = "NOTIFICATION";
     ArrayList<TrendingItems> notif_list = new ArrayList<>();
+    private static final String KEY_BASEID = "NOTIF_BASEID";
     private static final String KEY_ID = "NOTIF_ID";
     private static final String KEY_TITLE = "NOTIF_TITLE";
     private static final String KEY_DESC = "NOTIF_DESC";
@@ -56,6 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String CREATE_NOTIF_TABLE = " CREATE TABLE IF NOT EXISTS " + TABLE_NOTIFICATION +
                 " (" + KEY_TITLE + " VARCHAR, "
+                + KEY_BASEID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + KEY_ID + " VARCHAR, "
                 + KEY_DESC + " VARCHAR, "
                 + KEY_IMAGE + " VARCHAR, "
@@ -89,7 +92,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if(c.getCount()>=5){
                 deleteLastRowNotification();
             }
-            if(!CheckIsDataAlreadyInDBorNot(TABLE_NOTIFICATION, KEY_ID, trendingItems.getId())) {
+            //db.execSQL("delete from "+ TABLE_NOTIFICATION);
+            //if(!CheckIsDataAlreadyInDBorNot(TABLE_NOTIFICATION, KEY_ID, trendingItems.getId())) {
                 values = new ContentValues();
                 values.put(KEY_ID, trendingItems.getId());
                 values.put(KEY_TITLE, trendingItems.getTitle());
@@ -98,7 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(KEY_SHARE, trendingItems.getShareUrl());
                 values.put(KEY_ICON, trendingItems.getLogoImage());
                 l = db.insert(TABLE_NOTIFICATION, null, values);
-            }
+            //}
             db.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,6 +162,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             trendingItems.setNotifPage(true);
             notif_list.add(trendingItems);
         }
+        Collections.reverse(notif_list);
         db.close();
         return notif_list;
     }
@@ -253,7 +258,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             System.out.println("Notif deleteLastSavedNotifRow "  +" "+cursor.getCount());
             //String rowId = cursor.getString(cursor.getColumnIndex(KEY_ID));
             //db.delete(TABLE_NOTIFICATION, KEY_ID + "=?", new String[]{rowId});
-            db.rawQuery("DELETE FROM "+TABLE_NOTIFICATION+" WHERE "+KEY_ID+" = (SELECT MAX("+KEY_ID+") FROM "+TABLE_NOTIFICATION+")", null);
+            db.rawQuery("DELETE FROM "+TABLE_NOTIFICATION+" WHERE "+KEY_BASEID+" = (SELECT MAX("+KEY_BASEID+") FROM "+TABLE_NOTIFICATION+")", null);
 
             //}
             db.close();
@@ -266,12 +271,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_NOTIFICATION, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
-            String rowId = cursor.getString(cursor.getColumnIndex(KEY_ID));
-            db.delete(TABLE_NOTIFICATION, KEY_ID + "=?", new String[]{rowId});
+            String rowId = cursor.getString(cursor.getColumnIndex(KEY_BASEID));
+            db.delete(TABLE_NOTIFICATION, KEY_BASEID + "=?", new String[]{rowId});
         }
         //db.close();
     }
-
 
     public int getNotifCount() {
         int count = 0;

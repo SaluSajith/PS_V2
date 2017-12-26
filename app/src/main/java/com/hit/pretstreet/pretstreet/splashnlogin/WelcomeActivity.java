@@ -81,20 +81,18 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.AUTOSEARCH_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHECKIP_URL;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.DEEPLINKINGKEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.INSTALLREFERRERKEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_OTP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_URL;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIFICATIONKEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_OTP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SIGNUPPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SOCIAL_LOGIN_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TERMS_FRAGMENT;
 
 /**
  * Created by User on 20/07/2017.
@@ -106,7 +104,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     private static final int WELCOME_FRAGMENT = 0;
     private static final int LOGIN_FRAGMENT = 1;
     private static final int SIGNUP_FRAGMENT = 2;
-    private static final int FORGETPASSWORD_FRAGMENT = 3;
     private static final int SPLASH_FRAGMENT = 4;
     private static final int FACEBOOK_LOGIN_REQUEST_CODE = 1;
     private static final int GOOGLE_LOGIN_REQUEST_CODE = 2;
@@ -115,7 +112,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     private static final int SIGNUP = 0;
     private static final int LOGIN = 1;
     private static final int SOCIAL_LOGIN = 2;
-    private static final int TERMS_FRAGMENT = 8;
 
     @BindView(R.id.content) FrameLayout fl_content;
     @BindView(R.id.content_splash) FrameLayout fl_content_splash;
@@ -139,8 +135,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     ButtonPret buttonPret;
 
     boolean notif = false;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,6 +172,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             TrendingItems trendingItems = new TrendingItems();
             trendingItems.setId(intent.getExtras().getString("id"));
             trendingItems.setTitle(intent.getExtras().getString("title"));
+            System.out.println("intent.getExtras()  "+intent.getExtras().getString("body"));
             trendingItems.setArticle(intent.getExtras().getString("body"));
             trendingItems.setShareUrl(intent.getExtras().getString("share"));
             trendingItems.setLogoImage("");
@@ -193,6 +188,26 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
             PreferenceServices.getInstance().setIdQueryparam(intent.getExtras().getString("id"));
             PreferenceServices.getInstance().setShareQueryparam(intent.getExtras().getString("share"));
+            PreferenceServices.getInstance().setTypeQueryparam(NOTIFICATIONKEY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveReferralData(){
+        try {
+            if(getIntent().getExtras().containsKey("share")) {
+                String valueOne = getIntent().getExtras().getString("share");
+                String id = getIntent().getExtras().getString("id");
+                Log.d("TOKEN", "valueOne: " + valueOne + " id: " + id);
+                if (valueOne.trim().length() != 0 && id.trim().length() != 0) {
+                    forwardDeepLink(valueOne, id, INSTALLREFERRERKEY);
+                    finish();
+                }
+            }
+            /*PreferenceServices.getInstance().setIdQueryparam(intent.getExtras().getString("id"));
+            PreferenceServices.getInstance().setShareQueryparam(intent.getExtras().getString("share"));
+            PreferenceServices.getInstance().setTypeQueryparam(NOTIFICATIONKEY);*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -247,7 +262,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        displayLogMessage("resultCode ", resultCode+"");
+        //displayLogMessage("resultCode ", resultCode+"");
 
         switch (requestCode) {
             case FACEBOOK_LOGIN_REQUEST_CODE:
@@ -373,7 +388,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     case CHECKIP_URL:
                         String s = response.getString("BASEURL");
                         sharedPreferencesHelper.putString("BASEURL", s);
-                        //System.out.println("BASEURL" + sharedPreferencesHelper.getString("BASEURL", ""));
                         splashHandler.postDelayed(mChangeSplash, DURATION);
                         splashHandler.postDelayed(mEndSplash, SPLASH_DURATION_END);
 
@@ -387,22 +401,13 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
                         if (getIntent().getExtras() != null && notif == false) {
                             notif = true;
-                            //for (String key : getIntent().getExtras().keySet()) {
-                            // String value = getIntent().getExtras().getString(key);
-                            // Log.d("TOKEN", "Key: " + key + " Value: " + value);
                             try {
-                                if(getIntent().getExtras().containsKey("image")){
-                                    saveNotification(getIntent());
+                                if(!getIntent().getExtras().containsKey("image")){
+                                    saveReferralData();
                                 } else if(getIntent().getExtras().containsKey("share")){
-                                    String valueOne = getIntent().getExtras().getString("share");
-                                    String id = getIntent().getExtras().getString("id");
-                                    Log.d("TOKEN", "valueOne: " + valueOne + " id: " + id);
-                                    if (valueOne.trim().length() != 0 && id.trim().length() != 0) {
-                                        forwardDeepLink(valueOne, id, DEEPLINKINGKEY);
-                                        finish();
-                                    }
+                                    saveNotification(getIntent());
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e){
                                 e.printStackTrace();
                             }
                         }
