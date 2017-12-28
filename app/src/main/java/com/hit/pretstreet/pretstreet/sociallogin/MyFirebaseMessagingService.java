@@ -52,7 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 e.printStackTrace();
             }
         }
-
+/*
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.e("FCM", "Notification Body: " + remoteMessage.getNotification().getBody());
@@ -72,7 +72,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             } catch (Exception e) {
                 Log.e("FCM", "Exception: " + e.getMessage());
             }
-        }
+        }*/
     }
 
     /**
@@ -82,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String title, String messageBody, RemoteMessage remoteMessage) {
 
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, WelcomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("id", remoteMessage.getData().get("id"));
         intent.putExtra("title", remoteMessage.getData().get("title"));
@@ -133,7 +133,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     private void savedata(RemoteMessage remoteMessage){
-
         try {
             TrendingItems trendingItems = new TrendingItems();
             trendingItems.setId(remoteMessage.getData().get("id"));
@@ -227,7 +226,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Showing notification with text only
      */
-    private void showNotificationMessage(Context context, String title, String message, String timeStamp, Intent intent) {
+    private void showNotificationMessage(Context context, String title, String message,
+                                         String timeStamp, Intent intent) {
         notificationUtils = new NotificationUtils(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notificationUtils.showNotificationMessage(title, message, timeStamp, intent);
@@ -236,7 +236,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Showing notification with text and image
      */
-    private void showNotificationMessageWithBigImage(Context context, String title, String message, String timeStamp, Intent intent, String imageUrl) {
+    private void showNotificationMessageWithBigImage(Context context, String title, String message,
+                                                     String timeStamp, Intent intent, String imageUrl) {
         notificationUtils = new NotificationUtils(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);

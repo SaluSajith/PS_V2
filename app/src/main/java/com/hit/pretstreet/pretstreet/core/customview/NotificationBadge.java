@@ -2,6 +2,7 @@ package com.hit.pretstreet.pretstreet.core.customview;
 
 /**
  * Created by User on 6/23/2017.
+ * Notification badge in homepage - displays unread notification count - max value 5
  */
 
 import android.content.Context;
@@ -14,11 +15,11 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.hit.pretstreet.pretstreet.R;
 
 public class NotificationBadge extends FrameLayout {
+
     private static final int DEFAULT_TEXT_COLOR = 0xFFFFFFFF;
     private static final int DEFAULT_TEXT_SIZE = 14;
     private static final boolean DEFAULT_ANIMATION_ENABLED = true;

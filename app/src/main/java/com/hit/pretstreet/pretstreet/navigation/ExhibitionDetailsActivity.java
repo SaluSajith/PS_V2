@@ -433,8 +433,8 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     }
 
     private void showLocation(StoreDetailsModel storeDetailsModel){
-        if (storeDetailsModel.getLatitude().equalsIgnoreCase("null") ||
-                storeDetailsModel.getLongitude().equalsIgnoreCase("null")) {
+        if (storeDetailsModel.getLatitude().equalsIgnoreCase("") ||
+                storeDetailsModel.getLongitude().equalsIgnoreCase("")) {
             displaySnackBar("Location not found");
         } else {
             try {

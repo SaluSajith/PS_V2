@@ -2,6 +2,8 @@ package com.hit.pretstreet.pretstreet.core.customview;
 
 /**
  * Created by User on 7/5/2017.
+ * Rainbow colored progressbar
+ * have to replace this by our own
  */
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

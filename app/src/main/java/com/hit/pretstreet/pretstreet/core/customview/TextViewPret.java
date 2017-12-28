@@ -13,6 +13,7 @@ import com.hit.pretstreet.pretstreet.R;
 
 /**
  * Created by User on 29/6/17.
+ * Custom textView widget
  */
 
 public class TextViewPret extends AppCompatTextView {

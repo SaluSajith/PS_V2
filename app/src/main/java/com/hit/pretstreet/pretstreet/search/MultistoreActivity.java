@@ -110,13 +110,18 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void getShoplist(){
-        String pageid = getIntent().getStringExtra(PRE_PAGE_KEY);
-        String clicktypeid = getIntent().getStringExtra(CLICKTYPE_KEY);
-        String mCatid = getIntent().getStringExtra(Constant.ID_KEY);
-        JSONObject resultJson = searchController.getMultiStoreListJson(mCatid, pageid, clicktypeid, pageCount);//caat, prepage, clicktype, id
-        if(pageCount ==1)
-        this.showProgressDialog(getResources().getString(R.string.loading));
-        jsonRequestController.sendRequest(this, resultJson, MULTISTORE_URL);
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null && getIntent().getExtras()
+                    .containsKey(ID_KEY)) {
+                String pageid = getIntent().getStringExtra(PRE_PAGE_KEY);
+                String clicktypeid = getIntent().getStringExtra(CLICKTYPE_KEY);
+                String mCatid = getIntent().getStringExtra(Constant.ID_KEY);
+                JSONObject resultJson = searchController.getMultiStoreListJson(mCatid, pageid, clicktypeid, pageCount);//caat, prepage, clicktype, id
+                if(pageCount ==1)
+                    this.showProgressDialog(getResources().getString(R.string.loading));
+                jsonRequestController.sendRequest(this, resultJson, MULTISTORE_URL);
+            }
+        }
     }
 
     private void setAdapter(){

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 
+/** Simple divider decoration inside navigation drawer*/
 public class DividerDecoration extends RecyclerView.ItemDecoration {
 
     private final Paint mPaint;

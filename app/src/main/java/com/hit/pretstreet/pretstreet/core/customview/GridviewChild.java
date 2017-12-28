@@ -1,16 +1,13 @@
 package com.hit.pretstreet.pretstreet.core.customview;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 /**
  * Created by User on 15/09/2017.
+ * Custom Gridview child in homepage listing
  */
 
 public class GridviewChild extends RelativeLayout {

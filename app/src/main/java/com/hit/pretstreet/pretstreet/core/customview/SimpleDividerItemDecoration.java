@@ -10,6 +10,7 @@ import com.hit.pretstreet.pretstreet.R;
 
 /**
  * Created by User on 5/2/2017.
+ * Simple divider decoration inside every recyclerviews
  */
 
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {

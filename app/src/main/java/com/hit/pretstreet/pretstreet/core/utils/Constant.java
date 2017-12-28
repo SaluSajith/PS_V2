@@ -14,13 +14,16 @@ import org.json.JSONObject;
 
 /**
  * Created by User on 14/6/17.
+ * Static values in the application
  */
 public class Constant {
 
     public static final String GOOGLE_API_KEY = "AIzaSyCAq0CP83saVHVc93LDs_m3xUdpFna0c2c";
     public static final String API_KEY_BROWSER = "AIzaSyApozNhHGX5MrTZr63wVRlTbBLo5QRptVA";
 
-    public static final String CHECKIP_URL = "http://35.154.65.154/extrafiles/checkip.php";
+    /** Main URL
+     * From this URL we will get the BAse URL which should be attached in all the URLs*/
+    public static final String CHECKIP_URL = "http://35.154.65.154/extrafiles/checkipbeta.php";
 
     //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";  //not working
     //public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";   //test
@@ -175,6 +178,12 @@ public class Constant {
     public static final int PICK_IMAGE_REQUEST = 111;
     public static final int PLACE_PICKER_REQUEST = 112;
 
+    /**Add constants to the jsonobject - for POSTing
+     * Have to attach this to all apis
+     *
+     * @param jsonObject JSON object which is ready to POST
+     * @param context ACtivity context
+     * @return jsonObject having Useris and sessionid*/
     public static JSONObject addConstants(JSONObject jsonObject, Context context){
 
         JSONObject jsonBody = jsonObject;
@@ -196,17 +205,25 @@ public class Constant {
         return jsonBody;
     }
 
+    /**Add constants to the jsonobject - for POSTing
+     * Have to attach this to all apis
+     *
+     * @param jsonObject JSON object which is ready to POST
+     * @param context ACtivity context
+     * @return new jsonObject having Token*/
     public static JSONObject addDeviceId(JSONObject jsonObject, Context context){
 
         JSONObject jsonBody = jsonObject;
         try {
             SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
+            /** FCM TOKEN*/
             jsonBody.put("DeviceId", sharedPreferencesHelper.getString("TOKEN", ""));
         } catch (JSONException e) {
         } catch (Exception e) {}
         return jsonBody;
     }
 
+    /** Update baseURL whenever we call Welcome page*/
     public static String getBaseUrl(){
         SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(PretStreet.getInstance());
         String baseUrl = sharedPreferencesHelper.getString("BASEURL", "");

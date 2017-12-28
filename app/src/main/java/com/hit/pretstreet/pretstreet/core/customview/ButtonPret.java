@@ -14,10 +14,11 @@ import com.hit.pretstreet.pretstreet.R;
 
 /**
  * Created by User on 29/6/17.
+ * Create a custom widget which has inbuilt font
  */
-
 public class ButtonPret extends AppCompatButton {
 
+    //default font taken from assets folder
     private static final String defaultFontName = "MERRIWEATHER-REGULAR.TTF";
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -42,6 +43,7 @@ public class ButtonPret extends AppCompatButton {
             String fontName = a.getString(R.styleable.CustomStyle_pret_typeface);
             try {
                 if (fontName == null) fontName = defaultFontName;
+                //applying custom font
                 Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "" + fontName);
                 setTypeface(myTypeface);
             } catch (Exception e) {

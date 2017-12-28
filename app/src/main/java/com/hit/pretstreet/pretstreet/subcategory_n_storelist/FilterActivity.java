@@ -36,7 +36,9 @@ import butterknife.OnClick;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTER_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
+
 
 public class FilterActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, FilterCallback {
@@ -61,7 +63,7 @@ public class FilterActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void getFilterlist(){
-        String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
+        String pageid = getIntent().getStringExtra(PRE_PAGE_KEY);
         String mCatid = getIntent().getStringExtra(ID_KEY);
         try {
             Bundle bundle = getIntent().getExtras();

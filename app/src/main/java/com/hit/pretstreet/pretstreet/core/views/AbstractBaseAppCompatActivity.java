@@ -57,6 +57,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_FRAGMEN
 
 /**
  * Created by User on 7/5/2017.
+ * Parent Activity of all the activities
  */
 
 public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
@@ -85,6 +86,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         super.onStart();
         if (BuildConfig.DEBUG){ }
         else {
+            /**  Sending Activity class details as events to google - Google Analysis*/
             PretStreet pretStreet = (PretStreet) getApplication();
             Tracker mTracker = pretStreet.tracker();
             mTracker.set("UserTrack", this.getClass().getSimpleName());
@@ -137,6 +139,8 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         Log.d(key, message);
     }
 
+    /** Share button onclick event
+     * @param text text to be shared*/
     public void shareUrl(String text) {
         Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
@@ -309,6 +313,11 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         }
     }
 
+
+/** Open next activity from data recieved from notifications and referral links
+ *  @param valueOne shareparameter which denotes the page to be opened
+ *  @param id ID of store/multistore/article/ whatever it is
+ *  @param clicktypeId Id to pass to server for logging(can be referral id or notification id*/
     public void forwardDeepLink(String valueOne, String id, String clicktypeId){
         Intent intent;
         switch (valueOne){  //TODO nullpointer excp
@@ -358,6 +367,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
                     trendingItems.setId(id);
                     trendingItems.setPagetypeid("");
                     trendingItems.setClicktype("");
+                    trendingItems.setPagetype(TRENDINGPAGE);
                     intent = new Intent(this, TrendingArticleActivity.class);
                     intent.putExtra(PRE_PAGE_KEY, "");
                     intent.putExtra(CLICKTYPE_KEY, clicktypeId);
@@ -407,6 +417,10 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         }
     }
 
+    /**Open next activity - get dynamic links from listing activities
+     * @param storeListModel - Model having id and other essentials
+     * @param prepagekey - key which denotes the activity from which the function is called
+     * @param clicktypeId - clicktype*/
     public void openNext(StoreListModel storeListModel, String prepagekey, String clicktypeId){
         switch (storeListModel.getPageTypeId()){
             case STOREDETAILSPAGE:

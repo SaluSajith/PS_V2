@@ -21,6 +21,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
 
 /**
  * Created by User on 17/08/2017.
+ * Empty fragment with Retry option
+ * Displays if nothing is there in the fragment or list
  */
 
 public class EmptyFragment extends AbstractBaseFragment<WelcomeActivity> {

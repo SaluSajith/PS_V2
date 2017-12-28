@@ -48,8 +48,11 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_FRAGMENT;
+
 /**
  * Created by User on 04/08/2017.
+ * Adapter class for exhibition listing page
  */
 
 public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -63,7 +66,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private static final int LIKE = 22;
     private static int selected_id = 22;
     private static final int ReGISTER = 21;
-    private static final int EXHIBITION_FRAGMENT = 11;
 
     private boolean isLoading;
     private int visibleThreshold = 5;
@@ -72,8 +74,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private OnLoadMoreListener mOnLoadMoreListener;
 
     public ExhibitionAdapter(final RequestManager glide, RecyclerView mRecyclerView,
-                             Activity activity, ExhibitionFragment context,
-                             ArrayList<TrendingItems> list) {
+                             Activity activity, ArrayList<TrendingItems> list) {
         this.context = activity;
         this.list = list;
         this.glide = glide;
@@ -86,10 +87,10 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 super.onScrolled(recyclerView, dx, dy);
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) { //reached 5th last item
                     if (mOnLoadMoreListener != null) {
                         isLoading = true;
-                        mOnLoadMoreListener.onLoadMore();
+                        mOnLoadMoreListener.onLoadMore(); //call loadmore api with the next offset
                     }
                 }
             }
@@ -132,25 +133,28 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
 
-        if(trendingItems.getRegisterFlag().contains("0")){
-            holder.bt_register.setEnabled(true);
-            holder.bt_register.setText("Register");
-            holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.dark_gray));
-            holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
-            holder.bt_register.setVisibility(View.VISIBLE);
+        switch (trendingItems.getRegisterFlag()){
+            case "0":
+                holder.bt_register.setEnabled(true);
+                holder.bt_register.setText("Register");
+                holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.dark_gray));
+                holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
+                holder.bt_register.setVisibility(View.VISIBLE);
+                break;
+            case "1":
+                holder.bt_register.setEnabled(false);
+                holder.bt_register.setText("Registered");
+                holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.white));
+                holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+                holder.bt_register.setVisibility(View.VISIBLE);
+                break;
+            case "2":
+                holder.bt_register.setEnabled(false);
+                holder.bt_register.setVisibility(View.GONE);
+                break;
+            default:
+                break;
         }
-        else if(trendingItems.getRegisterFlag().contains("1")){
-            holder.bt_register.setEnabled(false);
-            holder.bt_register.setText("Registered");
-            holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.white));
-            holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
-            holder.bt_register.setVisibility(View.VISIBLE);
-        }
-        else{
-            holder.bt_register.setEnabled(false);
-            holder.bt_register.setVisibility(View.GONE);
-        }
-
         if(position == list.size()-1){
             if (mOnLoadMoreListener != null) {
                 mOnLoadMoreListener.reachedLastItem();
@@ -244,9 +248,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }else {
                         mPosition = getAdapterPosition();
                         ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
-                        /*ArrayList<String> mImagearray = new ArrayList<>();
-                        mImagearray.add(trendingItems.getImagearray().get(0));
-                        zoomedViewListener.onClicked(0, mImagearray);*/
                     }
                     break;
                 default:
@@ -268,8 +269,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     list.get(mPosition).setRegister(status+"");
                 break;
             case LIKE:
-                /*imageViewPret.setImageResource(status == 1 ?
-                        R.drawable.red_heart : R.drawable.grey_heart);*/
                 if(list.get(mPosition).getId().equals(storeid))
                     list.get(mPosition).setLike(status == 0 ? false : true);
                 break;

@@ -30,6 +30,8 @@ import java.util.ArrayList;
 
 /**
  * Created by User on 04/08/2017.
+ * Image Sliders - ViewPagers
+ * Used inside Trending listing n Giveaway listing
  */
 
 public class ArticlePagerAdapter extends PagerAdapter {
@@ -59,6 +61,7 @@ public class ArticlePagerAdapter extends PagerAdapter {
         final View itemView = LayoutInflater.from(mContext).inflate(R.layout.image_slider_item, container, false);
 
         final ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
+        //double checking for image array
         if((mResources.get(position)).length()==0){
             imageView.setImageResource(R.drawable.default_banner);
         } else {

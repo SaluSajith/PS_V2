@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import java.util.List;
 
 /**
- * @author Aidan Follestad (afollestad)
+ * Created by User
+ * Adapetr class for sectioned recyclerview inside filetr page
  */
 public abstract class SectionedRecyclerViewAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 

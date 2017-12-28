@@ -24,7 +24,6 @@ import android.widget.ImageView;
 /**
  * Base View to manage image zoom/scrool/pinch operations
  *
- * @author alessandro
  */
 public abstract class ImageViewTouchBase extends ImageView  {
     public static final String VERSION = BuildConfig.VERSION_NAME;

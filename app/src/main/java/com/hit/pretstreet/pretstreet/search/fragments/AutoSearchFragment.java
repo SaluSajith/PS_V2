@@ -37,6 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 
 /**
  * Created by User on 14/08/2017.
@@ -62,7 +63,7 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity>
     @Override
     public void onResume() {
         super.onResume();
-        ((SearchActivity)getActivity()).getRecentPage(this, "5");//TODO All
+        ((SearchActivity)getActivity()).getRecentPage(this, "0");//TODO All
     }
 
     @Override
@@ -151,7 +152,13 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity>
                 R.layout.row_text, list);
         dataAdapter.setDropDownViewResource(R.layout.row_text);
         sp_CatType.setAdapter(dataAdapter);
-        String id = getActivity().getIntent().getStringExtra(ID_KEY);
+        String id = "";
+        if (getActivity().getIntent() != null) {
+            if (getActivity().getIntent().getExtras() != null && getActivity().getIntent().getExtras()
+                    .containsKey(ID_KEY)) {
+                id = getActivity().getIntent().getStringExtra(ID_KEY);
+            }
+        }
         for(int i=0;i<catModels.size();i++){
             if(catModels.get(i).getId().equals(id))
                 sp_CatType.setSelection(i);

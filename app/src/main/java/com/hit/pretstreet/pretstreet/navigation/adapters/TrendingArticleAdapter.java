@@ -2,6 +2,7 @@ package com.hit.pretstreet.pretstreet.navigation.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingCallback;
@@ -35,18 +38,11 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
     TrendingCallback trendingCallback;
     private ZoomedViewListener zoomedViewListener;
 
-    public TrendingArticleAdapter(Context context, ArrayList<TrendingItems> artItems) {
+    public TrendingArticleAdapter(Context context, ArrayList<TrendingItems> artItems,
+                                  ZoomedViewListener zoomedViewListener) {
         this.context = context;
         this.artItems = artItems;
-        try {
-            if(context.getClass().getSimpleName().equals(TrendingArticleActivity.class.getSimpleName()))
-                this.zoomedViewListener = ((TrendingArticleActivity) context);
-            else if(context.getClass().getSimpleName().equals(NavigationItemsActivity.class.getSimpleName()))
-                this.zoomedViewListener = ((NavigationItemsActivity) context);
-            else this.zoomedViewListener = (ZoomedViewListener) context.getApplicationContext();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.zoomedViewListener = zoomedViewListener;
     }
 
     @Override
@@ -133,8 +129,10 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
                 case R.id.iv_banner:
                     if(!notifItems.isNotifPage()) {
                         ArrayList<String> mImagearray = new ArrayList<>();
-                        mImagearray.add(artItems.get(getAdapterPosition()).getLogoImage());
-                        zoomedViewListener.onClicked(0, mImagearray);
+                        for (TrendingItems item : artItems) {
+                            mImagearray.add(item.getLogoImage());
+                        }
+                        zoomedViewListener.onClicked(getAdapterPosition(), mImagearray);
                     }
                     else{
                         trendingCallback = (NavigationItemsActivity)context;

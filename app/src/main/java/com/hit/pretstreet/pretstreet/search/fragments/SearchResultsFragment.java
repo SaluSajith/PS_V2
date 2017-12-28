@@ -89,13 +89,15 @@ public class SearchResultsFragment extends AbstractBaseFragment<WelcomeActivity>
     }
 
     private void openFilterPage(){
-        Intent intent = new Intent(getActivity(), FilterActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(PRE_PAGE_KEY, Constant.SEARCHPAGE);
-        bundle.putString(ID_KEY, getArguments().getString(ID_KEY));
-        bundle.putSerializable(PARCEL_KEY, getArguments().getSerializable(PARCEL_KEY));
-        intent.putExtras(bundle);
-        getActivity().startActivityForResult(intent, Integer.parseInt(FILTERPAGE));
+        if (getArguments() != null && getArguments().containsKey(ID_KEY)) {
+                Intent intent = new Intent(getActivity(), FilterActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(PRE_PAGE_KEY, Constant.SEARCHPAGE);
+                bundle.putString(ID_KEY, getArguments().getString(ID_KEY));
+                bundle.putSerializable(PARCEL_KEY, getArguments().getSerializable(PARCEL_KEY));
+                intent.putExtras(bundle);
+                getActivity().startActivityForResult(intent, Integer.parseInt(FILTERPAGE));
+            }
     }
 
     @OnClick(R.id.imageButton)

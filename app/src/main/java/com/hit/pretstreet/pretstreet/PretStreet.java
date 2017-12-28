@@ -19,15 +19,15 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.AUTOSEARCH_URL;
 
 /**
  * Created by User on 20/07/2017.
+ * Application class
  */
 public class PretStreet extends MultiDexApplication{
 
     public static final String TAG = PretStreet.class.getSimpleName();
-    private RequestQueue mRequestQueue;
     private static PretStreet mInstance;
     private static GoogleAnalytics analytics;
     private static Tracker tracker;
-    // private static Context mAppContext;
+    private RequestQueue mRequestQueue;
 
     @Override
     public void onCreate() {

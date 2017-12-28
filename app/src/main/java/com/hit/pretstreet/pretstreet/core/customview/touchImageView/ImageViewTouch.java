@@ -16,6 +16,7 @@ import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.ViewConfiguration;
 
 public class ImageViewTouch extends ImageViewTouchBase {
+
     static final float SCROLL_DELTA_THRESHOLD = 1.0f;
     /**
      * minimum time between a scale event and a valid fling event

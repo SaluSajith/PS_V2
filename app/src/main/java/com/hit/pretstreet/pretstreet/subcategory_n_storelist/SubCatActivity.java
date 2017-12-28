@@ -98,7 +98,13 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         ll_header.bringToFront();
         hs_categories.setVisibility(View.GONE);
 
-        String title = getIntent().getStringExtra("mTitle");
+        String title = "";
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null && getIntent().getExtras()
+                    .containsKey("mTitle")) {
+                title = getIntent().getStringExtra("mTitle");
+            }
+        }
         tv_cat_name.setText(title);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupFragment(SUBCAT_FRAGMENT, false);
@@ -111,11 +117,15 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void openSearchPage(){
-        finish();
-        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-        intent.putExtra(PRE_PAGE_KEY, SUBCATPAGE);
-        intent.putExtra(ID_KEY, getIntent().getStringExtra("mSubCatId"));
-        startActivity(intent);
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null && getIntent().getExtras()
+                    .containsKey("mSubCatId")) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                intent.putExtra(PRE_PAGE_KEY, SUBCATPAGE);
+                intent.putExtra(ID_KEY, getIntent().getStringExtra("mSubCatId"));
+                startActivity(intent);
+            }
+        }
     }
 
     @OnClick(R.id.tv_location)
@@ -193,14 +203,19 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void onSubTrapeClick(ArrayList<HomeCatItems> homeCatItemses, String title) {
-        Intent intent = new Intent(getApplicationContext(), StoreListingActivity.class);
-        intent.putExtra("contentData", homeCatItemses);
-        intent.putExtra(PRE_PAGE_KEY, SUBCATPAGE);
-        intent.putExtra(CLICKTYPE_KEY, SUBCATLINK);
-        intent.putExtra(ID_KEY, getIntent().getStringExtra("mSubCatId"));
-        intent.putExtra("mTitle", title);
-        intent.putExtra("mSubTitle", tv_cat_name.getText().toString());
-        startActivity(intent);
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null && getIntent().getExtras()
+                    .containsKey("mSubCatId")) {
+                Intent intent = new Intent(getApplicationContext(), StoreListingActivity.class);
+                intent.putExtra("contentData", homeCatItemses);
+                intent.putExtra(PRE_PAGE_KEY, SUBCATPAGE);
+                intent.putExtra(CLICKTYPE_KEY, SUBCATLINK);
+                intent.putExtra(ID_KEY, getIntent().getStringExtra("mSubCatId"));
+                intent.putExtra("mTitle", title);
+                intent.putExtra("mSubTitle", tv_cat_name.getText().toString());
+                startActivity(intent);
+            }
+        }
     }
 
     @Override

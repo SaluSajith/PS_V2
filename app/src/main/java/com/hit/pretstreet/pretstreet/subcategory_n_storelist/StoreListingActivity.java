@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +28,10 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.navigation.ExhibitionDetailsActivity;
-import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
-import com.hit.pretstreet.pretstreet.navigation.TrendingArticleActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
-import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
-import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
-import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
@@ -56,21 +49,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 import static java.lang.Integer.parseInt;
 
@@ -104,6 +89,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private static ArrayList<StoreListModel> storeListModels;
     private ArrayList<FilterDataModel> dataModel;
     private JSONArray arrayFilter;
+
+    private String mTitle, mpagetypeid, mClicktypeid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,13 +135,19 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         ll_empty.setVisibility(View.INVISIBLE);
         nsv_header.bringToFront();
 
-        String title = getIntent().getStringExtra("mSubTitle");
-        tv_cat_name.setText(title);
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("mSubTitle")) {
+                mTitle = getIntent().getStringExtra("mSubTitle");
+                mpagetypeid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
+                mClicktypeid = getIntent().getStringExtra(Constant.CLICKTYPE_KEY);
+            }
+        }
+        tv_cat_name.setText(mTitle);
         FrameLayout.LayoutParams layoutParams =
                 (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
-        if(title.equalsIgnoreCase("DESIGNERS")) //TODO dynamic header margin
+        if(mTitle.equalsIgnoreCase("DESIGNERS")) //TODO dynamic header margin
             layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxsmall), 0, 0);
-        else if(title.equalsIgnoreCase("RETAIL")) //TODO dynamic header margin
+        else if(mTitle.equalsIgnoreCase("RETAIL")) //TODO dynamic header margin
             layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xsmall), 0, 0);
         else
             layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_small), 0, 0);
@@ -200,9 +193,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     private void getShoplist(String mCatid, boolean first){
         loadmore = true;
-        String pageid = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
-        String clicktypeid = getIntent().getStringExtra(Constant.CLICKTYPE_KEY);
-        JSONObject resultJson = subCategoryController.getShoplistJson(mCatid, ++pageCount+"", pageid, clicktypeid, arrayFilter);
+        JSONObject resultJson = subCategoryController.getShoplistJson(mCatid, ++pageCount+"", mpagetypeid, mClicktypeid, arrayFilter);
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, STORELISTING_URL);
@@ -220,7 +211,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private void openSearchPage(){
-        finish();
         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
         intent.putExtra(PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
         intent.putExtra(ID_KEY, getIntent().getStringExtra(ID_KEY));
@@ -397,7 +387,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @Override
     public void buttonClick(StoreListModel storeListModel) {
-        openNext(storeListModel, STORELISTINGPAGE, "");
+        openNext(storeListModel, STORELISTINGPAGE, STORELISTINGLINK);
     }
 
     @Override

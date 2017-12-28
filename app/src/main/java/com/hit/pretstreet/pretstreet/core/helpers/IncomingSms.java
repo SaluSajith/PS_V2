@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 
 /**
  * Created by user on 13/7/2017
+ * Handling incoming SMS
+ * Read SMS
  */
 
 public class IncomingSms extends BroadcastReceiver {
@@ -32,8 +34,11 @@ public class IncomingSms extends BroadcastReceiver {
                     String phoneNumber = currentMessage.getDisplayOriginatingAddress();
 
                     try {
+                        /** check if the sender name is having the word Pret */
                         if(phoneNumber.contains("PretST")){
                             String messageBody = currentMessage.getMessageBody();
+
+                            /** check whether the message has a 4 digit number(OTP) */
                             Pattern pattern = Pattern.compile("(\\d{4})");
                             Matcher matcher = pattern.matcher(messageBody);
                             //Log.e("SmsReceiver", "phoneNumber.contains(PretST)");

@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 /**
  * Created by User on 6/20/2017.
+ * Created to save User session
  */
 
 public class SharedPreferencesHelper {

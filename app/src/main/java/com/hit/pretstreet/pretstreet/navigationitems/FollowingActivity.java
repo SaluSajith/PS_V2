@@ -329,21 +329,17 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void validateCallback(EdittextPret editText, String message, int type) {
-
     }
 
     @Override
     public void validationSuccess(String phonenumber) {
-
     }
 
     @Override
     public void validationSuccess(LoginSession loginSession) {
-
     }
 
     @Override
     public void validationSuccess(JSONObject jsonObject, int type) {
-
     }
 }

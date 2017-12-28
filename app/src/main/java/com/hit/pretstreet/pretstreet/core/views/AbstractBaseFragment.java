@@ -40,6 +40,7 @@ import java.util.ArrayList;
 
 /**
  * Created by User on 7/7/2017.
+ * Parent fragment
  */
 
 public abstract class AbstractBaseFragment <T extends FragmentActivity> extends Fragment {
@@ -47,14 +48,11 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
     private ProgressDialog pDialog;
     private UIThreadHandler handler;
 
-
     private int KEY_PERMISSION = 0;
     private PermissionResult permissionResult;
     private String permissionsAsk[];
 
-
     protected abstract View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.handler = new UIThreadHandler();
@@ -74,6 +72,7 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         super.onStart();
         if (BuildConfig.DEBUG){ }
         else {
+            /** Update fragment open event in Google analytics */
             PretStreet pretStreet = (PretStreet) getActivity().getApplication();
             Tracker mTracker = pretStreet.tracker();
             mTracker.set("UserTrack", this.getClass().getSimpleName());
@@ -122,6 +121,12 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         }
     }
 
+/**Load glide image in Homepage and Subcat page
+ * @param url from where image have to be loaded
+ * @param imageView to where image have to be loaded
+ * @param mask crop downloaded bitmap to this shape
+ * @param placeholder placeholder image while loading
+ * */
     public void loadImage(String url, final ImageView imageView, final Bitmap mask, int placeholder){
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -143,28 +148,34 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
                             int height = resource.getHeight();
                             float scaleWidth = ((float) dwidth) / width;
                             float scaleHeight = ((float) dheight) / height;
+
+                            /** Creating matrix for image scaling*/
                             Matrix matrix = new Matrix();
-                            if (width > height)
-                                if (scaleHeight > scaleWidth)
+                            if (width > height)  //horizontal image
+                                if (scaleHeight > scaleWidth) //scaling image as per the device matrix
                                     matrix.postScale(scaleWidth, scaleWidth);
                                 else
                                     matrix.postScale(scaleHeight, scaleHeight);
-                            else {
-                                if (scaleHeight > scaleWidth)
+                            else {   // vertical image
+                                if (scaleHeight > scaleWidth)  //scaling image as per the device matrix
                                     matrix.postScale(scaleHeight, scaleHeight);
                                 else
                                     matrix.postScale(scaleWidth, scaleWidth);
                             }
+                            /** Scaling/Cropping downloaded bitmap to adjust in the trape shape*/
+                            //resizing downloaded bitmap as per the scaling factor
                             Bitmap resizedBitmap = Bitmap.createBitmap(resource, 0, 0, width, height, matrix, false);
+                            //creating bitmap as per the mask
                             Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
                             Canvas mCanvas = new Canvas(result);
                             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
                             mCanvas.drawBitmap(resizedBitmap, 0, 0, null);
-                            mCanvas.drawBitmap(mask, 0, 0, paint);
+                            mCanvas.drawBitmap(mask, 0, 0, paint);//draw image as per the mask
                             paint.setXfermode(null);
                             imageView.setImageBitmap(result);
                             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
                         } catch (Exception e){
                             e.printStackTrace();
                         } catch (OutOfMemoryError e){
@@ -199,7 +210,8 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
 
 
     public boolean isPermissionGranted(Context context, String permission) {
-        return (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) || (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
+        return (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) ||
+                (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
     }
 
 
@@ -207,13 +219,11 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         String arrayPermissionNotGranted[];
         ArrayList<String> permissionsNotGranted = new ArrayList<>();
 
-
         for (int i = 0; i < permissionAsk.length; i++) {
             if (!isPermissionGranted(getActivity(), permissionAsk[i])) {
                 permissionsNotGranted.add(permissionAsk[i]);
             }
         }
-
 
         if (permissionsNotGranted.isEmpty()) {
             if (permissionResult != null)
@@ -224,13 +234,10 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
             arrayPermissionNotGranted = permissionsNotGranted.toArray(arrayPermissionNotGranted);
             requestPermissions(arrayPermissionNotGranted, KEY_PERMISSION);
         }
-
-
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
 
         if (requestCode == KEY_PERMISSION) {
             boolean granted = true;
@@ -249,7 +256,6 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
                 Log.e("ManagePermissions", "permissionResult callback was null");
             }
         }
-
     }
 
     public void askCompactPermission(String permission, PermissionResult permissionResult) {
@@ -265,5 +271,4 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         this.permissionResult = permissionResult;
         internalRequestPermission(permissionsAsk);
     }
-
 }

@@ -120,7 +120,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     }
 
     private void setupArticle(ArrayList<TrendingItems> trendingArticle){
-        TrendingArticleAdapter adapter = new TrendingArticleAdapter(context, trendingArticle);
+        TrendingArticleAdapter adapter = new TrendingArticleAdapter(context, trendingArticle, this);
         rv_trendingarticle.setAdapter(adapter);
     }
 

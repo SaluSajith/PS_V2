@@ -74,7 +74,13 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
     }
 
     private void init() {
-        String mCatId = getActivity().getIntent().getStringExtra("mSubCatId");
+        String mCatId = "";
+        if (getActivity().getIntent() != null) {
+            if (getActivity().getIntent().getExtras() != null && getActivity().getIntent().getExtras()
+                    .containsKey("mSubCatId")) {
+                mCatId = getActivity().getIntent().getStringExtra("mSubCatId");
+            }
+        }
         ((SubCatActivity)getActivity()).getSubCAtPage(mCatId);
     }
 

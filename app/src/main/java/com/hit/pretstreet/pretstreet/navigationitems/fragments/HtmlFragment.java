@@ -1,27 +1,21 @@
 package com.hit.pretstreet.pretstreet.navigationitems.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.NestedWebView;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.helpers.MyTagHandler;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
-import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by User on 7/17/2017.

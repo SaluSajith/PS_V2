@@ -114,6 +114,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.REFER_EARN_FRAGM
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_INVITE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHARE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
@@ -170,11 +171,12 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
-        if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0) {
+        if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0 &&
+                PreferenceServices.getInstance().getIdQueryparam().trim().length()!=0) {
             String valueOne = PreferenceServices.getInstance().getShareQueryparam();
             String id = PreferenceServices.getInstance().getIdQueryparam();
             String type = PreferenceServices.getInstance().getTypeQueryparam();
-            Log.d("FCM_home", "Received xx" +valueOne +id+type);
+            Log.d("FCM_home", "Received xx" + valueOne + id + type);
             forwardDeepLink(valueOne, id, type);
             PreferenceServices.getInstance().setIdQueryparam("");
             PreferenceServices.getInstance().setShareQueryparam("");
@@ -565,7 +567,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         String pageid = catContentData.getPageTypeId();
         switch (pageid){
             case SUBCATPAGE:
-                //displaySnackBar(homeCatItems.getHomeContentData().getCategoryName());
                 Intent intent = new Intent(this, SubCatActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
                 intent.putExtra("mSubCatId", catContentData.getCategoryId());
@@ -582,42 +583,12 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent.putExtra("mSubTitle", title);
                 startActivity(intent);
                 break;
-            case TRENDINGPAGE:
-                selectedFragment = Constant.TRENDING_FRAGMENT;
-                intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case GIVEAWAYPAGE:
-                selectedFragment = GIVEAWAY_FRAGMENT;
-                intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case EXHIBITIONPAGE:
-                selectedFragment = Constant.EXHIBITION_FRAGMENT;
-                intent = new Intent(HomeActivity.this, HomeInnerActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
-                intent.putExtra("fragment", selectedFragment);
-                startActivity(intent);
-                break;
-            case MULTISTOREPAGE:
-                intent = new Intent(HomeActivity.this, MultistoreActivity.class);
-                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
-                startActivity(intent);
-                break;
-            case STOREDETAILSPAGE:
+            default:
                 StoreListModel storeListModel =  new StoreListModel();
                 storeListModel.setId(catContentData.getMainCatId());
-                intent = new Intent(HomeActivity.this, StoreDetailsActivity.class);
-                intent.putExtra(PARCEL_KEY, storeListModel );
-                intent.putExtra(CLICKTYPE_KEY, HOMEPAGELINK);
-                intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
-                startActivity(intent);
+                storeListModel.setPageTypeId(pageid);
+                openNext(storeListModel, HOMEPAGE, HOMEPAGELINK);
                 break;
-            default: break;
         }
     }
 

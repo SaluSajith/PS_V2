@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 /**
  * Created by User on 20/07/2017.
+ * Shared preference Constants with getters and setters
  */
 public class PreferenceServices {
     public static final String LOGIN_STATUS = "loginStatus";

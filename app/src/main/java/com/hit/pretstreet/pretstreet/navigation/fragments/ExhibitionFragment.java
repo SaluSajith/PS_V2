@@ -52,7 +52,7 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
     private void init(){
         exHItems = new ArrayList<>();
         Utility.setListLayoutManager_(rv_trending, getActivity());
-        adapter = new ExhibitionAdapter(Glide.with(this), rv_trending, getActivity(),ExhibitionFragment.this, exHItems);
+        adapter = new ExhibitionAdapter(Glide.with(this), rv_trending, getActivity(), exHItems);
         rv_trending.setAdapter(adapter);
         ((HomeInnerActivity)getActivity()).getExhibitionlist(pageCount);
         refreshListviewOnScrolling();

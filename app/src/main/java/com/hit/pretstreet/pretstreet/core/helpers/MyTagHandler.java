@@ -7,6 +7,7 @@ import org.xml.sax.XMLReader;
 
 /**
  * Created by User on 20/07/2017.
+ * To handle tags in HTML data
  */
 public class MyTagHandler implements Html.TagHandler {
 

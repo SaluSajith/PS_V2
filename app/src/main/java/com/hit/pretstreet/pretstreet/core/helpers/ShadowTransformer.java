@@ -2,6 +2,8 @@ package com.hit.pretstreet.pretstreet.core.helpers;
 
 /**
  * Created by User on 6/30/2017.
+ * To project the current slide while sliding
+ * To make a smooth effect while sliding
  */
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
@@ -106,11 +108,9 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
     @Override
     public void onPageSelected(int position) {
-
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 }

@@ -7,18 +7,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,33 +26,22 @@ import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
-import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
-import com.hit.pretstreet.pretstreet.navigation.adapters.ArticlePagerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.adapters.HomeGridAdapter;
 import com.hit.pretstreet.pretstreet.navigation.adapters.HomePagerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
-import com.hit.pretstreet.pretstreet.sociallogin.TokenService;
-import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.MALLS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYMOODS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYPRO;
@@ -69,6 +53,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE;
  * Created by User on 7/19/2017.
  */
 
+
 public class HomeFragment extends AbstractBaseFragment<HomeActivity>
         implements ViewPager.OnPageChangeListener, View.OnClickListener{
 
@@ -77,13 +62,13 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
     @BindView(R.id.ll_header_cat) LinearLayout ll_header_cat;
     @BindView(R.id.ll_header_moods) LinearLayout ll_header_moods;
     @BindView(R.id.ll_main_cat_bottom) LinearLayout ll_main_cat_bottom;
-    @BindView(R.id.rv_category)RecyclerView rv_category;
-    @BindView(R.id.rv_moods)RecyclerView rv_moods;
-    @BindView(R.id.rl_category)RelativeLayout rl_category;
-    @BindView(R.id.rl_all)RelativeLayout rl_all;
-    @BindView(R.id.rl_sub)RelativeLayout rl_sub;
-    @BindView(R.id.rl_moods)RelativeLayout rl_moods;
-    @BindView(R.id.tv_tc)TextViewPret tv_tc;
+    @BindView(R.id.rv_category) RecyclerView rv_category;
+    @BindView(R.id.rv_moods) RecyclerView rv_moods;
+    @BindView(R.id.rl_category) RelativeLayout rl_category;
+    @BindView(R.id.rl_all) RelativeLayout rl_all;
+    @BindView(R.id.rl_sub) RelativeLayout rl_sub;
+    @BindView(R.id.rl_moods) RelativeLayout rl_moods;
+    @BindView(R.id.tv_tc) TextViewPret tv_tc;
 
     HomeTrapeClick buttonClickCallback;
     private Handler handler = new Handler();

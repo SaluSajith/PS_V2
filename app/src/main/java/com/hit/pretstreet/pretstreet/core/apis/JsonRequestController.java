@@ -1,17 +1,14 @@
 package com.hit.pretstreet.pretstreet.core.apis;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
@@ -22,7 +19,6 @@ import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
-import com.hit.pretstreet.pretstreet.core.utils.Utility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +46,7 @@ public class JsonRequestController {
         //Utility.hide_keyboard(activity);
         String updatedUrl = url;
         if(!url.equals(CHECKIP_URL)) {
+            /** Get dynamic baseURL and attach to all the other URLS*/
             updatedUrl = Constant.getBaseUrl() + url;
         }
         Log.d("URL_REQUSET", updatedUrl + jsonObject+"");
@@ -93,12 +90,12 @@ public class JsonRequestController {
                 if (error instanceof NetworkError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                 } else if (error instanceof ServerError) {
-                    message = "Oops! Something went wrong. Please try again !!";         //after some time
+                    message = "Oops! Something went wrong. Please try again !!";
                     //message = "The server could not be found. Please try again after some time!!";
                 } else if (error instanceof AuthFailureError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                 } else if (error instanceof ParseError) {
-                    message = "Parsing error! Please try again!!";                       // after some time
+                    message = "Parsing error! Please try again!!";
                 } else if (error instanceof NoConnectionError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                 } else if (error instanceof TimeoutError) {
@@ -155,12 +152,12 @@ public class JsonRequestController {
                 if (error instanceof NetworkError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                 } else if (error instanceof ServerError) {
-                    message = "Oops! Something went wrong. Please try again !!";         //after some time
+                    message = "Oops! Something went wrong. Please try again !!";
                     //message = "The server could not be found. Please try again after some time!!";
                 } else if (error instanceof AuthFailureError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                 } else if (error instanceof ParseError) {
-                    message = "Parsing error! Please try again!!";                       // after some time
+                    message = "Parsing error! Please try again!!";
                 } else if (error instanceof NoConnectionError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                 } else if (error instanceof TimeoutError) {

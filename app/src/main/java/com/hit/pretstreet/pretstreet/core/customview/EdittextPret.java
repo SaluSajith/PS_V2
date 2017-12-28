@@ -16,10 +16,12 @@ import com.hit.pretstreet.pretstreet.R;
 
 /**
  * Created by User on 7/6/2017.
+ * Create a custom widget which has inbuilt font
  */
 
 public class EdittextPret extends AppCompatEditText {
 
+    //custom font
     private static final String defaultFontName = "MERRIWEATHER-REGULAR.TTF";
     private DrawableClickListener clickListener;
 
@@ -59,12 +61,14 @@ public class EdittextPret extends AppCompatEditText {
             a.recycle();
         }
     }
+
+    /**Interface to implement drawable onclick listener*/
     public interface DrawableClickListener {
-        public static enum DrawablePosition { TOP, BOTTOM, LEFT, RIGHT };
+        public static enum DrawablePosition { TOP, BOTTOM, LEFT, RIGHT }
         public void onClick(DrawablePosition target);
     }
 
-
+    /** Left and right drawables for edittext*/
     @Override
     public void setCompoundDrawables(Drawable left, Drawable top,
                                      Drawable right, Drawable bottom) {
@@ -83,6 +87,7 @@ public class EdittextPret extends AppCompatEditText {
         super.setCompoundDrawables(left, top, right, bottom);
     }
 
+    /**Implement onclick event inside edittext*/
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Rect bounds;

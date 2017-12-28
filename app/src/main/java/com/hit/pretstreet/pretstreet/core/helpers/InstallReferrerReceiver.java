@@ -17,6 +17,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.INSTALLREFERRERK
 
 /**
  * Created by User on 27/09/2017
+ * Read UTM parameters from playstore
  */
 
 public class InstallReferrerReceiver extends BroadcastReceiver {
@@ -26,16 +27,9 @@ public class InstallReferrerReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         PreferenceServices.init(context);
         try {
-                /*PreferenceServices.init(context);
-                String referrer = intent.getStringExtra("referrer");
-                referrer = referrer.replace("referrer=", "");
-                String[] sepStr = referrer.split("/");
-                Log.e("InstallReferrerReceiver TAG", "data saved "+referrer);
-                Log.e("InstallReferrerReceiver TAG", "data saved "+"  "+sepStr[0]+"  "+sepStr[1]);
-                PreferenceServices.getInstance().setIdQueryparam(sepStr[1]); //id
-                PreferenceServices.getInstance().setShareQueryparam(sepStr[0]); //storeparam*/
 
             Map<String, String> referralParams = new HashMap<String, String>();
             if (intent == null) {
@@ -54,6 +48,8 @@ public class InstallReferrerReceiver extends BroadcastReceiver {
             } catch (UnsupportedEncodingException e) {
                 return;
             }
+
+            /** Seperating parameters from the referral link*/
             try {
                 String[] params = referrer.split("&");
                 for (String param : params) {
@@ -78,6 +74,9 @@ public class InstallReferrerReceiver extends BroadcastReceiver {
         new CampaignTrackingReceiver().onReceive(context, intent);
     }
 
+    /** Saving referral link parameters in shared preference
+     * Have to pass this referral links while login n Signup
+     * Once uploaded, have to clear it*/
     public static void storeReferralParams(Map<String, String> params) {
        for (String key : EXPECTED_PARAMETERS) {
             String value = params.get(key);

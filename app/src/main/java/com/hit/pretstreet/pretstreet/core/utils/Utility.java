@@ -23,11 +23,13 @@ public class Utility {
         return result;
     }
 
+    /** Settingup layout manager for recyclerview inside Nested scrollview
+     *  Scrollable header*/
     public static LinearLayoutManager setListLayoutManager(RecyclerView recyclerView, Context context){
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setNestedScrollingEnabled(false); //to make header scrollable
         recyclerView.setHasFixedSize(true);
         //recyclerView.setItemViewCacheSize(20);
         //recyclerView.setDrawingCacheEnabled(true);
@@ -35,6 +37,8 @@ public class Utility {
         return llm;
     }
 
+    /** Settingup layout manager for recyclerview inside Nested scrollview
+     *  Fixed header*/
     public static LinearLayoutManager setListLayoutManager_(RecyclerView recyclerView, Context context){
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -47,6 +51,8 @@ public class Utility {
         return llm;
     }
 
+    /** Settingup layout manager for gridview inside Nested scrollview
+     *  Scrollable header*/
     public static LinearLayoutManager setGridLayoutManager(RecyclerView recyclerView, Context context, int columnCount){
         GridLayoutManager llm = new GridLayoutManager(context, columnCount);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -54,7 +60,6 @@ public class Utility {
         recyclerView.setNestedScrollingEnabled(false);
         return llm;
     }
-
 
     public static boolean isValidEmail(CharSequence target) {
         if (target == null) {

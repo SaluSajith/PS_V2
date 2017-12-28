@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 /**
  * Created by user on 13/7/2017
+ * Database helper class to access, create, delete and update data
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -89,10 +90,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             db = this.getWritableDatabase();
             Cursor c = db.rawQuery("SELECT * FROM "+TABLE_NOTIFICATION, null);
+            /** only 5 rows have to be displayed */
             if(c.getCount()>=5){
                 deleteLastRowNotification();
             }
-            //db.execSQL("delete from "+ TABLE_NOTIFICATION);
             //if(!CheckIsDataAlreadyInDBorNot(TABLE_NOTIFICATION, KEY_ID, trendingItems.getId())) {
                 values = new ContentValues();
                 values.put(KEY_ID, trendingItems.getId());
@@ -240,50 +241,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return i;
     }
 
-    public void deleteFirstSavedLocationRow() {
-        db = getReadableDatabase();
-        Cursor cursor = db.query(TABLE_RECENT_SEARCH_LOCATION, null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            String rowId = cursor.getString(cursor.getColumnIndex(KEY_LOCATION_NAME));
-            db.delete(TABLE_RECENT_SEARCH_LOCATION, KEY_LOCATION_NAME + "=?", new String[]{rowId});
-        }
-        db.close();
-    }
-
-    public void deleteLastSavedNotifRow() {
-        try {
-            db = this.getWritableDatabase();
-            Cursor cursor = db.query(TABLE_NOTIFICATION, null, null, null, null, null, null);
-            // if (cursor.moveToFirst()) {
-            System.out.println("Notif deleteLastSavedNotifRow "  +" "+cursor.getCount());
-            //String rowId = cursor.getString(cursor.getColumnIndex(KEY_ID));
-            //db.delete(TABLE_NOTIFICATION, KEY_ID + "=?", new String[]{rowId});
-            db.rawQuery("DELETE FROM "+TABLE_NOTIFICATION+" WHERE "+KEY_BASEID+" = (SELECT MAX("+KEY_BASEID+") FROM "+TABLE_NOTIFICATION+")", null);
-
-            //}
-            db.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void deleteLastRowNotification() {
         //db = getReadableDatabase();
+        /** db already opened in the base function */
         Cursor cursor = db.query(TABLE_NOTIFICATION, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             String rowId = cursor.getString(cursor.getColumnIndex(KEY_BASEID));
             db.delete(TABLE_NOTIFICATION, KEY_BASEID + "=?", new String[]{rowId});
         }
         //db.close();
-    }
-
-    public int getNotifCount() {
-        int count = 0;
-        db = getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NOTIFICATION, null, null, null, null, null, null);
-        count = cursor.getCount();
-        db.close();
-        return count;
     }
 
 }

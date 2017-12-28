@@ -11,6 +11,7 @@ import android.webkit.WebView;
 
 /**
  * Created by User on 05/10/2017.
+ * Nested webview to insert webview below headerlayout to achieve nestedscroll
  */
 
 public class NestedWebView extends WebView implements NestedScrollingChild {

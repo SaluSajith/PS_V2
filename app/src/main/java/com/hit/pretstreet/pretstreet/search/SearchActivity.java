@@ -40,21 +40,15 @@ import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.AUTOSEARCH_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LIMIT;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.RECENTSEARCH_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHLISTLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCH_URL;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
 public class SearchActivity extends AbstractBaseAppCompatActivity
@@ -79,6 +73,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
 
     private String mStrSearch = "", mCatID = "", mCaType;
     private boolean loadmore = true;
+    private String prepagekey, clicktypeid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +94,13 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         dataModel = new ArrayList<>();
         arrayFilter = new JSONArray();
         setupFragment(AUTOSEARCH_FRAGMENT, false);
+
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null && getIntent().getExtras()
+                    .containsKey(PRE_PAGE_KEY)) {
+                prepagekey = getIntent().getStringExtra(PRE_PAGE_KEY);
+            }
+        }
     }
 
     private void setupFragment(int fragmentId, boolean b){
@@ -111,7 +113,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
             case SEARCHRESULTS_FRAGMENT:
                 searchFragment = new SearchResultsFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(PRE_PAGE_KEY, Constant.SEARCHPAGE);
+                bundle.putString(PRE_PAGE_KEY, SEARCHPAGE);
                 bundle.putString(ID_KEY, mCatID);
                 bundle.putSerializable(PARCEL_KEY, this.dataModel);
                 searchDataCallback = searchFragment;
@@ -141,7 +143,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
 
     public void getAutoSearch(String mStr, String mCatId, String mCattype){
         JSONObject resultJson = searchController.getAutoSearchListJson(mStr,
-                getIntent().getStringExtra(PRE_PAGE_KEY),
+                prepagekey,
                 mCatId,
                 mCattype);
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, AUTOSEARCH_URL);
@@ -151,7 +153,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
         JSONObject resultJson = searchController.getSearchResultJson(mStrSearch,
-                getIntent().getStringExtra(PRE_PAGE_KEY), mCatID, pageCount, mCaType, arrayFilter);
+                prepagekey, mCatID, pageCount, mCaType, arrayFilter);
         jsonRequestController.cancelAllPendingRequests();
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, SEARCH_URL);
     }
@@ -242,7 +244,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
 
     @Override
     public void buttonClick(StoreListModel storeListModel) {
-        openNext(storeListModel, SEARCHPAGE, "");
+        openNext(storeListModel, SEARCHPAGE, SEARCHLISTLINK);
     }
 
     @Override
@@ -287,7 +289,8 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                 else if (requestCode == STORE_DETAILS){
                     int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
                     String storeId = data.getStringExtra(ID_KEY);
-                    storeList_recyclerAdapter.updateFollowStatus_fromDetails(status, storeId, data.getStringExtra("followcount"));
+                    storeList_recyclerAdapter.updateFollowStatus_fromDetails(status, storeId,
+                            data.getStringExtra("followcount"));
                     storeList_recyclerAdapter.notifyDataSetChanged();
                 }
             }

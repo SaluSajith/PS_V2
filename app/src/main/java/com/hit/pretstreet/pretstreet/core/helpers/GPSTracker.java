@@ -58,6 +58,9 @@ public class GPSTracker extends Service implements LocationListener {
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
             } else {
+
+                /**to make it fast, will check for network first.
+                 * If it is not working will go for GPS location*/
                 this.canGetLocation = true;
                 // First get location from Network Provider
                 if (isNetworkEnabled) {
@@ -72,6 +75,8 @@ public class GPSTracker extends Service implements LocationListener {
                         if (location != null) {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
+                            /**if gps from network is proper,
+                             * will return this value otherwise will go for gps location*/
                             return location;
                         }
                     }
@@ -144,6 +149,14 @@ public class GPSTracker extends Service implements LocationListener {
         // Showing Alert Message
         alertDialog.show();
     }
+
+    /**check if location has been changed or not from the previous one
+     * @param
+     * @param lat1 previous lat
+     * @param lng1 previous lng
+     * @param lat2 current lat
+     * @param lng2  current lng*/
+
     public static double distance(double lat1, double lng1, double lat2, double lng2) {
 
         double earthRadius = 3958.75; // in miles, change to 6371 for kilometer output
@@ -163,6 +176,7 @@ public class GPSTracker extends Service implements LocationListener {
 
         return dist; // output distance, in MILES
     }
+
     public void stopUsingGPS() {
         if (locationManager != null) {
             locationManager.removeUpdates(GPSTracker.this);
@@ -171,22 +185,18 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
     }
 
     @Nullable
