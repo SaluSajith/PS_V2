@@ -9,6 +9,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -119,14 +120,14 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, FollowingActivity.this, storeListModels);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
+        AppCompatImageView iv_menu = (AppCompatImageView) toolbar.findViewById(R.id.iv_back);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
+        AppCompatImageView iv_search = (AppCompatImageView) toolbar.findViewById(R.id.iv_search);
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

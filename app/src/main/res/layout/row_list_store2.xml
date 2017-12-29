@@ -6,7 +6,7 @@
     android:background="@android:color/white"
     android:orientation="horizontal">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/img_store_photo"
         android:layout_width="@dimen/storelist_img_width"
         android:layout_height="@dimen/storelist_img_height"
@@ -181,13 +181,13 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/line1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/line_down"
             android:contentDescription="Image"/>
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="@dimen/storelist_img_width"
             android:layout_height="@dimen/storelist_img_height"
             android:scaleType="centerCrop"
@@ -215,7 +215,7 @@
             android:layout_marginBottom="15dp"/>
     </LinearLayout>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iv_banner"
         android:layout_width="match_parent"
         android:layout_height="@dimen/storelist_banner_height"

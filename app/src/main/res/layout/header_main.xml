@@ -25,10 +25,10 @@
             android:layout_height="match_parent"
             android:id="@+id/rl_fixed_top">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/fixed_top"
+                app:srcCompat="@drawable/fixed_top"
                 android:scaleType="fitXY"
                 android:id="@+id/imageView6"
                 android:contentDescription=""/>
@@ -66,17 +66,17 @@
                         android:layout_marginStart="9dp"
                         android:id="@+id/tv_location"/>
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:id="@+id/iv_location"
                         android:layout_width="@dimen/textsize_xlarge"
                         android:layout_height="@dimen/textsize_xlarge"
-                        android:src="@drawable/ic_expand"
+                        app:srcCompat="@drawable/ic_expand"
                         android:layout_marginLeft="5dp"
                         android:layout_gravity="center"
                         android:contentDescription="Location"/>
                 </LinearLayout>
             </LinearLayout>
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                 android:gravity="top"
                 android:id="@+id/linearLayout">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                     app:srcCompat="@drawable/menu"
                     android:contentDescription="Menu"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                     android:textColor="@color/yellow"
                     android:text="'βeta Version'" />
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_search"
                     android:layout_width="20dp"
                     android:layout_height="25dp"
@@ -137,7 +137,7 @@
                     android:contentDescription="Search"/>
             </LinearLayout>
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/iv_notif"
                 android:layout_width="35dp"
                 android:layout_height="30dp"

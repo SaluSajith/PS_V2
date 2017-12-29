@@ -15,10 +15,10 @@
         android:layout_marginRight="-1dp"
         android:layout_marginLeft="-1dp">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/profilepic"
+            app:srcCompat="@drawable/profilepic"
             android:id="@+id/civ_profile"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />

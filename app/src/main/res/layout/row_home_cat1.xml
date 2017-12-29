@@ -6,16 +6,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="2dp">
 
-        <ImageView
+    <android.support.v7.widget.AppCompatImageView
             android:id="@+id/img_cat_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/tile_cat"
+            app:srcCompat="@drawable/tile_cat"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
             android:contentDescription="Image"/>
 
-        <ImageView
+    <android.support.v7.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/tile_shadow"

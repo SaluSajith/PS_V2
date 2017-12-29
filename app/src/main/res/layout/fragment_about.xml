@@ -29,23 +29,23 @@
                 android:orientation="horizontal"
                 android:gravity="bottom">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_aboutus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:src="@drawable/aboutus"
+                    app:srcCompat="@drawable/aboutus"
                     android:contentDescription="About"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_contact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/padding_standard"
-                    android:src="@drawable/contactus"
+                    app:srcCompat="@drawable/contactus"
                     android:contentDescription="Contace Us"/>
 
             </LinearLayout>
@@ -56,23 +56,23 @@
                 android:layout_marginTop="@dimen/content_overlapmargin"
                 android:orientation="horizontal">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_privacy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:src="@drawable/privacypolicy"
+                    app:srcCompat="@drawable/privacypolicy"
                     android:contentDescription="Privacy policy"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/padding_large"
-                    android:src="@drawable/terms_conditions"
+                    app:srcCompat="@drawable/terms_conditions"
                     android:contentDescription="Terms"/>
 
             </LinearLayout>
@@ -84,23 +84,23 @@
                 android:orientation="horizontal"
                 android:gravity="bottom">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_rateus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:src="@drawable/rateus"
+                    app:srcCompat="@drawable/rateus"
                     android:contentDescription="Rate us"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_feedback"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/padding_large"
-                    android:src="@drawable/feedback"
+                    app:srcCompat="@drawable/feedback"
                     android:contentDescription="Feedback"/>
 
             </LinearLayout>
@@ -112,7 +112,7 @@
                 android:orientation="horizontal"
                 android:gravity="bottom">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/img_rate_us"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -120,17 +120,17 @@
                     android:gravity="center"
                     android:visibility="invisible"
                     android:clickable="false"
-                    android:src="@drawable/privacypolicy"
+                    app:srcCompat="@drawable/privacypolicy"
                     android:contentDescription=""/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/padding_large"
-                    android:src="@drawable/logout"
+                    app:srcCompat="@drawable/logout"
                     android:contentDescription="Logout"/>
 
             </LinearLayout>

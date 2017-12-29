@@ -1,47 +1,26 @@
 package com.hit.pretstreet.pretstreet.navigation.adapters;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Shader;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
-import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
-import com.hit.pretstreet.pretstreet.navigation.fragments.ExhibitionFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
-import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
-import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
-import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import java.util.ArrayList;
 
@@ -73,6 +52,11 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private final RequestManager glide;
     private OnLoadMoreListener mOnLoadMoreListener;
 
+    /** Public constructor for exhibition listing
+     * @param glide common glide object
+     * @param activity activity contecxt
+     * @param list exhibition list model array
+     * @param mRecyclerView recyclerview param for loadmore*/
     public ExhibitionAdapter(final RequestManager glide, RecyclerView mRecyclerView,
                              Activity activity, ArrayList<TrendingItems> list) {
         this.context = activity;
@@ -81,6 +65,8 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.trendingHolderInvoke = (TrendingHolderInvoke)activity;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+
+        /**Load more items listener*/
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -122,7 +108,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TrendingItems trendingItems = list.get(position);
         setViewText(holder.txt_date, trendingItems.getArticledate());
         setViewText(holder.txt_shopname, trendingItems.getTitle());
-        setViewText(holder.txt_description, "");
+        setViewText(holder.txt_description, ""); // we are not displaying description right now
         //setViewText(holder.txt_description, trendingItems.getArticle());
         setViewText(holder.txt_location, trendingItems.getArea());
 
@@ -133,6 +119,10 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.iv_like.setImageResource(trendingItems.getLike() == true ? R.drawable.red_heart : R.drawable.grey_heart);
         holder.ll_desc.setVisibility(trendingItems.getBanner() == true ? View.GONE : View.VISIBLE);
 
+        /**Register button STATUS flag
+         * @value 0 - not registered yet
+         * @value 1 - Registered for the particular exhibition
+         * @value 2 - past exhibitions*/
         switch (trendingItems.getRegisterFlag()){
             case "0":
                 holder.bt_register.setEnabled(true);
@@ -155,6 +145,8 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             default:
                 break;
         }
+
+        /**Reached last item in the list*/
         if(position == list.size()-1){
             if (mOnLoadMoreListener != null) {
                 mOnLoadMoreListener.reachedLastItem();
@@ -180,9 +172,9 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             View.OnClickListener {
 
         int viewType;
-        @BindView(R.id.iv_like)ImageView iv_like;
-        @BindView(R.id.iv_share)ImageView iv_share;
-        @BindView(R.id.iv_banner)ImageView iv_banner;
+        @BindView(R.id.iv_like)AppCompatImageView iv_like;
+        @BindView(R.id.iv_share)AppCompatImageView iv_share;
+        @BindView(R.id.iv_banner)AppCompatImageView iv_banner;
 
         @BindView(R.id.txt_date)TextViewPret txt_date;
         @BindView(R.id.txt_shopname)TextViewPret txt_shopname;
@@ -223,27 +215,34 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 case R.id.iv_like:
                     mPosition = getAdapterPosition();
                     selected_id = LIKE;
+                    /**Calling like api*/
                     trendingHolderInvoke.likeInvoke(Integer.parseInt(trendingItems.getId()), EXHIBITION_FRAGMENT);
                     break;
                 case R.id.iv_share:
+                    /**Share page with friends*/
                     trendingHolderInvoke.shareurl(trendingItems.getShareUrl());
                     break;
                 case R.id.bt_register:
+                    /**Register for exhibition*/
                     mPosition = getAdapterPosition();
                     selected_id = ReGISTER;
                     textViewPret = (TextViewPret) view;
                     trendingHolderInvoke.registerInvoke(Integer.parseInt(trendingItems.getId()));
                     break;
                 case R.id.txt_shopname:
+                    /**Open exhibition details*/
                     mPosition = getAdapterPosition();
                     ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                     break;
                 case R.id.txt_description:
+                    /**Open exhibition details*/
                     mPosition = getAdapterPosition();
                     ((HomeInnerActivity)(context)).openExhibitionDetails(trendingItems);
                     break;
                 case R.id.iv_banner:
                     if(trendingItems.getBanner()){
+                        /**If it is a clickable banner only
+                         * Row will be replaced by a banner image*/
                         trendingHolderInvoke.openTrendingArticle(trendingItems, Constant.EXHIBITIONPAGE);
                     }else {
                         mPosition = getAdapterPosition();
@@ -290,7 +289,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         isLoading = false;
     }
 
-    static void loadImage(RequestManager glide, String url, ImageView view) {
+    static void loadImage(RequestManager glide, String url, AppCompatImageView view) {
         glide.load(url).diskCacheStrategy(DiskCacheStrategy.NONE).into(view);
     }
 }

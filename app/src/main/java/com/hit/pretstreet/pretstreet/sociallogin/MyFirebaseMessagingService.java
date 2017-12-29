@@ -131,7 +131,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-
     private void savedata(RemoteMessage remoteMessage){
         try {
             TrendingItems trendingItems = new TrendingItems();
@@ -157,6 +156,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             e.printStackTrace();
         }
     }
+
     private void handleNotification(String message) {
         if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message

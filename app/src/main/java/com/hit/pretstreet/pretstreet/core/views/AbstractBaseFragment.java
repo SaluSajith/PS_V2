@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.core.views;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.IntentCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -110,6 +112,7 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         return (T) getActivity();
     }
 
+    @SuppressLint("WrongConstant")
     public void startActivityAndFinish(Class<?> mActivity) {
         try {
             Intent intent = new Intent(getActivity(), mActivity);
@@ -127,7 +130,7 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
  * @param mask crop downloaded bitmap to this shape
  * @param placeholder placeholder image while loading
  * */
-    public void loadImage(String url, final ImageView imageView, final Bitmap mask, int placeholder){
+    public void loadImage(String url, final AppCompatImageView imageView, final Bitmap mask, int placeholder){
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);

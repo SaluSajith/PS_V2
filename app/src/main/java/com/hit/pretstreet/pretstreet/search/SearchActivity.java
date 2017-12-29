@@ -13,7 +13,6 @@ import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.search.controllers.SearchController;
 import com.hit.pretstreet.pretstreet.search.fragments.AutoSearchFragment;
 import com.hit.pretstreet.pretstreet.search.fragments.SearchResultsFragment;

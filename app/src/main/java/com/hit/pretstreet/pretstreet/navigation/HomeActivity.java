@@ -236,7 +236,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         rv_nav.getItemAnimator().setChangeDuration(0);
         rv_nav.setAdapter(navDrawerAdapter);
 
-        ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_menu);
+        AppCompatImageView iv_menu = (AppCompatImageView) toolbar.findViewById(R.id.iv_menu);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,7 +244,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                     drawer.openDrawer(Gravity.LEFT);
             }
         });
-        ImageView iv_logo = (ImageView) toolbar.findViewById(R.id.iv_logo);
+        AppCompatImageView iv_logo = (AppCompatImageView) toolbar.findViewById(R.id.iv_logo);
         iv_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,7 +252,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                     drawer.openDrawer(Gravity.LEFT);
             }
         });
-        ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
+        AppCompatImageView iv_search = (AppCompatImageView) toolbar.findViewById(R.id.iv_search);
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,7 +264,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         });
 
         TextViewPret tv_profile = (TextViewPret) navigationView.findViewById(R.id.tv_profile);
-        final ImageView iv_profile = (ImageView) navigationView.findViewById(R.id.iv_profile);
+        final AppCompatImageView iv_profile = (AppCompatImageView) navigationView.findViewById(R.id.iv_profile);
         TextViewPret tv_rateus = (TextViewPret) drawer.findViewById(R.id.tv_rateus);
         tv_rateus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,7 +279,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 menuOnClick(NOTIFICATION_FRAGMENT+"");
             }
         });
-        ImageView iv_noti = (ImageView) toolbar.findViewById(R.id.iv_notif);
+        AppCompatImageView iv_noti = (AppCompatImageView) toolbar.findViewById(R.id.iv_notif);
         iv_noti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

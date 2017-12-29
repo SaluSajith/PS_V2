@@ -11,13 +11,13 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
@@ -130,7 +130,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
                             }
                             RelativeLayout rl_dd = (RelativeLayout) view.findViewById(R.id.rl_dd);
                             TextViewPret txt_cat_name = (TextViewPret) view.findViewById(R.id.txt_cat_name);
-                            ImageView mImageView = (ImageView) view.findViewById(R.id.img_cat_image);
+                            AppCompatImageView mImageView = (AppCompatImageView) view.findViewById(R.id.img_cat_image);
                             txt_cat_name.setMaxLines(1);
 
                             LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -239,7 +239,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
             ll_header_cat.addView(view);
             ll_header_cat.setVisibility(View.VISIBLE);
             ll_header_cat.bringToFront();
-            ImageView imageView = (ImageView) view.findViewById(R.id.img_cat_image);
+            AppCompatImageView imageView = (AppCompatImageView) view.findViewById(R.id.img_cat_image);
             imageView.setVisibility(View.INVISIBLE);
             TextViewPret textViewPret = (TextViewPret) view.findViewById(R.id.txt_cat_name);
             textViewPret.setText("SEARCH BY CATEGORY");
@@ -268,7 +268,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
             }
             ll_header_moods.addView(view);
             ll_header_moods.setVisibility(View.VISIBLE);
-            ImageView imageView = (ImageView) view.findViewById(R.id.img_cat_image);
+            AppCompatImageView imageView = (AppCompatImageView) view.findViewById(R.id.img_cat_image);
             imageView.setVisibility(View.INVISIBLE);
             TextViewPret textViewPret = (TextViewPret) view.findViewById(R.id.txt_cat_name);
             textViewPret.setText("SEARCH BY MOODS");

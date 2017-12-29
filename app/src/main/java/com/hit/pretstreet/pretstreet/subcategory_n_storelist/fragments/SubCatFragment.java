@@ -14,6 +14,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,7 +102,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 }
                 RelativeLayout rl_dd = (RelativeLayout) view.findViewById(R.id.rl_dd);
                 TextViewPret txt_cat_name = (TextViewPret) view.findViewById(R.id.txt_cat_name);
-                final ImageView mImageView = (ImageView) view.findViewById(R.id.img_cat_image);
+                final AppCompatImageView mImageView = (AppCompatImageView) view.findViewById(R.id.img_cat_image);
                 txt_cat_name.setMaxLines(1);
 
                 LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/popup_bundle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,13 +18,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/img_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:padding="10dp"
-        android:src="@drawable/close"
+        app:srcCompat="@drawable/close"
         android:contentDescription="Close"/>
 
     <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
@@ -53,7 +54,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/buttonbg"
+        app:srcCompat="@drawable/buttonbg"
         android:padding="5dp" />
 
     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret

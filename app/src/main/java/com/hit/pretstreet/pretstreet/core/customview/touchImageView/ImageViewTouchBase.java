@@ -15,6 +15,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.compat.BuildConfig;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewConfiguration;
@@ -25,7 +26,7 @@ import android.widget.ImageView;
  * Base View to manage image zoom/scrool/pinch operations
  *
  */
-public abstract class ImageViewTouchBase extends ImageView  {
+public abstract class ImageViewTouchBase extends AppCompatImageView {
     public static final String VERSION = BuildConfig.VERSION_NAME;
     public static final float MIN_SCALE_DIFF = 0.1f;
 

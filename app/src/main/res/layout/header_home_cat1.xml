@@ -4,11 +4,11 @@
     android:id="@+id/rl_dd"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/img_cat_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/mask_home"
+        app:srcCompat="@drawable/mask_home"
         android:scaleType="fitXY"
         android:contentDescription="Image"/>
 

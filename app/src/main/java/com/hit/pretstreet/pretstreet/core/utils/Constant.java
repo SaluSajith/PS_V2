@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.hit.pretstreet.pretstreet.PretStreet;
+import com.hit.pretstreet.pretstreet.sociallogin.TokenService;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 
 import org.json.JSONException;
@@ -23,7 +24,7 @@ public class Constant {
 
     /** Main URL
      * From this URL we will get the BAse URL which should be attached in all the URLs*/
-    public static final String CHECKIP_URL = "http://35.154.65.154/extrafiles/checkipbeta.php";
+    public static final String CHECKIP_URL = "http://35.154.65.154/extrafiles/checkip.php";
 
     //public static final String COMMON_URL = "http://54.179.131.57/newpretstreetapp/index.php/mobileapp/";  //not working
     //public static final String COMMON_URL = "http://13.126.57.85/pretstreetvtwobeta/index.php/mobileapp/";   //test
@@ -217,6 +218,10 @@ public class Constant {
         try {
             SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
             /** FCM TOKEN*/
+            if (sharedPreferencesHelper.getString("TOKEN", "").trim().length()==0) {
+                TokenService tokenService = new TokenService();
+                tokenService.onTokenRefresh();
+            }
             jsonBody.put("DeviceId", sharedPreferencesHelper.getString("TOKEN", ""));
         } catch (JSONException e) {
         } catch (Exception e) {}

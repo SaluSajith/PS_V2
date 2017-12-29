@@ -20,7 +20,7 @@
         android:textColor="@color/yellow_indicator"
         android:textSize="16sp" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/back"

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,8 +98,8 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.GridVi
 
     public class GridViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.img_cat_image)ImageView img_cat_image;
-        @BindView(R.id.img_cat_image1)ImageView img_cat_image1;
+        @BindView(R.id.img_cat_image)AppCompatImageView img_cat_image;
+        @BindView(R.id.img_cat_image1)AppCompatImageView img_cat_image1;
         @BindView(R.id.txt_cat_name)TextViewPret txt_cat_name;
 
         public GridViewHolder(View itemView) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/popup_bundle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,14 +23,14 @@
             android:text="CatName"
             android:textColor="@color/dark_gray" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/img_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:src="@drawable/ic_close"
+            app:srcCompat="@drawable/ic_close"
             android:contentDescription="Close"/>
 
     </RelativeLayout>
@@ -53,12 +54,12 @@
             android:text="Phone 1"
             android:textColor="@android:color/white" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_call"
+            app:srcCompat="@drawable/ic_call"
             android:contentDescription="Call"/>
 
     </RelativeLayout>
@@ -81,12 +82,12 @@
             android:text="Phone 1"
             android:textColor="@android:color/white" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_call"
+            app:srcCompat="@drawable/ic_call"
             android:contentDescription="Call"/>
 
     </RelativeLayout>
@@ -110,12 +111,12 @@
             android:text="Phone 1"
             android:textColor="@android:color/white" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_call"
+            app:srcCompat="@drawable/ic_call"
             android:contentDescription="Call"/>
 
     </RelativeLayout>

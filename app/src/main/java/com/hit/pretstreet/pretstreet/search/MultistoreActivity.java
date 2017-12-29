@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -168,7 +169,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void loadBackdrop(String imageUrl) {
-        final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
+        final AppCompatImageView imageView = (AppCompatImageView) findViewById(R.id.backdrop);
         Glide.with(context)
                 .load(imageUrl)
                 .asBitmap()

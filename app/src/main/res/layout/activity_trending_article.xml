@@ -21,7 +21,7 @@
             android:orientation="horizontal"
             android:id="@+id/ll_title" >
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -68,7 +68,7 @@
         android:layout_below="@+id/ll_title"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/ib_like"
         android:layout_width="35dp"
         android:layout_height="35dp"

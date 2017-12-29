@@ -2,6 +2,7 @@ package com.hit.pretstreet.pretstreet.navigation.adapters;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class HomePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         final View itemView = LayoutInflater.from(mContext).inflate(R.layout.image_slider_item, container, false);
 
-        final ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
+        final AppCompatImageView imageView = (AppCompatImageView) itemView.findViewById(R.id.img_pager_item);
         if(homeSubCategoriesArray.size()==0){
             imageView.setImageResource(R.mipmap.ic_launcher);
         }else {

@@ -3,6 +3,7 @@ package com.hit.pretstreet.pretstreet.navigation;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -52,7 +53,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
 
     @BindView(R.id.rv_trendingarticle)RecyclerView rv_trendingarticle;
     @BindView(R.id.txt_description)TextViewPret txt_description;
-    @BindView(R.id.ib_like)ImageView ib_like;
+    @BindView(R.id.ib_like)AppCompatImageView ib_like;
     @BindView(R.id.txt_name)TextViewPret txt_name;
 
     JsonRequestController jsonRequestController;

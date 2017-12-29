@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -42,7 +43,7 @@ public class StoreLocationMapScreen extends FragmentActivity {
     private GoogleMap mMap;
     private String storeName;
 
-    @BindView(R.id.img_back) ImageView img_back;
+    @BindView(R.id.img_back) AppCompatImageView img_back;
     @BindView(R.id.btn_getdir) ButtonPret btn_getdir;
     @BindView(R.id.txt_cat) TextViewPret txt_cat;
 

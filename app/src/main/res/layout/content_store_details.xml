@@ -104,11 +104,11 @@
                 android:id="@+id/ll_call"
                 android:layout_gravity="center">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
-                    android:src="@drawable/call"
+                    app:srcCompat="@drawable/call"
                     android:contentDescription="Call"/>
 
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
@@ -129,11 +129,11 @@
                 android:id="@+id/ll_address"
                 android:layout_gravity="center">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
-                    android:src="@drawable/address"
+                    app:srcCompat="@drawable/address"
                     android:contentDescription="Address"/>
 
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
@@ -154,12 +154,12 @@
                 android:id="@+id/ll_getdirec"
                 android:layout_gravity="center">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_profile"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="@dimen/padding_large"
-                    android:src="@drawable/get_directions"
+                    app:srcCompat="@drawable/get_directions"
                     android:contentDescription="Profile"/>
 
                 <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
@@ -318,7 +318,7 @@
 
     </LinearLayout>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iv_new"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -329,7 +329,7 @@
         android:visibility="invisible"
         android:contentDescription="New"
         app:srcCompat="@drawable/new_stamp" />
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iv_offer"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -340,7 +340,7 @@
         android:layout_alignLeft="@+id/iv_new"
         android:layout_alignStart="@+id/iv_new"
         android:contentDescription="Offer"/>
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iv_sale"
         android:layout_width="60dp"
         android:layout_height="60dp"

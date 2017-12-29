@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/backdrop"
                     android:contentDescription="@string/image"
                     android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     app:layout_collapseMode="parallax" />
                 <include layout="@layout/content_imageoverlay"></include>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/ib_like"
                     android:layout_width="30dp"
                     android:layout_height="30dp"

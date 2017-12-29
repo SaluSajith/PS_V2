@@ -25,10 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/fixed_top"
+                app:srcCompat="@drawable/fixed_top"
                 android:scaleType="fitXY"
                 android:id="@+id/iv_header"
                 android:contentDescription=""/>
@@ -57,7 +57,7 @@
                 android:gravity="top"
                 android:id="@+id/linearLayout">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -66,7 +66,7 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/back"
                     android:contentDescription="Back"/>
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="" />
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_search"
                     android:layout_width="20dp"
                     android:layout_height="25dp"
@@ -89,7 +89,7 @@
                     android:contentDescription="Search"/>
             </LinearLayout>
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/iv_filter"
                 android:layout_width="20dp"
                 android:layout_height="20dp"

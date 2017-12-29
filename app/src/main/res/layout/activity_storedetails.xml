@@ -27,7 +27,7 @@
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleTextAppearance="@android:color/transparent">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

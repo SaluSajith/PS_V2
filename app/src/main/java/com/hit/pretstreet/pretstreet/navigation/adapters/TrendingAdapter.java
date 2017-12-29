@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.annotation.Dimension;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -18,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -179,12 +179,12 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void setUiPageViewController(ViewHolder holder, int position) {
 
         dotsCount = list.get(position).getImagearray().size();
-        holder.dots = new ImageView[dotsCount];
+        holder.dots = new AppCompatImageView[dotsCount];
         holder.pager_indicator.removeAllViews();
 
         for (int i = 0; i < dotsCount; i++) {
             //for (Iterator it = list.iterator(); it.hasNext(); ) {
-            holder.dots[i] = new ImageView(context);
+            holder.dots[i] = new AppCompatImageView(context);
             holder.dots[i].setImageDrawable(context.getResources().getDrawable(R.drawable.image_indicator_unselected));
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -210,10 +210,10 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener, ViewPager.OnPageChangeListener {
 
-        @BindView(R.id.iv_like) ImageView iv_like;
-        @BindView(R.id.iv_share) ImageView iv_share;
-        @BindView(R.id.iv_banner) ImageView iv_banner;
-        @BindView(R.id.iv_profile) ImageView iv_profile;
+        @BindView(R.id.iv_like) AppCompatImageView iv_like;
+        @BindView(R.id.iv_share) AppCompatImageView iv_share;
+        @BindView(R.id.iv_banner) AppCompatImageView iv_banner;
+        @BindView(R.id.iv_profile) AppCompatImageView iv_profile;
 
         @BindView(R.id.txt_date) TextViewPret txt_date;
         @BindView(R.id.txt_title) TextViewPret txt_title;
@@ -225,7 +225,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.pager_article) ViewPager article_images;
         @BindView(R.id.viewPagerCountDots) LinearLayout pager_indicator;
 
-        private ImageView[] dots;
+        private AppCompatImageView[] dots;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -323,7 +323,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         isLoading = false;
     }
 
-    static void loadImage(RequestManager glide, String url, ImageView view) {
+    static void loadImage(RequestManager glide, String url, AppCompatImageView view) {
         try {
             glide.load(url).diskCacheStrategy(DiskCacheStrategy.NONE).into(view);
         } catch (OutOfMemoryError e) {

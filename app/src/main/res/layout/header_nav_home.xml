@@ -9,7 +9,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:layout_marginBottom="@dimen/padding_xlarge">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:paddingRight="@dimen/padding_standard"
         android:layout_marginBottom="@dimen/padding_large">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:id="@+id/iv_profile"
@@ -58,7 +58,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="right|center_vertical"
                 android:scaleType="fitEnd"
-                android:src="@drawable/notification_menu" />
+                app:srcCompat="@drawable/notification_menu" />
 
             <com.hit.pretstreet.pretstreet.core.customview.NotificationBadge
                 android:id="@+id/badge"

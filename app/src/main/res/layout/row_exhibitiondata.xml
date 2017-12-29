@@ -9,9 +9,9 @@
     android:layout_marginBottom="@dimen/divider_space_xlarge"
     android:paddingBottom="@dimen/divider_space_xlarge"
     app:cardUseCompatPadding="true"
-    android:layout_marginLeft="-4dp"
-    android:layout_marginRight="-4dp"
-    android:layout_marginTop="-4dp"
+    android:layout_marginLeft="-2dp"
+    android:layout_marginRight="-2dp"
+    android:layout_marginTop="-2dp"
     card_view:cardPreventCornerOverlap="false">
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_banner"
                     android:scaleType="fitXY"
                     android:adjustViewBounds="true"
@@ -87,18 +87,18 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_marginLeft="@dimen/padding_large">
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:src="@drawable/grey_heart"
+                        app:srcCompat="@drawable/grey_heart"
                         android:id="@+id/iv_like"
                         android:contentDescription="Like"/>
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_share"
+                        app:srcCompat="@drawable/ic_share"
                         android:id="@+id/iv_share"
                         android:contentDescription="Share"/>
                 </LinearLayout>

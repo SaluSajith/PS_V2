@@ -392,7 +392,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         splashHandler.postDelayed(mEndSplash, SPLASH_DURATION_END);
 
                         try {
-                            if (sharedPreferencesHelper.getString("TOKEN", "").equalsIgnoreCase("")) {
+                            if (sharedPreferencesHelper.getString("TOKEN", "").trim().length()==0) {
                                 TokenService tokenService = new TokenService();
                                 tokenService.onTokenRefresh();
                             }

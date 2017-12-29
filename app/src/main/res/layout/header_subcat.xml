@@ -98,11 +98,11 @@
                     android:layout_marginStart="9dp"
                     android:id="@+id/tv_location"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_location"
                     android:layout_width="@dimen/textsize_xlarge"
                     android:layout_height="@dimen/textsize_xlarge"
-                    android:src="@drawable/ic_expand"
+                    app:srcCompat="@drawable/ic_expand"
                     android:layout_marginLeft="5dp"
                     android:layout_gravity="center"
                     android:contentDescription="Location"/>
