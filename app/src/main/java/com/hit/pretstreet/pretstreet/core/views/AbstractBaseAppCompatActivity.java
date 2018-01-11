@@ -1,5 +1,6 @@
 package com.hit.pretstreet.pretstreet.core.views;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -172,6 +173,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+    @SuppressLint("WrongConstant")
     public void startActivityAndFinish(Class<?> mActivity) {
         try {
             Intent intent = new Intent(this, mActivity);
@@ -262,10 +264,24 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
     }
 
 
-    public boolean isPermissionGranted(Context context, String permission) {
-        return (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) || (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
+    public void askCompactPermission(String permission, PermissionResult permissionResult) {
+        KEY_PERMISSION = 200;
+        permissionsAsk = new String[]{permission};
+        this.permissionResult = permissionResult;
+        internalRequestPermission(permissionsAsk);
     }
 
+    public void askCompactPermissions(String permissions[], PermissionResult permissionResult) {
+        KEY_PERMISSION = 200;
+        permissionsAsk = permissions;
+        this.permissionResult = permissionResult;
+        internalRequestPermission(permissionsAsk);
+    }
+
+    public boolean isPermissionGranted(Context context, String permission) {
+        return (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) ||
+                (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
+    }
 
     private void internalRequestPermission(String[] permissionAsk) {
         String arrayPermissionNotGranted[];
@@ -276,7 +292,6 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
                 permissionsNotGranted.add(permissionAsk[i]);
             }
         }
-
 
         if (permissionsNotGranted.isEmpty()) {
 
@@ -309,10 +324,9 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
                 }
             }
         } else {
-            Log.e("ActivityManagePermission", "permissionResult callback was null");
+            Log.e("ActivityManagePermision", "permissionResult callback was null");
         }
     }
-
 
 /** Open next activity from data recieved from notifications and referral links
  *  @param valueOne shareparameter which denotes the page to be opened
@@ -485,22 +499,6 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
                 break;
         }
     }
-
-    public void askCompactPermission(String permission, PermissionResult permissionResult) {
-        KEY_PERMISSION = 200;
-        permissionsAsk = new String[]{permission};
-        this.permissionResult = permissionResult;
-        internalRequestPermission(permissionsAsk);
-    }
-
-    public void askCompactPermissions(String permissions[], PermissionResult permissionResult) {
-        KEY_PERMISSION = 200;
-        permissionsAsk = permissions;
-        this.permissionResult = permissionResult;
-        internalRequestPermission(permissionsAsk);
-    }
-
-
 
 }
 

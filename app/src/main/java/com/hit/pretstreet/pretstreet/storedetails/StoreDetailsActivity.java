@@ -9,13 +9,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.support.v7.view.menu.ShowableListMenu;
-import android.support.v7.widget.ForwardingListener;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -29,16 +27,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -51,12 +45,12 @@ import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.ShadowTransformer;
-import com.hit.pretstreet.pretstreet.location.StoreLocationMapScreen;
-import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
-import com.hit.pretstreet.pretstreet.storedetails.adapters.CardFragmentPagerAdapter;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
+import com.hit.pretstreet.pretstreet.location.StoreLocationMapScreen;
+import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
+import com.hit.pretstreet.pretstreet.storedetails.adapters.CardFragmentPagerAdapter;
 import com.hit.pretstreet.pretstreet.storedetails.adapters.GalleryAdapter;
 import com.hit.pretstreet.pretstreet.storedetails.controllers.StoreDetailsController;
 import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
@@ -64,7 +58,6 @@ import com.hit.pretstreet.pretstreet.storedetails.model.StoreDetailsModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -116,9 +109,9 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.btn_follow) ButtonPret btn_follow;
 
-    @BindView(R.id.iv_sale) ImageView iv_sale;
-    @BindView(R.id.iv_offer) ImageView iv_offer;
-    @BindView(R.id.iv_new) ImageView iv_new;
+    @BindView(R.id.iv_sale) AppCompatImageView iv_sale;
+    @BindView(R.id.iv_offer) AppCompatImageView iv_offer;
+    @BindView(R.id.iv_new) AppCompatImageView iv_new;
 
     @BindView(R.id.ll_call) LinearLayout ll_call;
     @BindView(R.id.ll_address) LinearLayout ll_address;
@@ -268,7 +261,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         popupDialog.show();
 
         final EdittextPret edt_remarks = (EdittextPret) view.findViewById(R.id.edt_remarks);
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -316,7 +309,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         popupDialog.show();
 
         final EdittextPret edt_remarks = (EdittextPret) view.findViewById(R.id.edt_remarks);
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -436,7 +429,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     private void loadBackdrop(String imageUrl) {
-        final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
+        final AppCompatImageView imageView = (AppCompatImageView) findViewById(R.id.backdrop);
         Glide.with(this).load(imageUrl)
                 .asBitmap()
                 .placeholder(R.drawable.default_banner)
@@ -490,7 +483,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupDialog.show();
 
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -567,7 +560,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_phone_number, null);
         TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
         TextViewPret txt_address1 = (TextViewPret) view.findViewById(R.id.txt_address);
         RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
         RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);

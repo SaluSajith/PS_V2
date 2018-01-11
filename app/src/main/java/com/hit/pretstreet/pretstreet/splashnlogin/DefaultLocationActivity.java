@@ -1,23 +1,26 @@
 package com.hit.pretstreet.pretstreet.splashnlogin;
 
-import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.hit.pretstreet.pretstreet.R;
@@ -25,12 +28,12 @@ import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
-import com.hit.pretstreet.pretstreet.core.helpers.GPSTracker;
+import com.hit.pretstreet.pretstreet.core.helpers.LocationTracker;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LocCallbackInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,12 +55,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GETLOCATION_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_APP_SETTINGS;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_CHECK_SETTINGS_GPS;
 import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.currentloc;
 import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.dropdownloc;
 
-public class DefaultLocationActivity extends AbstractBaseAppCompatActivity implements ApiListenerInterface{
+public class DefaultLocationActivity extends
+        AbstractBaseAppCompatActivity implements ApiListenerInterface, LocCallbackInterface{
 
-    @BindView(R.id.img_close) ImageView img_close;
+    @BindView(R.id.img_close) AppCompatImageView img_close;
     @BindView(R.id.edt_search) EdittextPret edt_search;
     @BindView(R.id.list_places) ListView placeList;
 
@@ -74,11 +80,12 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
 
     JsonRequestController jsonRequestController;
     String strSearch;
+    LocationTracker locationTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select_location_screen);
+        setContentView(R.layout.select_location);
         init();
     }
 
@@ -86,6 +93,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
         ButterKnife.bind(this);
         PreferenceServices.init(this);
         helper = new DatabaseHelper(getApplicationContext());
+        locationTracker = new LocationTracker(DefaultLocationActivity.this);
         edt_search.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -123,7 +131,6 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                     JSONObject geometry = results.getJSONObject(0).getJSONObject("geometry");
                     JSONObject location = geometry.getJSONObject("location");
                     Address address = new Address(null);
-                    String sublocality = "";
                     address.setLatitude(Double.parseDouble(location.getString("lat")));
                     address.setLongitude(Double.parseDouble(location.getString("lng")));
 
@@ -151,8 +158,8 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
                     JSONArray address_components = results.getJSONObject(0).getJSONArray("address_components");
                     for (int i = 0; i < address_components.length(); i++) {
                         try {
-                        JSONObject zero2 = address_components.getJSONObject(i);
-                        JSONArray mtypes = zero2.getJSONArray("types");
+                            JSONObject zero2 = address_components.getJSONObject(i);
+                            JSONArray mtypes = zero2.getJSONArray("types");
                             if (mtypes.toString().contains("sublocality_level_1")) {
                                 sublocality = zero2.getString("long_name");
                             }
@@ -244,8 +251,8 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
             longitude = String.valueOf(location.getLongitude());
             Log.e("Address: ", latitude + ", " + longitude + " " +location);
             helper. saveLocation(strAddress);
-            String parts[] = new String[0];
-            String place = "";
+            String parts[];
+            String place;
             if (strAddress.contains(",")) {
                 parts= strAddress.split(",");
                 place = parts[0];
@@ -271,7 +278,9 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
             PreferenceServices.instance().saveLocationType(dropdownloc);
             this.hideDialog();
             finish();
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -308,7 +317,7 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
         try {
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-            resultList = new ArrayList<String>(predsJsonArray.length());
+            resultList = new ArrayList<>(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
                 System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
                 System.out.println("============================================================");
@@ -329,86 +338,63 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
 
     @OnClick(R.id.rl_auto_detect)
     public void onAutoDetectPressed() {
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            getLocation();
-        } else {
-            askCompactPermission(Manifest.permission.ACCESS_FINE_LOCATION, new PermissionResult() {
-                @Override
-                public void permissionGranted() {
-                    getLocation();
-                }
-                @Override
-                public void permissionDenied() {
-                }
-            });
-        }
-    }
+        if (locationTracker.canGetLocation()) {
+            //displaySnackBar("Please wait while fetching your location..");
 
-    @Override
-    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
-        switch (permsRequestCode) {
-            case 200:
+            if(locationTracker.getLatitude()==0 && locationTracker.getLongitude()==0) {
+                showProgressDialog(getResources().getString(R.string.loading));
+                lat1 = 0;
+                long1 = 0;
+                locationTracker.getMyLocation();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(lat1 == 0 && long1 == 0){
+                            hideDialog();
+                            displaySnackBar("Unable to find the location! Please check your location settings.");
+                        }
+                    }
+                }, 10000);
+            } else
                 getLocation();
-                break;
-            default: break;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            switch (requestCode) {
-                case 1:
-                    getLocation();
-                    break;
-            }
-        }
+        } else
+            locationTracker.checkForLocationSettings();
     }
 
     public void getLocation() {
         try {
-            GPSTracker gps = new GPSTracker(this);
-            if (gps.canGetLocation()) {
-                displaySnackBar("Please wait while fetching your location..");
-                lat1 = gps.getLatitude();
-                long1 = gps.getLongitude();
-                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<Address> list;
-                try {
-                    list = geocoder.getFromLocation(lat1, long1, 2);
-                    if (list.isEmpty()) {
-                        //displaySnackBar("Please try again");
-                        getLatlng();
-                    } else {
-                        Address location = list.get(1);
-                        currentLocation = location.getSubLocality();
-                        displaySnackBar( "Location set to " + currentLocation);
-                        try{
-                            String locality = location.getLocality();
-                            if(!locality.equalsIgnoreCase("null")) {
-                                if (currentLocation.equals(locality))
-                                    PreferenceServices.instance().saveCurrentLocation(currentLocation);
-                                else
-                                    PreferenceServices.instance().saveCurrentLocation(currentLocation + ", " + locality);
-                            }
-                        }catch (Exception e){
-                            PreferenceServices.instance().saveCurrentLocation(currentLocation);
-                            e.printStackTrace();
-                        }
-                        PreferenceServices.instance().saveLatitute(lat1 + "");
-                        PreferenceServices.instance().saveLongitute(long1 + "");
-                        PreferenceServices.instance().saveLocationType(currentloc);
-                        this.finish();
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            List<Address> list;
+            try {
+                list = geocoder.getFromLocation(lat1, long1, 2);
+                if (list.isEmpty()) {
+                    //displaySnackBar("Please try again");
                     getLatlng();
+                } else {
+                    Address location = list.get(1);
+                    currentLocation = location.getSubLocality();
+                    //displaySnackBar( "Location set to " + currentLocation);
+                    try{
+                        String locality = location.getLocality();
+                        if(!locality.equalsIgnoreCase("null")) {
+                            if (currentLocation.equals(locality))
+                                PreferenceServices.instance().saveCurrentLocation(currentLocation);
+                            else
+                                PreferenceServices.instance().saveCurrentLocation(currentLocation + ", " + locality);
+                        }
+                    }catch (Exception e){
+                        PreferenceServices.instance().saveCurrentLocation(currentLocation);
+                        e.printStackTrace();
+                    }
+                    PreferenceServices.instance().saveLatitute(lat1 + "");
+                    PreferenceServices.instance().saveLongitute(long1 + "");
+                    PreferenceServices.instance().saveLocationType(currentloc);
+                    this.finish();
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }
-            } else {
-                gps.showSettingsAlert();
+            } catch (IOException e) {
+                e.printStackTrace();
+                getLatlng();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -423,6 +409,67 @@ public class DefaultLocationActivity extends AbstractBaseAppCompatActivity imple
             jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
         } catch (Exception ee) {
             ee.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        locationTracker.removeUpdates();
+    }
+
+    private void showSnackbar(String result){
+        final Snackbar snackBar = Snackbar.make(findViewById(R.id.txt_location), result, Snackbar.LENGTH_INDEFINITE);
+        snackBar.setAction("Enable", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSettings();
+            }
+        });
+        snackBar.show();
+    }
+
+    private void goToSettings() {
+        Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+        myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
+        myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivityForResult(myAppSettings, REQUEST_APP_SETTINGS);
+    }
+
+    @Override
+    public void setLoc(Location location) {
+        hideDialog();
+        lat1 = location.getLatitude();
+        long1 = location.getLongitude();
+        getLocation();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        int permissionLocation = ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+            locationTracker.checkForLocationSettings();
+        }
+        else{
+            showSnackbar("Pretstreet needs permission to access this feature");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CHECK_SETTINGS_GPS:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        locationTracker.checkPermissions();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        locationTracker.checkForLocationSettings();
+                        break;
+                }
+                break;
         }
     }
 }

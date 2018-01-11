@@ -3,22 +3,18 @@ package com.hit.pretstreet.pretstreet.navigationitems.fragments;
 import android.app.DatePickerDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
-import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
@@ -26,8 +22,6 @@ import com.hit.pretstreet.pretstreet.navigationitems.controllers.NavItemsControl
 import com.hit.pretstreet.pretstreet.navigationitems.interfaces.ContentBindingInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
-import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
-import com.hit.pretstreet.pretstreet.storedetails.view.SlideshowDialogFragment;
 
 import java.util.Calendar;
 
@@ -42,7 +36,7 @@ import butterknife.OnClick;
 public class AccountFragment extends AbstractBaseFragment<WelcomeActivity>
         implements ContentBindingInterface{
 
-    @BindView(R.id.civ_profile)ImageView civ_profile;
+    @BindView(R.id.civ_profile)AppCompatImageView civ_profile;
     @BindView(R.id.edt_fname) EdittextPret edt_fname;
     @BindView(R.id.edt_lname) EdittextPret edt_lname;
     @BindView(R.id.edt_email) EdittextPret edt_email;

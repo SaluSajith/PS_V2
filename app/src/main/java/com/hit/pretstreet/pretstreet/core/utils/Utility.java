@@ -33,7 +33,7 @@ public class Utility {
         recyclerView.setHasFixedSize(true);
         //recyclerView.setItemViewCacheSize(20);
         //recyclerView.setDrawingCacheEnabled(true);
-        //recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        //recyclerView.setDrawingCacheQuality(SView.DRAWING_CACHE_QUALITY_HIGH);
         return llm;
     }
 
@@ -47,7 +47,7 @@ public class Utility {
         recyclerView.setHasFixedSize(true);
         //recyclerView.setItemViewCacheSize(20);
         //recyclerView.setDrawingCacheEnabled(true);
-        //recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        //recyclerView.setDrawingCacheQuality(SView.DRAWING_CACHE_QUALITY_HIGH);
         return llm;
     }
 

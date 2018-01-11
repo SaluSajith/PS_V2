@@ -6,7 +6,6 @@ import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.RequestManager;
@@ -31,7 +30,7 @@ public class ArticlePagerAdapter extends PagerAdapter {
     /**Public constructor
      * @param glide common object
      * @param mContext activity context
-     * @param mResources View pager images*/
+     * @param mResources SView pager images*/
     public ArticlePagerAdapter(final RequestManager glide, Context mContext, ArrayList<String> mResources) {
         this.mContext = mContext;
         this.mResources = mResources;

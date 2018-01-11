@@ -255,9 +255,11 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
+    /**Update Button status in list as per the response status*/
     public void updateLikeStatus(int status, String storeid) {
         switch (selected_id){
             case ReGISTER:
+                /**Update Register Button Text*/
                 if(status==1){
                     textViewPret.setEnabled(false);
                     textViewPret.setText("Registered");
@@ -268,6 +270,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     list.get(mPosition).setRegister(status+"");
                 break;
             case LIKE:
+                /**Update LIKE or HEART button text*/
                 if(list.get(mPosition).getId().equals(storeid))
                     list.get(mPosition).setLike(status == 0 ? false : true);
                 break;
@@ -289,6 +292,8 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         isLoading = false;
     }
 
+    /**Download image from URL
+     * Removed caching strategy as it is affecting if the image is replaced with another*/
     static void loadImage(RequestManager glide, String url, AppCompatImageView view) {
         glide.load(url).diskCacheStrategy(DiskCacheStrategy.NONE).into(view);
     }

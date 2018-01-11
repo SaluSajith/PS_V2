@@ -32,8 +32,8 @@ import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.adapters.HomeGridAdapter;
 import com.hit.pretstreet.pretstreet.navigation.adapters.HomePagerAdapter;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
-import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
+import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 
@@ -345,4 +345,5 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
         intent.putExtra("fragment", TERMS_FRAGMENT);
         startActivity(intent);
     }
+
 }

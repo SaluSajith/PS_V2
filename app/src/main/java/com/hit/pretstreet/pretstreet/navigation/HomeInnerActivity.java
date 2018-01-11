@@ -1,42 +1,28 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IdRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
-import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.TimePicker;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
@@ -50,7 +36,6 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.navigation.controllers.HomeFragmentController;
 import com.hit.pretstreet.pretstreet.navigation.fragments.ExhibitionFragment;
 import com.hit.pretstreet.pretstreet.navigation.fragments.GiveawayFragment;
@@ -61,7 +46,6 @@ import com.hit.pretstreet.pretstreet.navigation.interfaces.ZoomedViewListener;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
-import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.SmsListener;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
@@ -72,13 +56,37 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.*;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEREGISTER;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONLIKE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONREGISTEROTP_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONREGISTER_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_DETAILS;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXUNLIKELINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYARTICLEPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAY_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAY_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRIVACY_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGARTICLE_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 
 public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, TrendingHolderInvoke, ZoomedViewListener {
@@ -153,7 +161,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     private void checkDevice(){
         String manufacturer = android.os.Build.MANUFACTURER;
         if(manufacturer.equalsIgnoreCase("samsung")){
-            nsv_header.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            nsv_header.setLayerType(SView.LAYER_TYPE_SOFTWARE, null);
         }
     }*/
 

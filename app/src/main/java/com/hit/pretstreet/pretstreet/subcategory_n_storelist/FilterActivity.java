@@ -2,32 +2,25 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.widget.ImageView;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
-import com.hit.pretstreet.pretstreet.core.customview.SimpleDividerItemDecoration;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.navigation.controllers.DetailsPageController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.FilterSectionAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.FilterCallback;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +30,6 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTER_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
 
 
 public class FilterActivity extends AbstractBaseAppCompatActivity implements

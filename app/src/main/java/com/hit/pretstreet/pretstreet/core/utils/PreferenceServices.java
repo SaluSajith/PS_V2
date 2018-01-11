@@ -47,8 +47,11 @@ public class PreferenceServices {
     public static String dropdownloc = "DROPDOWNLOC";
 
     private static final String PREFS_NAME = "FashionSharedPref";
+    private static final String IS_FIRST_TIME_LAUNCH = "ISFIRSTTIMELAUNCH";
     private static PreferenceServices mSingleton = new PreferenceServices();
     private static Context mContext;
+    private static SharedPreferences pref;
+    private static SharedPreferences.Editor editor;
 
     private PreferenceServices() {
     }
@@ -63,6 +66,8 @@ public class PreferenceServices {
 
     public static void init(Context context) {
         mContext = context;
+        pref = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        editor = pref.edit();
     }
 
     public SharedPreferences getPrefs() {
@@ -70,232 +75,218 @@ public class PreferenceServices {
     }
 
     public String getTypeQueryparam() {
-        return getPrefs().getString(TYPE_QUERYPARAM, "");
+        return pref.getString(TYPE_QUERYPARAM, "");
     }
 
     public void setTypeQueryparam(String typeQueryparam) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(TYPE_QUERYPARAM, typeQueryparam);
         editor.apply();
     }
 
     public String getShareQueryparam() {
-        return getPrefs().getString(SHARE_QUERYPARAM, "");
+        return pref.getString(SHARE_QUERYPARAM, "");
     }
 
     public void setShareQueryparam(String shareQueryparam) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(SHARE_QUERYPARAM, shareQueryparam);
         editor.apply();
     }
 
     public String getIdQueryparam() {
-        return getPrefs().getString(ID_QUERYPARAM, "");
+        return pref.getString(ID_QUERYPARAM, "");
     }
 
     public void setIdQueryparam(String idQueryparam) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(ID_QUERYPARAM, idQueryparam);
         editor.apply();
     }
 
 
     public String getUTMQueryparam() {
-        return getPrefs().getString(UTM_QUERYPARAM, "");
+        return pref.getString(UTM_QUERYPARAM, "");
     }
 
     public void setUTMQueryparam(String idQueryparam) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(UTM_QUERYPARAM, idQueryparam);
         editor.apply();
     }
 
     public int getNotifCOunt() {
-        return getPrefs().getInt(NOTIFCOUNT, 0);
+        return pref.getInt(NOTIFCOUNT, 0);
     }
 
     public void updateNotif(int value) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putInt(NOTIFCOUNT, value);
         editor.apply();
     }
 
     public String geUsertId() {
-        return getPrefs().getString(USERID, "");
+        return pref.getString(USERID, "");
     }
 
     public void saveUserId(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(USERID, id);
         editor.apply();
     }
     public String geUsertName() {
-        return getPrefs().getString(USERNAME, "");
+        return pref.getString(USERNAME, "");
     }
 
     public void saveUserName(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(USERNAME, id);
         editor.apply();
     }
 
     public String getCurrentLocation() {
-        return getPrefs().getString(CURLOCATION, "No Location Found");
+        return pref.getString(CURLOCATION, "No Location Found");
     }
 
     public void saveCurrentLocation(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(CURLOCATION, id);
         editor.apply();
     }
 
     public boolean isAutoDetect(){
-        return (getPrefs().getString(LOCATIONTYPE, "").equals(currentloc));
+        return (pref.getString(LOCATIONTYPE, "").equals(currentloc));
     }
 
     public void saveLocationType(String type) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(LOCATIONTYPE, type);
         editor.apply();
     }
 
     public String getLatitute() {
-        return getPrefs().getString(LATITUTE, "");
+        return pref.getString(LATITUTE, "");
     }
 
     public void saveLatitute(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(LATITUTE, id);
         editor.apply();
     }
 
     public String getLongitute() {
-        return getPrefs().getString(LONGITUTE, "");
+        return pref.getString(LONGITUTE, "");
     }
 
     public void saveLongitute(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(LONGITUTE, id);
         editor.apply();
     }
 
     public String getLoginType() {
-        return getPrefs().getString(LOGINTYPE, "");
+        return pref.getString(LOGINTYPE, "");
     }
 
     public void saveLoginType(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(LOGINTYPE, id);
         editor.commit();
     }
 
     public int getDeviceSize() {
-        return getPrefs().getInt(DEVICESIZE, 0);
+        return pref.getInt(DEVICESIZE, 0);
     }
 
     public void saveDeviceSize(int id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putInt(DEVICESIZE, id);
         editor.apply();
     }
 
     public String getHomeMainCatList() {
-        return getPrefs().getString(HOMEMAINCATLIST, "");
+        return pref.getString(HOMEMAINCATLIST, "");
     }
 
     public void saveHomeMainCatList(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(HOMEMAINCATLIST, id);
         editor.apply();
     }
 
     public String getHomeSubCatList() {
-        return getPrefs().getString(SUBMAINCATLIST, "");
+        return pref.getString(SUBMAINCATLIST, "");
     }
 
     public void saveHomeSubCatList(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(SUBMAINCATLIST, id);
         editor.apply();
     }
 
     public String getTrendingCatList() {
-        return getPrefs().getString(TRENDINGCATLIST, "");
+        return pref.getString(TRENDINGCATLIST, "");
     }
 
     public void saveTrendingCatList(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(TRENDINGCATLIST, id);
         editor.apply();
     }
 
     public String getTheshopscatlist() {
-        return getPrefs().getString(THESHOPSCATLIST, "");
+        return pref.getString(THESHOPSCATLIST, "");
     }
 
     public void saveTheshopscatlist(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(THESHOPSCATLIST, id);
         editor.apply();
     }
 
     public String getThedesignerscatlist() {
-        return getPrefs().getString(THEDESIGNERSCATLIST, "");
+        return pref.getString(THEDESIGNERSCATLIST, "");
     }
 
     public void saveThedesignerscatlist(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(THEDESIGNERSCATLIST, id);
         editor.apply();
     }
 
     public String getThejewekkarytrendingcatlist() {
-        return getPrefs().getString(THEJEWEKKARYTRENDINGCATLIST, "");
+        return pref.getString(THEJEWEKKARYTRENDINGCATLIST, "");
     }
 
     public void saveThejewekkarytrendingcatlist(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(THEJEWEKKARYTRENDINGCATLIST, id);
         editor.apply();
     }
 
     public String getTHERETAILSCATLIST() {
-        return getPrefs().getString(THERETAILSCATLIST, "");
+        return pref.getString(THERETAILSCATLIST, "");
     }
 
     public void saveTHERETAILSCATLIST(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(THERETAILSCATLIST, id);
         editor.apply();
     }
 
     public String getSplashScreen() {
-        return getPrefs().getString(SPLASHSCREEN, "");
+        return pref.getString(SPLASHSCREEN, "");
     }
 
     public void saveSplashScreen(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(SPLASHSCREEN, id);
         editor.apply();
     }
 
     public String getBaseImage() {
-        return getPrefs().getString(BASEIMAGE, "");
+        return pref.getString(BASEIMAGE, "");
     }
 
     public void saveBaseImage(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(BASEIMAGE, id);
         editor.apply();
     }
 
     public String getHeaderImage() {
-        return getPrefs().getString(HEADERIMAGE, "");
+        return pref.getString(HEADERIMAGE, "");
     }
 
     public void saveHeaderImage(String id) {
-        SharedPreferences.Editor editor = getPrefs().edit();
         editor.putString(HEADERIMAGE, id);
         editor.apply();
+    }
+
+    public void setFirstTimeLaunch(boolean isFirstTime) {
+        editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
+        editor.commit();
+    }
+
+    public boolean isFirstTimeLaunch() {
+        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
 }

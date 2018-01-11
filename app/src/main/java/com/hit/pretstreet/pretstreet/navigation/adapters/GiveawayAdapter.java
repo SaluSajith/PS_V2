@@ -32,13 +32,11 @@ import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYLISTLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLISTLINK;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 /**
- * Created by User on 28/11/2017.
+ * Created by User on 28/11/2017
+ * Giveaway page adapter class
  */
-
 public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
@@ -55,6 +53,11 @@ public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int lastVisibleItem, totalItemCount;
     private final RequestManager glide;
 
+    /** Public constructor for exhibition listing
+     * @param glide common glide object
+     * @param activity activity contecxt
+     * @param list giveaway list model array
+     * @param mRecyclerView recyclerview param for loadmore*/
     public GiveawayAdapter(final RequestManager glide, RecyclerView mRecyclerView,
                            Activity activity, ArrayList<TrendingItems> list) {
         this.context = activity;
@@ -64,6 +67,7 @@ public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.trendingHolderInvoke = (TrendingHolderInvoke) activity;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        /**Load more items listener*/
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

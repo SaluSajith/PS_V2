@@ -2,18 +2,15 @@ package com.hit.pretstreet.pretstreet.search;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -26,16 +23,13 @@ import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.search.controllers.SearchController;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
-import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONException;
@@ -47,8 +41,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTERPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LIMIT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTILINK;
@@ -56,10 +48,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTORE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 
 public class MultistoreActivity extends AbstractBaseAppCompatActivity implements

@@ -42,7 +42,8 @@
             android:name="asset_statements"
             android:resource="@string/asset_statements" />
 
-        <receiver android:name=".core.helpers.IncomingSms"
+        <receiver
+            android:name=".core.helpers.IncomingSms"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter android:priority="999">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
@@ -54,6 +55,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -80,7 +82,7 @@
                 <action android:name="com.facebook.platform.AppCallResultBroadcast" />
             </intent-filter>
         </receiver>
-        <service android:name=".core.helpers.GPSTracker" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationName"
             android:value="@string/facebook_app_name" />
@@ -103,11 +105,8 @@
 
         <activity
             android:name=".sociallogin.GoogleLoginActivity"
-            android:theme="@style/Theme.AppCompat.Translucent"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.ArticleActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".navigation.HomeActivity"
             android:screenOrientation="portrait" />
@@ -137,8 +136,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigation.TrendingArticleActivity"
-            android:theme="@style/AppTheme.NoActionBar1"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar1" />
         <activity
             android:name=".search.MultistoreActivity"
             android:screenOrientation="portrait" />
@@ -155,22 +154,22 @@
             android:name=".subcategory_n_storelist.StoreListingActivity"
             android:screenOrientation="portrait" />
 
-
-
-
-        <!--************************** App Analytics start*******************************-->
-        <!--************************** App Analytics *******************************-->
+        <!-- ************************** App Analytics start ******************************* -->
+        <!-- ************************** App Analytics ******************************* -->
         <activity
             android:name=".splashnlogin.DeepLinkActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <data android:scheme="pretstreet" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <receiver
             android:name=".core.helpers.InstallReferrerReceiver"
             android:exported="true">
@@ -178,6 +177,7 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+
         <service android:name=".sociallogin.TokenService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -188,29 +188,40 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id"
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
-        <receiver android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+
+        <receiver
+            android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:enabled="true"
-            android:exported="true">
-        </receiver>
-        <!--<service android:name="com.google.android.gms.analytics.CampaignTrackingService"
+            android:exported="true" />
+        <!--
+            <service android:name="com.google.android.gms.analytics.CampaignTrackingService"
             android:enabled="true"
-            android:exported="false" />-->
-        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:exported="false" />
+        -->
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
         </receiver>
-        <service android:name="com.google.android.gms.analytics.AnalyticsService"
+
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
-            android:exported="false"/>
-        <meta-data android:name="com.google.android.gms.analytics.globalConfigResource"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.analytics.globalConfigResource"
             android:resource="@xml/global_tracker" />
 
-        <!--************************** App Analytics end*******************************-->
+        <!-- ************************** App Analytics end******************************* -->
 
-
+        <activity android:name=".splashnlogin.WelcomeIntroActivity" />
     </application>
+
 </manifest>

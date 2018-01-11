@@ -20,10 +20,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
 
 /**
- * Base View to manage image zoom/scrool/pinch operations
+ * Base SView to manage image zoom/scrool/pinch operations
  *
  */
 public abstract class ImageViewTouchBase extends AppCompatImageView {
@@ -49,7 +48,7 @@ public abstract class ImageViewTouchBase extends AppCompatImageView {
 
     /**
      * Use this to change the {@link ImageViewTouchBase#setDisplayType(DisplayType)} of
-     * this View
+     * this SView
      *
      * @author alessandro
      */
@@ -437,7 +436,7 @@ public abstract class ImageViewTouchBase extends AppCompatImageView {
      * {@inheritDoc} Set the new image to display and reset the internal matrix.
      *
      * @param bitmap the {@link Bitmap} to display
-     * @see {@link ImageView#setImageBitmap(Bitmap)}
+     * @see {@link AppCompatImageView#setImageBitmap(Bitmap)}
      */
     @Override
     public void setImageBitmap(final Bitmap bitmap) {

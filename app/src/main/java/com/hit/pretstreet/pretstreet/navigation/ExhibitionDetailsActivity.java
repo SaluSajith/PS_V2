@@ -7,10 +7,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -25,7 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -97,10 +97,10 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.btn_follow) ButtonPret btn_follow;
 
-    @BindView(R.id.iv_sale) ImageView iv_sale;
-    @BindView(R.id.iv_offer) ImageView iv_offer;
-    @BindView(R.id.iv_new) ImageView iv_new;
-    @BindView(R.id.ib_like)ImageView ib_like;
+    @BindView(R.id.iv_sale) AppCompatImageView iv_sale;
+    @BindView(R.id.iv_offer) AppCompatImageView iv_offer;
+    @BindView(R.id.iv_new) AppCompatImageView iv_new;
+    @BindView(R.id.ib_like)AppCompatImageView ib_like;
 
     @BindView(R.id.ll_call) LinearLayout ll_call;
     @BindView(R.id.ll_address) LinearLayout ll_address;
@@ -261,7 +261,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     }
 
     private void loadBackdrop(String imageUrl) {
-        final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
+        final AppCompatImageView imageView = (AppCompatImageView) findViewById(R.id.backdrop);
         Glide.with(context).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_banner)
                 .diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(imageView);
     }
@@ -314,7 +314,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             popupDialog.show();
 
-            ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+            AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
             img_close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -403,7 +403,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_phone_number, null);
             TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
-            ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+            AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
             TextViewPret txt_address1 = (TextViewPret) view.findViewById(R.id.txt_address);
             RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
             RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
@@ -483,7 +483,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         popupDialog.show();
 
         final EdittextPret edt_phone = (EdittextPret) view.findViewById(R.id.edt_phone);
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

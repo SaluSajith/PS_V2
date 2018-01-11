@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -38,14 +39,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.appinvite.AppInviteInvitation;
-import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
@@ -54,8 +54,8 @@ import com.hit.pretstreet.pretstreet.core.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.NotificationBadge;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
-import com.hit.pretstreet.pretstreet.core.helpers.GPSTracker;
+import com.hit.pretstreet.pretstreet.core.customview.showCaseView.Showcase;
+import com.hit.pretstreet.pretstreet.core.helpers.LocationTracker;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
@@ -68,18 +68,15 @@ import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
-import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.AboutFragment;
-import com.hit.pretstreet.pretstreet.search.MultistoreActivity;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
+import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LocCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
-import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
-import com.hit.pretstreet.pretstreet.storedetails.adapters.GalleryAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
@@ -100,38 +97,29 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ABOUT_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ACCOUNT_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CONTACTUS_FRAGMENT;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAY_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGELINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIFICATION_FRAGMENT;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REFER_EARN_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_INVITE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHARE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
-import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.currentloc;
 
 public class HomeActivity extends AbstractBaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        NavigationClick, ApiListenerInterface, HomeTrapeClick, ButtonClickCallback {
+        NavigationClick, ApiListenerInterface, HomeTrapeClick, ButtonClickCallback, LocCallbackInterface {
 
     private int selectedFragment = 0;
     boolean doubleBackToExitPressedOnce = false;
 
     @BindView(R.id.tv_location) TextViewPret tv_location;
+    TextViewPret tv_profile;
     NavDrawerAdapter navDrawerAdapter;
     JsonRequestController jsonRequestController;
     LoginController loginController;
+    LocationTracker locationTracker;
     private BroadcastReceiver receiver;
 
     boolean homeopened = false;
@@ -144,7 +132,9 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             if (!homeopened) {
                 getHomePage();
             }
-            updateNotificationFlag();
+            int size = PreferenceServices.getInstance().getNotifCOunt();
+            tv_profile.setText(PreferenceServices.getInstance().geUsertName());
+            updateNotificationFlag(size);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -166,8 +156,11 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     private void init() {
         PreferenceServices.init(this);
         context = getApplicationContext();
+        locationTracker = new LocationTracker(HomeActivity.this);
+        locationTracker.checkLocationSettings();
         View includedlayout = findViewById(R.id.includedlayout);
         ButterKnife.bind(this, includedlayout);
+        //displayTuto();
 
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
@@ -183,16 +176,14 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             PreferenceServices.getInstance().setTypeQueryparam("");
             return;
         }
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)
-            checkforLocationChange();
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("RECEIVE_NOTIFICATION");
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                updateNotificationFlag();
+                int size = PreferenceServices.getInstance().getNotifCOunt();
+                updateNotificationFlag(size);
             }
         };
         registerReceiver(receiver, filter);
@@ -209,13 +200,13 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     private void setupDrawer(View toolbar){
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, null, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView =  findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         NavDrawerItem[] navArray = new NavDrawerItem[]{
@@ -228,7 +219,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 new NavDrawerItem("nav_contact", "Contact Us/Support")};
 
         navDrawerAdapter = new NavDrawerAdapter(HomeActivity.this, navArray, HomeActivity.this);
-        RecyclerView rv_nav = (RecyclerView) findViewById(R.id.rv_nav);
+        RecyclerView rv_nav =  findViewById(R.id.rv_nav);
         Utility.setListLayoutManager(rv_nav, HomeActivity.this);
         rv_nav.addItemDecoration(new DividerDecoration(context,
                 ContextCompat.getColor(context, R.color.trending_grey), 0.5f));
@@ -236,7 +227,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         rv_nav.getItemAnimator().setChangeDuration(0);
         rv_nav.setAdapter(navDrawerAdapter);
 
-        AppCompatImageView iv_menu = (AppCompatImageView) toolbar.findViewById(R.id.iv_menu);
+        AppCompatImageView iv_menu =  toolbar.findViewById(R.id.iv_menu);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,7 +235,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                     drawer.openDrawer(Gravity.LEFT);
             }
         });
-        AppCompatImageView iv_logo = (AppCompatImageView) toolbar.findViewById(R.id.iv_logo);
+        AppCompatImageView iv_logo =  toolbar.findViewById(R.id.iv_logo);
         iv_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,7 +243,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                     drawer.openDrawer(Gravity.LEFT);
             }
         });
-        AppCompatImageView iv_search = (AppCompatImageView) toolbar.findViewById(R.id.iv_search);
+        AppCompatImageView iv_search =  toolbar.findViewById(R.id.iv_search);
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,23 +254,23 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             }
         });
 
-        TextViewPret tv_profile = (TextViewPret) navigationView.findViewById(R.id.tv_profile);
-        final AppCompatImageView iv_profile = (AppCompatImageView) navigationView.findViewById(R.id.iv_profile);
-        TextViewPret tv_rateus = (TextViewPret) drawer.findViewById(R.id.tv_rateus);
+        tv_profile =  navigationView.findViewById(R.id.tv_profile);
+        final AppCompatImageView iv_profile = navigationView.findViewById(R.id.iv_profile);
+        TextViewPret tv_rateus = drawer.findViewById(R.id.tv_rateus);
         tv_rateus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rateUs();
             }
         });
-        AppCompatImageView iv_notif = (AppCompatImageView) drawer.findViewById(R.id.iv_notification);
+        AppCompatImageView iv_notif = drawer.findViewById(R.id.iv_notification);
         iv_notif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 menuOnClick(NOTIFICATION_FRAGMENT+"");
             }
         });
-        AppCompatImageView iv_noti = (AppCompatImageView) toolbar.findViewById(R.id.iv_notif);
+        AppCompatImageView iv_noti = toolbar.findViewById(R.id.iv_notif);
         iv_noti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -313,13 +304,12 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         }
     }
 
-    private void updateNotificationFlag(){
+    private void updateNotificationFlag(int size){
         try {
             View includedlayout = findViewById(R.id.includedlayout);
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            NotificationBadge badge_home = (NotificationBadge) includedlayout.findViewById(R.id.badge);
-            NotificationBadge mBadge = (NotificationBadge) navigationView.findViewById(R.id.badge);
-            int size = PreferenceServices.getInstance().getNotifCOunt();
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            NotificationBadge badge_home = includedlayout.findViewById(R.id.badge);
+            NotificationBadge mBadge = navigationView.findViewById(R.id.badge);
             badge_home.setNumber(size);
             //mBadge.setNumber(size);
         } catch (Resources.NotFoundException e) {
@@ -341,7 +331,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -365,7 +355,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -373,7 +363,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @Override
     public void menuOnClick(String id) {
         String itemId = id;
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         switch (itemId) {
@@ -463,11 +453,11 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         final Dialog popupDialog = new Dialog(HomeActivity.this);
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.popup_update, null);
-        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+        ButtonPret btn_send = view.findViewById(R.id.btn_send);
 
         popupDialog.setCanceledOnTouchOutside(false);
         popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
+        RelativeLayout rl = view.findViewById(R.id.popup_bundle);
         rl.setPadding(0, 0, 0, 0);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -475,7 +465,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         rl.setLayoutParams(lp);
         popupDialog.setContentView(view);
         popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
         popupDialog.getWindow().setAttributes(params);
         popupDialog.setCancelable(false);
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
@@ -514,7 +504,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
                 fm.popBackStack();
             }
-            FrameLayout fl_content = (FrameLayout) findViewById(R.id.content);
+            FrameLayout fl_content = findViewById(R.id.content);
             fl_content.removeAllViews();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
             ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -607,20 +597,40 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         getHomePage();
     }
 
-    boolean isLocationChanged(){
+    public void checkforLocationChange(final double lat2, final double lng2){
+
+        if (locationTracker.canGetLocation()) {
+            //if(PreferenceServices.getInstance().isAutoDetect())
+            if (isLocationChanged(lat2, lng2)) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+                alertDialog.setTitle("Location Changed!");
+                alertDialog.setMessage("It is detected that your location has been changed!! Do you want to switch?");
+
+                alertDialog.setPositiveButton("Switch location", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        getLocation(lat2, lng2);
+                    }
+                });
+                alertDialog.setNegativeButton("No, Thanks", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alertDialog.show();
+            }
+        } else ;
+    }
+
+    boolean isLocationChanged(double lat2, double lng2){
         boolean locationChanged = false;
         try {
-            GPSTracker gps = new GPSTracker(this);
-            if (gps.canGetLocation()) {
-                double lat2 = gps.getLatitude();
-                double lng2 = gps.getLongitude();
+            if (locationTracker.canGetLocation()) {
 
                 double lat1 = Double.parseDouble(PreferenceServices.instance().getLatitute());
                 double lng1 = Double.parseDouble(PreferenceServices.instance().getLongitute());
-
-                if (GPSTracker.distance(lat1, lng1, lat2, lng2) > 10)
-                    locationChanged = true;
-                else locationChanged = false;
+                if(lat2!=0 && lng2!=0) {
+                    locationChanged = LocationTracker.distance(lat1, lng1, lat2, lng2) > 10;
+                }
             }
             else ;
         } catch (NumberFormatException e) {
@@ -629,36 +639,11 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         return locationChanged;
     }
 
-    public void checkforLocationChange(){
+    public void getLocation(double lat2, double lng2) {
 
-        GPSTracker gps = new GPSTracker(this);
-        if (gps.canGetLocation())
-            if(PreferenceServices.getInstance().isAutoDetect())
-                if (isLocationChanged()){
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
-                    alertDialog.setTitle("Location Changed!");
-                    alertDialog.setMessage("It is detected that your location has been changed!! Do you want to switch?");
-
-                    alertDialog.setPositiveButton("Switch location", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            getLocation();
-                        }
-                    });
-                    alertDialog.setNegativeButton("No, Thanks", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    alertDialog.show();
-                }
-    }
-
-    public void getLocation() {
-
-        GPSTracker gps = new GPSTracker(this);
         displaySnackBar("Please wait while fetching your location..");
-        double lat1 = gps.getLatitude();
-        double long1 = gps.getLongitude();
+        double lat1 = lat2;
+        double long1 = lng2;
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> list;
         try {
@@ -718,5 +703,38 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             receiver = null;
         }
         super.onDestroy();
+    }
+
+    protected void displayTuto() {
+        Showcase.from(this)
+                .setListener(new Showcase.Listener() {
+                    @Override
+                    public void onDismissed() {
+                        Toast.makeText(getApplicationContext(), "Tutorial dismissed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setContentView(R.layout.tuto_showcase_tuto_sample)
+                .setFitsSystemWindows(true)
+                .on(R.id.tv_location)
+                .addCircle()
+                .withBorder()
+
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+
+                /*.on(R.id.swipable)
+                .displaySwipableLeft()
+                .delayed(399)
+                .animated(true)*/
+                .show();
+    }
+
+    @Override
+    public void setLoc(Location location) {
+        checkforLocationChange(location.getLatitude(), location.getLongitude());
     }
 }

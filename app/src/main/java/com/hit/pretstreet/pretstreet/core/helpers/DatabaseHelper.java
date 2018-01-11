@@ -96,12 +96,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             //if(!CheckIsDataAlreadyInDBorNot(TABLE_NOTIFICATION, KEY_ID, trendingItems.getId())) {
                 values = new ContentValues();
-                values.put(KEY_ID, trendingItems.getId());
-                values.put(KEY_TITLE, trendingItems.getTitle());
-                values.put(KEY_DESC, trendingItems.getArticle());
+                values.put(KEY_ID, trendingItems.getId()+"");
+                values.put(KEY_TITLE, trendingItems.getTitle()+"");
+                values.put(KEY_DESC, trendingItems.getArticle()+"");
                 values.put(KEY_IMAGE, (trendingItems.getImagearray().size() > 0 ? trendingItems.getImagearray().get(0) : ""));
-                values.put(KEY_SHARE, trendingItems.getShareUrl());
-                values.put(KEY_ICON, trendingItems.getLogoImage());
+                values.put(KEY_SHARE, trendingItems.getShareUrl()+"");
+                values.put(KEY_ICON, trendingItems.getLogoImage()+"");
                 l = db.insert(TABLE_NOTIFICATION, null, values);
             //}
             db.close();

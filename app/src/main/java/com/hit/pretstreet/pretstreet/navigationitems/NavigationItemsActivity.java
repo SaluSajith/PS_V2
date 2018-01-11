@@ -3,15 +3,15 @@ package com.hit.pretstreet.pretstreet.navigationitems;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -51,10 +51,32 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.*;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ABOUTDESIGNER_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ABOUTUS_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ABOUT_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ABOUT_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ACCOUNT_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ADDSTORE_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ADDSTORE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHANGEPASSWORD_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CONTACTUS_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CONTACTUS_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.FEEDBACK_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FEEDBACK_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIFICATIONKEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIFICATION_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PICK_IMAGE_REQUEST;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PLACE_PICKER_REQUEST;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRIVACYPOLICY_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRIVACY_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.REFER_EARN_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TC_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TERMS_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEPASSWORD_ACCOUNT_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATE_ACCOUNT_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.URL_KEY;
 
 public class NavigationItemsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface, TrendingCallback, ZoomedViewListener{
@@ -91,14 +113,14 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         PreferenceServices.init(this);
 
         View ll_header = findViewById(R.id.ll_header);
-        ImageView iv_menu = (ImageView) ll_header.findViewById(R.id.iv_back);
+        AppCompatImageView iv_menu = (AppCompatImageView) ll_header.findViewById(R.id.iv_back);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        ImageView iv_search = (ImageView) ll_header.findViewById(R.id.iv_search);
+        AppCompatImageView iv_search = (AppCompatImageView) ll_header.findViewById(R.id.iv_search);
         iv_search.setVisibility(View.GONE);
         fl_content.bringToFront();
         ll_header.bringToFront();

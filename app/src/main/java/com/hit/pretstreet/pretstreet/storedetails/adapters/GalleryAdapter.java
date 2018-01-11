@@ -2,18 +2,17 @@ package com.hit.pretstreet.pretstreet.storedetails.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
-import com.hit.pretstreet.pretstreet.storedetails.model.ImageModel;
 
 import java.util.ArrayList;
 
@@ -83,12 +82,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
     }
     public class GalleryHolder extends RecyclerView.ViewHolder{
         TextView name;
-        ImageView image;
+        AppCompatImageView image;
 
         public GalleryHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tv_testimonial_name);
-            image = (ImageView) itemView.findViewById(R.id.img);
+            image = (AppCompatImageView) itemView.findViewById(R.id.img);
         }
     }
 

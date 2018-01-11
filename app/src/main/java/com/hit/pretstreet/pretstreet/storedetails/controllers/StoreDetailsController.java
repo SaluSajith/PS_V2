@@ -1,18 +1,10 @@
 package com.hit.pretstreet.pretstreet.storedetails.controllers;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.ImageView;
 
-import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
-import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
-import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
-import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
-import com.hit.pretstreet.pretstreet.storedetails.model.ImageModel;
 import com.hit.pretstreet.pretstreet.storedetails.model.StoreDetailsModel;
 import com.hit.pretstreet.pretstreet.storedetails.model.Testimonials;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;

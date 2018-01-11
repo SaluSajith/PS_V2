@@ -8,13 +8,13 @@ package com.hit.pretstreet.pretstreet.core.customview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.hit.pretstreet.pretstreet.R;
 
@@ -28,7 +28,7 @@ public class NotificationBadge extends FrameLayout {
     private static final String DEFAULT_MAX_LENGTH_REACHED_TEXT = "...";
 
     private FrameLayout mContainer;
-    private ImageView mIvBadgeBg;
+    private AppCompatImageView mIvBadgeBg;
     private TextViewPret mTvBadgeText;
     private int mBadgeTextColor = DEFAULT_TEXT_COLOR;
     private float mBadgeTextSize = dpToPx(DEFAULT_TEXT_SIZE);
@@ -49,7 +49,7 @@ public class NotificationBadge extends FrameLayout {
                 Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.notification_badge, this, true);
         mContainer = (FrameLayout) findViewById(R.id.fl_container);
-        mIvBadgeBg = (ImageView) findViewById(R.id.iv_badge_bg);
+        mIvBadgeBg = (AppCompatImageView) findViewById(R.id.iv_badge_bg);
         mTvBadgeText = (TextViewPret) findViewById(R.id.tv_badge_text);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(

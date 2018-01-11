@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.GestureDetector;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -36,7 +33,8 @@ public class SlideshowDialogFragment extends DialogFragment {
     }
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.lbl_count) TextViewPret lbl_count;
-    @BindView(R.id.iv_back) ImageView iv_back;
+    @BindView(R.id.iv_back)
+    AppCompatImageView iv_back;
 
     private ArrayList<String> imageModels;
     private MyViewPagerAdapter myViewPagerAdapter;

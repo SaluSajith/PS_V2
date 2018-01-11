@@ -2,25 +2,21 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters;
 
 import android.content.Context;
 import android.graphics.Matrix;
-import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
@@ -173,7 +169,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         }
         else{
             shopsHolder.tv_closeStatus.setVisibility(View.VISIBLE);
-            //shopsHolder.img_follow_unfollow.setVisibility(View.VISIBLE);
+            //shopsHolder.img_follow_unfollow.setVisibility(SView.VISIBLE);
             shopsHolder.tv_followerstext.setVisibility(View.VISIBLE);
             shopsHolder.txt_folleowercount.setVisibility(View.VISIBLE);
             shopsHolder.seperator.setVisibility(View.VISIBLE);
@@ -246,8 +242,8 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         @BindView(R.id.txt_folleowercount) TextViewPret txt_folleowercount;
         @BindView(R.id.tv_followerstext) TextViewPret tv_followerstext;
         @BindView(R.id.tv_closeStatus) TextViewPret tv_closeStatus;
-        @BindView(R.id.img_store_photo) ImageView img_store_photo;
-        @BindView(R.id.iv_banner) ImageView iv_banner;
+        @BindView(R.id.img_store_photo) AppCompatImageView img_store_photo;
+        @BindView(R.id.iv_banner) AppCompatImageView iv_banner;
         @BindView(R.id.img_sale) ImageButton img_sale;
         @BindView(R.id.img_offer) ImageButton img_offer;
         @BindView(R.id.img_newarrival) ImageButton img_newarrival;
@@ -338,7 +334,7 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         super.onViewRecycled(holder);
     }*/
 
-    static void loadImage(RequestManager glide, String url, ImageView view) {
+    static void loadImage(RequestManager glide, String url, AppCompatImageView view) {
         glide.load(url).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(view);
     }
 }

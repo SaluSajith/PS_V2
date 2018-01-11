@@ -6,7 +6,6 @@ import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
@@ -14,7 +13,6 @@ import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
-import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
 
 import java.util.ArrayList;
 

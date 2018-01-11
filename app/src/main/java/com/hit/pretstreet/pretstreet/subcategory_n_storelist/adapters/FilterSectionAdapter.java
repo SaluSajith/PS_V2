@@ -7,10 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.utils.SectionedRecyclerViewAdapter;
@@ -98,9 +95,9 @@ public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerV
             super(itemView);
             cb_Item = (CheckBox) itemView.findViewById(R.id.cb_Item);
         /*
-            itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new SView.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(SView v) {
                     Toast.makeText(v.getContext(), cb_Item.getText(), Toast.LENGTH_SHORT).show();
 
                 }

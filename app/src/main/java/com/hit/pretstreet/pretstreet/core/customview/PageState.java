@@ -3,11 +3,11 @@ package com.hit.pretstreet.pretstreet.core.customview;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hit.pretstreet.pretstreet.R;
@@ -66,7 +66,7 @@ public class PageState extends FrameLayout {
         addView(this.errorView);
 
         this.networkErrorView = layoutInflater.inflate(R.layout.empty_view, null, false);
-        ImageView networkImage = (ImageView) this.networkErrorView.findViewById(R.id.network_error);
+        AppCompatImageView networkImage = (AppCompatImageView) this.networkErrorView.findViewById(R.id.network_error);
         networkImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -58,7 +58,7 @@ public class HtmlFragment  extends AbstractBaseFragment<NavigationItemsActivity>
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            /*txt_content.setVisibility(View.VISIBLE);
+            /*txt_content.setVisibility(SView.VISIBLE);
             try {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
                     txt_content.setText(Html.fromHtml(html));
@@ -68,7 +68,7 @@ public class HtmlFragment  extends AbstractBaseFragment<NavigationItemsActivity>
                 e.printStackTrace();
             }
             //txt_content.setText(Html.fromHtml(html, null, new MyTagHandler()));
-            ll_empty.setVisibility(View.GONE);*/
+            ll_empty.setVisibility(SView.GONE);*/
         }
         else ll_empty.setVisibility(View.VISIBLE);
     }

@@ -2,16 +2,16 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
-import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.hit.pretstreet.pretstreet.R;
@@ -40,10 +40,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
 
@@ -80,15 +78,15 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         ButterKnife.bind(this);
         PreferenceServices.init(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        AppCompatImageView iv_menu = toolbar.findViewById(R.id.iv_back);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
+        AppCompatImageView iv_search = toolbar.findViewById(R.id.iv_search);
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +109,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     }
 
     public void getSubCAtPage(String catId){
-        JSONObject resultJson = loginController.getSubCatPageJson(Constant.HOMEPAGE, catId);
+        JSONObject resultJson = LoginController.getSubCatPageJson(Constant.HOMEPAGE, catId);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.SUBCAT_URL);
     }
@@ -155,7 +153,7 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
                 switch (url){
                     case Constant.SUBCAT_URL:
                         nsv_header.setBackgroundColor(Color.BLACK);
-                        ArrayList<HomeCatItems> homeCatItemses = loginController.getSubCatContent(response);
+                        ArrayList<HomeCatItems> homeCatItemses = LoginController.getSubCatContent(response);
                         subCatTrapeClick.onSubTrapeClick(homeCatItemses, "");
                         this.hideDialog();
                         break;

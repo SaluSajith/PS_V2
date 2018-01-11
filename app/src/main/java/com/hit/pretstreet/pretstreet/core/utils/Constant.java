@@ -157,6 +157,22 @@ public class Constant {
     public static final String POSITION_KEY = "position";
     public static final int REQUEST_INVITE = 400;
 
+    //Notification keys
+    public static final String NOTIF_ID = "id";
+    public static final String NOTIF_TITLE = "title";
+    public static final String NOTIF_BODY = "body";
+    public static final String NOTIF_SHARE = "share";
+    public static final String NOTIF_IMAGE = "image";
+    public static final String NOTIF_ACTION_RECIEVE = "RECEIVE_NOTIFICATION";
+
+    //location leys
+    public static final int REQUEST_APP_SETTINGS = 168;
+    public final static int REQUEST_CHECK_SETTINGS_GPS = 0x1;
+
+    //Referral keys
+    public static final String REFERAL_ID = "id";
+    public static final String REFERAL_SHARE = "share";
+
     //Fragments
     public static final int ACCOUNT_FRAGMENT = 0;
     public static final int FOLLOWING_FRAGMENT = 1;

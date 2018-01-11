@@ -24,12 +24,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.hit.pretstreet.pretstreet.BuildConfig;
@@ -87,7 +85,7 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
     }
 
     /**
-     * Destroys the ScanningViewPresenter when the View is destroyed
+     * Destroys the ScanningViewPresenter when the SView is destroyed
      */
 
     protected void runOnUIThread(Runnable action) {
@@ -177,7 +175,7 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
                             mCanvas.drawBitmap(mask, 0, 0, paint);//draw image as per the mask
                             paint.setXfermode(null);
                             imageView.setImageBitmap(result);
-                            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                            imageView.setScaleType(AppCompatImageView.ScaleType.FIT_XY);
 
                         } catch (Exception e){
                             e.printStackTrace();
