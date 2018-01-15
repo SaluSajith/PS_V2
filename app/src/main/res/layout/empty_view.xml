@@ -3,35 +3,73 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="@color/white"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/network_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_error_outline_yellow_24dp"/>
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/network_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_error_outline_yellow_24dp"/>
 
-    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:gravity="center"
-        android:textColor="@color/dark_gray"
-        android:text="Oops! No data available!"
-        app:pret_typeface="@string/font_merriweather_regular"
-        style="@style/textview_normal"
-        android:id="@+id/tv_msg"/>
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:textColor="@color/dark_gray"
+            android:text="Oops! No data available!"
+            app:pret_typeface="@string/font_merriweather_regular"
+            style="@style/textview_normal"
+            android:id="@+id/tv_msg"/>
 
-    <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
-        android:id="@+id/btn_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/retry"
-        android:visibility="gone"
-        style="@style/button_standard"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+        <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+            android:id="@+id/btn_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/retry"
+            android:visibility="gone"
+            style="@style/button_standard"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mumbai"
+                android:textAllCaps="false"
+                android:background="@drawable/yellow_border"
+                android:textColor="@color/dark_gray"
+                android:id="@+id/btn_mumbai"
+                android:minHeight="30dp"
+                android:minWidth="60dp"
+                android:visibility="gone"
+                android:layout_margin="@dimen/padding_xlarge"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                app:pret_typeface="@string/font_merriweather_regular"/>
+
+            <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delhi"
+                android:textAllCaps="false"
+                android:background="@drawable/yellow_border"
+                android:textColor="@color/dark_gray"
+                android:id="@+id/btn_delhi"
+                android:visibility="gone"
+                android:minHeight="30dp"
+                android:minWidth="60dp"
+                android:layout_margin="@dimen/padding_xlarge"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                app:pret_typeface="@string/font_merriweather_regular"/>
+        </LinearLayout>
 </LinearLayout>

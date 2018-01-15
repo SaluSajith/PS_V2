@@ -153,6 +153,11 @@
         <activity
             android:name=".subcategory_n_storelist.StoreListingActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".splashnlogin.WelcomeIntroActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".navigation.VideoActivity"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:screenOrientation="portrait"></activity>
 
         <!-- ************************** App Analytics start ******************************* -->
         <!-- ************************** App Analytics ******************************* -->
@@ -221,7 +226,6 @@
 
         <!-- ************************** App Analytics end******************************* -->
 
-        <activity android:name=".splashnlogin.WelcomeIntroActivity" />
     </application>
 
 </manifest>

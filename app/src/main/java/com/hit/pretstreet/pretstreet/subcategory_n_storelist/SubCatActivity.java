@@ -133,18 +133,22 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void changeFragment(Fragment fragment, boolean addBackstack) {
-        FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
-        for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
-            fm.popBackStack();
+        try {
+            FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
+            for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+                fm.popBackStack();
+            }
+            fl_content.removeAllViews();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
+            ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            ft.replace(R.id.content, fragment);
+            if (addBackstack) {
+                ft.addToBackStack(null);
+            }
+            ft.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        fl_content.removeAllViews();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
-        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        ft.replace(R.id.content, fragment);
-        if (addBackstack) {
-            ft.addToBackStack(null);
-        }
-        ft.commit();
     }
 
     private void handleResponse(JSONObject response){

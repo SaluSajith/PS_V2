@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.hit.pretstreet.pretstreet.navigation.VideoActivity">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="@dimen/searchpage_topmargin"
+        android:layout_height="@dimen/searchpage_topmargin"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/slide_1_title"
+        android:textColor="@android:color/white"
+        style="@style/textview_title"/>
+
+    <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:text="@string/slide_1_desc"
+        android:textColor="@android:color/white"
+        style="@style/textview_normal" />
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/vv_intro"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="60dp"
+        android:layout_marginLeft="60dp"/>
+</LinearLayout>

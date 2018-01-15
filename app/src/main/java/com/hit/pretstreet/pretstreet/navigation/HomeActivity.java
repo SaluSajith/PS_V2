@@ -18,6 +18,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -161,6 +162,12 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         View includedlayout = findViewById(R.id.includedlayout);
         ButterKnife.bind(this, includedlayout);
         //displayTuto();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                openVideo();
+            }
+        }, 1000);
 
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
@@ -187,6 +194,8 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             }
         };
         registerReceiver(receiver, filter);
+
+        //displayTuto();
     }
 
     private void getHomePage(){
@@ -600,24 +609,24 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     public void checkforLocationChange(final double lat2, final double lng2){
 
         if (locationTracker.canGetLocation()) {
-            //if(PreferenceServices.getInstance().isAutoDetect())
-            if (isLocationChanged(lat2, lng2)) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
-                alertDialog.setTitle("Location Changed!");
-                alertDialog.setMessage("It is detected that your location has been changed!! Do you want to switch?");
+            if(PreferenceServices.getInstance().isAutoDetect())
+                if (isLocationChanged(lat2, lng2)) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+                    alertDialog.setTitle("Location Changed!");
+                    alertDialog.setMessage("It is detected that your location has been changed!! Do you want to switch?");
 
-                alertDialog.setPositiveButton("Switch location", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        getLocation(lat2, lng2);
-                    }
-                });
-                alertDialog.setNegativeButton("No, Thanks", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                alertDialog.show();
-            }
+                    alertDialog.setPositiveButton("Switch location", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getLocation(lat2, lng2);
+                        }
+                    });
+                    alertDialog.setNegativeButton("No, Thanks", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    alertDialog.show();
+                }
         } else ;
     }
 
@@ -705,12 +714,47 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         super.onDestroy();
     }
 
+    protected  void openVideo(){
+        Intent intent = new Intent(this, VideoActivity.class);
+        startActivity(intent);
+    }
+
     protected void displayTuto() {
         Showcase.from(this)
                 .setListener(new Showcase.Listener() {
                     @Override
                     public void onDismissed() {
-                        Toast.makeText(getApplicationContext(), "Tutorial dismissed", Toast.LENGTH_SHORT).show();
+                        //displaynext();
+                        //Toast.makeText(getApplicationContext(), "Tutorial dismissed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setContentView(R.layout.tuto_showcase_tuto_sample)
+                .setFitsSystemWindows(true)
+                .on(R.id.tv_location)
+                .addCircle()
+                .withBorder()
+
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+
+                /*.on(R.id.swipable)
+                .displaySwipableLeft()
+                .delayed(399)
+                .animated(true)*/
+                .show();
+    }
+
+    protected void displaynext() {
+        Showcase.from(this)
+                .setListener(new Showcase.Listener() {
+                    @Override
+                    public void onDismissed() {
+                        //displaySnackBar("Choose");
+                        //Toast.makeText(getApplicationContext(), "Tutorial dismissed", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setContentView(R.layout.tuto_showcase_tuto_sample)

@@ -60,7 +60,9 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGLINK
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.dropdownloc;
 import static java.lang.Integer.parseInt;
+import static java.lang.Integer.valueOf;
 
 public class StoreListingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallbackStoreList, View.OnClickListener {
@@ -71,22 +73,22 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     TextViewPret tv_msg;
     @BindView(R.id.btn_retry)
     ButtonPret btn_retry;
-    @BindView(R.id.content)
-    FrameLayout fl_content;
+    @BindView(R.id.btn_try_another)
+    ButtonPret btn_try_another;
     @BindView(R.id.ll_scroll)
     LinearLayout ll_scroll;
     @BindView(R.id.nsv_header)
     AppBarLayout nsv_header;
-    @BindView(R.id.ll_header)
-    LinearLayout ll_header;
     @BindView(R.id.tv_cat_name)
     TextViewPret tv_cat_name;
     @BindView(R.id.tv_location)
     TextViewPret tv_location;
     @BindView(R.id.rv_storelist)
     RecyclerView rv_storelist;
-    @BindView(R.id.ll_location)
-    LinearLayout ll_location;
+    @BindView(R.id.btn_mumbai)
+    ButtonPret btn_mumbai;
+    @BindView(R.id.btn_delhi)
+    ButtonPret btn_delhi;
 
     TextViewPret[] txtname;
     AppCompatImageView iv_filter;
@@ -211,6 +213,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     private void getShoplist(String mCatid, boolean first) {
         loadmore = true;
+        btn_try_another.setVisibility(View.GONE);
         JSONObject resultJson = SubCategoryController.getShoplistJson(mCatid, ++pageCount + "", mpagetypeid, mClicktypeid, arrayFilter);
         if (first)
             this.showProgressDialog(getResources().getString(R.string.loading));
@@ -229,10 +232,32 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         startActivity(intent);
     }
 
-    @OnClick(R.id.btn_retry)
-    public void onBtn_RetryPressed() {
+    @OnClick(R.id.btn_try_another)
+    public void onBtn_TryAnottherPressed() {
         Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_mumbai)
+    public void onBtn_MumbaiPressed() {
+        PreferenceServices.instance().saveCurrentLocation("Mumbai");
+        PreferenceServices.instance().saveLatitute( "19.0760");
+        PreferenceServices.instance().saveLongitute( "72.8777");
+        PreferenceServices.instance().saveLocationType(dropdownloc);
+        tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
+        getNewList();
+        getShoplist((String) catTag, first);
+    }
+
+    @OnClick(R.id.btn_delhi)
+    public void onBtn_DelhiPressed() {
+        PreferenceServices.instance().saveCurrentLocation("New Delhi");
+        PreferenceServices.instance().saveLatitute( "28.6139");
+        PreferenceServices.instance().saveLongitute( "77.2090");
+        PreferenceServices.instance().saveLocationType(dropdownloc);
+        tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
+        getNewList();
+        getShoplist((String) catTag, first);
     }
 
     private void openSearchPage() {
@@ -359,10 +384,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         storeList_recyclerAdapter.setLoaded();
 
         if (storeListModels.size() == 0) {
-            tv_msg.setText(getResources().getString(R.string.no_stores));
-            btn_retry.setText(getResources().getString(R.string.try_another));
-            btn_retry.setVisibility(View.VISIBLE);
-            ll_empty.setVisibility(View.VISIBLE);
+            handleEmptyView();
         } else ll_empty.setVisibility(View.INVISIBLE);
 
         new Handler().postDelayed(new Runnable() {
@@ -397,6 +419,14 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         }
     }
 
+    private void handleEmptyView(){
+        btn_mumbai.setVisibility(View.VISIBLE);
+        btn_delhi.setVisibility(View.VISIBLE);
+        tv_msg.setText(getResources().getString(R.string.no_stores));
+        btn_try_another.setVisibility(View.VISIBLE);
+        ll_empty.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onClick(View v) {
         for (int i = 0; i < txtname.length; i++) {
@@ -408,11 +438,15 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         textViewPret.setTextColor(ContextCompat.getColor(StoreListingActivity.this, R.color.black));
 
         catTag = textViewPret.getTag().toString() + "";
+        getNewList();
+        getShoplist((String) textViewPret.getTag(), first);
+    }
+
+    private void getNewList(){
         pageCount = 0;
         first = true;
         rv_storelist.setAdapter(null);
         storeListModels.clear();
-        getShoplist((String) textViewPret.getTag(), first);
     }
 
     @Override

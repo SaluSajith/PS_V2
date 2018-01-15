@@ -159,8 +159,8 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
 
             @Override
             public void reachedLastItem() {
-                if (!loadmore)
-                    displaySnackBar("No more stores available!");
+                //if (!loadmore)
+                    //displaySnackBar("No more stores available!");
             }
         });
     }

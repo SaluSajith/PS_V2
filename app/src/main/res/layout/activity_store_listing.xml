@@ -52,4 +52,16 @@
             android:id="@+id/ll_empty"
             layout="@layout/empty_view" />
     </FrameLayout>
+
+    <com.hit.pretstreet.pretstreet.core.customview.ButtonPret
+        android:id="@+id/btn_try_another"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/try_another"
+        android:visibility="gone"
+        android:textSize="@dimen/textsize_large"
+        android:textAllCaps="false"
+        android:layout_alignParentBottom="true"
+        android:background="@color/yellow_indicator"
+        android:layout_gravity="bottom"/>
 </RelativeLayout>

@@ -104,8 +104,10 @@
     <string name="book_btn">Book</string>
     <string name="get_dir">Get \nDirections</string>
     <string name="retry">Retry</string>
+    <string name="mumbai">Mumbai</string>
+    <string name="delhi">New Delhi</string>
     <string name="try_another">Try another location</string>
-    <string name="no_stores">We\'re not in your locality right now. More locations coming very soon.</string>
+    <string name="no_stores">We\'re not in your locality right now. More locations coming very soon. Following are the list of cities where we are popular.</string>
 
     <string-array name="cattype">
         <item name="Product"></item>
