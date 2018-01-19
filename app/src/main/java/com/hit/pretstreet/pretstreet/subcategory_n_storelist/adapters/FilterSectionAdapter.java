@@ -11,19 +11,19 @@ import android.widget.TextView;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.utils.SectionedRecyclerViewAdapter;
-import com.hit.pretstreet.pretstreet.search.models.SearchModel;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.FilterActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.FilterCallback;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelDataModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerView.ViewHolder> {
-    private static List<FilterDataModel> allData;
+    private static List<TwoLevelDataModel> allData;
     FilterCallback filterCallback;
 
-    public FilterSectionAdapter(Context context, List<FilterDataModel> data) {
+    public FilterSectionAdapter(Context context, List<TwoLevelDataModel> data) {
         this.allData = data;
         filterCallback = (FilterActivity) context;
     }
@@ -47,7 +47,7 @@ public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerV
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int section, final int relativePosition, int absolutePosition) {
 
-        final ArrayList<SearchModel> itemsInSection = allData.get(section).getAllItemsInSection();
+        final ArrayList<BasicModel> itemsInSection = allData.get(section).getAllItemsInSection();
         String itemName = itemsInSection.get(relativePosition).getCategory();
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
         itemViewHolder.cb_Item.setText(itemName);
@@ -56,7 +56,7 @@ public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerV
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 itemsInSection.get(relativePosition).setStatus(isChecked);
-                filterCallback.updateStatus((ArrayList<FilterDataModel>) allData);
+                filterCallback.updateStatus((ArrayList<TwoLevelDataModel>) allData);
             }}
         );
         // Try to put a image . for sample i set background color in xml layout file
@@ -94,7 +94,7 @@ public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerV
         public ItemViewHolder(View itemView) {
             super(itemView);
             cb_Item = (CheckBox) itemView.findViewById(R.id.cb_Item);
-        /*
+            /*
             itemView.setOnClickListener(new SView.OnClickListener() {
                 @Override
                 public void onClick(SView v) {

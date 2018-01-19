@@ -3,8 +3,8 @@ package com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers;
 import android.content.Context;
 
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
-import com.hit.pretstreet.pretstreet.search.models.SearchModel;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONArray;
@@ -75,13 +75,13 @@ public class SubCategoryController {
         return jsonBody;
     }
 
-    public static JSONArray createFilterModel(ArrayList<FilterDataModel> filterDataModels){
+    public static JSONArray createFilterModel(ArrayList<TwoLevelDataModel> filterDataModels){
 
         JSONArray jsonArray1 = new JSONArray();
         StringBuilder stringBuilder;
         try {
             for(int i=0;i<filterDataModels.size();i++){
-                FilterDataModel filterDataModel = filterDataModels.get(i);
+                TwoLevelDataModel filterDataModel = filterDataModels.get(i);
                 JSONObject jsonBody = new JSONObject();
                 stringBuilder = new StringBuilder();
                 JSONArray jsonArray = new JSONArray();
@@ -134,66 +134,20 @@ public class SubCategoryController {
         }
         return  storeListModels;
     }
-/*
-    public static ArrayList <StoreListModel> getList(JSONObject response){
-        final ArrayList<StoreListModel> storeListModels = new ArrayList<>();
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode rootNode = mapper.readTree(String.valueOf(response));
-            ArrayNode dataNode = (ArrayNode)rootNode.get("Data");
-            Iterator<JsonNode> dataIterator = dataNode.elements();
-            StoreListModel storeListModel;
-            while (dataIterator.hasNext()) {
-                storeListModel = new StoreListModel();
-                JsonNode storeNode = dataIterator.next();
-                storeListModel.setPageType(storeNode.get("PageType").textValue());
-                storeListModel.setPageTypeId(storeNode.get("PageTypeId").asInt()+"");
-                storeListModel.setId(storeNode.get("Id").asInt()+"");
-                storeListModel.setTitle(storeNode.get("Title").textValue());
-                storeListModel.setFollowingStatus(storeNode.get("FollowingStatus").asInt() == 0 ? false : true);
-                storeListModel.setOpenStatus(storeNode.get("OpenStatus").asInt() == 1 ? false : true);
-                storeListModel.setFollowingCount(storeNode.get("FollowingCount").asInt()+"");
-                storeListModel.setLocation(storeNode.get("Location").textValue());
-                storeListModel.setImageSource(storeNode.get("ImageSource").textValue());
-                String flag = storeNode.get("Flags").textValue();
-                if(flag.contains("0"))
-                    storeListModel.setSaleflag(true);
-                else
-                    storeListModel.setSaleflag(false);
-                if(flag.contains("1"))
-                    storeListModel.setOfferflag(true);
-                else
-                    storeListModel.setOfferflag(false);
-                if(flag.contains("2"))
-                    storeListModel.setNewflag(true);
-                else
-                    storeListModel.setNewflag(false);
-                storeListModel.setBannerFlag(storeNode.get("BannerFlag").asInt() == 0 ? false : true);
-                storeListModel.setLoadmoreFlag(dataIterator.hasNext() ? false : true);
 
-                storeListModels.add(storeListModel);
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return  storeListModels;
-    }*/
-
-    public static ArrayList <FilterDataModel> getFilterList(JSONObject response){
-        ArrayList<FilterDataModel> filterDataModels = new ArrayList<>();
+    public static ArrayList <TwoLevelDataModel> getFilterList(JSONObject response){
+        ArrayList<TwoLevelDataModel> filterDataModels = new ArrayList<>();
         try {
             JSONArray jsonArray = response.getJSONArray("Data");
-            FilterDataModel filterDataModel;
+            TwoLevelDataModel filterDataModel;
             for (int i = 0; i < jsonArray.length(); i++) {
-                filterDataModel = new FilterDataModel();
+                filterDataModel = new TwoLevelDataModel();
                 filterDataModel.setHeaderTitle(jsonArray.getJSONObject(i).getString("Title"));
-                ArrayList<SearchModel> singleItem = new ArrayList<>();
-                SearchModel model;
+                ArrayList<BasicModel> singleItem = new ArrayList<>();
+                BasicModel model;
                 JSONArray array = jsonArray.getJSONObject(i).getJSONArray("Options");
                 for (int j = 0; j < array.length(); j++) {
-                    model = new SearchModel();
+                    model = new BasicModel();
                     model.setId(array.getJSONObject(j).getString("Code"));
                     model.setCategory(array.getJSONObject(j).getString("Title"));
                     model.setStatus(false);

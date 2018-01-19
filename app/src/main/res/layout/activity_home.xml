@@ -26,17 +26,19 @@
             android:orientation="vertical">
 
             <include layout="@layout/header_nav_home"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_nav"
+            
+            <ExpandableListView
+                android:id="@+id/elv_nav"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:groupIndicator="@null"
                 android:choiceMode="singleChoice"
                 android:overScrollMode="never"
+                android:scrollbars="none"
+                android:divider="@color/transparent"
                 android:backgroundTint="@color/transparent"
-                android:layout_marginTop="@dimen/padding_xxxlarge"
-                android:listSelector="@drawable/navbarclick"
+                android:layout_marginTop="@dimen/padding_xlarge"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
@@ -46,9 +48,8 @@
                 android:text="@string/rateus"
                 android:id="@+id/tv_rateus"
                 style="@style/textview_normal"
-                android:gravity="start"
-                android:padding="@dimen/padding_xlarge"
-                android:layout_marginLeft="@dimen/padding_huge">
+                android:gravity="center_horizontal"
+                android:padding="@dimen/padding_xlarge">
 
             </com.hit.pretstreet.pretstreet.core.customview.TextViewPret>
         </LinearLayout>

@@ -42,7 +42,7 @@
             android:maxLines="2"
             style="@style/textview_white_normal"
             android:textSize="@dimen/textsize_xlarge"
-            app:pret_typeface="@string/font_redvelvet_regular"/>
+            app:pret_typeface="@string/font_merriweather_regular"/>
 
         <RelativeLayout
             android:id="@+id/rl_notification"

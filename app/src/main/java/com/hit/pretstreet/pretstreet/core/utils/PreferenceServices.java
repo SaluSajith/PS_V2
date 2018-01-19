@@ -141,8 +141,8 @@ public class PreferenceServices {
         return pref.getString(CURLOCATION, "No Location Found");
     }
 
-    public void saveCurrentLocation(String id) {
-        editor.putString(CURLOCATION, id);
+    public void saveCurrentLocation(String location) {
+        editor.putString(CURLOCATION, location);
         editor.apply();
     }
 

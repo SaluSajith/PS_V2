@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -26,7 +28,7 @@ public class SplashFragment extends AbstractBaseFragment<WelcomeActivity> {
     }
 
     private void init(View view){
-        ButterKnife.bind(this, view);
-        PreferenceServices.init(getActivity());
+        /*ButterKnife.bind(this, view);
+        PreferenceServices.init(getActivity());*/
     }
 }

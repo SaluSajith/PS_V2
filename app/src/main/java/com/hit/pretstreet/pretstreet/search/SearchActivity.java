@@ -18,14 +18,14 @@ import com.hit.pretstreet.pretstreet.search.fragments.AutoSearchFragment;
 import com.hit.pretstreet.pretstreet.search.fragments.SearchResultsFragment;
 import com.hit.pretstreet.pretstreet.search.interfaces.RecentCallback;
 import com.hit.pretstreet.pretstreet.search.interfaces.SearchDataCallback;
-import com.hit.pretstreet.pretstreet.search.models.SearchModel;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.storedetails.FullscreenGalleryActivity;
 import com.hit.pretstreet.pretstreet.storedetails.StoreDetailsActivity;
 import com.hit.pretstreet.pretstreet.storedetails.interfaces.ImageClickCallback;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONArray;
@@ -67,7 +67,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
     private StoreList_RecyclerAdapter storeList_recyclerAdapter;
     private SearchResultsFragment searchFragment;
 
-    private ArrayList<FilterDataModel> dataModel;
+    private ArrayList<TwoLevelDataModel> dataModel;
     private JSONArray arrayFilter;
 
     private String mStrSearch = "", mCatID = "", mCaType;
@@ -180,7 +180,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
             String url = response.getString("URL");
             switch (url){
                 case AUTOSEARCH_URL:
-                    ArrayList<SearchModel> searchModels = searchController.getAutoSearchList(response);
+                    ArrayList<BasicModel> searchModels = searchController.getAutoSearchList(response);
                     searchDataCallback.setAutosearchList(searchModels);
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -264,7 +264,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
     }
 
     @Override
-    public void viewClick(SearchModel searchModel) {
+    public void viewClick(BasicModel searchModel) {
         StoreListModel storeListModel = new StoreListModel();
         storeListModel.setId(searchModel.getId());
         Intent intent = new Intent(SearchActivity.this, StoreDetailsActivity.class);
@@ -281,7 +281,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
             if(resultCode  == RESULT_OK) {
                 if (requestCode == Integer.parseInt(FILTERPAGE)) {
                     Bundle bundle = data.getExtras();
-                    dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
+                    dataModel = (ArrayList<TwoLevelDataModel>) bundle.getSerializable(PARCEL_KEY);
                     arrayFilter = subCategoryController.createFilterModel(dataModel);
                     searchFragment.refreshSearchResult();
                 }

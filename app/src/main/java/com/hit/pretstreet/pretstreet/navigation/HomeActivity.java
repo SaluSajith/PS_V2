@@ -1,6 +1,5 @@
 package com.hit.pretstreet.pretstreet.navigation;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,7 +22,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
@@ -31,7 +29,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,10 +36,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -51,7 +48,6 @@ import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
-import com.hit.pretstreet.pretstreet.core.customview.DividerDecoration;
 import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.NotificationBadge;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
@@ -60,19 +56,18 @@ import com.hit.pretstreet.pretstreet.core.helpers.LocationTracker;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
-import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
-import com.hit.pretstreet.pretstreet.navigation.adapters.NavDrawerAdapter;
+import com.hit.pretstreet.pretstreet.navigation.adapters.NavDrawerExpandableAdapter;
 import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.HomeTrapeClick;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.NavigationClick;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
-import com.hit.pretstreet.pretstreet.navigation.models.NavDrawerItem;
 import com.hit.pretstreet.pretstreet.navigationitems.FollowingActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.fragments.AboutFragment;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
@@ -81,6 +76,7 @@ import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.StoreListingActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelDataModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -100,6 +96,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CONTACTUS_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGELINK;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIFICATION_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
@@ -117,7 +114,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     @BindView(R.id.tv_location) TextViewPret tv_location;
     TextViewPret tv_profile;
-    NavDrawerAdapter navDrawerAdapter;
     JsonRequestController jsonRequestController;
     LoginController loginController;
     LocationTracker locationTracker;
@@ -161,14 +157,13 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         locationTracker.checkLocationSettings();
         View includedlayout = findViewById(R.id.includedlayout);
         ButterKnife.bind(this, includedlayout);
-        //displayTuto();
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 openVideo();
             }
         }, 1000);
-
+*/
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
         if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0 &&
@@ -205,7 +200,27 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         else*/
         JSONObject resultJson = LoginController.getHomePageJson();
         this.showProgressDialog(getResources().getString(R.string.loading));
-        jsonRequestController.sendRequest(this, resultJson, Constant.HOMEPAGE_URL);
+        jsonRequestController.sendRequest(this, resultJson, HOMEPAGE_URL);
+    }
+
+    private void setDrawerAdapter(String SavedMAinCaTList){
+        ArrayList<BasicModel> list = LoginController.getNavList(SavedMAinCaTList);
+
+        TwoLevelDataModel[] twoLevelDataModels = new TwoLevelDataModel[]{
+                new TwoLevelDataModel("nav_home", "Home", new ArrayList<BasicModel>()),
+                new TwoLevelDataModel("nav_categories", "Categories", list),
+                new TwoLevelDataModel("nav_following", "Following", new ArrayList<BasicModel>()),
+                new TwoLevelDataModel("nav_account", "Account", new ArrayList<BasicModel>()),
+                new TwoLevelDataModel("nav_addstore", "Add Store", new ArrayList<BasicModel>()),
+                //new NavDrawerItem("nav_invite", "Refer & Earn"),
+                new TwoLevelDataModel("nav_about", "About Pretstreet", new ArrayList<BasicModel>()),
+                new TwoLevelDataModel("nav_contact", "Contact Us/Support", new ArrayList<BasicModel>())};
+
+        ExpandableListView elv_nav =  findViewById(R.id.elv_nav);
+        NavDrawerExpandableAdapter navDrawerExpandableAdapter = new NavDrawerExpandableAdapter
+                (elv_nav, HomeActivity.this, twoLevelDataModels, HomeActivity.this);
+        elv_nav.setAdapter(navDrawerExpandableAdapter);
+
     }
 
     private void setupDrawer(View toolbar){
@@ -218,23 +233,9 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         final NavigationView navigationView =  findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        NavDrawerItem[] navArray = new NavDrawerItem[]{
-                new NavDrawerItem("nav_home", "Home"),
-                new NavDrawerItem("nav_account", "Account"),
-                new NavDrawerItem("nav_following", "Following"),
-                new NavDrawerItem("nav_addstore", "Add Store"),
-                //new NavDrawerItem("nav_invite", "Refer & Earn"),
-                new NavDrawerItem("nav_about", "About Pretstreet"),
-                new NavDrawerItem("nav_contact", "Contact Us/Support")};
-
-        navDrawerAdapter = new NavDrawerAdapter(HomeActivity.this, navArray, HomeActivity.this);
-        RecyclerView rv_nav =  findViewById(R.id.rv_nav);
-        Utility.setListLayoutManager(rv_nav, HomeActivity.this);
-        rv_nav.addItemDecoration(new DividerDecoration(context,
-                ContextCompat.getColor(context, R.color.trending_grey), 0.5f));
-        rv_nav.setNestedScrollingEnabled(false);
-        rv_nav.getItemAnimator().setChangeDuration(0);
-        rv_nav.setAdapter(navDrawerAdapter);
+        String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+        if(SavedMAinCaTList.length()>0)
+            setDrawerAdapter(SavedMAinCaTList);
 
         AppCompatImageView iv_menu =  toolbar.findViewById(R.id.iv_menu);
         iv_menu.setOnClickListener(new View.OnClickListener() {
@@ -345,19 +346,18 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            /*if (doubleBackToExitPressedOnce) {
+            if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
                 return;
             }
             this.doubleBackToExitPressedOnce = true;
             displaySnackBar("Click again to exit");
             new Handler().postDelayed(new Runnable() {
-
                 @Override
                 public void run() {
                     doubleBackToExitPressedOnce=false;
                 }
-            }, 2000);*/
+            }, 2000);
         }
     }
 
@@ -549,8 +549,15 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         try {
             String url = response.getString("URL");
             switch (url){
-                case Constant.HOMEPAGE_URL:
-                    PreferenceServices.instance().saveHomeMainCatList(response.toString());
+                case HOMEPAGE_URL:
+                    String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+                    if(SavedMAinCaTList.length()==0){
+                        PreferenceServices.instance().saveHomeMainCatList(response.toString());
+                        SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+                        setDrawerAdapter(SavedMAinCaTList);
+                    }
+                    else
+                        PreferenceServices.instance().saveHomeMainCatList(response.toString());
                     forceUpdate(response.getString("AndroidVersion"));
                     changeFragment(new HomeFragment(), false);
                     break;

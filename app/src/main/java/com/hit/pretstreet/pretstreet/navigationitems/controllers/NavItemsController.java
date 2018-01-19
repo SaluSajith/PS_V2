@@ -1,24 +1,18 @@
 package com.hit.pretstreet.pretstreet.navigationitems.controllers;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
-import android.os.Handler;
-import android.util.Base64;
 
-import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
-import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
-import com.hit.pretstreet.pretstreet.search.models.SearchModel;
-import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
@@ -27,12 +21,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-
-import butterknife.BindView;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FOLLOWINGPAGE;
 
@@ -317,14 +308,14 @@ public class NavItemsController {
         return jsonBody;
     }
 
-    public static ArrayList<SearchModel> getCategoryListHeader(JSONObject response){
-        ArrayList<SearchModel> searchModels = new ArrayList<>();
+    public static ArrayList<BasicModel> getCategoryListHeader(JSONObject response){
+        ArrayList<BasicModel> searchModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
             JSONArray jsonArray = jsonObject.getJSONArray("Category");
-            SearchModel searchModel;
+            BasicModel searchModel;
             for (int i = 0; i < jsonArray.length(); i++) {
-                searchModel = new SearchModel();
+                searchModel = new BasicModel();
                 searchModel.setId(jsonArray.getJSONObject(i).getString("Id"));
                 searchModel.setCategory(jsonArray.getJSONObject(i).getString("CategoryName"));
                 searchModels.add(searchModel);

@@ -2,9 +2,7 @@ package com.hit.pretstreet.pretstreet.search.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,7 @@ import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.search.interfaces.SearchDataCallback;
-import com.hit.pretstreet.pretstreet.search.models.SearchModel;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.FilterActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_RecyclerAdapter;
@@ -141,12 +139,12 @@ public class SearchResultsFragment extends AbstractBaseFragment<WelcomeActivity>
     }
 
     @Override
-    public void setRecentsearchList(ArrayList<SearchModel> recentViewModels,
-                                    ArrayList<SearchModel> recentSearchModels,
-                                    ArrayList<SearchModel> catModels) {
+    public void setRecentsearchList(ArrayList<BasicModel> recentViewModels,
+                                    ArrayList<BasicModel> recentSearchModels,
+                                    ArrayList<BasicModel> catModels) {
     }
     @Override
-    public void setAutosearchList(ArrayList<SearchModel> searchModels) {
+    public void setAutosearchList(ArrayList<BasicModel> searchModels) {
     }
 
     @Override

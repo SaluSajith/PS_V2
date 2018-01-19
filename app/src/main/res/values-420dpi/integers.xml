@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="rotation">0</integer>
-    <integer name="rotation1">0</integer>
     <integer name="rotation_text">-5</integer>
     <integer name="rotation_accountalready">5</integer>
-    <integer name="rotation_catname">-5</integer>
-    <integer name="rotation_catname_long">-7</integer>
 
     <integer name="rotation_login">0</integer>
 </resources>

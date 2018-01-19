@@ -23,8 +23,8 @@ public class VideoActivity extends AppCompatActivity {
         mediaController.setAnchorView(videoView);
 
         //specify the location of media file
-        String path = "android.resource://"+getPackageName() + "/" + R.raw.screen_video;
-        Uri uri=Uri.parse(path);
+        /*String path = "android.resource://"+getPackageName() + "/" + R.raw.screen_video;
+        Uri uri = Uri.parse(path);
 
         videoView.setMediaController(mediaController);
         videoView.setVideoURI(uri);
@@ -35,7 +35,7 @@ public class VideoActivity extends AppCompatActivity {
             public void onCompletion(MediaPlayer mp) {
                 finish();
             }
-        });
+        });*/
 
     }
 }

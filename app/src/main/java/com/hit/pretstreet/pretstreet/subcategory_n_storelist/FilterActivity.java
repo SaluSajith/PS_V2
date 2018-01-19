@@ -15,7 +15,7 @@ import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.FilterSectionAdapter;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.FilterCallback;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelDataModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ public class FilterActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, FilterCallback {
 
     @BindView(R.id.rv_Search)RecyclerView rv_Filter;
-    private ArrayList<FilterDataModel> dataModels;
+    private ArrayList<TwoLevelDataModel> dataModels;
 
     JsonRequestController jsonRequestController;
     SubCategoryController subCategoryController;
@@ -59,7 +59,7 @@ public class FilterActivity extends AbstractBaseAppCompatActivity implements
         String mCatid = getIntent().getStringExtra(ID_KEY);
         try {
             Bundle bundle = getIntent().getExtras();
-            dataModels = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
+            dataModels = (ArrayList<TwoLevelDataModel>) bundle.getSerializable(PARCEL_KEY);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,7 +131,7 @@ public class FilterActivity extends AbstractBaseAppCompatActivity implements
     }
 
     @Override
-    public void updateStatus(ArrayList<FilterDataModel> dataModel) {
+    public void updateStatus(ArrayList<TwoLevelDataModel> dataModel) {
         dataModels = dataModel;
     }
 }

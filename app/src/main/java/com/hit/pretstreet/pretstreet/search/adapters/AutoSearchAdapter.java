@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.search.interfaces.RecentCallback;
-import com.hit.pretstreet.pretstreet.search.models.SearchModel;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 
 import java.util.ArrayList;
 
@@ -23,10 +23,10 @@ import butterknife.ButterKnife;
 
 public class AutoSearchAdapter extends RecyclerView.Adapter<AutoSearchAdapter.AutoSearchViewHolder>{
     private Context context;
-    ArrayList<SearchModel> artItems;
+    ArrayList<BasicModel> artItems;
     RecentCallback recentCallback;
 
-    public AutoSearchAdapter(Context context, ArrayList<SearchModel> artItems) {
+    public AutoSearchAdapter(Context context, ArrayList<BasicModel> artItems) {
         this.context = context;
         this.artItems = artItems;
         this.recentCallback = (RecentCallback) context;
@@ -46,7 +46,7 @@ public class AutoSearchAdapter extends RecyclerView.Adapter<AutoSearchAdapter.Au
     @Override
     public void onBindViewHolder(AutoSearchViewHolder holder, int position) {
 
-        SearchModel searchModel = artItems.get(position);
+        BasicModel searchModel = artItems.get(position);
         setViewText(holder.txt_storename, searchModel.getTitle());
         setViewText(holder.txt_address, searchModel.getLocation());
         setViewText(holder.txt_cat, searchModel.getCategory());

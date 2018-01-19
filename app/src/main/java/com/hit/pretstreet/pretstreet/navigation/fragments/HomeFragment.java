@@ -71,6 +71,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
     @BindView(R.id.tv_tc) TextViewPret tv_tc;
 
     HomeTrapeClick buttonClickCallback;
+    LoginController loginController;
     private Handler handler = new Handler();
     private Runnable runnable;
     int position = 0;
@@ -98,6 +99,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
         Utility.setGridLayoutManager(rv_moods, getActivity(), 2);
         String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
         rl_all.setVisibility(View.INVISIBLE);
+        loginController = new LoginController(getHostActivity());
         loadHomePage(SavedMAinCaTList);
 
         String udata = tv_tc.getText().toString();
@@ -112,7 +114,7 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
     private void loadHomePage(String SavedMAinCaTList) {
 
         if (SavedMAinCaTList.length() > 1) {
-            final ArrayList<HomeCatItems> list = LoginController.getHomeContent(SavedMAinCaTList);
+            final ArrayList<HomeCatItems> list = loginController.getHomeContent(SavedMAinCaTList);
             ll_main_cat.removeAllViews();
 
             for (int i = 0; i < list.size(); i++) {

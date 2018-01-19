@@ -3,8 +3,6 @@
     <string name="splash_duration">5000</string>
     <string name="facebook_app_name">PretStreet</string>
     <string name="facebookapp_id">322404801527783</string>//112206959218432
-    <string name="tracking_id">UA-103583589-1</string>
-    <string name="method_checksocial">check_face_google_exits</string>
     <string name="default_notification_channel_id">default</string>
 
     <string name="next">NEXT</string>
@@ -29,7 +27,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
     <string name="rateus">Rate Us on Playstore</string>
     <string name="image">Image</string>
 
@@ -39,27 +36,10 @@
     <string name="font_redvelvet_regular">RedVelvet-Regular.otf</string>
 
     <!-- placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="follow">Follow</string>
-    <string name="interested">Interested</string>
-    <string name="nt_interested">Not Interested</string>
-    <string name="going">Going</string>
-    <string name="nt_going">Not Going</string>
     <string name="loading">Loading..Please wait.</string>
-    <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
 
     <!--Welcome page textx-->
     <string name="signup">sign up</string>
@@ -107,7 +87,7 @@
     <string name="mumbai">Mumbai</string>
     <string name="delhi">New Delhi</string>
     <string name="try_another">Try another location</string>
-    <string name="no_stores">We\'re not in your locality right now. More locations coming very soon. Following are the list of cities where we are popular.</string>
+    <string name="no_stores">We\'re not in your locality right now. More locations coming very soon. Following are the cities where we are popular.</string>
 
     <string-array name="cattype">
         <item name="Product"></item>
@@ -120,6 +100,4 @@
     <string name="view_store">
         <u>View Store</u>
     </string>
-    <string name="internet_error">Cannot connect to Internet...Please check your connection!</string>
-    <string name="timeout_error">Connection TimeOut! Please check your internet connection.</string>
 </resources>

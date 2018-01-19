@@ -29,7 +29,7 @@ public class GoogleLoginActivity extends AppCompatActivity
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_login);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.

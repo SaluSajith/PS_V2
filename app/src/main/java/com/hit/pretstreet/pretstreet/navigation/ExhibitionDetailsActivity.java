@@ -612,7 +612,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         try {
             ArrayList jsonArray = exhibitionDetailsModel.getPhone();
             if (jsonArray.size() == 0)
-                displaySnackBar("Number not Found");
+                displaySnackBar("Number not found");
             else
                 showPopupPhoneNumber(exhibitionDetailsModel);
         }catch (Exception e){}

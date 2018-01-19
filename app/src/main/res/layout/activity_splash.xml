@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,30 +9,36 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@drawable/base"
-        android:id="@+id/nsv_header">
+        android:id="@+id/nsv_header"
+        android:overScrollMode="never">
 
-            <RelativeLayout
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/content_splash"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/fragment_splash"></include>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/header_startingscreens"></include>
+
                 <FrameLayout
+                    android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/content_splash">
+                    android:layout_marginTop="@dimen/content_overlapmargin_splash">
+                    <!--<include layout="@layout/fragment_signup"></include>-->
                 </FrameLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/header_startingscreens"></include>
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/content"
-                        android:layout_marginTop="@dimen/content_overlapmargin_splash">
-                        <include layout="@layout/fragment_signup"></include>
-                    </FrameLayout>
-                </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

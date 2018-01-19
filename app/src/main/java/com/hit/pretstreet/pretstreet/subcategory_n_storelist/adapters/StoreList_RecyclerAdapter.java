@@ -311,15 +311,6 @@ public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    class LoadingViewHolder extends RecyclerView.ViewHolder {
-        public ProgressBar progressBar;
-
-        public LoadingViewHolder(View itemView) {
-            super(itemView);
-            progressBar = (ProgressBar) itemView.findViewById(R.id.progress);
-        }
-    }
-
     public void setLoaded() {
         isLoading = false;
     }

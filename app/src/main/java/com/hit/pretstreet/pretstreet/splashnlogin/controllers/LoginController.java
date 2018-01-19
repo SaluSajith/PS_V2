@@ -12,8 +12,10 @@ import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelDataModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -259,11 +261,12 @@ public class LoginController {
 
     public static ArrayList<HomeCatItems> getHomeContent(String SavedMAinCaTList){
         final ArrayList<HomeCatItems> list = new ArrayList<>();
-
+        final ArrayList<BasicModel> navCatList = new ArrayList<>();
         try {
             JSONObject response = new JSONObject(SavedMAinCaTList);
             JSONArray jsonArray = response.getJSONArray("Data");
             HomeCatItems homeCatItems;
+            BasicModel navCatModel;
             for (int i = 0; i < jsonArray.length(); i++) {
 
                 homeCatItems = new HomeCatItems();
@@ -280,6 +283,15 @@ public class LoginController {
                         homeContentData.setImageSource(object.getString("ImageSource"));
                         homeContentData.setPageTypeId(object.getString("PageTypeId"));
                         homeCatItems.setHomeContentData(homeContentData);
+
+
+                        /* Saving list to show it in menu */
+                        navCatModel = new BasicModel();
+                        navCatModel.setId(object.getString("MainCategoryId"));
+                        navCatModel.setCategory(object.getString("CategoryName"));
+                        navCatModel.setPageTypeId(object.getString("PageTypeId"));
+                        navCatList.add(navCatModel);
+
                         break;
                     case SHOPBYMOODS:
                         JSONArray proContent = jsonArray.getJSONObject(i).getJSONArray("ContentData");
@@ -348,6 +360,9 @@ public class LoginController {
                         break;
                 }
                 list.add(homeCatItems);
+
+                //Saving data
+                PreferenceServices.instance().saveHomeSubCatList(navCatList.toString());
             }
 
         } catch (JSONException e1) {
@@ -386,5 +401,69 @@ public class LoginController {
         }
 
         return list;
+    }
+
+
+    public static ArrayList <BasicModel> getNavList(String SavedCaTList){
+        final ArrayList<BasicModel> navCatList = new ArrayList<>();
+
+        try {
+            if(SavedCaTList.length()>0) {
+                JSONObject response = new JSONObject(SavedCaTList);
+                JSONArray jsonArray = response.getJSONArray("Data");
+                BasicModel navCatModel;
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    String contentTypeId = jsonArray.getJSONObject(i).getString("ContentTypeId");
+                    switch (contentTypeId) {
+                        case TRAPE:
+                            JSONObject object = jsonArray.getJSONObject(i).getJSONObject("ContentData");
+                            if (object.getString("PageTypeId").equals("2") || object.getString("PageTypeId").equals("3")) {
+                                navCatModel = new BasicModel();
+                                navCatModel.setId(object.getString("MainCategoryId"));
+                                navCatModel.setCategory(object.getString("CategoryName"));
+                                navCatModel.setPageTypeId(object.getString("PageTypeId"));
+                                navCatList.add(navCatModel);
+                            }
+                            break;
+                    }
+                }
+            }
+            else{
+
+            }
+
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return navCatList;
+/*
+
+
+
+
+        ArrayList<TwoLevelDataModel> filterDataModels = new ArrayList<>();
+        try {
+            JSONArray jsonArray = response.getJSONArray("Data");
+            TwoLevelDataModel filterDataModel;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                filterDataModel = new TwoLevelDataModel();
+                filterDataModel.setHeaderTitle(jsonArray.getJSONObject(i).getString("Title"));
+                ArrayList<BasicModel> singleItem = new ArrayList<>();
+                BasicModel model;
+                JSONArray array = jsonArray.getJSONObject(i).getJSONArray("Options");
+                for (int j = 0; j < array.length(); j++) {
+                    model = new BasicModel();
+                    model.setId(array.getJSONObject(j).getString("Code"));
+                    model.setCategory(array.getJSONObject(j).getString("Title"));
+                    model.setStatus(false);
+                    singleItem.add(model);
+                }
+                filterDataModel.setAllItemsInSection(singleItem);
+                filterDataModels.add(filterDataModel);
+            }
+        }catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return  filterDataModels;*/
     }
 }

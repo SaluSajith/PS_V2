@@ -28,7 +28,7 @@ import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigationitems.controllers.NavItemsController;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
-import com.hit.pretstreet.pretstreet.search.models.SearchModel;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.splashnlogin.DefaultLocationActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
@@ -192,13 +192,13 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         startActivity(intent);
     }*/
 
-    private void createScrollingHeader(ArrayList<SearchModel> homeSubCategories){
+    private void createScrollingHeader(ArrayList<BasicModel> homeSubCategories){
         if(txtname==null) {
             int index = 0;
             txtname = new TextViewPret[homeSubCategories.size()];
 
-            for (SearchModel object : homeSubCategories) {
-                SearchModel searchModel = object;
+            for (BasicModel object : homeSubCategories) {
+                BasicModel searchModel = object;
                 LayoutInflater infl = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 @SuppressLint("InflateParams") View view = infl.inflate(R.layout.row_storelistscroll, null);
                 txtname[index] = (TextViewPret) view.findViewById(R.id.tv_catname);
@@ -209,7 +209,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
                 index++;
             }
             index = 0;
-            for (SearchModel object : homeSubCategories) {
+            for (BasicModel object : homeSubCategories) {
                 txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                 txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
                 index++;
@@ -225,7 +225,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
             switch (url){
                 case FOLLOWING_URL:
                     requestCalled = false;
-                    ArrayList<SearchModel> homeSubCategories = navItemsController.getCategoryListHeader(response);
+                    ArrayList<BasicModel> homeSubCategories = navItemsController.getCategoryListHeader(response);
                     createScrollingHeader(homeSubCategories);
                     storeListModels.addAll(navItemsController.getCategoryList(response));
                     loadmore = false;

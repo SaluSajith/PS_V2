@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
 
     <color name="dark_gray">#757779</color>
     <color name="light_grey">#b5b8ba</color>
     <color name="moods_bg">#585858</color>
     <color name="category_bg">#313131</color>
     <color name="light_gray">#eaeaea</color>
-    <color name="menu_bg">#1c1c1c</color>
     <color name="yellow">#fffdd037</color>
-    <color name="yellow_trans">#ddfdd037</color>
     <color name="yellow_indicator">#fffdd037</color>//
     <color name="yellow_storelist_scroll">#FDC80B</color>
     <color name="yellow_storelist">#FFDF5D</color>
@@ -19,53 +14,40 @@
 
     <color name="black">#000000</color>
     <color name="green">#088e11</color>
-    <color name="red">#c41313</color>
     <color name="white">#fff</color>
     <color name="transparent">#00000000</color>
-    <color name="trans_yellow">#bbffdf5d</color>
-    <color name="trans_grey">#5b5d5e</color>
     <color name="trending_grey">#eaeaea</color>
-
-    <color name="black_overlay">#66000000</color>
-
-    <color name="color1">#DC143C</color>
-    <color name="color2">#FFD700</color>
-    <color name="color3">#088e11</color>
-    <color name="color4">#088E81</color>
-    <color name="color5">#0243BA</color>
-    <color name="color6">#7203c1</color>
-    <color name="color7">#f41e9e</color>
 
     <!-- Introduction Screen dots colors -->
     <!-- Screens background color-->
-    <color name="bg_screen1">#f64c73</color>
-    <color name="bg_screen2">#20d2bb</color>
-    <color name="bg_screen3">#3395ff</color>
-    <color name="bg_screen4">#c873f4</color>
 
     <!-- dots inactive colors -->
-    <color name="dot_dark_screen1">#d1395c</color>
+    <color name="dot_dark_screen">#7cffffff</color>
+    <!--<color name="dot_dark_screen1">#d1395c</color>
     <color name="dot_dark_screen2">#14a895</color>
     <color name="dot_dark_screen3">#2278d4</color>
-    <color name="dot_dark_screen4">#a854d4</color>
+    <color name="dot_dark_screen4">#a854d4</color>-->
 
     <!-- dots active colors -->
-    <color name="dot_light_screen1">#f98da5</color>
+    <!--<color name="dot_light_screen1">#f98da5</color>
     <color name="dot_light_screen2">#8cf9eb</color>
     <color name="dot_light_screen3">#93c6fd</color>
-    <color name="dot_light_screen4">#e4b5fc</color>
+    <color name="dot_light_screen4">#e4b5fc</color>-->
+    <color name="dot_light_screen">#fff</color>
 
     <array name="array_dot_active">
-        <item>@color/dot_light_screen1</item>
-        <item>@color/dot_light_screen2</item>
-        <item>@color/dot_light_screen3</item>
-        <item>@color/dot_light_screen4</item>
+        <item>@color/dot_light_screen</item>
+        <item>@color/dot_light_screen</item>
+        <item>@color/dot_light_screen</item>
+        <item>@color/dot_light_screen</item>
+        <item>@color/dot_light_screen</item>
     </array>
 
     <array name="array_dot_inactive">
-        <item>@color/dot_dark_screen1</item>
-        <item>@color/dot_dark_screen2</item>
-        <item>@color/dot_dark_screen3</item>
-        <item>@color/dot_dark_screen4</item>
+        <item>@color/dot_dark_screen</item>
+        <item>@color/dot_dark_screen</item>
+        <item>@color/dot_dark_screen</item>
+        <item>@color/dot_dark_screen</item>
+        <item>@color/dot_dark_screen</item>
     </array>
 </resources>

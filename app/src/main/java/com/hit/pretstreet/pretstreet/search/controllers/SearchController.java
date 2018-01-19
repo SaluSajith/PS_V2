@@ -3,9 +3,7 @@ package com.hit.pretstreet.pretstreet.search.controllers;
 import android.content.Context;
 
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
-import com.hit.pretstreet.pretstreet.search.models.SearchModel;
-import com.hit.pretstreet.pretstreet.storedetails.model.StoreDetailsModel;
-import com.hit.pretstreet.pretstreet.storedetails.model.Testimonials;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONArray;
@@ -155,13 +153,13 @@ public class SearchController {
     }
 
 
-    public static ArrayList <SearchModel> getAutoSearchList(JSONObject response){
-        ArrayList<SearchModel> searchModels = new ArrayList<>();
+    public static ArrayList <BasicModel> getAutoSearchList(JSONObject response){
+        ArrayList<BasicModel> searchModels = new ArrayList<>();
         try {
             JSONArray jsonArray = response.getJSONArray("Data");
-            SearchModel searchModel;
+            BasicModel searchModel;
             for (int i = 0; i < jsonArray.length(); i++) {
-                searchModel = new SearchModel();
+                searchModel = new BasicModel();
                 searchModel.setPageType(jsonArray.getJSONObject(i).getString("PageType"));
                 searchModel.setPageTypeId(jsonArray.getJSONObject(i).getString("PageTypeId"));
                 searchModel.setId(jsonArray.getJSONObject(i).getString("Id"));
@@ -179,14 +177,14 @@ public class SearchController {
     }
 
 
-    public static ArrayList <SearchModel> getRecentViewList(JSONObject response){
-        ArrayList<SearchModel> searchModels = new ArrayList<>();
+    public static ArrayList <BasicModel> getRecentViewList(JSONObject response){
+        ArrayList<BasicModel> searchModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
             JSONArray jsonArray = jsonObject.getJSONArray("RecentViewed");
-            SearchModel searchModel;
+            BasicModel searchModel;
             for (int i = 0; i < jsonArray.length(); i++) {
-                searchModel = new SearchModel();
+                searchModel = new BasicModel();
                 searchModel.setPageType(jsonArray.getJSONObject(i).getString("PageType"));
                 searchModel.setPageTypeId(jsonArray.getJSONObject(i).getString("PageTypeId"));
                 searchModel.setId(jsonArray.getJSONObject(i).getString("Id"));
@@ -203,14 +201,14 @@ public class SearchController {
         return  searchModels;
     }
 
-    public static ArrayList <SearchModel> getRecentSearchList(JSONObject response){
-        ArrayList<SearchModel> searchModels = new ArrayList<>();
+    public static ArrayList <BasicModel> getRecentSearchList(JSONObject response){
+        ArrayList<BasicModel> searchModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
             JSONArray jsonArray = jsonObject.getJSONArray("RecentSearched");
-            SearchModel searchModel;
+            BasicModel searchModel;
             for (int i = 0; i < jsonArray.length(); i++) {
-                searchModel = new SearchModel();
+                searchModel = new BasicModel();
                 searchModel.setPageType(jsonArray.getJSONObject(i).getString("PageType"));
                 searchModel.setPageTypeId(jsonArray.getJSONObject(i).getString("PageTypeId"));
                 searchModel.setId(jsonArray.getJSONObject(i).getString("Id"));
@@ -227,14 +225,14 @@ public class SearchController {
         return  searchModels;
     }
 
-    public static ArrayList <SearchModel> getCategoryList(JSONObject response){
-        ArrayList<SearchModel> searchModels = new ArrayList<>();
+    public static ArrayList <BasicModel> getCategoryList(JSONObject response){
+        ArrayList<BasicModel> searchModels = new ArrayList<>();
         try {
             JSONObject jsonObject = response.getJSONObject("Data");
             JSONArray jsonArray = jsonObject.getJSONArray("Category");
-            SearchModel searchModel;
+            BasicModel searchModel;
             for (int i = 0; i < jsonArray.length(); i++) {
-                searchModel = new SearchModel();
+                searchModel = new BasicModel();
                 searchModel.setId(jsonArray.getJSONObject(i).getString("Id"));
                 searchModel.setCategory(jsonArray.getJSONObject(i).getString("CategoryName"));
                 searchModels.add(searchModel);

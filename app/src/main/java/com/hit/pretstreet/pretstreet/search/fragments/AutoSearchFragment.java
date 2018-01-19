@@ -1,7 +1,6 @@
 package com.hit.pretstreet.pretstreet.search.fragments;
 
 import android.os.Bundle;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,17 +14,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.search.SearchActivity;
 import com.hit.pretstreet.pretstreet.search.adapters.AutoSearchAdapter;
 import com.hit.pretstreet.pretstreet.search.interfaces.SearchDataCallback;
-import com.hit.pretstreet.pretstreet.search.models.SearchModel;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
@@ -37,7 +34,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 
 /**
  * Created by User on 14/08/2017.
@@ -55,9 +51,9 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity>
     @BindView(R.id.rv_View) RecyclerView rv_View;
 
     private String mStrSearch;
-    private ArrayList<SearchModel> mSearchModels;
-    private ArrayList<SearchModel> mViewModels;
-    private ArrayList<SearchModel> mCatModels;
+    private ArrayList<BasicModel> mSearchModels;
+    private ArrayList<BasicModel> mViewModels;
+    private ArrayList<BasicModel> mCatModels;
     private AutoSearchAdapter searchAdapter, viewAdapter;
 
     @Override
@@ -143,9 +139,9 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity>
         }catch (Exception e){}
     }
 
-    private void setupCatTypeSpinner(ArrayList<SearchModel> catModels){
+    private void setupCatTypeSpinner(ArrayList<BasicModel> catModels){
         List<String> list = new ArrayList<String>();
-        for(SearchModel model : catModels){
+        for(BasicModel model : catModels){
             list.add(model.getCategory());
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
@@ -181,9 +177,9 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity>
     }
 
     @Override
-    public void setRecentsearchList(ArrayList<SearchModel> recentViewModels,
-                                    ArrayList<SearchModel> recentSearchModels,
-                                    ArrayList<SearchModel> catModels) {
+    public void setRecentsearchList(ArrayList<BasicModel> recentViewModels,
+                                    ArrayList<BasicModel> recentSearchModels,
+                                    ArrayList<BasicModel> catModels) {
         if(recentSearchModels.size()>0)
             tv_heading.setVisibility(View.VISIBLE);
         if(recentViewModels.size()>0)
@@ -201,7 +197,7 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity>
     }
 
     @Override
-    public void setAutosearchList(ArrayList<SearchModel> searchModels) {
+    public void setAutosearchList(ArrayList<BasicModel> searchModels) {
         mSearchModels.clear();
         mSearchModels.addAll(searchModels);
 

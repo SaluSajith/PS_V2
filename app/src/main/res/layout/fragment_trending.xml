@@ -18,5 +18,5 @@
     <include
         android:id="@+id/ll_empty"
         layout="@layout/empty_view"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 </FrameLayout>

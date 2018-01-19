@@ -39,7 +39,7 @@ import com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters.StoreList_
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.controllers.SubCategoryController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.ButtonClickCallbackStoreList;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
-import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.FilterDataModel;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelDataModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
 import org.json.JSONArray;
@@ -67,28 +67,17 @@ import static java.lang.Integer.valueOf;
 public class StoreListingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallbackStoreList, View.OnClickListener {
 
-    @BindView(R.id.ll_empty)
-    View ll_empty;
-    @BindView(R.id.tv_msg)
-    TextViewPret tv_msg;
-    @BindView(R.id.btn_retry)
-    ButtonPret btn_retry;
-    @BindView(R.id.btn_try_another)
-    ButtonPret btn_try_another;
-    @BindView(R.id.ll_scroll)
-    LinearLayout ll_scroll;
-    @BindView(R.id.nsv_header)
-    AppBarLayout nsv_header;
-    @BindView(R.id.tv_cat_name)
-    TextViewPret tv_cat_name;
-    @BindView(R.id.tv_location)
-    TextViewPret tv_location;
-    @BindView(R.id.rv_storelist)
-    RecyclerView rv_storelist;
-    @BindView(R.id.btn_mumbai)
-    ButtonPret btn_mumbai;
-    @BindView(R.id.btn_delhi)
-    ButtonPret btn_delhi;
+    @BindView(R.id.ll_empty) View ll_empty;
+    @BindView(R.id.tv_msg) TextViewPret tv_msg;
+    @BindView(R.id.btn_delhi) ButtonPret btn_delhi;
+    @BindView(R.id.btn_retry) ButtonPret btn_retry;
+    @BindView(R.id.btn_mumbai) ButtonPret btn_mumbai;
+    @BindView(R.id.ll_scroll) LinearLayout ll_scroll;
+    @BindView(R.id.nsv_header) AppBarLayout nsv_header;
+    @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
+    @BindView(R.id.tv_location) TextViewPret tv_location;
+    @BindView(R.id.rv_storelist) RecyclerView rv_storelist;
+    @BindView(R.id.btn_try_another) ButtonPret btn_try_another;
 
     TextViewPret[] txtname;
     AppCompatImageView iv_filter;
@@ -105,7 +94,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private static String catTag = "";
 
     private static ArrayList<StoreListModel> storeListModels;
-    private ArrayList<FilterDataModel> dataModel;
+    private ArrayList<TwoLevelDataModel> dataModel;
     private JSONArray arrayFilter;
 
     private String mTitle, mpagetypeid, mClicktypeid;
@@ -163,6 +152,17 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             }
         }
         tv_cat_name.setText(mTitle);
+        setupCategoryScrollviewParams();
+        tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
+
+        setListUtility();
+
+        /*Get shoplist details of selected category*/
+        createScrollingHeader();
+        refreshListviewOnScrolling();
+    }
+
+    private void setupCategoryScrollviewParams(){
         FrameLayout.LayoutParams layoutParams =
                 (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
         if (mTitle.equalsIgnoreCase("DESIGNERS")) //TODO dynamic header margin
@@ -172,10 +172,12 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         else
             layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_small), 0, 0);
         ll_scroll.setLayoutParams(layoutParams);
-        tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
+    }
 
+    private void setListUtility(){
         Utility.setListLayoutManager_(rv_storelist, StoreListingActivity.this);
-        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, StoreListingActivity.this, storeListModels);
+        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this),
+                rv_storelist, StoreListingActivity.this, storeListModels);
         storeList_recyclerAdapter.setHasStableIds(true);
         rv_storelist.setAdapter(storeList_recyclerAdapter);
         rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
@@ -184,10 +186,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
-
-        /*Get shoplist details of selected category*/
-        createScrollingHeader();
-        refreshListviewOnScrolling();
     }
 
     private void refreshListviewOnScrolling() {
@@ -214,7 +212,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     private void getShoplist(String mCatid, boolean first) {
         loadmore = true;
         btn_try_another.setVisibility(View.GONE);
-        JSONObject resultJson = SubCategoryController.getShoplistJson(mCatid, ++pageCount + "", mpagetypeid, mClicktypeid, arrayFilter);
+        JSONObject resultJson = SubCategoryController.getShoplistJson(mCatid,
+                ++pageCount + "", mpagetypeid, mClicktypeid, arrayFilter);
         if (first)
             this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, STORELISTING_URL);
@@ -222,20 +221,17 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @OnClick(R.id.tv_location)
     public void onTvLocationPressed() {
-        Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
-        startActivity(intent);
+        selectNewLocation();
     }
 
     @OnClick(R.id.iv_location)
     public void onIv_LocationPressed() {
-        Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
-        startActivity(intent);
+        selectNewLocation();
     }
 
     @OnClick(R.id.btn_try_another)
     public void onBtn_TryAnottherPressed() {
-        Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
-        startActivity(intent);
+        selectNewLocation();
     }
 
     @OnClick(R.id.btn_mumbai)
@@ -246,7 +242,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         PreferenceServices.instance().saveLocationType(dropdownloc);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         getNewList();
-        getShoplist((String) catTag, first);
+        getShoplist(catTag, first);
     }
 
     @OnClick(R.id.btn_delhi)
@@ -376,6 +372,11 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         }
     }
 
+    private void selectNewLocation(){
+        Intent intent = new Intent(StoreListingActivity.this, DefaultLocationActivity.class);
+        startActivity(intent);
+    }
+
     private void setAdapter() {
         if (first)
             rv_storelist.setAdapter(storeList_recyclerAdapter);
@@ -469,7 +470,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                 switch (requestCode) {
                     case FILTER_PAGE:
                         Bundle bundle = data.getExtras();
-                        dataModel = (ArrayList<FilterDataModel>) bundle.getSerializable(PARCEL_KEY);
+                        dataModel = (ArrayList<TwoLevelDataModel>) bundle.getSerializable(PARCEL_KEY);
                         arrayFilter = SubCategoryController.createFilterModel(dataModel);
                         storeListModels.clear();
                         pageCount = 0;

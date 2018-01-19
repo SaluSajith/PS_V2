@@ -139,6 +139,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         init();
         changeFragment(new SplashFragment(), false, SPLASH_FRAGMENT);
         fl_content_splash.bringToFront();
+
     }
 
     @Override
@@ -167,6 +168,23 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 }
             }, 1500);
         }
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //if (!PreferenceServices.instance().isFirstTimeLaunch())
+        getIP();
+       /* else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent introIntent = new Intent(context, WelcomeIntroActivity.class);
+                    startActivityForResult(introIntent, INTRO_SLIDES_REQUEST_CODE);
+                }
+            }, 1500);
+        }*/
 
     }
 

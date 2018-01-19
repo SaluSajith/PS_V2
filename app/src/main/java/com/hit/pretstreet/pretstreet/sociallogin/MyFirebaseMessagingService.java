@@ -153,7 +153,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
         System.out.println("getBuilderWithImage");
-
         return builder;
     }
 

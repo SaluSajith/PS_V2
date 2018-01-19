@@ -1,7 +1,6 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="padding_xxxsmall">1dp</dimen>
     <dimen name="padding_xxsmall">2.5dp</dimen>
@@ -18,13 +17,8 @@
 
     <dimen name="padding_subcat_s">4dp</dimen>
     <dimen name="padding_subcat">4dp</dimen>
-    <dimen name="margin_xxlarge">16dp</dimen>
     <dimen name="margin_about">20dp</dimen>
 
-    <dimen name="button_radius_standard">10dp</dimen>
-    <dimen name="button_radius_small">5dp</dimen>
-
-    <dimen name="textsize_xsmall">7sp</dimen>
     <dimen name="textsize_small">9dp</dimen>
     <dimen name="textsize_standard">12dp</dimen>
     <dimen name="textsize_large">13dp</dimen>
@@ -32,40 +26,19 @@
     <dimen name="textsize_xxlarge">20dp</dimen>
     <dimen name="textsize_xxxlarge">24dp</dimen>
 
-    <dimen name="divider_space_small">2dp</dimen>
-    <dimen name="divider_space_standard">5dp</dimen>
     <dimen name="divider_space_large">8dp</dimen>
     <dimen name="divider_space_xlarge">10dp</dimen>
-    <dimen name="divider_space_xxlarge">16dp</dimen>
-
-    <dimen name="subcategory_margintop">-30dp</dimen>
-    <dimen name="subcategory_inner_margintop">-33dp</dimen>
-    <dimen name="trending_margintop">-30dp</dimen>
-    <dimen name="header_marginbottom">14dp</dimen>
-    <dimen name="margin_custom_row">17dp</dimen>
-    <dimen name="margin_top_custom_row">11dp</dimen>
-
-    <dimen name="margin_top_difference">10dp</dimen>
-    <dimen name="text_margintop">10dp</dimen>
 
     <!-- <dimen name="home_image_height">658dp</dimen>-->
-    <dimen name="home_image_height">280dp</dimen>
     <dimen name="detail_backdrop_maxheight">500dp</dimen>
 
-    <dimen name="welcome_margintop">0dp</dimen>
-    <dimen name="google_margintop">2dp</dimen>
     <dimen name="pager_height">280dp</dimen>
     <dimen name="searchpage_topmargin">60dp</dimen>
-    <dimen name="nav_header_height">120dp</dimen>
-
-    <dimen name="headeryellow_height">91dp</dimen>
-    <dimen name="headeryellow_width">748dp</dimen>
 
     <!-- Login Screens-->
     <dimen name="buttons_height">100dp</dimen>
     <dimen name="buttons_topmargin">25dp</dimen>
     <dimen name="buttons_layouttopmargin">-33dp</dimen>
-    <dimen name="buttons_layoutheight">220dp</dimen>
     <dimen name="content_overlapmargin">10dp</dimen>
     <dimen name="content_overlapmargin_activity">-40dp</dimen>
     <dimen name="content_overlapmargin_hometrape">-30dp</dimen>
@@ -87,5 +60,4 @@
     <dimen name="storelist_banner_height">120dp</dimen>
     <dimen name="storelist_banner_height_firstrow">140dp</dimen>
 
-    <dimen name="notif_icon">20dp</dimen>
 </resources>

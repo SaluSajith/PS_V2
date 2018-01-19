@@ -88,34 +88,58 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     private static final int ABOUTDESIGNER_FRAGMENT = 101;
 
-    @BindView(R.id.tv_about) TextViewPret tv_about;
-    @BindView(R.id.tv_imgsrc) TextViewPret tv_imgsrc;
-    @BindView(R.id.tv_product) TextViewPret tv_product;
-    @BindView(R.id.tv_book_app) TextViewPret tv_book_app;
-    @BindView(R.id.tv_heading_hrs) TextViewPret tv_heading_hrs;
-    @BindView(R.id.tv_about_heading) TextViewPret tv_about_heading;
-    @BindView(R.id.tv_testimonials_heading) TextViewPret tv_testimonials_heading;
+    @BindView(R.id.tv_about)
+    TextViewPret tv_about;
+    @BindView(R.id.tv_imgsrc)
+    TextViewPret tv_imgsrc;
+    @BindView(R.id.tv_product)
+    TextViewPret tv_product;
+    @BindView(R.id.tv_book_app)
+    TextViewPret tv_book_app;
+    @BindView(R.id.tv_heading_hrs)
+    TextViewPret tv_heading_hrs;
+    @BindView(R.id.tv_about_heading)
+    TextViewPret tv_about_heading;
+    @BindView(R.id.tv_testimonials_heading)
+    TextViewPret tv_testimonials_heading;
 
-    @BindView(R.id.tv_time) TextViewPret tv_time;
-    @BindView(R.id.tv_location) TextViewPret tv_location;
-    @BindView(R.id.tv_storename) TextViewPret tv_storename;
-    @BindView(R.id.tv_openstatus) TextViewPret tv_openstatus;
-    @BindView(R.id.tv_openinghrs) TextViewPret tv_openinghrs;
-    @BindView(R.id.tv_reportError) TextViewPret tv_reportError;
-    @BindView(R.id.tv_folowerscount) TextViewPret tv_folowerscount;
-    @BindView(R.id.tv_heading_photos) TextViewPret tv_heading_photos;
+    @BindView(R.id.tv_time)
+    TextViewPret tv_time;
+    @BindView(R.id.tv_location)
+    TextViewPret tv_location;
+    @BindView(R.id.tv_storename)
+    TextViewPret tv_storename;
+    @BindView(R.id.tv_openstatus)
+    TextViewPret tv_openstatus;
+    @BindView(R.id.tv_openinghrs)
+    TextViewPret tv_openinghrs;
+    @BindView(R.id.tv_reportError)
+    TextViewPret tv_reportError;
+    @BindView(R.id.tv_folowerscount)
+    TextViewPret tv_folowerscount;
+    @BindView(R.id.tv_heading_photos)
+    TextViewPret tv_heading_photos;
 
-    @BindView(R.id.rv_images) RecyclerView rv_images;
-    @BindView(R.id.viewPager) ViewPager viewPager;
-    @BindView(R.id.btn_follow) ButtonPret btn_follow;
+    @BindView(R.id.rv_images)
+    RecyclerView rv_images;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+    @BindView(R.id.btn_follow)
+    ButtonPret btn_follow;
 
-    @BindView(R.id.iv_sale) AppCompatImageView iv_sale;
-    @BindView(R.id.iv_offer) AppCompatImageView iv_offer;
-    @BindView(R.id.iv_new) AppCompatImageView iv_new;
+    @BindView(R.id.iv_sale)
+    AppCompatImageView iv_sale;
+    @BindView(R.id.iv_offer)
+    AppCompatImageView iv_offer;
+    @BindView(R.id.iv_new)
+    AppCompatImageView iv_new;
 
-    @BindView(R.id.ll_call) LinearLayout ll_call;
-    @BindView(R.id.ll_address) LinearLayout ll_address;
-    @BindView(R.id.ll_getdirec) LinearLayout ll_getdirec;
+    @BindView(R.id.ll_call)
+    LinearLayout ll_call;
+    @BindView(R.id.ll_address)
+    LinearLayout ll_address;
+    @BindView(R.id.ll_getdirec)
+    LinearLayout ll_getdirec;
 
     Context context;
     Dialog popupDialog;
@@ -129,7 +153,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         /* Intent intent = getIntent();
         final String cheeseName = intent.getStringExtra(EXTRA_NAME);*/
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -144,7 +168,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         storeDetailsController = new StoreDetailsController(this);
     }
 
-    private void initUi(){
+    private void initUi() {
         ButterKnife.bind(this);
         PreferenceServices.init(this);
         context = getApplicationContext();
@@ -155,7 +179,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         rv_images.setLayoutManager(staggeredGridLayoutManager);
         rv_images.setNestedScrollingEnabled(false);
 
-        StoreListModel storeListModel = (StoreListModel)getIntent()
+        StoreListModel storeListModel = (StoreListModel) getIntent()
                 .getSerializableExtra(Constant.PARCEL_KEY);
         String pagekey = getIntent().getStringExtra(Constant.PRE_PAGE_KEY);
         String clickid = getIntent().getStringExtra(Constant.CLICKTYPE_KEY);
@@ -169,8 +193,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     }
 
-    private void getShopDetails(String storeId, String pageId, String clickid){
-        JSONObject resultJson = storeDetailsController.getShopDetailsJson(storeId, pageId, clickid);
+    private void getShopDetails(String storeId, String pageId, String clickid) {
+        JSONObject resultJson = StoreDetailsController.getShopDetailsJson(storeId, pageId, clickid);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.STOREDETAILS_URL);
     }
@@ -181,7 +205,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     @OnClick(R.id.tv_about)
-    public void aboutShop(){
+    public void aboutShop() {
         Intent intent = new Intent(context, NavigationItemsActivity.class);
         intent.putExtra(PRE_PAGE_KEY, Constant.HOMEPAGE);
         intent.putExtra("fragment", ABOUTDESIGNER_FRAGMENT);
@@ -192,13 +216,13 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     @OnClick(R.id.btn_follow)
     public void onFollowPressed() {
-        JSONObject resultJson = subCategoryController.updateFollowCount(mStoreId,
+        JSONObject resultJson = SubCategoryController.updateFollowCount(mStoreId,
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY), Constant.FOLLOWLINK);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, Constant.UPDATEFOLLOWSTATUS_URL);
     }
 
-    private void setupDetailsPage(StoreDetailsModel storeDetailsModel){
+    private void setupDetailsPage(StoreDetailsModel storeDetailsModel) {
         try {
             setupCollapsingHeader(storeDetailsModel.getStoreName(), storeDetailsModel.getBaseImage());
             tv_storename.setText(storeDetailsModel.getStoreName());
@@ -241,7 +265,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             tv_product.setVisibility(storeDetailsModel.getProducts().length() > 0 ? View.VISIBLE : View.GONE);
             tv_time.setVisibility(storeDetailsModel.getTimingToday().length() > 0 ? View.VISIBLE : View.GONE);
             tv_heading_hrs.setVisibility(storeDetailsModel.getArrayListTimings().size() > 0 ? View.VISIBLE : View.GONE);
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 
     public void showReportErrorPopup() {
@@ -255,13 +280,13 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
         popupDialog.setContentView(view);
         popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
         popupDialog.getWindow().setAttributes(params);
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupDialog.show();
 
-        final EdittextPret edt_remarks = (EdittextPret) view.findViewById(R.id.edt_remarks);
-        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
+        final EdittextPret edt_remarks = view.findViewById(R.id.edt_remarks);
+        AppCompatImageView img_close = view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,15 +301,14 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             }
         });
 
-        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+        ButtonPret btn_send = view.findViewById(R.id.btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 edt_remarks.setError("");
-                if(edt_remarks.getText().toString().trim().length()==0){
+                if (edt_remarks.getText().toString().trim().length() == 0) {
                     edt_remarks.setError("Field cannot be blank!");
-                }
-                else {
+                } else {
                     popupDialog.dismiss();
                     reportError(edt_remarks.getText().toString());
                 }
@@ -303,13 +327,13 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
         popupDialog.setContentView(view);
         popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
         popupDialog.getWindow().setAttributes(params);
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupDialog.show();
 
-        final EdittextPret edt_remarks = (EdittextPret) view.findViewById(R.id.edt_remarks);
-        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
+        final EdittextPret edt_remarks = view.findViewById(R.id.edt_remarks);
+        AppCompatImageView img_close = view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -317,7 +341,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             }
         });
 
-        final EdittextPret edt_date = (EdittextPret) view.findViewById(R.id.edt_date);
+        final EdittextPret edt_date = view.findViewById(R.id.edt_date);
         edt_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -333,7 +357,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                                         + (monthOfYear + 1) + "-" + year);
 
                             }
-                        }, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DATE));
+                        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE));
                 c.add(Calendar.DATE, 1);
                 dpd.getDatePicker().setMinDate(c.getTimeInMillis());
                 c.add(Calendar.YEAR, 1);
@@ -342,7 +366,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             }
         });
 
-        final EdittextPret edt_time = (EdittextPret) view.findViewById(R.id.edt_time);
+        final EdittextPret edt_time = view.findViewById(R.id.edt_time);
         edt_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -354,7 +378,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                 mTimePicker = new TimePickerDialog(StoreDetailsActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        edt_time.setText( selectedHour + ":" + selectedMinute);
+                        edt_time.setText(selectedHour + ":" + selectedMinute);
                     }
                 }, hour, minute, true);//true : Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -362,17 +386,15 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
             }
         });
 
-        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+        ButtonPret btn_send = view.findViewById(R.id.btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edt_date.getText().toString().trim().length()==0){
+                if (edt_date.getText().toString().trim().length() == 0) {
                     edt_date.setError("Select date");
-                }
-                else if(edt_time.getText().toString().trim().length()==0){
+                } else if (edt_time.getText().toString().trim().length() == 0) {
                     edt_time.setError("Select time");
-                }
-                else{
+                } else {
                     popupDialog.dismiss();
                     bookAppointment(edt_date.getText().toString(),
                             edt_time.getText().toString(),
@@ -382,36 +404,36 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         });
     }
 
-    private void bookAppointment(String date, String time, String remarks){
-        JSONObject resultJson = storeDetailsController.getBookAppoJson(date+" "+time, mStoreId, remarks);
+    private void bookAppointment(String date, String time, String remarks) {
+        JSONObject resultJson = StoreDetailsController.getBookAppoJson(date + " " + time, mStoreId, remarks);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, BOOK_APPOINTMENT_URL);
     }
 
 
-    private void reportError(String remarks){
-        JSONObject resultJson = storeDetailsController.getReportErrorJson(mStoreId, remarks);
+    private void reportError(String remarks) {
+        JSONObject resultJson = StoreDetailsController.getReportErrorJson(mStoreId, remarks);
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, REPORT_ERROR_URL);
     }
 
-    private void logTracking(String clicktypeid){
-        JSONObject resultJson = storeDetailsController.getLogTrackJson(clicktypeid, "",
+    private void logTracking(String clicktypeid) {
+        JSONObject resultJson = StoreDetailsController.getLogTrackJson(clicktypeid, "",
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY), mStoreId);
         jsonRequestController.sendRequest(this, resultJson, TRACK_URL);
     }
 
-    private void setupCollapsingHeader(String title, String image){
+    private void setupCollapsingHeader(String title, String image) {
 
         CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+                findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(context, R.color.transparent)); // transperent color = #00000000
         collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(context, R.color.white));
         loadBackdrop(image);
     }
 
-    private void setupTestimonials(StoreDetailsModel storeDetailsModel){
+    private void setupTestimonials(StoreDetailsModel storeDetailsModel) {
         CardFragmentPagerAdapter pagerAdapter = new CardFragmentPagerAdapter(getSupportFragmentManager(), dpToPixels(1, this),
                 storeDetailsModel.getArrayListTesti());
         ShadowTransformer fragmentCardShadowTransformer = new ShadowTransformer(viewPager, pagerAdapter);
@@ -423,13 +445,13 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         viewPager.setOffscreenPageLimit(3);
     }
 
-    private void setupGallery(ArrayList<String> arrayListImages){
+    private void setupGallery(ArrayList<String> arrayListImages) {
         GalleryAdapter storeList_recyclerAdapter = new GalleryAdapter(StoreDetailsActivity.this, arrayListImages);
         rv_images.setAdapter(storeList_recyclerAdapter);
     }
 
     private void loadBackdrop(String imageUrl) {
-        final AppCompatImageView imageView = (AppCompatImageView) findViewById(R.id.backdrop);
+        final AppCompatImageView imageView = findViewById(R.id.backdrop);
         Glide.with(this).load(imageUrl)
                 .asBitmap()
                 .placeholder(R.drawable.default_banner)
@@ -442,19 +464,19 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         final Dialog popupDialog = new Dialog(StoreDetailsActivity.this);
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") final View view = li.inflate(R.layout.popup_phone_number, null);
-        TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
-        RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
-        RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
-        RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
+        TextViewPret txt_cat = view.findViewById(R.id.txt_cat);
+        RelativeLayout rl_phone1 = view.findViewById(R.id.rl_phone1);
+        RelativeLayout rl_phone2 = view.findViewById(R.id.rl_phone2);
+        RelativeLayout rl_phone3 = view.findViewById(R.id.rl_phone3);
 
-        TextViewPret txt_phone1 = (TextViewPret) view.findViewById(R.id.txt_phone1);
-        TextViewPret txt_phone2 = (TextViewPret) view.findViewById(R.id.txt_phone2);
-        TextViewPret txt_phone3 = (TextViewPret) view.findViewById(R.id.txt_phone3);
+        TextViewPret txt_phone1 = view.findViewById(R.id.txt_phone1);
+        TextViewPret txt_phone2 = view.findViewById(R.id.txt_phone2);
+        TextViewPret txt_phone3 = view.findViewById(R.id.txt_phone3);
 
         final ArrayList<String> arrayList = storeDetailsModel.getPhone();
         txt_cat.setText(storeDetailsModel.getStoreName());
 
-        switch (arrayList.size()){
+        switch (arrayList.size()) {
             case 1:
                 txt_phone1.setText(arrayList.get(0));
                 rl_phone2.setVisibility(View.GONE);
@@ -478,12 +500,12 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         popupDialog.setContentView(view);
         popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
         popupDialog.getWindow().setAttributes(params);
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupDialog.show();
 
-        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
+        AppCompatImageView img_close = view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -511,7 +533,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         logTracking(CALLLINK);
     }
 
-    private void dialPhone(String phone){
+    private void dialPhone(String phone) {
         logTracking(CALLEDLINK);
         MyPhoneListener phoneListener = new MyPhoneListener();
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -528,6 +550,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     private class MyPhoneListener extends PhoneStateListener {
         private boolean onCall = false;
+
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
             switch (state) {
@@ -559,12 +582,12 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         final Dialog popupDialog = new Dialog(StoreDetailsActivity.this);
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_phone_number, null);
-        TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
-        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
-        TextViewPret txt_address1 = (TextViewPret) view.findViewById(R.id.txt_address);
-        RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
-        RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
-        RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
+        TextViewPret txt_cat = view.findViewById(R.id.txt_cat);
+        AppCompatImageView img_close = view.findViewById(R.id.img_close);
+        TextViewPret txt_address1 = view.findViewById(R.id.txt_address);
+        RelativeLayout rl_phone1 = view.findViewById(R.id.rl_phone1);
+        RelativeLayout rl_phone2 = view.findViewById(R.id.rl_phone2);
+        RelativeLayout rl_phone3 = view.findViewById(R.id.rl_phone3);
         rl_phone1.setVisibility(View.GONE);
         rl_phone2.setVisibility(View.GONE);
         rl_phone3.setVisibility(View.GONE);
@@ -575,7 +598,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         popupDialog.setContentView(view);
         popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
         popupDialog.getWindow().setAttributes(params);
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupDialog.show();
@@ -589,7 +612,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         logTracking(VIEWADDRESSLINK);
     }
 
-    private void showLocation(StoreDetailsModel storeDetailsModel){
+    private void showLocation(StoreDetailsModel storeDetailsModel) {
         if (storeDetailsModel.getLatitude().equalsIgnoreCase("") ||
                 storeDetailsModel.getLongitude().equalsIgnoreCase("")) {
             displaySnackBar("Location not found");
@@ -610,13 +633,13 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         logTracking(VIEWONMAPLINK);
     }
 
-    private void handleResponse(JSONObject response){
+    private void handleResponse(JSONObject response) {
         try {
             String url = response.getString("URL");
             //displaySnackBar(response.getString("CustomerMessage"));
-            switch (url){
+            switch (url) {
                 case Constant.STOREDETAILS_URL:
-                    StoreDetailsModel storeDetailsModel = storeDetailsController.getStoreData(response);
+                    StoreDetailsModel storeDetailsModel = StoreDetailsController.getStoreData(response);
                     this.storeDetailsModel = storeDetailsModel;
                     setupDetailsPage(storeDetailsModel);
                     break;
@@ -626,14 +649,15 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
                     int status = response.getJSONObject("Data").getInt("FollowingStatus");
                     btn_follow.setText(status == 0 ? "Follow" : "Unfollow");
                     int count = Integer.parseInt(this.storeDetailsModel.getFollowingCount());
-                    this.storeDetailsModel.setFollowingStatus(status == 1 ? false : true);
-                    this.storeDetailsModel.setFollowingCount(status == 1 ? (count+1) +"" : (count-1) +"");
+                    this.storeDetailsModel.setFollowingStatus(status != 1);
+                    this.storeDetailsModel.setFollowingCount(status == 1 ? (count + 1) + "" : (count - 1) + "");
                     tv_folowerscount.setText(this.storeDetailsModel.getFollowingCount() + " followers");
                     break;
                 case REPORT_ERROR_URL:
                     displaySnackBar(response.getString("CustomerMessage"));
                     break;
-                default: break;
+                default:
+                    break;
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -661,11 +685,12 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     public static float dpToPixels(int dp, Context context) {
         return dp * (context.getResources().getDisplayMetrics().density);
     }
@@ -679,8 +704,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     @Override
     public void onError(String error) {
         this.hideDialog();
-        displaySnackBar( error);
-        if(tv_storename.getText().toString().trim().length()==0){
+        displaySnackBar(error);
+        if (tv_storename.getText().toString().trim().length() == 0) {
             finish();
         }
     }
@@ -698,7 +723,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
     @OnClick(R.id.ll_call)
     public void onCallPressed() {
         ArrayList jsonArray = storeDetailsModel.getPhone();
-        if (jsonArray.size()==0)
+        if (jsonArray.size() == 0)
             displaySnackBar("Number not Found");
         else {
             showPopupPhoneNumber(storeDetailsModel);
@@ -726,8 +751,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         Bundle b = new Bundle();
         b.putString(ID_KEY, storeDetailsModel.getId());
         int likeStatus = storeDetailsModel.getFollowingStatus() == true ? 0 : 1;
-        b.putString(PARCEL_KEY, likeStatus+"");
-        b.putString("followcount", storeDetailsModel.getFollowingCount()+"");
+        b.putString(PARCEL_KEY, likeStatus + "");
+        b.putString("followcount", storeDetailsModel.getFollowingCount() + "");
         intent.putExtras(b);
         setResult(RESULT_OK, intent);
         finish();
