@@ -2,10 +2,7 @@ package com.hit.pretstreet.pretstreet.core.managers;
 
 import android.content.Context;
 
-import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
-
-import java.util.HashMap;
 
 /**
  * Created by User on 6/20/2017.

@@ -204,7 +204,7 @@ public class DefaultLocationActivity extends
             if (resultList==null) {
                 displaySnackBar("Please check your internet connection!");
             } else {
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(),
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(),
                         android.R.layout.simple_list_item_1, android.R.id.text1, resultList);
                 placeList.setAdapter(adapter);
                 placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

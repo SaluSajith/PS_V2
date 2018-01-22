@@ -140,11 +140,11 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity>
     }
 
     private void setupCatTypeSpinner(ArrayList<BasicModel> catModels){
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for(BasicModel model : catModels){
             list.add(model.getCategory());
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.row_text, list);
         dataAdapter.setDropDownViewResource(R.layout.row_text);
         sp_CatType.setAdapter(dataAdapter);
@@ -167,10 +167,10 @@ public class AutoSearchFragment extends AbstractBaseFragment<WelcomeActivity>
     }
 
     private void setupTypeSpinner(){
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("Stores");
         list.add("Products");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.row_text, list);
         dataAdapter.setDropDownViewResource(R.layout.row_text);
         sp_Type.setAdapter(dataAdapter);

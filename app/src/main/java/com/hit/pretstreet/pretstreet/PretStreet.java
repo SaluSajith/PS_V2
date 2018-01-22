@@ -9,13 +9,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
-import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
-import com.hit.pretstreet.pretstreet.search.SearchActivity;
-
-import org.json.JSONObject;
-
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.AUTOSEARCH_URL;
 
 /**
  * Created by User on 20/07/2017.

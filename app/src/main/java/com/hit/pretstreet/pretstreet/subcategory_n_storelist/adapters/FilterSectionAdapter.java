@@ -83,7 +83,7 @@ public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerV
         final TextView sectionTitle;
         public SectionViewHolder(View itemView) {
             super(itemView);
-            sectionTitle = (TextView) itemView.findViewById(R.id.sectionTitle);
+            sectionTitle = itemView.findViewById(R.id.sectionTitle);
         }
     }
 
@@ -93,7 +93,7 @@ public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerV
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            cb_Item = (CheckBox) itemView.findViewById(R.id.cb_Item);
+            cb_Item = itemView.findViewById(R.id.cb_Item);
             /*
             itemView.setOnClickListener(new SView.OnClickListener() {
                 @Override

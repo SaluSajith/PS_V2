@@ -29,7 +29,6 @@ import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
-import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.IncomingSms;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
@@ -84,7 +83,6 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGARTICLE_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 
@@ -136,15 +134,15 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         context = getApplicationContext();
         //checkDevice();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        ImageView iv_menu = (ImageView) toolbar.findViewById(R.id.iv_back);
+        toolbar = findViewById(R.id.toolbar);
+        ImageView iv_menu = toolbar.findViewById(R.id.iv_back);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        ImageView iv_search = (ImageView) toolbar.findViewById(R.id.iv_search);
+        ImageView iv_search = toolbar.findViewById(R.id.iv_search);
         iv_search.setVisibility(View.GONE);
         nsv_header.bringToFront();
 
@@ -411,12 +409,12 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
             LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_otp_screen, null);
-            ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
-            final EdittextPret edt_otp = (EdittextPret) view.findViewById(R.id.edt_otp);
+            ImageView img_close = view.findViewById(R.id.img_close);
+            final EdittextPret edt_otp = view.findViewById(R.id.edt_otp);
             edittextPret = edt_otp;
-            ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+            ButtonPret btn_send = view.findViewById(R.id.btn_send);
 
-            RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.popup_bundle);
+            RelativeLayout rl = view.findViewById(R.id.popup_bundle);
             rl.setPadding(0, 0, 0, 0);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -425,7 +423,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             popupDialog.setContentView(view);
 
             popupDialog.getWindow().setGravity(Gravity.CENTER);
-            WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+            WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
             popupDialog.getWindow().setAttributes(params);
             popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -456,7 +454,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                     }
                 }
             });
-            final TextViewPret tv_resend = (TextViewPret) view.findViewById(R.id.tv_resend);
+            final TextViewPret tv_resend = view.findViewById(R.id.tv_resend);
             tv_resend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -496,13 +494,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
         popupDialog.setContentView(view);
         popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
         popupDialog.getWindow().setAttributes(params);
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupDialog.show();
 
-        final EdittextPret edt_phone = (EdittextPret) view.findViewById(R.id.edt_phone);
-        ImageView img_close = (ImageView) view.findViewById(R.id.img_close);
+        final EdittextPret edt_phone = view.findViewById(R.id.edt_phone);
+        ImageView img_close = view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -510,7 +508,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             }
         });
 
-        TextViewPret tv_privacy = (TextViewPret) view.findViewById(R.id.tv_privacy);
+        TextViewPret tv_privacy = view.findViewById(R.id.tv_privacy);
         tv_privacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -521,7 +519,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             }
         });
 
-        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+        ButtonPret btn_send = view.findViewById(R.id.btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -610,9 +608,9 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         final Dialog popupDialog = new Dialog(HomeInnerActivity.this);
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.popup_ex_sort, null);
-        ButtonPret btn_apply = (ButtonPret) view.findViewById(R.id.btn_apply);
-        final RadioGroup radioGroup_sortby = (RadioGroup) view.findViewById(R.id.radioGroup);
-        final RadioGroup radioGroup_orderby = (RadioGroup) view.findViewById(R.id.radioGroup1);
+        ButtonPret btn_apply = view.findViewById(R.id.btn_apply);
+        final RadioGroup radioGroup_sortby = view.findViewById(R.id.radioGroup);
+        final RadioGroup radioGroup_orderby = view.findViewById(R.id.radioGroup1);
 
         popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         popupDialog.setContentView(view);

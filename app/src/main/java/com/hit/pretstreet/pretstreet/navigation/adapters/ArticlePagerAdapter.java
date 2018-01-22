@@ -44,14 +44,14 @@ public class ArticlePagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((RelativeLayout) object);
+        return view == object;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         final View itemView = LayoutInflater.from(mContext).inflate(R.layout.image_slider_item, container, false);
 
-        final AppCompatImageView imageView = (AppCompatImageView) itemView.findViewById(R.id.img_pager_item);
+        final AppCompatImageView imageView = itemView.findViewById(R.id.img_pager_item);
         //double checking for image array
         if((mResources.get(position)).length()==0){
             imageView.setImageResource(R.drawable.default_banner);

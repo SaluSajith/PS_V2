@@ -59,7 +59,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
      * @param mRecyclerView recyclerview param for loadmore*/
     public ExhibitionAdapter(final RequestManager glide, RecyclerView mRecyclerView,
                              Activity activity, ArrayList<TrendingItems> list) {
-        this.context = activity;
+        context = activity;
         this.list = list;
         this.glide = glide;
         this.trendingHolderInvoke = (TrendingHolderInvoke)activity;

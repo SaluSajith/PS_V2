@@ -16,7 +16,6 @@ import com.hit.pretstreet.pretstreet.storedetails.model.Testimonials;
 import com.hit.pretstreet.pretstreet.storedetails.view.CardFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CardFragmentPagerAdapter extends FragmentStatePagerAdapter implements CardAdapter {
 

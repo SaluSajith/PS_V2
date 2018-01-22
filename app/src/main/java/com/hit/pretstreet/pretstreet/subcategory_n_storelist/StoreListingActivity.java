@@ -62,7 +62,6 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.dropdownloc;
 import static java.lang.Integer.parseInt;
-import static java.lang.Integer.valueOf;
 
 public class StoreListingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallbackStoreList, View.OnClickListener {
@@ -253,7 +252,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         PreferenceServices.instance().saveLocationType(dropdownloc);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         getNewList();
-        getShoplist((String) catTag, first);
+        getShoplist(catTag, first);
     }
 
     private void openSearchPage() {
@@ -430,9 +429,9 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @Override
     public void onClick(View v) {
-        for (int i = 0; i < txtname.length; i++) {
-            txtname[i].setBackgroundColor(ContextCompat.getColor(StoreListingActivity.this, R.color.transparent));
-            txtname[i].setTextColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_storelist_scroll));
+        for (TextViewPret aTxtname : txtname) {
+            aTxtname.setBackgroundColor(ContextCompat.getColor(StoreListingActivity.this, R.color.transparent));
+            aTxtname.setTextColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_storelist_scroll));
         }
         TextViewPret textViewPret = (TextViewPret) v;
         textViewPret.setBackgroundColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_storelist_scroll));

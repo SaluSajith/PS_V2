@@ -1,7 +1,5 @@
 package com.hit.pretstreet.pretstreet.splashnlogin.interfaces;
 
-import android.widget.EditText;
-
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
 

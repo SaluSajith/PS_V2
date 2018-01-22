@@ -31,7 +31,6 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 
-
 public class FilterActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, FilterCallback {
 

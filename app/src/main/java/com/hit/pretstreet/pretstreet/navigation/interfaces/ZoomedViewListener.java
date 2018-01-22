@@ -1,7 +1,5 @@
 package com.hit.pretstreet.pretstreet.navigation.interfaces;
 
-import com.hit.pretstreet.pretstreet.navigation.models.ProductImageItem;
-
 import java.util.ArrayList;
 
 /**

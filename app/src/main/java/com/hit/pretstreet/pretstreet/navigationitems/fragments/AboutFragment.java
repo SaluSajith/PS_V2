@@ -1,22 +1,12 @@
 package com.hit.pretstreet.pretstreet.navigationitems.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.firebase.auth.FirebaseAuth;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
@@ -26,8 +16,6 @@ import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.hit.pretstreet.pretstreet.PretStreet.TAG;
 
 /**
  * Created by User on 7/17/2017.
@@ -48,15 +36,6 @@ public class AboutFragment extends AbstractBaseFragment<WelcomeActivity> {
     ButtonClickCallback buttonClickCallback;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            buttonClickCallback = (ButtonClickCallback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement onViewSelected");
-        }
-    }
-    @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         ButterKnife.bind(this, view);
@@ -65,7 +44,11 @@ public class AboutFragment extends AbstractBaseFragment<WelcomeActivity> {
     }
 
     private void init(){
-
+        try {
+            buttonClickCallback = (ButtonClickCallback) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + " must implement onViewSelected");
+        }
     }
 
     @OnClick(R.id.iv_rateus)

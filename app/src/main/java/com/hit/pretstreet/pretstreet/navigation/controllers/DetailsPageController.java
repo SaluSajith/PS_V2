@@ -5,7 +5,6 @@ import android.content.Context;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.storedetails.model.StoreDetailsModel;
-import com.hit.pretstreet.pretstreet.storedetails.model.Testimonials;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +20,7 @@ public class DetailsPageController {
     private static Context context;
 
     public DetailsPageController(Context context) {
-        this.context = context;
+        DetailsPageController.context = context;
     }
 
     public static JSONObject getExhibitionArticle(String prepage, String clicktype, String exid) {

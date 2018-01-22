@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
-import android.view.Gravity;
 
 import com.hit.pretstreet.pretstreet.R;
 

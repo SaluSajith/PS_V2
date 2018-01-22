@@ -1,7 +1,5 @@
 package com.hit.pretstreet.pretstreet.storedetails.model;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 
 /**

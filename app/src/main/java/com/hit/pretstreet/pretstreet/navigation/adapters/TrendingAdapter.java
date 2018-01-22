@@ -2,19 +2,11 @@ package com.hit.pretstreet.pretstreet.navigation.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
-import android.os.Looper;
-import android.support.annotation.Dimension;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +14,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.google.android.gms.wallet.fragment.WalletFragmentStyle;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.customview.touchImageView.ImageViewTouch;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
 import com.hit.pretstreet.pretstreet.navigation.fragments.TrendingFragment;
 import com.hit.pretstreet.pretstreet.navigation.interfaces.TrendingHolderInvoke;
@@ -41,14 +26,11 @@ import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.OnLoadMoreListener;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.StoreListModel;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hit.pretstreet.pretstreet.R.dimen.trending_pager_height;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLISTLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
@@ -58,7 +40,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 
 public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    Context context, fragContext;
+    Context context;
     private int dotsCount = 0;
     static int mPosition;
     private ArrayList<TrendingItems> list;
@@ -67,7 +49,6 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private ZoomedViewListener zoomedViewListener;
 
     private static final int TRENDING_FRAGMENT = 10;
-    private static final int EXHIBITION_FRAGMENT = 11;
 
     private OnLoadMoreListener mOnLoadMoreListener;
     private boolean isLoading;
@@ -237,7 +218,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             txt_title.setOnClickListener(this);
             txt_shopname.setOnClickListener(this);
             txt_description.setOnClickListener(this);
-            article_images.setOnPageChangeListener(this);
+            article_images.addOnPageChangeListener(this);
         }
 
         @Override

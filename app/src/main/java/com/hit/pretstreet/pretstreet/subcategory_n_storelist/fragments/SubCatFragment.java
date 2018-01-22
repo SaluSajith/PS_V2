@@ -1,7 +1,6 @@
 package com.hit.pretstreet.pretstreet.subcategory_n_storelist.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -48,16 +47,6 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
     SubCatTrapeClick onTrapeClick;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            onTrapeClick = (SubCatTrapeClick) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement onViewSelected");
-        }
-    }
-
-    @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subcat, container, false);
         ButterKnife.bind(this, view);
@@ -66,6 +55,11 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
     }
 
     private void init() {
+        try {
+            onTrapeClick = (SubCatTrapeClick) getHostActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getHostActivity().toString() + " must implement onViewSelected");
+        }
         String mCatId = "";
         if (getActivity().getIntent() != null) {
             if (getActivity().getIntent().getExtras() != null && getActivity().getIntent().getExtras()
@@ -91,9 +85,9 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 } else {
                     view = infl.inflate(R.layout.row_sub_cat_list2, null);
                 }
-                RelativeLayout rl_dd = (RelativeLayout) view.findViewById(R.id.rl_dd);
-                TextViewPret txt_cat_name = (TextViewPret) view.findViewById(R.id.txt_cat_name);
-                final AppCompatImageView mImageView = (AppCompatImageView) view.findViewById(R.id.img_cat_image);
+                RelativeLayout rl_dd = view.findViewById(R.id.rl_dd);
+                TextViewPret txt_cat_name = view.findViewById(R.id.txt_cat_name);
+                final AppCompatImageView mImageView = view.findViewById(R.id.img_cat_image);
                 txt_cat_name.setMaxLines(1);
 
                 LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,

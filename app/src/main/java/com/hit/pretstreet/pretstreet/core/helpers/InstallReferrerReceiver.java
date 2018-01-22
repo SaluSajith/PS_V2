@@ -31,7 +31,7 @@ public class InstallReferrerReceiver extends BroadcastReceiver {
         PreferenceServices.init(context);
         try {
 
-            Map<String, String> referralParams = new HashMap<String, String>();
+            Map<String, String> referralParams = new HashMap<>();
             if (intent == null) {
                 return;
             }

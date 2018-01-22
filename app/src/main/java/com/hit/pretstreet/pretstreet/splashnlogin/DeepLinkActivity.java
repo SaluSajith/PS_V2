@@ -20,9 +20,6 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 
 import org.json.JSONObject;
 
-import java.util.Map;
-
-import static com.hit.pretstreet.pretstreet.core.helpers.InstallReferrerReceiver.EXPECTED_PARAMETERS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHECKIP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.INSTALLREFERRERKEY;
 
@@ -115,9 +112,9 @@ public class DeepLinkActivity extends AppCompatActivity implements ApiListenerIn
     protected void onStart() {
         super.onStart();
         Intent intent = getIntent();
-        if (AppInviteReferral.hasReferral(intent)) {
+        /*if (AppInviteReferral.hasReferral(intent)) {
             processReferralIntent(intent);
-        }
+        }*/
     }
     private void processReferralIntent(Intent intent) {
         // Extract referral information from the intent

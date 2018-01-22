@@ -113,15 +113,15 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         rv_storelist.addItemDecoration(new SimpleDividerItemDecoration(context));
         storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, FollowingActivity.this, storeListModels);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        AppCompatImageView iv_menu = (AppCompatImageView) toolbar.findViewById(R.id.iv_back);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        AppCompatImageView iv_menu = toolbar.findViewById(R.id.iv_back);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        AppCompatImageView iv_search = (AppCompatImageView) toolbar.findViewById(R.id.iv_search);
+        AppCompatImageView iv_search = toolbar.findViewById(R.id.iv_search);
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,7 +201,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
                 BasicModel searchModel = object;
                 LayoutInflater infl = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 @SuppressLint("InflateParams") View view = infl.inflate(R.layout.row_storelistscroll, null);
-                txtname[index] = (TextViewPret) view.findViewById(R.id.tv_catname);
+                txtname[index] = view.findViewById(R.id.tv_catname);
                 txtname[index].setText(searchModel.getCategory());
                 txtname[index].setTag(searchModel.getId());
                 ll_scroll.addView(view);
@@ -284,9 +284,9 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void onClick(View v) {
-        for (int i=0;i<txtname.length;i++) {
-            txtname[i].setBackgroundColor(ContextCompat.getColor(FollowingActivity.this, R.color.transparent));
-            txtname[i].setTextColor(ContextCompat.getColor(FollowingActivity.this, R.color.yellow_storelist_scroll));
+        for (TextViewPret aTxtname : txtname) {
+            aTxtname.setBackgroundColor(ContextCompat.getColor(FollowingActivity.this, R.color.transparent));
+            aTxtname.setTextColor(ContextCompat.getColor(FollowingActivity.this, R.color.yellow_storelist_scroll));
         }
         TextViewPret textViewPret = (TextViewPret) v;
         textViewPret.setBackgroundColor(ContextCompat.getColor(FollowingActivity.this, R.color.yellow_storelist_scroll));
@@ -303,9 +303,9 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     @Override
     public void buttonClick(StoreListModel storeListModel) {
         if(storeListModel.getPageTypeId().equals(STOREDETAILSPAGE)){
-            for (int index = 0;index<txtname.length;index++) {
-                txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
+            for (TextViewPret aTxtname : txtname) {
+                aTxtname.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                aTxtname.setTextColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
             }
             txtname[0].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
             txtname[0].setTextColor(ContextCompat.getColor(this, R.color.black));

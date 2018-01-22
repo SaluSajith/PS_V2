@@ -48,9 +48,9 @@ public class NotificationBadge extends FrameLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.notification_badge, this, true);
-        mContainer = (FrameLayout) findViewById(R.id.fl_container);
-        mIvBadgeBg = (AppCompatImageView) findViewById(R.id.iv_badge_bg);
-        mTvBadgeText = (TextViewPret) findViewById(R.id.tv_badge_text);
+        mContainer = findViewById(R.id.fl_container);
+        mIvBadgeBg = findViewById(R.id.iv_badge_bg);
+        mTvBadgeText = findViewById(R.id.tv_badge_text);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs, R.styleable.NotificationBadge, 0, 0);

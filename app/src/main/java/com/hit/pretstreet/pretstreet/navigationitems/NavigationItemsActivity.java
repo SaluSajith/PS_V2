@@ -113,14 +113,14 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         PreferenceServices.init(this);
 
         View ll_header = findViewById(R.id.ll_header);
-        AppCompatImageView iv_menu = (AppCompatImageView) ll_header.findViewById(R.id.iv_back);
+        AppCompatImageView iv_menu = ll_header.findViewById(R.id.iv_back);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        AppCompatImageView iv_search = (AppCompatImageView) ll_header.findViewById(R.id.iv_search);
+        AppCompatImageView iv_search = ll_header.findViewById(R.id.iv_search);
         iv_search.setVisibility(View.GONE);
         fl_content.bringToFront();
         ll_header.bringToFront();
@@ -422,7 +422,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         switch (requestCode) {
             case PLACE_PICKER_REQUEST:
                     if (resultCode == RESULT_OK) {
-                        Place place = PlacePicker.getPlace(data, this);
+                        Place place = PlacePicker.getPlace(this, data);
                         addStoreFragment.setLocation(place);
                     }
                 break;

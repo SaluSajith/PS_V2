@@ -73,8 +73,7 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         if (BuildConfig.DEBUG){ }
         else {
             /** Update fragment open event in Google analytics */
-            PretStreet pretStreet = (PretStreet) getActivity().getApplication();
-            Tracker mTracker = pretStreet.tracker();
+            Tracker mTracker = PretStreet.tracker();
             mTracker.set("UserTrack", this.getClass().getSimpleName());
             mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Fragment")
@@ -220,9 +219,9 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
         String arrayPermissionNotGranted[];
         ArrayList<String> permissionsNotGranted = new ArrayList<>();
 
-        for (int i = 0; i < permissionAsk.length; i++) {
-            if (!isPermissionGranted(getActivity(), permissionAsk[i])) {
-                permissionsNotGranted.add(permissionAsk[i]);
+        for (String aPermissionAsk : permissionAsk) {
+            if (!isPermissionGranted(getActivity(), aPermissionAsk)) {
+                permissionsNotGranted.add(aPermissionAsk);
             }
         }
 

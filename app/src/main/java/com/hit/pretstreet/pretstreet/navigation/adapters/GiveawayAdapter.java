@@ -223,7 +223,7 @@ public class GiveawayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             txt_title.setOnClickListener(this);
             txt_shopname.setOnClickListener(this);
             txt_description.setOnClickListener(this);
-            article_images.setOnPageChangeListener(this);
+            article_images.addOnPageChangeListener (this);
         }
 
         @Override

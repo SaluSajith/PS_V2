@@ -1,22 +1,13 @@
 package com.hit.pretstreet.pretstreet.splashnlogin.fragments;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hit.pretstreet.pretstreet.PretStreet;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
-import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
-import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
-import com.hit.pretstreet.pretstreet.sociallogin.GoogleLoginActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback;
 
@@ -40,19 +31,14 @@ public class WelcomeFragment extends AbstractBaseFragment<WelcomeActivity> {
         return view;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            buttonClickCallback = (ButtonClickCallback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement onViewSelected");
-        }
-    }
-
     private void init(View view){
         ButterKnife.bind(this, view);
         PreferenceServices.init(getActivity());
+        try {
+            buttonClickCallback = (ButtonClickCallback) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException( getActivity().toString() + " must implement onViewSelected");
+        }
     }
 
     @OnClick(R.id.btn_sign_up)

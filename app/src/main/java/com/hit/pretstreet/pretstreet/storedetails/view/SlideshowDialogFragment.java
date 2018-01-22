@@ -101,7 +101,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         public Object instantiateItem(ViewGroup container, int position) {
 
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.gallery_fullscreen_image, container, false);
-            ImageViewTouch imageViewPreview = (ImageViewTouch) view.findViewById(R.id.image_preview);
+            ImageViewTouch imageViewPreview = view.findViewById(R.id.image_preview);
             String image = imageModels.get(position);
             Glide.with(getActivity()).load(image)
                     .thumbnail(0.5f)
@@ -120,7 +120,7 @@ public class SlideshowDialogFragment extends DialogFragment {
 
         @Override
         public boolean isViewFromObject(View view, Object obj) {
-            return view == ((View) obj);
+            return view == obj;
         }
 
         @Override

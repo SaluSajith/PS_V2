@@ -66,10 +66,7 @@ public class ImageViewTouch extends ImageViewTouchBase {
     @TargetApi (19)
     @SuppressWarnings ("unused")
     public boolean getQuickScaleEnabled() {
-        if (Build.VERSION.SDK_INT >= 19) {
-            return mScaleDetector.isQuickScaleEnabled();
-        }
-        return false;
+        return Build.VERSION.SDK_INT >= 19 && mScaleDetector.isQuickScaleEnabled();
     }
 
     @SuppressWarnings ("unused")
@@ -338,10 +335,7 @@ public class ImageViewTouch extends ImageViewTouchBase {
             if (e1.getPointerCount() > 1 || e2.getPointerCount() > 1) {
                 return false;
             }
-            if (mScaleDetector.isInProgress()) {
-                return false;
-            }
-            return ImageViewTouch.this.onScroll(e1, e2, distanceX, distanceY);
+            return !mScaleDetector.isInProgress() && ImageViewTouch.this.onScroll(e1, e2, distanceX, distanceY);
         }
 
         @Override
@@ -363,11 +357,7 @@ public class ImageViewTouch extends ImageViewTouchBase {
 
             // prevent fling happening just
             // after a quick pinch to zoom
-            if (delta > MIN_FLING_DELTA_TIME) {
-                return ImageViewTouch.this.onFling(e1, e2, velocityX, velocityY);
-            } else {
-                return false;
-            }
+            return delta > MIN_FLING_DELTA_TIME && ImageViewTouch.this.onFling(e1, e2, velocityX, velocityY);
         }
 
         @Override

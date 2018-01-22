@@ -1,10 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by User on 7/24/2017.

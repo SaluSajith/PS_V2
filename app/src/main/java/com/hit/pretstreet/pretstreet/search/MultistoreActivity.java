@@ -78,7 +78,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multistore);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -131,7 +131,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
 
     private void setupCollapsingHeader(String title, String imageUrl){
         CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+                findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(context, R.color.transparent)); // transperent color = #00000000
         collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(context, R.color.white));
@@ -158,7 +158,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void loadBackdrop(String imageUrl) {
-        final AppCompatImageView imageView = (AppCompatImageView) findViewById(R.id.backdrop);
+        final AppCompatImageView imageView = findViewById(R.id.backdrop);
         Glide.with(context)
                 .load(imageUrl)
                 .asBitmap()

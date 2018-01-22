@@ -1,7 +1,6 @@
 package com.hit.pretstreet.pretstreet.navigation.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -77,16 +76,6 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
     int position = 0;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            buttonClickCallback = (HomeTrapeClick) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement onViewSelected");
-        }
-    }
-
-    @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
@@ -95,6 +84,13 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
     }
 
     private void init(){
+
+        try {
+            buttonClickCallback = (HomeTrapeClick) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + " must implement onViewSelected");
+        }
+
         Utility.setGridLayoutManager(rv_category, getActivity(), 3);
         Utility.setGridLayoutManager(rv_moods, getActivity(), 2);
         String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
@@ -130,9 +126,9 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
                             } else {
                                 view = infl.inflate(R.layout.row_sub_cat_list2, null);
                             }
-                            RelativeLayout rl_dd = (RelativeLayout) view.findViewById(R.id.rl_dd);
-                            TextViewPret txt_cat_name = (TextViewPret) view.findViewById(R.id.txt_cat_name);
-                            AppCompatImageView mImageView = (AppCompatImageView) view.findViewById(R.id.img_cat_image);
+                            RelativeLayout rl_dd = view.findViewById(R.id.rl_dd);
+                            TextViewPret txt_cat_name = view.findViewById(R.id.txt_cat_name);
+                            AppCompatImageView mImageView = view.findViewById(R.id.img_cat_image);
                             txt_cat_name.setMaxLines(1);
 
                             LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -241,16 +237,16 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
             ll_header_cat.addView(view);
             ll_header_cat.setVisibility(View.VISIBLE);
             ll_header_cat.bringToFront();
-            AppCompatImageView imageView = (AppCompatImageView) view.findViewById(R.id.img_cat_image);
+            AppCompatImageView imageView = view.findViewById(R.id.img_cat_image);
             imageView.setVisibility(View.INVISIBLE);
-            TextViewPret textViewPret = (TextViewPret) view.findViewById(R.id.txt_cat_name);
+            TextViewPret textViewPret = view.findViewById(R.id.txt_cat_name);
             textViewPret.setText("SEARCH BY CATEGORY");
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) textViewPret.getLayoutParams();
             lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_large) + 3, -3, 0);
             textViewPret.setLayoutParams(lp);
             lp = new TableRow.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
             lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_large) + 3, -3, 0);
-            TextViewPret txt = (TextViewPret) view.findViewById(R.id.txt);
+            TextViewPret txt = view.findViewById(R.id.txt);
             txt.setLayoutParams(lp);
 
             HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), this, homeSubCategoriesArray, 0);
@@ -270,16 +266,16 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
             }
             ll_header_moods.addView(view);
             ll_header_moods.setVisibility(View.VISIBLE);
-            AppCompatImageView imageView = (AppCompatImageView) view.findViewById(R.id.img_cat_image);
+            AppCompatImageView imageView = view.findViewById(R.id.img_cat_image);
             imageView.setVisibility(View.INVISIBLE);
-            TextViewPret textViewPret = (TextViewPret) view.findViewById(R.id.txt_cat_name);
+            TextViewPret textViewPret = view.findViewById(R.id.txt_cat_name);
             textViewPret.setText("SEARCH BY MOODS");
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) textViewPret.getLayoutParams();
             lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_large) + 3, -3, 0);
             textViewPret.setLayoutParams(lp);
             lp = new TableRow.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
             lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_large) + 3, -3, 0);
-            TextViewPret txt = (TextViewPret) view.findViewById(R.id.txt);
+            TextViewPret txt = view.findViewById(R.id.txt);
             txt.setLayoutParams(lp);
             txt.setBackgroundColor(getResources().getColor(R.color.moods_bg));
 
@@ -299,10 +295,10 @@ public class HomeFragment extends AbstractBaseFragment<HomeActivity>
                 view = infl.inflate(R.layout.content_homepager2, null);
             }
 
-            final ViewPager pager_banner = (ViewPager) view.findViewById(R.id.pager_banners);
+            final ViewPager pager_banner = view.findViewById(R.id.pager_banners);
             ll_pager.addView(view);
             ll_pager.setVisibility(View.VISIBLE);
-            pager_banner.setOnPageChangeListener(this);
+            pager_banner.addOnPageChangeListener(this);
 
             HomePagerAdapter mAdapter = new HomePagerAdapter(getActivity(), homeSubCategoriesArray);
             pager_banner.setAdapter(mAdapter);

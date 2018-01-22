@@ -36,14 +36,12 @@ import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
-import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.helpers.IncomingSms;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.marshmallowpermissions.PermissionResult;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
-import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.sociallogin.FacebookLoginScreen;
 import com.hit.pretstreet.pretstreet.sociallogin.GoogleLoginActivity;
@@ -63,7 +61,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,11 +70,9 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.INSTALLREFERRERK
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_OTP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIFICATIONKEY;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIF_BODY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIF_ID;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIF_IMAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIF_SHARE;
-import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIF_TITLE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REFERAL_ID;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REFERAL_SHARE;
@@ -174,9 +169,9 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     @Override
     protected void onRestart() {
         super.onRestart();
-        //if (!PreferenceServices.instance().isFirstTimeLaunch())
+        if (!PreferenceServices.instance().isFirstTimeLaunch())
         getIP();
-       /* else {
+        else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -184,7 +179,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     startActivityForResult(introIntent, INTRO_SLIDES_REQUEST_CODE);
                 }
             }, 1500);
-        }*/
+        }
 
     }
 

@@ -86,8 +86,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
 
         public GalleryHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.tv_testimonial_name);
-            image = (AppCompatImageView) itemView.findViewById(R.id.img);
+            name = itemView.findViewById(R.id.tv_testimonial_name);
+            image = itemView.findViewById(R.id.img);
         }
     }
 

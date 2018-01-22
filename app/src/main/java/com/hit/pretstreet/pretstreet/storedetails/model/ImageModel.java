@@ -3,8 +3,6 @@ package com.hit.pretstreet.pretstreet.storedetails.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * Created by User on 02/08/2017.
  */

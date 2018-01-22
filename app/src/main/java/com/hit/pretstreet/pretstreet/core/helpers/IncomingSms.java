@@ -4,11 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.SmsListener;
 
@@ -29,13 +25,13 @@ public class IncomingSms extends BroadcastReceiver {
         try {
             if (bundle != null) {
                 final Object[] pdusObj = (Object[]) bundle.get("pdus");
-                for (int i = 0; i < pdusObj.length; i++) {
-                    SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
+                for (Object aPdusObj : pdusObj) {
+                    SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) aPdusObj);
                     String phoneNumber = currentMessage.getDisplayOriginatingAddress();
 
                     try {
                         /** check if the sender name is having the word Pret */
-                        if(phoneNumber.contains("PretST")){
+                        if (phoneNumber.contains("PretST")) {
                             String messageBody = currentMessage.getMessageBody();
 
                             /** check whether the message has a 4 digit number(OTP) */
@@ -47,7 +43,7 @@ public class IncomingSms extends BroadcastReceiver {
                                 //System.out.println("SmsReceiver"+matcher.group(1));
                                 val = matcher.group(1);
                                 if (mListener != null)
-                                mListener.messageReceived(val.trim());
+                                    mListener.messageReceived(val.trim());
                             }
                         }
                     } catch (Exception e) {

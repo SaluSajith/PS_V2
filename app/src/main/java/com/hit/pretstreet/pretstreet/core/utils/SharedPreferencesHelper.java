@@ -4,11 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
-
-import java.util.HashMap;
 
 /**
  * Created by User on 6/20/2017.

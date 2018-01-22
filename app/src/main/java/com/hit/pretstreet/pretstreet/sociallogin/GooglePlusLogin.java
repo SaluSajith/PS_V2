@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -61,6 +62,7 @@ public class GooglePlusLogin extends Activity
                 .addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
+
     }
 
     protected void onStart() {
@@ -99,7 +101,7 @@ public class GooglePlusLogin extends Activity
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         mSignInClicked = false;
-        Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
         // Get user's information
         getProfileInformation();
     }
@@ -157,7 +159,8 @@ public class GooglePlusLogin extends Activity
                 firstName = name.getGivenName();
                 lastName = name.getFamilyName();
                 imageUrl = currentPerson.getImage().getUrl();
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS)
+                        != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding

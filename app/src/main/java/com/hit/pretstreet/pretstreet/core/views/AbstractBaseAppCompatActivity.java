@@ -88,8 +88,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG){ }
         else {
             /**  Sending Activity class details as events to google - Google Analysis*/
-            PretStreet pretStreet = (PretStreet) getApplication();
-            Tracker mTracker = pretStreet.tracker();
+            Tracker mTracker = PretStreet.tracker();
             mTracker.set("UserTrack", this.getClass().getSimpleName());
             mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Fragment")
@@ -287,9 +286,9 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
         String arrayPermissionNotGranted[];
         ArrayList<String> permissionsNotGranted = new ArrayList<>();
 
-        for (int i = 0; i < permissionAsk.length; i++) {
-            if (!isPermissionGranted(AbstractBaseAppCompatActivity.this, permissionAsk[i])) {
-                permissionsNotGranted.add(permissionAsk[i]);
+        for (String aPermissionAsk : permissionAsk) {
+            if (!isPermissionGranted(AbstractBaseAppCompatActivity.this, aPermissionAsk)) {
+                permissionsNotGranted.add(aPermissionAsk);
             }
         }
 

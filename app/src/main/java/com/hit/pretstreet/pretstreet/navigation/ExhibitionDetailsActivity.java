@@ -114,7 +114,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exhibition_details);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -245,7 +245,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     private void setupCollapsingHeader(String title, String img){
 
         CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+                findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
         collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(context, R.color.transparent)); // transperent color = #00000000
         collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(context, R.color.white));
@@ -261,7 +261,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     }
 
     private void loadBackdrop(String imageUrl) {
-        final AppCompatImageView imageView = (AppCompatImageView) findViewById(R.id.backdrop);
+        final AppCompatImageView imageView = findViewById(R.id.backdrop);
         Glide.with(context).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_banner)
                 .diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(imageView);
     }
@@ -273,14 +273,14 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             @SuppressLint("InflateParams") final View view = li.inflate(R.layout.popup_phone_number, null);
-            TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
-            RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
-            RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
-            RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
+            TextViewPret txt_cat = view.findViewById(R.id.txt_cat);
+            RelativeLayout rl_phone1 = view.findViewById(R.id.rl_phone1);
+            RelativeLayout rl_phone2 = view.findViewById(R.id.rl_phone2);
+            RelativeLayout rl_phone3 = view.findViewById(R.id.rl_phone3);
 
-            TextViewPret txt_phone1 = (TextViewPret) view.findViewById(R.id.txt_phone1);
-            TextViewPret txt_phone2 = (TextViewPret) view.findViewById(R.id.txt_phone2);
-            TextViewPret txt_phone3 = (TextViewPret) view.findViewById(R.id.txt_phone3);
+            TextViewPret txt_phone1 = view.findViewById(R.id.txt_phone1);
+            TextViewPret txt_phone2 = view.findViewById(R.id.txt_phone2);
+            TextViewPret txt_phone3 = view.findViewById(R.id.txt_phone3);
 
             final ArrayList<String> arrayList = storeDetailsModel.getPhone();
             txt_cat.setText(storeDetailsModel.getStoreName());
@@ -309,12 +309,12 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             popupDialog.setContentView(view);
             popupDialog.getWindow().setGravity(Gravity.CENTER);
-            WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+            WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
             popupDialog.getWindow().setAttributes(params);
             popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             popupDialog.show();
 
-            AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
+            AppCompatImageView img_close = view.findViewById(R.id.img_close);
             img_close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -402,12 +402,12 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_phone_number, null);
-            TextViewPret txt_cat = (TextViewPret) view.findViewById(R.id.txt_cat);
-            AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
-            TextViewPret txt_address1 = (TextViewPret) view.findViewById(R.id.txt_address);
-            RelativeLayout rl_phone1 = (RelativeLayout) view.findViewById(R.id.rl_phone1);
-            RelativeLayout rl_phone2 = (RelativeLayout) view.findViewById(R.id.rl_phone2);
-            RelativeLayout rl_phone3 = (RelativeLayout) view.findViewById(R.id.rl_phone3);
+            TextViewPret txt_cat = view.findViewById(R.id.txt_cat);
+            AppCompatImageView img_close = view.findViewById(R.id.img_close);
+            TextViewPret txt_address1 = view.findViewById(R.id.txt_address);
+            RelativeLayout rl_phone1 = view.findViewById(R.id.rl_phone1);
+            RelativeLayout rl_phone2 = view.findViewById(R.id.rl_phone2);
+            RelativeLayout rl_phone3 = view.findViewById(R.id.rl_phone3);
             rl_phone1.setVisibility(View.GONE);
             rl_phone2.setVisibility(View.GONE);
             rl_phone3.setVisibility(View.GONE);
@@ -418,7 +418,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             popupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             popupDialog.setContentView(view);
             popupDialog.getWindow().setGravity(Gravity.CENTER);
-            WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+            WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
             popupDialog.getWindow().setAttributes(params);
             popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             popupDialog.show();
@@ -477,13 +477,13 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
         popupDialog.setContentView(view);
         popupDialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) popupDialog.getWindow().getAttributes();
+        WindowManager.LayoutParams params = popupDialog.getWindow().getAttributes();
         popupDialog.getWindow().setAttributes(params);
         popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupDialog.show();
 
-        final EdittextPret edt_phone = (EdittextPret) view.findViewById(R.id.edt_phone);
-        AppCompatImageView img_close = (AppCompatImageView) view.findViewById(R.id.img_close);
+        final EdittextPret edt_phone = view.findViewById(R.id.edt_phone);
+        AppCompatImageView img_close = view.findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -491,7 +491,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             }
         });
 
-        ButtonPret btn_send = (ButtonPret) view.findViewById(R.id.btn_send);
+        ButtonPret btn_send = view.findViewById(R.id.btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

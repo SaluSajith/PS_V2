@@ -48,7 +48,7 @@ public final class Showcase {
         if (window != null) {
             ViewGroup decorView = (ViewGroup) window.getDecorView();
             if (decorView != null) {
-                ViewGroup content = (ViewGroup) decorView.findViewById(android.R.id.content);
+                ViewGroup content = decorView.findViewById(android.R.id.content);
                 if (content != null) {
                     content.addView(container, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     this.container.addView(tutoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
