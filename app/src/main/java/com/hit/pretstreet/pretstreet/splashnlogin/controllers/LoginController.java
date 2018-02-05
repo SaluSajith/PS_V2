@@ -354,9 +354,6 @@ public class LoginController {
                         break;
                 }
                 list.add(homeCatItems);
-
-                //Saving data
-                PreferenceServices.instance().saveHomeSubCatList(navCatList.toString());
             }
 
         } catch (JSONException e1) {
@@ -369,6 +366,7 @@ public class LoginController {
         final ArrayList<HomeCatItems> list = new ArrayList<>();
 
         try {
+
             JSONObject response = mResponse;
             JSONArray jsonArray = response.getJSONArray("Data");
             HomeCatItems homeCatItems;

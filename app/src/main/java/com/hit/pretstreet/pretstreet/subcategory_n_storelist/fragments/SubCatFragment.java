@@ -19,13 +19,19 @@ import android.widget.RelativeLayout;
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
+import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
+import com.hit.pretstreet.pretstreet.navigation.fragments.HomeFragment;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatContentData;
 import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
 import com.hit.pretstreet.pretstreet.splashnlogin.WelcomeActivity;
+import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.SubCatActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.SubCatTrapeClick;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -67,6 +73,17 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 mCatId = getActivity().getIntent().getStringExtra("mSubCatId");
             }
         }
+        String SavedSubCaTList = PreferenceServices.getInstance().getHomeSubCatList();
+        if (SavedSubCaTList.length() > 1) {
+            ArrayList<HomeCatItems> homeCatItemses = null;
+            try {
+                homeCatItemses = LoginController.getSubCatContent(new JSONObject(SavedSubCaTList));
+                onSubTrapeClick(homeCatItemses, "");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         ((SubCatActivity)getActivity()).getSubCAtPage(mCatId);
     }
 

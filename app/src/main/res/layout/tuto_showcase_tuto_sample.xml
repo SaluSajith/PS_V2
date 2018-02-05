@@ -8,31 +8,24 @@
     android:orientation="vertical"
     tools:background="#000000">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="5dp"
-        android:weightSum="2"
-        android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <android.support.v7.widget.AppCompatImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="100dp"
-                app:srcCompat="@mipmap/ic_launcher"/>
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="120dp"
+                android:rotation="-80"
+                app:srcCompat="@drawable/white_arrow" />
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:layout_marginTop="-30dp"
                 android:visibility="gone"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
@@ -40,18 +33,14 @@
                 android:textStyle="bold"/>
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
-                android:layout_width="300dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Click here to change the location"
+                android:id="@+id/text"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"/>
 
         </LinearLayout>
-
-
-
-    </LinearLayout>
 
 </RelativeLayout>

@@ -93,9 +93,7 @@ public class GoogleLoginActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             finish();
-
         } else {
         }
     }

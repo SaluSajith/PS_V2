@@ -87,7 +87,8 @@
     <string name="mumbai">Mumbai</string>
     <string name="delhi">New Delhi</string>
     <string name="try_another">Try another location</string>
-    <string name="no_stores">We\'re not in your locality right now. More locations coming very soon. Following are the cities where we are popular.</string>
+    <string name="no_stores">We\'re not in your locality right now. More locations coming very soon.
+        Following are the cities where we are popular.</string>
 
     <string-array name="cattype">
         <item name="Product"></item>
@@ -100,4 +101,7 @@
     <string name="view_store">
         <u>View Store</u>
     </string>
+
+    <!--showcase views-->
+    <string name="fav_cat">Click to see your favorite category</string>
 </resources>

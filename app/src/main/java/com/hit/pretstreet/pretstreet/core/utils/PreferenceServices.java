@@ -25,8 +25,8 @@ public class PreferenceServices {
     public static final String NOTIFCOUNT = "NOTIFCOUNT";
 
 
-    public static final String HOMEMAINCATLIST = "HOMEMAINCATLIST";
-    public static final String SUBMAINCATLIST = "SUBMAINCATLIST";
+    public static final String HOMEMAINCATLIST = "MAINCATLIST";
+    public static final String SUBMAINCATLIST = "SUBCATLIST";
     public static final String TRENDINGCATLIST = "TRENDINGCATLIST";
     public static final String THESHOPSCATLIST = "THESHOPSCATLIST";
     public static final String THEDESIGNERSCATLIST = "THEDESIGNERSCATLIST";

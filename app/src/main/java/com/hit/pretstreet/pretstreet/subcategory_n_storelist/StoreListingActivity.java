@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +28,7 @@ import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.SimpleDividerItemDecoration;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.customview.showCaseView.Showcase;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
@@ -112,6 +114,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         arrayFilter = new JSONArray();
         dataModel = new ArrayList<>();
         storeListModels = new ArrayList<>();
+
+        //displayTuto();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -487,6 +491,39 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             }
         } catch (Exception ex) {
         }
+    }
+
+    protected void displayTuto() {
+        LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams") View view = li.inflate(R.layout.tuto_showcase_tuto_sample, null);
+        TextViewPret textViewPret = view.findViewById(R.id.text);
+        textViewPret.setText("");
+        Showcase.from(this)
+                .setListener(new Showcase.Listener() {
+                    @Override
+                    public void onDismissed() {
+                        //displaynext();
+                        //Toast.makeText(getApplicationContext(), "Tutorial dismissed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setContentView(view)
+                .setFitsSystemWindows(true)
+                .on(R.id.ll_location_)
+                .addRoundRect()
+                .withBorder()
+
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+
+                /*.on(R.id.swipable)
+                .displaySwipableLeft()
+                .delayed(399)
+                .animated(true)*/
+                .show();
     }
 
     @Override

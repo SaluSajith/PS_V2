@@ -157,8 +157,18 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
                 switch (url){
                     case Constant.SUBCAT_URL:
                         nsv_header.setBackgroundColor(Color.BLACK);
-                        ArrayList<HomeCatItems> homeCatItemses = LoginController.getSubCatContent(response);
-                        subCatTrapeClick.onSubTrapeClick(homeCatItemses, "");
+
+                        try {
+                            String SavedSubCaTList = PreferenceServices.getInstance().getHomeSubCatList();
+                            if (SavedSubCaTList.length() == 0) {
+                                ArrayList<HomeCatItems> homeCatItemses = LoginController.getSubCatContent(response);
+                                subCatTrapeClick.onSubTrapeClick(homeCatItemses, "");
+                            }
+                            //Saving data
+                            PreferenceServices.instance().saveHomeSubCatList(response+"");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         this.hideDialog();
                         break;
                     default: break;
@@ -189,13 +199,16 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     @Override
     public void onError(String error) {
         this.hideDialog();
-        EmptyFragment emptyFragment = new EmptyFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("error", error);
-        bundle.putString("retry", "1");
-        bundle.putString("pageid", SUBCATPAGE);
-        emptyFragment.setArguments(bundle);
-        changeFragment(emptyFragment, false);
+        String SavedSubCaTList = PreferenceServices.getInstance().getHomeSubCatList();
+        if (SavedSubCaTList.length() == 0) {
+            EmptyFragment emptyFragment = new EmptyFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("error", error);
+            bundle.putString("retry", "1");
+            bundle.putString("pageid", SUBCATPAGE);
+            emptyFragment.setArguments(bundle);
+            changeFragment(emptyFragment, false);
+        }
     }
 
     @Override

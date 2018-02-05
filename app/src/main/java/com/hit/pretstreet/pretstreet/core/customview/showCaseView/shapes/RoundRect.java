@@ -10,7 +10,7 @@ public class RoundRect extends Shape {
     private int y;
     private int width;
     private int height;
-    public static final int BORDER_PADDING = 30;
+    public static final int BORDER_PADDING = 5;
 
     public RoundRect(int x, int y, int width, int height) {
         super();
@@ -39,13 +39,14 @@ public class RoundRect extends Shape {
     @Override
     public void drawOn(Canvas canvas) {
         if(isDisplayBorder()){
-            drawRoundedRect(canvas, getX() - BORDER_PADDING, getY() - BORDER_PADDING, getX() + getWidth() + BORDER_PADDING, getY() + getHeight() + BORDER_PADDING, getBorderPaint());
+            drawRoundedRect(canvas, getX() - BORDER_PADDING, getY() - BORDER_PADDING,
+                    getX() + getWidth() + BORDER_PADDING, getY() + getHeight() + BORDER_PADDING, getBorderPaint());
         }
         drawRoundedRect(canvas, getX(), getY(), getX() + getWidth(), getY() + getHeight(), paint);
     }
 
     private static void drawRoundedRect(Canvas canvas, float left, float top, float right, float bottom, Paint paint) {
-        float radius = (bottom - top) / 2;
+        float radius = (bottom - top) / 3;
 
         RectF rectF = new RectF(left, top, right, bottom);
         canvas.drawRoundRect(rectF, radius, radius, paint);

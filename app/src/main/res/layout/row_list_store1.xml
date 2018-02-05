@@ -146,7 +146,6 @@
                             android:textSize="7dp"
                             app:pret_typeface="@string/font_merriweather_light"/>
                     </LinearLayout>
-
                     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
                         android:id="@+id/img_follow_unfollow"
                         android:layout_width="0dp"

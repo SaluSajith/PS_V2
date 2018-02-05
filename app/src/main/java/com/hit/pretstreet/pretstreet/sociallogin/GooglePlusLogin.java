@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
@@ -30,7 +32,7 @@ import com.hit.pretstreet.pretstreet.R;
 /**
  * Created by User on 20/07/2017.
  */
-public class GooglePlusLogin extends Activity
+public class GooglePlusLogin extends AppCompatActivity
         implements ConnectionCallbacks, OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
 
     public static final int GOOGLEPLUS_LOGIN_RESULT_CODE_SUCCESS = 1;

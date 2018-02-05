@@ -79,4 +79,17 @@
         android:layout_below="@+id/textViewPret"
         android:layout_centerHorizontal="true" />
 
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/img_close"
+        android:layout_alignStart="@+id/img_close"
+        android:layout_alignTop="@+id/edt_otp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp"
+        android:visibility="invisible"
+        android:layout_marginTop="22dp" />
+
 </RelativeLayout>

@@ -8,9 +8,11 @@ import android.graphics.PorterDuffXfermode;
 
 public abstract class Shape {
     private int color = Color.argb(0, 0, 0, 0);
+    //private int color = Color.WHITE;
     protected Paint paint;
 
-    private int borderColor = Color.parseColor("#AA999999");
+    //private int borderColor = Color.parseColor("#AA999999");
+    private int borderColor = Color.WHITE;
     private Paint borderPaint;
 
     private boolean displayBorder = false;

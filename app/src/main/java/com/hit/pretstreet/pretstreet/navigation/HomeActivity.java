@@ -163,7 +163,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 openVideo();
             }
         }, 1000);
-*/
+        */
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
         if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0 &&
@@ -194,10 +194,10 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     private void getHomePage(){
-        /*String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+        String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
         if (SavedMAinCaTList.length() > 1)
             changeFragment(new HomeFragment(), false);
-        else*/
+       // else{
         JSONObject resultJson = LoginController.getHomePageJson();
         this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, HOMEPAGE_URL);
@@ -551,15 +551,14 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             switch (url){
                 case HOMEPAGE_URL:
                     String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+                    PreferenceServices.instance().saveHomeMainCatList(response.toString());
                     if(SavedMAinCaTList.length()==0){
-                        PreferenceServices.instance().saveHomeMainCatList(response.toString());
                         SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
                         setDrawerAdapter(SavedMAinCaTList);
+                        changeFragment(new HomeFragment(), false);
                     }
-                    else
-                        PreferenceServices.instance().saveHomeMainCatList(response.toString());
+
                     forceUpdate(response.getString("AndroidVersion"));
-                    changeFragment(new HomeFragment(), false);
                     break;
                 default: break;
             }
@@ -747,7 +746,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
                     }
                 })
-
                 /*.on(R.id.swipable)
                 .displaySwipableLeft()
                 .delayed(399)

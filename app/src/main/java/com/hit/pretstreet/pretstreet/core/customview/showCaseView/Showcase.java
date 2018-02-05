@@ -88,6 +88,10 @@ public final class Showcase {
         container.addView(child, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         return this;
     }
+    public Showcase setContentView(View view) {
+        container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        return this;
+    }
 
     public void dismiss() {
         ViewCompat.animate(container)
@@ -185,7 +189,7 @@ public final class Showcase {
         private View.OnClickListener onClickListener;
 
         private Integer delay = 0;
-        private Integer duration = 300;
+        private Integer duration = 500;
     }
 
     public static class ViewActions {
@@ -378,7 +382,7 @@ public final class Showcase {
             Rect rect = new Rect();
             view.getGlobalVisibleRect(rect);
 
-            int padding = 40;
+            int padding = -20;
 
             final int x = rect.left - padding;
             final int y = rect.top - getStatusBarOffset() - padding;

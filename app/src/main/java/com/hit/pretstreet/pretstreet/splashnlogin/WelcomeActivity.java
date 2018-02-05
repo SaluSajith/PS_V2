@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -151,7 +152,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         context = getApplicationContext();
         DURATION = Integer.valueOf(getString(R.string.splash_duration));
         sharedPreferencesHelper = new SharedPreferencesHelper(context);
-        PreferenceServices.getInstance().setFirstTimeLaunch(true);
+        //PreferenceServices.getInstance().setFirstTimeLaunch(true);
         if (!PreferenceServices.instance().isFirstTimeLaunch())
             getIP();
         else {
@@ -587,6 +588,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_otp_screen, null);
             ImageView img_close = view.findViewById(R.id.img_close);
             final EdittextPret edt_otp = view.findViewById(R.id.edt_otp);
+            final ProgressBar pb_otp = view.findViewById(R.id.progressBar2);
+            pb_otp.setVisibility(View.VISIBLE);
             edittextPret = edt_otp;
             ButtonPret btn_send = view.findViewById(R.id.btn_send);
             buttonPret = btn_send;
@@ -620,6 +623,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         displaySnackBar("Enter OTP value");
                         edt_otp.requestFocus();
                     } else {
+                        pb_otp.setVisibility(View.INVISIBLE);
                         popupDialog.dismiss();
                         if (otpValue.equals(edt_otp.getText().toString())) {
                             showProgressDialog(getResources().getString(R.string.loading));
@@ -635,6 +639,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 @Override
                 public void onClick(View v) {
                     tv_resend.setClickable(false);
+                    pb_otp.setVisibility(View.VISIBLE);
                     tv_resend.setTextColor(ContextCompat.getColor(WelcomeActivity.this, R.color.dark_gray));
                     edt_otp.setText("");
                     new Handler().postDelayed(new Runnable() {
