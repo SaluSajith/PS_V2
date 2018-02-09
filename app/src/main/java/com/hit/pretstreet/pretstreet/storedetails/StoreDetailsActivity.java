@@ -78,7 +78,15 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.REPORT_ERROR_URL
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRACK_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.VIEWADDRESSLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.VIEWONMAPLINK;
-
+/**
+ * Store Details page
+ * @features  :     VIew
+ *                  CAll, Address
+ *                  Gallery
+ *                  Testimonials List
+ *                  Book Appointment
+ *                  Automatic  adjusting layout if data is null
+ **/
 public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback {
 
@@ -88,10 +96,8 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
 
     private static final int ABOUTDESIGNER_FRAGMENT = 101;
 
-    @BindView(R.id.tv_about)
-    TextViewPret tv_about;
-    @BindView(R.id.tv_imgsrc)
-    TextViewPret tv_imgsrc;
+    @BindView(R.id.tv_about) TextViewPret tv_about;
+    @BindView(R.id.tv_imgsrc) TextViewPret tv_imgsrc;
     @BindView(R.id.tv_product)
     TextViewPret tv_product;
     @BindView(R.id.tv_book_app)

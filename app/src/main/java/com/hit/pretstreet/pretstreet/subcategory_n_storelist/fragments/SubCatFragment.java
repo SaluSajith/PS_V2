@@ -73,7 +73,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 mCatId = getActivity().getIntent().getStringExtra("mSubCatId");
             }
         }
-        String SavedSubCaTList = PreferenceServices.getInstance().getHomeSubCatList();
+        /*String SavedSubCaTList = PreferenceServices.getInstance().getHomeSubCatList();
         if (SavedSubCaTList.length() > 1) {
             ArrayList<HomeCatItems> homeCatItemses = null;
             try {
@@ -82,7 +82,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         ((SubCatActivity)getActivity()).getSubCAtPage(mCatId);
     }

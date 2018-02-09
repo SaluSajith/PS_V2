@@ -113,7 +113,7 @@ public abstract class AbstractBaseFragment <T extends FragmentActivity> extends 
     public void startActivityAndFinish(Class<?> mActivity) {
         try {
             Intent intent = new Intent(getActivity(), mActivity);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             getActivity().finish();
         } catch (Exception e) {

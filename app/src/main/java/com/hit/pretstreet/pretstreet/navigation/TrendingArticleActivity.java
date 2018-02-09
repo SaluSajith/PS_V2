@@ -3,6 +3,7 @@ package com.hit.pretstreet.pretstreet.navigation;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.RunnableFuture;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +49,10 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDARTICLELINK
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGARTICLE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
 
+/**
+ * Article Details page with like button
+ * Detailing Trending and Giveaway Articles
+ **/
 public class TrendingArticleActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, TrendingCallback, ZoomedViewListener {
 
@@ -100,6 +106,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
 
     @Override
     public void onBackPressed() {
+        /** Sending like status back to the listing page*/
         Intent intent = new Intent();
         Bundle b = new Bundle();
         b.putString(ID_KEY, trendingItems.getId());
@@ -129,28 +136,20 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
             String url = response.getString("URL");
             switch (url){
                 case Constant.TRENDINGARTICLE_URL:
-                    txt_name.setText(detailsPageController.getTitle(response));
-                    ib_like.setTag(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
-                    ib_like.setImageResource(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
-                    ArrayList<TrendingItems> trendingArticle = detailsPageController.getTrendingArticle(response);
-                    trendingItems.setLike(detailsPageController.getLikeStatus(response));
-                    setupArticle(trendingArticle);
+                    showArticle(response);
                     this.hideDialog();
                     break;
                 case Constant.GIVEAWAYARTICLE_URL:
-                    txt_name.setText(detailsPageController.getTitle(response));
-                    ib_like.setTag(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
-                    ib_like.setImageResource(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
-                    trendingArticle = detailsPageController.getTrendingArticle(response);
-                    trendingItems.setLike(detailsPageController.getLikeStatus(response));
-                    setupArticle(trendingArticle);
+                    showArticle(response);
                     this.hideDialog();
                     break;
                 case TRENDINGLIKE_URL:
                     this.hideDialog();
+                    /** Updating like button status */
                     JSONObject object = response.getJSONObject("Data");
                     ib_like.setTag(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
                     ib_like.setImageResource(object.getInt("LikeStatus") == 1 ? R.drawable.red_heart : R.drawable.grey_heart);
+                    /** Updating like button status in the object to send it back to the listing page*/
                     trendingItems.setLike(object.getInt("LikeStatus") == 0 ? false : true);
                     break;
                 default: break;
@@ -159,6 +158,16 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showArticle(JSONObject response){
+        /** Updating page as per the response */
+        txt_name.setText(detailsPageController.getTitle(response));
+        ib_like.setTag(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
+        ib_like.setImageResource(detailsPageController.getLikeStatus(response) == false ? R.drawable.grey_heart : R.drawable.red_heart);
+        ArrayList<TrendingItems> trendingArticle = detailsPageController.getTrendingArticle(response);
+        trendingItems.setLike(detailsPageController.getLikeStatus(response));
+        setupArticle(trendingArticle);
     }
 
     @Override
@@ -175,7 +184,17 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     @Override
     public void onError(String error) {
         this.hideDialog();
-        displaySnackBar( error);
+        displaySnackBar(error);
+        System.out.println("txt_name.getText() "+txt_name.getText());
+        /** Going back if internet is not available */
+        if(txt_name.getText().toString().trim().length()==0 && error.contains("nternet")){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 1500);
+        }
     }
 
     @Override
@@ -183,6 +202,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
         Intent intent;
         String pagetypeid = trendingItems.get(0).getPagetypeid();
         String id = trendingItems.get(0).getId();
+        /** Dynamic link to open Multistore page and Store Details page on clicking View store button */
         switch (pagetypeid){
             case MULTISTOREPAGE:
                 intent = new Intent(TrendingArticleActivity.this, MultistoreActivity.class);
@@ -206,6 +226,8 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
 
     @Override
     public void onClicked(int position, ArrayList<String> mImagearray) {
+        /** Link to open the images as a gallery
+         * To swipe  */
         ArrayList<String> imageModels1 = mImagearray;
         Intent intent = new Intent(context, FullscreenGalleryActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, imageModels1);

@@ -19,6 +19,7 @@
                 android:layout_height="250dp"
                 android:layout_marginTop="120dp"
                 android:rotation="-80"
+                android:id="@+id/iv_pointing_arrow"
                 app:srcCompat="@drawable/white_arrow" />
 
             <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
@@ -37,9 +38,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
+                android:text=""
                 android:id="@+id/text"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"/>
+                android:textSize="17sp"/>
 
         </LinearLayout>
 

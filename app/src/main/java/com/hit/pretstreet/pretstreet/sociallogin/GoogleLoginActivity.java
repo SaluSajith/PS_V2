@@ -1,9 +1,9 @@
 package com.hit.pretstreet.pretstreet.sociallogin;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -18,7 +18,6 @@ public class GoogleLoginActivity extends AppCompatActivity
         implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final int RC_SIGN_IN = 100;
-    private static final String TAG = "GoogleLogin";
     private GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -40,20 +39,12 @@ public class GoogleLoginActivity extends AppCompatActivity
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        /*if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-        } else { }
-
-*/
         signIn();
     }
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-        /*startActivityForResult(AccountPicker.newChooseAccountIntent(null,
-                null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null),
-                REQ_ACCPICK);*/
     }
 
     @Override
@@ -77,8 +68,6 @@ public class GoogleLoginActivity extends AppCompatActivity
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        //GoogleSignInAccount account = result.getSignInAccount();
-        //Log.d(TAG, "handleSignInResult:" + account.getPhotoUrl());
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             Intent intent = getIntent();

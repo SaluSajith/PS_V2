@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
@@ -31,6 +32,7 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
 
     @BindView(R.id.rv_trending) RecyclerView rv_trending;
     @BindView(R.id.ll_empty) View ll_empty;
+    @BindView(R.id.tv_msg) TextViewPret tv_msg;
     ArrayList<TrendingItems> trendingItems;
     TrendingAdapter adapter;
 
@@ -49,7 +51,8 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
     private void init(){
         Utility.setListLayoutManager_(rv_trending, getActivity());
         trendingItems = new ArrayList<>();
-        adapter = new TrendingAdapter(Glide.with(this), rv_trending, getActivity(), TrendingFragment.this, this.trendingItems);
+        adapter = new TrendingAdapter(Glide.with(this), rv_trending, getActivity(),
+                TrendingFragment.this, this.trendingItems);
         rv_trending.setAdapter(adapter);
         ((HomeInnerActivity)getActivity()).getTrendinglist(pageCount);
         refreshListviewOnScrolling();
@@ -86,8 +89,10 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
         else
             loadmore = true;
         adapter.setLoaded();
-        if(this.trendingItems.size()==0)
+        if(this.trendingItems.size()==0) {
             ll_empty.setVisibility(View.VISIBLE);
+            tv_msg.setText("Please check your internet connection and try again!");
+        }
         else ll_empty.setVisibility(View.INVISIBLE);
     }
 

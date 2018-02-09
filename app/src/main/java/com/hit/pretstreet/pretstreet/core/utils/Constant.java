@@ -151,6 +151,8 @@ public class Constant {
     public static final String CLICKTYPE_KEY = "clicktype";
     public static final String PARCEL_KEY = "data";
     public static final String POSITION_KEY = "position";
+    public static final String SOCIALLOGIN = "social";
+    public static final String NORMALLOGIN = "position";
     public static final int REQUEST_INVITE = 400;
 
     //Notification keys

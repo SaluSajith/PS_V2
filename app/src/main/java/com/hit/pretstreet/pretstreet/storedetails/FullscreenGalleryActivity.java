@@ -13,7 +13,11 @@ import com.hit.pretstreet.pretstreet.storedetails.view.SlideshowDialogFragment;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-
+/**
+ * Full screen gallery image view
+ * Swipe feature
+ * Zoom feature
+ **/
 public class FullscreenGalleryActivity extends AbstractBaseAppCompatActivity {
 
     @BindView(R.id.content) FrameLayout frameLayout;

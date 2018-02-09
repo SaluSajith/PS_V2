@@ -55,7 +55,9 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
-
+/**
+ * Lists following stores list of the User
+ **/
 public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, View.OnClickListener, ButtonClickCallbackStoreList, LoginCallbackInterface {
 
@@ -219,6 +221,9 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");

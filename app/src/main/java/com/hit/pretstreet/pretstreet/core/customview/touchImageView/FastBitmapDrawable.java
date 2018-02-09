@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
  * Fast bitmap drawable. Does not support states. it only
  * support alpha and colormatrix
  *
- * @author alessandro
  */
 public class FastBitmapDrawable extends Drawable {
     protected Bitmap mBitmap;

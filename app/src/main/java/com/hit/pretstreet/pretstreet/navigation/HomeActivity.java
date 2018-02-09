@@ -105,6 +105,16 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_INVITE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
 
+/**
+ * Home page which lists all the categories, main menu
+ * @features : menu,
+ * category list,
+ * notification,
+ * search option
+ *
+ * @features:   Auto Update popup feature
+ *              Location change popup feature
+ **/
 public class HomeActivity extends AbstractBaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         NavigationClick, ApiListenerInterface, HomeTrapeClick, ButtonClickCallback, LocCallbackInterface {
@@ -123,9 +133,18 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     Context context;
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        init();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         try {
+            /** Check if user has opened before or not :
+             * Useful in case of opening SHare link as it will go the inner page directly without loading homepage*/
             if (!homeopened) {
                 getHomePage();
             }
@@ -138,13 +157,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        init();
-    }
-
-    @Override
     protected void setUpController() {
         jsonRequestController = new JsonRequestController(this);
         loginController = new LoginController(null, this);
@@ -153,19 +165,18 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     private void init() {
         PreferenceServices.init(this);
         context = getApplicationContext();
+
+        /**Location checker to check whether the User has changed his location in case of Autodetect*/
         locationTracker = new LocationTracker(HomeActivity.this);
         locationTracker.checkLocationSettings();
+
         View includedlayout = findViewById(R.id.includedlayout);
         ButterKnife.bind(this, includedlayout);
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                openVideo();
-            }
-        }, 1000);
-        */
-        tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
         setupDrawer(includedlayout);
+
+        tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
+
+        /**HAndle SHare parameters and notification parameters*/
         if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0 &&
                 PreferenceServices.getInstance().getIdQueryparam().trim().length()!=0) {
             String valueOne = PreferenceServices.getInstance().getShareQueryparam();
@@ -179,6 +190,8 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             return;
         }
 
+
+        /**Update bell icon count if a notification is received if the user is in Homepage*/
         IntentFilter filter = new IntentFilter();
         filter.addAction("RECEIVE_NOTIFICATION");
         receiver = new BroadcastReceiver() {
@@ -203,6 +216,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         jsonRequestController.sendRequest(this, resultJson, HOMEPAGE_URL);
     }
 
+    /**Navigation Drawer Adapter class to handle two dimensional data*/
     private void setDrawerAdapter(String SavedMAinCaTList){
         ArrayList<BasicModel> list = LoginController.getNavList(SavedMAinCaTList);
 
@@ -223,6 +237,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     }
 
+    /**Navigation Drawer with expandable listview to show categories*/
     private void setupDrawer(View toolbar){
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -290,6 +305,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
         SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
         LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
+        /**To avoid conditions data is partially missing in the session*/
         if (PreferenceServices.getInstance().geUsertName().equalsIgnoreCase("")) {
             try {
                 AboutFragment aboutFragment = new AboutFragment();
@@ -305,6 +321,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                     .centerCrop().into(new BitmapImageViewTarget(iv_profile) {
                 @Override
                 protected void setResource(Bitmap resource) {
+                    /**Converting profile image to circular image*/
                     RoundedBitmapDrawable circularBitmapDrawable =
                             RoundedBitmapDrawableFactory.create(context.getResources(), resource);
                     circularBitmapDrawable.setCircular(true);
@@ -316,6 +333,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     private void updateNotificationFlag(int size){
         try {
+            /**Update Notification count*/
             View includedlayout = findViewById(R.id.includedlayout);
             NavigationView navigationView = findViewById(R.id.nav_view);
             NotificationBadge badge_home = includedlayout.findViewById(R.id.badge);
@@ -330,6 +348,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     private void rateUs(){
+        /**Google play rating*/
         final String appPackageName = context.getPackageName();
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
@@ -341,6 +360,8 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     @Override
     public void onBackPressed() {
+        /**HAndle drawer status while going bak
+         * Double press to exit*/
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -423,7 +444,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 intent.putExtra("mSubTitle", "Following");
                 startActivity(intent);
                 break;
-            case "nav_invite":
+            case "nav_invite": /**for now hidden*/
                 selectedFragment = REFER_EARN_FRAGMENT;
                 intent = new Intent(HomeActivity.this, NavigationItemsActivity.class);
                 intent.putExtra(PRE_PAGE_KEY, HOMEPAGE);
@@ -442,6 +463,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         }
     }
 
+    /**Force Update Popup if a new version is available in playstore*/
     private void forceUpdate(String serverVersion){
         //Force Update Option
         PackageManager manager = context.getPackageManager();
@@ -458,6 +480,8 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         }
     }
 
+
+    /**Redirection to playstore*/
     public void showUpdateScreem() {
         final Dialog popupDialog = new Dialog(HomeActivity.this);
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -535,6 +559,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @Override
     public void onError(String error) {
         this.hideDialog();
+        /**Showing empty fragment with RETRY option*/
         EmptyFragment emptyFragment = new EmptyFragment();
         Bundle bundle = new Bundle();
         bundle.putString("error", error);
@@ -545,6 +570,9 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         //displaySnackBar(error);
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
@@ -553,11 +581,12 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                     String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
                     PreferenceServices.instance().saveHomeMainCatList(response.toString());
                     if(SavedMAinCaTList.length()==0){
+                        /**Updating Homepage data only if no data is in memory
+                         * Otherwise just saving*/
                         SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
                         setDrawerAdapter(SavedMAinCaTList);
                         changeFragment(new HomeFragment(), false);
                     }
-
                     forceUpdate(response.getString("AndroidVersion"));
                     break;
                 default: break;
@@ -589,6 +618,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 startActivity(intent);
                 break;
             default:
+                /**All other dynamic options including inner pages*/
                 StoreListModel storeListModel =  new StoreListModel();
                 storeListModel.setId(catContentData.getMainCatId());
                 storeListModel.setPageTypeId(pageid);
@@ -609,6 +639,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     public void refreshPage(){
+        /**Refreshing page in case of no internet availability*/
         getHomePage();
     }
 
@@ -636,6 +667,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         } else ;
     }
 
+    /**Check for location change in case of Autodetect User location*/
     boolean isLocationChanged(double lat2, double lng2){
         boolean locationChanged = false;
         try {
@@ -712,6 +744,11 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     }
 
     @Override
+    public void setLoc(Location location) {
+        checkforLocationChange(location.getLatitude(), location.getLongitude());
+    }
+
+    @Override
     protected void onDestroy() {
         if (receiver != null) {
             unregisterReceiver(receiver);
@@ -782,8 +819,4 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 .show();
     }
 
-    @Override
-    public void setLoc(Location location) {
-        checkforLocationChange(location.getLatitude(), location.getLongitude());
-    }
 }

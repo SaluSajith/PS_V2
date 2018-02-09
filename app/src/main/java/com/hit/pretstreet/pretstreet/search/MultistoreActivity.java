@@ -50,7 +50,9 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
-
+/**
+ * Collapsing Header activity of Multistore listing
+ **/
 public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback, ButtonClickCallbackStoreList {
 
@@ -174,6 +176,9 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         searchController = new SearchController(this);
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");

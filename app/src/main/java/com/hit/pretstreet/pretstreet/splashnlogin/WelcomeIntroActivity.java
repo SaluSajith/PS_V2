@@ -20,7 +20,11 @@ import com.hit.pretstreet.pretstreet.splashnlogin.adapters.MyViewPagerAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
+/**
+ * Introduction Activity to show the view slider
+ * Will be visible only once
+ * @author Salu
+ **/
 public class WelcomeIntroActivity extends AbstractBaseAppCompatActivity {
 
     private int[] layouts;

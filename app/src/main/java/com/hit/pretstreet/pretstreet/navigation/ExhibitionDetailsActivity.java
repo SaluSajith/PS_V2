@@ -68,7 +68,10 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONREGIST
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
-
+/**
+ * Exhibition Details page
+ * @ features : view, call, gallery, register option
+ **/
 public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback {
 
@@ -184,7 +187,6 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     }
 
     private void setupDetailsPage(StoreDetailsModel exhibitionDetailsModel){
-
         try {
             tv_about_heading.setVisibility(exhibitionDetailsModel.getAbout().trim().length() > 0 ? View.VISIBLE : View.GONE);
             tv_about.setVisibility(exhibitionDetailsModel.getAbout().trim().length() > 0 ? View.VISIBLE : View.GONE);
@@ -511,6 +513,9 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         });
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");

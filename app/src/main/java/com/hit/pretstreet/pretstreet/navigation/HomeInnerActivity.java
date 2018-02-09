@@ -12,6 +12,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,7 +30,11 @@ import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
+import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
+import com.hit.pretstreet.pretstreet.core.customview.monthPicker.RackMonthPicker;
+import com.hit.pretstreet.pretstreet.core.customview.monthPicker.listener.DateMonthDialogListener;
+import com.hit.pretstreet.pretstreet.core.customview.monthPicker.listener.OnCancelMonthDialogListener;
 import com.hit.pretstreet.pretstreet.core.helpers.IncomingSms;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
@@ -55,6 +60,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,13 +90,15 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGARTICLE_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
-
+/**
+ * Parent activity to display Exhibition fragment,
+ * Trending, Giveaway fragment
+ **/
 public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, TrendingHolderInvoke, ZoomedViewListener {
-
-    private int currentFragment = 0;
 
     JsonRequestController jsonRequestController;
     HomeFragmentController homeFragmentController;
@@ -132,7 +141,6 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         PreferenceServices.init(this);
         popupDialog = new Dialog(this);
         context = getApplicationContext();
-        //checkDevice();
 
         toolbar = findViewById(R.id.toolbar);
         ImageView iv_menu = toolbar.findViewById(R.id.iv_back);
@@ -151,53 +159,74 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         setupFragment(fragmentId, false);
     }
 
+    private void showMonthPicker(){
+        Calendar calendar = Calendar.getInstance();
+        int thisYear = calendar.get(Calendar.YEAR);
+        int thisMonth = calendar.get(Calendar.MONTH);
+
+        new RackMonthPicker(this)
+                .setLocale(Locale.ENGLISH)
+                .setSelectedMonth(thisMonth)
+                .setSelectedYear(thisYear)
+                .setColorTheme(R.color.yellow_indicator)
+                .setPositiveButton(new DateMonthDialogListener() {
+                    @Override
+                    public void onDateMonth(int month, int startDate, int endDate, int year, String monthLabel) {
+                        System.out.println(month);
+                        System.out.println(startDate);
+                        System.out.println(endDate);
+                        System.out.println(year);
+                        System.out.println(monthLabel);
+                    }
+                })
+                .setNegativeButton(new OnCancelMonthDialogListener() {
+                    @Override
+                    public void onCancel(AlertDialog dialog) {
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
+
     @OnClick(R.id.iv_filter)
     public void filterResult(){
-        showSortScreem();
+        showMonthPicker();
+        //showSortScreem();
     }
-    /*
-    private void checkDevice(){
-        String manufacturer = android.os.Build.MANUFACTURER;
-        if(manufacturer.equalsIgnoreCase("samsung")){
-            nsv_header.setLayerType(SView.LAYER_TYPE_SOFTWARE, null);
-        }
-    }*/
 
+    /**To change headername, filter button visibility and all as per the selected fragment
+     * @param fragmentId id of the fragment
+     * @param b shows addtobackstack boolean*/
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
             case TRENDING_FRAGMENT:
-                first = true;
-                currentFragment = TRENDING_FRAGMENT;
+                first = true;//to handle pagination
                 tv_cat_name.setText("Trending");
                 iv_filter.setVisibility(View.GONE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 trendingFragment = new TrendingFragment();
-                trendingCallback = trendingFragment;
+                trendingCallback = trendingFragment; //Callback to handle response : to show datain the corresponding fragments
                 changeFragment(trendingFragment, b);
                 break;
             case GIVEAWAY_FRAGMENT:
-                first = true;
-                currentFragment = GIVEAWAY_FRAGMENT;
+                first = true;//to handle pagination
                 tv_cat_name.setText("Giveaway");
                 iv_filter.setVisibility(View.GONE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 giveawayFragment = new GiveawayFragment();
-                trendingCallback = giveawayFragment;
+                trendingCallback = giveawayFragment; //Callback to handle response : to show datain the corresponding fragments
                 changeFragment(giveawayFragment, b);
                 break;
             case EXHIBITION_FRAGMENT:
-                first = true;
-                currentFragment = EXHIBITION_FRAGMENT;
+                first = true; //to handle pagination
                 tv_cat_name.setText("Exhibition");
-                iv_filter.setVisibility(View.GONE);
+                iv_filter.setVisibility(View.VISIBLE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 exhibitionFragment = new ExhibitionFragment();
-                trendingCallback = exhibitionFragment;
+                trendingCallback = exhibitionFragment; //Callback to handle response : to show datain the corresponding fragments
                 changeFragment(exhibitionFragment, b);
                 break;
             case TRENDINGARTICLE_FRAGMENT:
                 first = true;
-                currentFragment = TRENDINGARTICLE_FRAGMENT;
                 iv_filter.setVisibility(View.GONE);
                 toolbar.setVisibility(View.GONE);
                 break;
@@ -206,6 +235,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /** Call Trending Listing URL*/
     public void getTrendinglist(int offset){
         JSONObject resultJson = homeFragmentController.getTrendinglistJson(offset,
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY),
@@ -215,6 +245,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         jsonRequestController.sendRequest(this, resultJson, TRENDING_URL);
     }
 
+    /** Call Giveaway Listing URL*/
     public void getGiveawaylist(int offset){
         JSONObject resultJson = homeFragmentController.getGiveawaylistJson(offset,
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY),
@@ -224,6 +255,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         jsonRequestController.sendRequest(this, resultJson, GIVEAWAY_URL);
     }
 
+    /**Call Exhibition Listing URL*/
     public void getExhibitionlist(int offset){
         JSONObject resultJson = homeFragmentController.getExhibitionlistJson(offset,
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY),
@@ -233,6 +265,9 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         jsonRequestController.sendRequest(this, resultJson, EXHIBITION_URL);
     }
 
+    /**Replacing fragments
+     * @param addBackstack boolean which denotes whether we have to add the previous to backstack or not
+     * @param fragment fragment that should be passed*/
     private void changeFragment(Fragment fragment, boolean addBackstack) {
         try {
             FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
@@ -252,15 +287,16 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
-            //displaySnackBar(response.getString("CustomerMessage"));
             switch (url){
                 case TRENDING_URL:
                     first = false;
                     requestCalled = false;
-                    //trendingFragment.update_loadmore_adapter(false);
                     ArrayList<TrendingItems> trendingItemses = homeFragmentController.getTrendingList(response);
                     trendingCallback.bindData(trendingItemses);
                     new Handler().postDelayed(new Runnable() {
@@ -334,17 +370,14 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     @Override
     public void onError(String error) {
         this.hideDialog();
-        /*EmptyFragment emptyFragment = new EmptyFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("error", error);
-        bundle.putString("retry", "0");
-        bundle.putString("pageid", TRENDINGPAGE);
-        emptyFragment.setArguments(bundle);
-        changeFragment(emptyFragment, false);*/
+        /**Show no data available message*/
+        ArrayList<TrendingItems> giveawayItemses = new ArrayList<>();
+        trendingCallback.bindData(giveawayItemses);
     }
 
     @Override
     public void loadStoreDetails(int position, StoreListModel storeListModel) {
+        /**To open multistore an d store details page on button clicks in listing pages*/
         String pagetypeid = storeListModel.getPageType();
         switch (pagetypeid){
             case MULTISTOREPAGE:
@@ -366,11 +399,15 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**Sharing page with other contacts*/
     @Override
     public void shareurl(String text) {
         this.shareUrl(text);
     }
 
+    /**LIKE button onclick
+     * @param pageId passing pageid for tracking purpose
+     * @param trendingId which indicates the trending or exhibition id*/
     @Override
     public void likeInvoke(int trendingId, int pageId) {
         JSONObject resultJson;
@@ -386,12 +423,15 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void registerInvoke(int Id) {
+        /**Register fir exhibition*/
         SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context);
         LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
         String phone = loginSession.getMobile();
         registerJson = homeFragmentController.getExhibitionRegisterJson(EXARTICLEREGISTER,
                 Id + "", getIntent().getStringExtra(PRE_PAGE_KEY), phone);
         if(phone.trim().length()==0||phone.equalsIgnoreCase("null")){
+            /**Registering using phone number
+             If number is there in the account we will take it otherwise gives popup*/
             showRegisterPopup();
         }
         else {
@@ -400,7 +440,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
-
+    /**OTP screen to enter the OTP value*/
     private void showOTPScreem(final String otpValue) {
 
         if(!popupDialog.isShowing()) {
@@ -468,7 +508,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             });
         }
     }
-
+    /**OTP receiver broadcast to update thw OTP value in edittext*/
     private void setupOTPReceiver(){
         IncomingSms.bindListener(new SmsListener() {
             @Override
@@ -483,8 +523,9 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         });
     }
 
+    /**If the User is not registered with his phone number
+     * Mainly used in exhibition page*/
     public void showRegisterPopup() {
-
         final Dialog popupDialog = new Dialog(HomeInnerActivity.this);
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_register, null);
@@ -543,6 +584,9 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     public void interestInvoke(int trendingId, int pageId) {
     }
 
+    /**To receive click events from child fragments
+     * @param trendingItems userdefined object having all the needed ids and params
+     * @param prePage passing prepageid - mainly using for tracking purpose*/
     @Override
     public void openTrendingArticle(TrendingItems trendingItems, String prePage) {
         if(trendingItems.getBanner()){
@@ -550,7 +594,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         }else {
             Intent intent = new Intent(HomeInnerActivity.this, TrendingArticleActivity.class);
             intent.putExtra(Constant.PARCEL_KEY, trendingItems);
-            intent.putExtra(Constant.PRE_PAGE_KEY, Constant.TRENDINGPAGE);
+            intent.putExtra(Constant.PRE_PAGE_KEY, TRENDINGPAGE);
             if(trendingItems.getPagetypeid().equals(ARTICLEPAGE))
                 startActivityForResult(intent, TRENDINGARTICLE_FRAGMENT);
             else if(trendingItems.getPagetypeid().equals(GIVEAWAYARTICLEPAGE))
@@ -558,6 +602,8 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**To receive click events from child fragments
+     * @param trendingItems userdefined object having all the needed ids and params*/
     public void openExhibitionDetails(TrendingItems trendingItems){
         Intent intent = new Intent(HomeInnerActivity.this, ExhibitionDetailsActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, trendingItems);
@@ -565,6 +611,9 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         startActivityForResult(intent, EXHIBITION_DETAILS);
     }
 
+    /**To receive click events from child fragments
+     * @param trendingItems userdefined object having all the needed ids and params
+     * @param prePage passing prepageid - mainly using for tracking purpose*/
     private void openNext(TrendingItems trendingItems, String prePage){
         String pageid = trendingItems.getPagetypeid();
         Intent intent;
@@ -627,6 +676,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void onClicked(int position, ArrayList<String> mImagearray) {
+        /**Passing images to show images as a swipable gallery*/
         ArrayList<String> imageModels1 = mImagearray;
         Intent intent = new Intent(context, FullscreenGalleryActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, imageModels1);
@@ -638,6 +688,8 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        /**To update LIKE and REGISTER button ststus from
+         * Trending Details page into Trending listing and Exhibition listing*/
         try {
             if (resultCode == RESULT_OK) {
                 int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));

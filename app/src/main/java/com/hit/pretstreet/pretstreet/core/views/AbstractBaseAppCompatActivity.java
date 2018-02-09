@@ -176,7 +176,7 @@ public abstract class AbstractBaseAppCompatActivity extends AppCompatActivity {
     public void startActivityAndFinish(Class<?> mActivity) {
         try {
             Intent intent = new Intent(this, mActivity);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         } catch (Exception e) {

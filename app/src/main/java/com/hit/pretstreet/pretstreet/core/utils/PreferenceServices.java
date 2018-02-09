@@ -48,6 +48,7 @@ public class PreferenceServices {
 
     private static final String PREFS_NAME = "FashionSharedPref";
     private static final String IS_FIRST_TIME_LAUNCH = "ISFIRSTTIMELAUNCH";
+    private static final String IS_FIRST_TIME_LISTING = "ISFIRSTTIMELISTING";
     private static PreferenceServices mSingleton = new PreferenceServices();
     private static Context mContext;
     private static SharedPreferences pref;
@@ -288,5 +289,15 @@ public class PreferenceServices {
 
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
+    }
+
+
+    public void setFirstTimeListing(boolean isFirstTime) {
+        editor.putBoolean(IS_FIRST_TIME_LISTING, isFirstTime);
+        editor.commit();
+    }
+
+    public boolean isFirstTimeListing() {
+        return pref.getBoolean(IS_FIRST_TIME_LISTING, true);
     }
 }

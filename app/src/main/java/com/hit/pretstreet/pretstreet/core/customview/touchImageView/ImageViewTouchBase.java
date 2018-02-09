@@ -50,7 +50,6 @@ public abstract class ImageViewTouchBase extends AppCompatImageView {
      * Use this to change the {@link ImageViewTouchBase#setDisplayType(DisplayType)} of
      * this SView
      *
-     * @author alessandro
      */
     public enum DisplayType {
         /**

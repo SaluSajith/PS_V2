@@ -64,7 +64,11 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTING_URL
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.dropdownloc;
 import static java.lang.Integer.parseInt;
-
+/**
+ * Main store Listing activity
+ * Scrolling clickable header which shows all the subcategories
+ * Filter feature
+ **/
 public class StoreListingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallbackStoreList, View.OnClickListener {
 
@@ -80,6 +84,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     @BindView(R.id.rv_storelist) RecyclerView rv_storelist;
     @BindView(R.id.btn_try_another) ButtonPret btn_try_another;
 
+    int charCount = 0;
     TextViewPret[] txtname;
     AppCompatImageView iv_filter;
     JsonRequestController jsonRequestController;
@@ -115,7 +120,9 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         dataModel = new ArrayList<>();
         storeListModels = new ArrayList<>();
 
-        //displayTuto();
+        PreferenceServices.getInstance().setFirstTimeListing(true);
+        if(PreferenceServices.getInstance().isFirstTimeListing())
+        displayTuto();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -155,7 +162,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             }
         }
         tv_cat_name.setText(mTitle);
-        setupCategoryScrollviewParams();
+        setupCategoryScrollviewParams(0);
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
         setListUtility();
@@ -165,15 +172,15 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         refreshListviewOnScrolling();
     }
 
-    private void setupCategoryScrollviewParams(){
+    private void setupCategoryScrollviewParams(int textlength){
         FrameLayout.LayoutParams layoutParams =
                 (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
         if (mTitle.equalsIgnoreCase("DESIGNERS")) //TODO dynamic header margin
-            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxsmall), 0, 0);
+            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xxsmall), 0, 0);//2.5
         else if (mTitle.equalsIgnoreCase("RETAIL")) //TODO dynamic header margin
-            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xsmall), 0, 0);
+            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_xsmall), 0, 0);//3.5
         else
-            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_small), 0, 0);
+            layoutParams.setMargins(0, (int) getResources().getDimension(R.dimen.padding_small), 0, 0);//5dp
         ll_scroll.setLayoutParams(layoutParams);
     }
 
@@ -291,7 +298,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         txtname[0].setOnClickListener(this);
 
         if (homeSubCategories.size() > 0) {
-            HomeCatContentData contentData = homeSubCategories.get(0).getHomeContentData();
+            //HomeCatContentData contentData = homeSubCategories.get(0).getHomeContentData();
             txtname[0].setTag(getIntent().getStringExtra(ID_KEY));
         } else {
             ViewGroup.MarginLayoutParams layoutParams =
@@ -319,6 +326,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         }
         index = 0;
         for (HomeCatItems object : homeSubCategories) {
+            System.out.println("charCount "+index + " " +txtname[index].getText().length());
+            charCount = charCount + txtname[index].getText().length();
             index++;
             if (txtname[index].getText().toString().trim().equalsIgnoreCase(getIntent().getStringExtra("mTitle").trim())) {
                 txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
@@ -328,7 +337,9 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                 txtname[index].setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                 txtname[index].setTextColor(ContextCompat.getColor(this, R.color.yellow_storelist_scroll));
             }
+            charCount = charCount + 1;
         }
+        System.out.println("charCount "+charCount);
     }
 
     private void handleResponse(final JSONObject response) {
@@ -494,35 +505,42 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
     }
 
     protected void displayTuto() {
+        PreferenceServices.getInstance().setFirstTimeListing(false);
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View view = li.inflate(R.layout.tuto_showcase_tuto_sample, null);
         TextViewPret textViewPret = view.findViewById(R.id.text);
-        textViewPret.setText("");
+        textViewPret.setText(getResources().getString(R.string.fav_cat));
         Showcase.from(this)
                 .setListener(new Showcase.Listener() {
                     @Override
                     public void onDismissed() {
-                        //displaynext();
-                        //Toast.makeText(getApplicationContext(), "Tutorial dismissed", Toast.LENGTH_SHORT).show();
+                        displayNext();
                     }
                 })
                 .setContentView(view)
+                .setRotation(-4)
                 .setFitsSystemWindows(true)
                 .on(R.id.ll_location_)
                 .addRoundRect()
                 .withBorder()
+                .show();
+    }
 
-                .onClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                })
-
-                /*.on(R.id.swipable)
-                .displaySwipableLeft()
-                .delayed(399)
-                .animated(true)*/
+    protected void displayNext() {
+        LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams") View view = li.inflate(R.layout.tuto_showcase_tuto_sample, null);
+        TextViewPret textViewPret = view.findViewById(R.id.text);
+        textViewPret.setText("Scroll down to see your favourite stores!");
+        AppCompatImageView iv_pointing_arrow = view.findViewById(R.id.iv_pointing_arrow);
+        iv_pointing_arrow.setVisibility(View.INVISIBLE);
+        Showcase.from(this)
+                .setContentView(view)
+                .setRotation(-4)
+                .setFitsSystemWindows(true)
+                .on(R.id.content)
+                .displayScrollable()
+                .delayed(199)
+                .animated(true)
                 .show();
     }
 

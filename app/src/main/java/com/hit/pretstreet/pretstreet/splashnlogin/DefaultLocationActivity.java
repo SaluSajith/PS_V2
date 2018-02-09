@@ -59,7 +59,10 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_APP_SETT
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REQUEST_CHECK_SETTINGS_GPS;
 import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.currentloc;
 import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.dropdownloc;
-
+/**
+ * Location Select page which uses the
+ * class LocationTracker for getting precise location
+ **/
 public class DefaultLocationActivity extends
         AbstractBaseAppCompatActivity implements ApiListenerInterface, LocCallbackInterface{
 

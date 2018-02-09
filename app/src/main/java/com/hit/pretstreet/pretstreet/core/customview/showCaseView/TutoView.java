@@ -13,11 +13,15 @@ import com.hit.pretstreet.pretstreet.core.customview.showCaseView.shapes.Shape;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Created by User on 24/01/2018.
+ * Showcase view - TutoView
+ */
 class TutoView extends View {
 
     static final int DEFAULT_ALPHA_COLOR = 200;
     int backgroundOverlayColor = Color.argb(DEFAULT_ALPHA_COLOR, 0, 0, 0);
+    float rotateValue = 0;
     List<Shape> shapes;
 
     public TutoView(Context context) {
@@ -43,6 +47,10 @@ class TutoView extends View {
         this.shapes.add(roundRect);
     }
 
+    public void addRotation(float value){
+        rotateValue = value;
+    }
+
     public int getBackgroundOverlayColor() {
         return backgroundOverlayColor;
     }
@@ -56,6 +64,7 @@ class TutoView extends View {
         super.onDraw(canvas);
 
         canvas.drawColor(backgroundOverlayColor);
+        canvas.rotate(rotateValue);
         for (Shape shape : shapes) {
             shape.drawOn(canvas);
         }

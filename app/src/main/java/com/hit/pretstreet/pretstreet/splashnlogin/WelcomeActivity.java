@@ -70,6 +70,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHECKIP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.INSTALLREFERRERKEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_OTP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.LOGIN_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.NORMALLOGIN;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIFICATIONKEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIF_ID;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.NOTIF_IMAGE;
@@ -80,11 +81,18 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.REFERAL_SHARE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_OTP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.REGISTRATION_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SIGNUPPAGE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SOCIALLOGIN;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SOCIAL_LOGIN_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TERMS_FRAGMENT;
 
 /**
  * Created by User on 20/07/2017.
+ * Landing Activity
+ * Fragments :  Login Fragment
+ *              Signup fragment
+ *              Splash page (image)
+ *              Welcome fragment - containing 4 buttons
+ *
  */
 public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface {
@@ -365,6 +373,9 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(JSONObject response) {
         String strsuccess = null;
         try {
@@ -379,7 +390,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         break;
                     case REGISTRATION_URL:
                         displaySnackBar(response.getString("CustomerMessage"));
-                        setupSession(response, "", currentFragment);
+                        setupSession(response, NORMALLOGIN, currentFragment);
                         PreferenceServices.getInstance().setUTMQueryparam("");
                         break;
                     case LOGIN_OTP_URL:
@@ -389,12 +400,12 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         break;
                     case LOGIN_URL:
                         displaySnackBar(response.getString("CustomerMessage"));
-                        setupSession(response, "", currentFragment);
+                        setupSession(response, NORMALLOGIN, currentFragment);
                         PreferenceServices.getInstance().setUTMQueryparam("");
                         break;
                     case SOCIAL_LOGIN_URL:
                         displaySnackBar(response.getString("CustomerMessage"));
-                        setupSession(response, "social", SOCIAL_LOGIN);
+                        setupSession(response, SOCIALLOGIN, SOCIAL_LOGIN);
                         break;
                     case CHECKIP_URL:
                         saveNopenNext(response);

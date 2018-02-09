@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
@@ -13,18 +14,27 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v7.widget.AppCompatImageView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 
 import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.customview.showCaseView.shapes.Circle;
 import com.hit.pretstreet.pretstreet.core.customview.showCaseView.shapes.RoundRect;
+/**
+ * Created by User on 24/01/2018.
+ * Showcase view - to show features
+ */
 
 public final class Showcase {
 
@@ -70,6 +80,10 @@ public final class Showcase {
 
     public Showcase setBackgroundColor(@ColorInt int color) {
         tutoView.setBackgroundOverlayColor(color);
+        return this;
+    }
+    public Showcase setRotation(int value) {
+        tutoView.addRotation(value);
         return this;
     }
 
@@ -299,27 +313,21 @@ public final class Showcase {
         private void displayScrollableOnView() {
             final Rect rect = new Rect();
             view.getGlobalVisibleRect(rect);
-            final int height = rect.height();
 
             final AppCompatImageView hand = new AppCompatImageView(view.getContext());
-            hand.setImageResource(R.drawable.finger_moving_down);
+            hand.setImageResource(R.drawable.finger_moving_up);
             hand.setLayoutParams(new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
             hand.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
-                    int x = (int) (rect.centerX() - hand.getWidth() / 2f);
-                    int y = (int) (rect.centerY() - hand.getHeight() / 2f) - getStatusBarOffset();
-                    ViewCompat.setTranslationY(hand, y);
-                    ViewCompat.setTranslationX(hand, x);
-
-                    if (settings.animated)
-                        ViewCompat.animate(hand)
-                                .translationY(y + height * 0.8f - getStatusBarOffset())
-                                .setStartDelay(settings.delay != null ? settings.delay : 500)
-                                .setDuration(settings.duration != null ? settings.duration : 600)
-                                .setInterpolator(new DecelerateInterpolator());
-
+                    // To animate view slide out from bottom to top of the container
+                    System.out.println(tutoShowcase.container.getPivotX()+ " " +tutoShowcase.container.getPivotX()+ " "+ (rect.top )+ " "+ (rect.bottom+100));
+                    TranslateAnimation animate = new TranslateAnimation(tutoShowcase.container.getPivotX(),
+                            tutoShowcase.container.getPivotX(), (rect.bottom ), (rect.top-100));
+                    animate.setDuration(600);
+                    animate.setFillAfter(true);
+                    hand.startAnimation(animate);
                     hand.getViewTreeObserver().removeOnPreDrawListener(this);
                     return false;
                 }
@@ -382,9 +390,9 @@ public final class Showcase {
             Rect rect = new Rect();
             view.getGlobalVisibleRect(rect);
 
-            int padding = -20;
+            int padding = -15;
 
-            final int x = rect.left - padding;
+            final int x = rect.left;  //final int x = rect.left - padding;
             final int y = rect.top - getStatusBarOffset() - padding;
             final int width = rect.width() + 2 * padding;
             final int height = rect.height() + 2 * padding;
@@ -399,7 +407,6 @@ public final class Showcase {
         /**
          * Status bar offset depends on content layout fitsSystemWindow flag.
          * For layouts that fit system window, we should not apply status bar offset.
-         *
          * @return Status bar offset or 0 if content fits system window
          */
         private int getStatusBarOffset() {

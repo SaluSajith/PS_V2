@@ -30,7 +30,9 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.FILTER_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
-
+/**
+ * Dynamic Filter page - included dynamic sectioned list
+ **/
 public class FilterActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, FilterCallback {
 

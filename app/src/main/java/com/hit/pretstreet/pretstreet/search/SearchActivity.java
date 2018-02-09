@@ -49,7 +49,12 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHLISTLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCHPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SEARCH_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
-
+/**
+ * Search parent activity which shows fragments like
+ *          Search main fragment which shows recent search and popular search
+ *          AutoSearch Results fragment
+ *          Search Results fragment
+ **/
 public class SearchActivity extends AbstractBaseAppCompatActivity
         implements ApiListenerInterface, ButtonClickCallbackStoreList, ImageClickCallback, RecentCallback {
 
@@ -175,6 +180,9 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         this.storeList_recyclerAdapter = storeList_recyclerAdapter;
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");

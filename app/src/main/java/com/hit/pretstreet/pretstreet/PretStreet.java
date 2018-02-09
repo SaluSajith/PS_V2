@@ -13,6 +13,7 @@ import com.google.android.gms.analytics.Tracker;
 /**
  * Created by User on 20/07/2017.
  * Application class
+ * Initialized Google analytics
  */
 public class PretStreet extends MultiDexApplication{
 
@@ -77,4 +78,8 @@ public class PretStreet extends MultiDexApplication{
         return tracker;
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+    }
 }

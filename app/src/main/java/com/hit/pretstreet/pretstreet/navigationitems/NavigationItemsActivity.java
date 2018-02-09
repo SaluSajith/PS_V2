@@ -77,7 +77,17 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TERMS_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEPASSWORD_ACCOUNT_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATE_ACCOUNT_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.URL_KEY;
-
+/**
+ * Parent Activity to include fragments like
+ *          MyAccount
+ *          About
+ *          Contact Us
+ *          Feedback
+ *          Privacy policy
+ *          Terms & Conditions
+ *          Rate Us
+ *          Change password
+ **/
 public class NavigationItemsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface, TrendingCallback, ZoomedViewListener{
 
@@ -88,8 +98,12 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     LoginController loginController;
     TrendingCallback trendingCallback;
     ContentBindingInterface bindingInterface;
+
     HtmlFragment htmlFragment;
     AddStoreFragment addStoreFragment;
+    ContactUsFragment contactUsFragment;
+    ChangePasswordFragment changePasswordFragment;
+    AccountFragment accountFragment;
 
     @BindView(R.id.content) FrameLayout fl_content;
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
@@ -167,6 +181,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         }
     }
 
+    /**Getting notification list from database*/
     public void getNotificationlist(){
         ArrayList<TrendingItems> trendingItemses = navItemsController.getNotifList();
         trendingCallback.bindData(trendingItemses);
@@ -186,7 +201,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         switch (fragmentId){
             case ACCOUNT_FRAGMENT:
                 currentFragment = ACCOUNT_FRAGMENT;
-                AccountFragment accountFragment = new AccountFragment();
+                accountFragment = new AccountFragment();
                 bindingInterface = accountFragment;
                 tv_cat_name.setText("MY PROFILE");
                 changeFragment(accountFragment, b);
@@ -205,20 +220,20 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             case CONTACTUS_FRAGMENT:
                 currentFragment = CONTACTUS_FRAGMENT;
                 tv_cat_name.setText("Contact Us");
-                ContactUsFragment fragment = new ContactUsFragment();
+                contactUsFragment = new ContactUsFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(ID_KEY, String.valueOf(CONTACTUS_FRAGMENT));
-                fragment.setArguments(bundle);
-                changeFragment(fragment, b);
+                contactUsFragment.setArguments(bundle);
+                changeFragment(contactUsFragment, b);
                 break;
             case FEEDBACK_FRAGMENT:
                 currentFragment = FEEDBACK_FRAGMENT;
                 tv_cat_name.setText("Feedback");
-                fragment = new ContactUsFragment();
+                contactUsFragment = new ContactUsFragment();
                 bundle = new Bundle();
                 bundle.putString(ID_KEY, String.valueOf(FEEDBACK_FRAGMENT));
-                fragment.setArguments(bundle);
-                changeFragment(fragment, b);
+                contactUsFragment.setArguments(bundle);
+                changeFragment(contactUsFragment, b);
                 break;
             case ABOUTUS_FRAGMENT:
                 currentFragment = ABOUTUS_FRAGMENT;
@@ -269,7 +284,8 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             case CHANGEPASSWORD_FRAGMENT:
                 currentFragment = CHANGEPASSWORD_FRAGMENT;
                 tv_cat_name.setText("Update Password");
-                changeFragment(new ChangePasswordFragment(), b);
+                changePasswordFragment = new ChangePasswordFragment();
+                changeFragment(changePasswordFragment, b);
                 break;
             case REFER_EARN_FRAGMENT:
                 currentFragment = REFER_EARN_FRAGMENT;
@@ -297,6 +313,9 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         ft.commit();
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
@@ -360,15 +379,15 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             addStoreFragment.onValidationError(editText, message);
         }
         else if (type == CONTACTUS_FRAGMENT){
-            ContactUsFragment contactUsFragment = new ContactUsFragment();
+            contactUsFragment.onValidationError(editText, message);
+        }
+        else if (type == FEEDBACK_FRAGMENT){
             contactUsFragment.onValidationError(editText, message);
         }
         else if (type == ACCOUNT_FRAGMENT){
-            AccountFragment accountFragment = new AccountFragment();
             accountFragment.onValidationError(editText, message);
         }
         else if (type == CHANGEPASSWORD_FRAGMENT){
-            ChangePasswordFragment changePasswordFragment = new ChangePasswordFragment();
             changePasswordFragment.onValidationError(editText, message);
         }
     }

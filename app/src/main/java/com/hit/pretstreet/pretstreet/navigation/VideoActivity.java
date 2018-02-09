@@ -7,6 +7,10 @@ import android.widget.VideoView;
 
 import com.hit.pretstreet.pretstreet.R;
 
+/**
+ * Play introduction video which will be there in the resource file
+ * Not using now
+ * */
 public class VideoActivity extends AppCompatActivity {
 
     @Override

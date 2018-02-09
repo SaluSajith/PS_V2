@@ -14,7 +14,9 @@ import android.widget.DatePicker;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
+import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.SharedPreferencesHelper;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigationitems.NavigationItemsActivity;
@@ -29,6 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.SOCIALLOGIN;
+
 /**
  * Created by User on 7/14/2017.
  */
@@ -42,6 +46,7 @@ public class AccountFragment extends AbstractBaseFragment<WelcomeActivity>
     @BindView(R.id.edt_email) EdittextPret edt_email;
     @BindView(R.id.edt_dob) EdittextPret edt_dob;
     @BindView(R.id.edt_mobile) EdittextPret edt_mobile;
+    @BindView(R.id.btn_changepass) ButtonPret btn_changepass;
 
     NavItemsController navItemsController;
     Bitmap bitmap = null;
@@ -55,6 +60,7 @@ public class AccountFragment extends AbstractBaseFragment<WelcomeActivity>
     }
 
     private void init(){
+        PreferenceServices.init(getHostActivity());
         navItemsController = new NavItemsController(getActivity());
 
         SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getActivity());
@@ -64,6 +70,8 @@ public class AccountFragment extends AbstractBaseFragment<WelcomeActivity>
         edt_email.setText(loginSession.getEmail());
         edt_dob.setText(loginSession.getDob());
         edt_mobile.setText(loginSession.getMobile());
+        if(PreferenceServices.instance().getLoginType().equals(SOCIALLOGIN))
+            btn_changepass.setVisibility(View.GONE);
 
         Glide.with(getActivity()).load(loginSession.getProfile_pic()).asBitmap()
                 .placeholder(R.drawable.profilepic)

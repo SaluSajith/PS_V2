@@ -16,6 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CONTACTUS_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.FEEDBACK_FRAGMENT;
+
 /**
  * Created by User on 7/12/2017.
  */
@@ -23,8 +26,6 @@ import butterknife.OnClick;
 public class ContactUsFragment extends AbstractBaseFragment<WelcomeActivity> {
 
     int selected_fragment = 0;
-    private static final int CONTACTUS_FRAGMENT = 4;
-    private static final int FEEDBACK_FRAGMENT = 5;
     NavItemsController navItemsController;
 
     @BindView(R.id.edt_data) EdittextPret edt_data;

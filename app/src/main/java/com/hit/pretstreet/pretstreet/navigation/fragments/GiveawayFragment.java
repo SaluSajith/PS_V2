@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseFragment;
 import com.hit.pretstreet.pretstreet.navigation.HomeInnerActivity;
@@ -31,6 +32,7 @@ public class GiveawayFragment extends AbstractBaseFragment<WelcomeActivity>
 
     @BindView(R.id.rv_trending) RecyclerView rv_giveaway;
     @BindView(R.id.ll_empty) View ll_empty;
+    @BindView(R.id.tv_msg) TextViewPret tv_msg;
     ArrayList<TrendingItems> giveawayItems;
     GiveawayAdapter adapter;
 
@@ -87,8 +89,10 @@ public class GiveawayFragment extends AbstractBaseFragment<WelcomeActivity>
         else
             loadmore = true;
         adapter.setLoaded();
-        if(this.giveawayItems.size()==0)
+        if(this.giveawayItems.size()==0) {
+            tv_msg.setText("Please check your internet connection and try again!");
             ll_empty.setVisibility(View.VISIBLE);
+        }
         else ll_empty.setVisibility(View.INVISIBLE);
     }
 

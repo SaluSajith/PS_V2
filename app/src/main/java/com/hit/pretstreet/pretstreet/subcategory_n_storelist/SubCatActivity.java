@@ -44,7 +44,9 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ID_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
-
+/**
+ * Shows sub category listing page
+ **/
 public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, SubCatTrapeClick {
 
@@ -154,25 +156,23 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
-                switch (url){
-                    case Constant.SUBCAT_URL:
-                        nsv_header.setBackgroundColor(Color.BLACK);
+            switch (url){
+                case Constant.SUBCAT_URL:
+                    nsv_header.setBackgroundColor(Color.BLACK);
 
-                        try {
-                            String SavedSubCaTList = PreferenceServices.getInstance().getHomeSubCatList();
-                            if (SavedSubCaTList.length() == 0) {
-                                ArrayList<HomeCatItems> homeCatItemses = LoginController.getSubCatContent(response);
-                                subCatTrapeClick.onSubTrapeClick(homeCatItemses, "");
-                            }
-                            //Saving data
-                            PreferenceServices.instance().saveHomeSubCatList(response+"");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        this.hideDialog();
-                        break;
-                    default: break;
-                }
+                    try {
+                        //String SavedSubCaTList = PreferenceServices.getInstance().getHomeSubCatList();
+                        ArrayList<HomeCatItems> homeCatItemses = LoginController.getSubCatContent(response);
+                        subCatTrapeClick.onSubTrapeClick(homeCatItemses, "");
+                            /*//Saving data
+                            PreferenceServices.instance().saveHomeSubCatList(response+"");*/
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    this.hideDialog();
+                    break;
+                default: break;
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -199,8 +199,6 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
     @Override
     public void onError(String error) {
         this.hideDialog();
-        String SavedSubCaTList = PreferenceServices.getInstance().getHomeSubCatList();
-        if (SavedSubCaTList.length() == 0) {
             EmptyFragment emptyFragment = new EmptyFragment();
             Bundle bundle = new Bundle();
             bundle.putString("error", error);
@@ -208,7 +206,6 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
             bundle.putString("pageid", SUBCATPAGE);
             emptyFragment.setArguments(bundle);
             changeFragment(emptyFragment, false);
-        }
     }
 
     @Override

@@ -234,28 +234,14 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     trendingHolderInvoke.shareurl(trendingItems.getShareUrl());
                     break;
                 case R.id.txt_shopname:
-                    StoreListModel storeListModel = new StoreListModel();
-                    storeListModel.setId(trendingItems.getTitleid());
-                    storeListModel.setTitle(trendingItems.getTitle());
-                    storeListModel.setPageType(trendingItems.getTitlepagetype());
-                    storeListModel.setPageTypeId(TRENDINGPAGE);
-                    storeListModel.setClickType(TRENDINGLISTLINK);
-                    trendingHolderInvoke.loadStoreDetails(getAdapterPosition(),
-                            storeListModel);
+                    openDetailsPage(trendingItems);
                     break;
                 case R.id.txt_description:
                     mPosition = getAdapterPosition();
                     trendingHolderInvoke.openTrendingArticle(trendingItems, TRENDINGPAGE);
                     break;
                 case R.id.txt_title:
-                    storeListModel = new StoreListModel();
-                    storeListModel.setId(trendingItems.getTitleid());
-                    storeListModel.setTitle(trendingItems.getTitle());
-                    storeListModel.setPageType(trendingItems.getTitlepagetype());
-                    storeListModel.setPageTypeId(TRENDINGPAGE);
-                    storeListModel.setClickType(TRENDINGLISTLINK);
-                    trendingHolderInvoke.loadStoreDetails(getAdapterPosition(),
-                            storeListModel);
+                    openDetailsPage(trendingItems);
                     break;
                 case R.id.iv_banner:
                     if (trendingItems.getBanner()) {
@@ -270,6 +256,17 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 default:
                     break;
             }
+        }
+
+        private void openDetailsPage(TrendingItems trendingItems){
+            StoreListModel storeListModel = new StoreListModel();
+            storeListModel.setId(trendingItems.getTitleid());
+            storeListModel.setTitle(trendingItems.getTitle());
+            storeListModel.setPageType(trendingItems.getTitlepagetype());
+            storeListModel.setPageTypeId(TRENDINGPAGE);
+            storeListModel.setClickType(TRENDINGLISTLINK);
+            trendingHolderInvoke.loadStoreDetails(getAdapterPosition(),
+                    storeListModel);
         }
 
         @Override
@@ -312,13 +309,5 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private int getHeight(int h1, int w1, int w2) {
-        int h2 = (w2 * h1) / w1;
-        int h = (int) this.context.getResources().getDimension(R.dimen.trending_pager_height);
-        if(h2>h)
-            h2 = h;
-        return h2;
     }
 }

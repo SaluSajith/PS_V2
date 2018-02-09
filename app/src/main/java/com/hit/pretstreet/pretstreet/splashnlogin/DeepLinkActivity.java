@@ -22,7 +22,11 @@ import org.json.JSONObject;
 
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHECKIP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.INSTALLREFERRERKEY;
-
+/**
+ * Deeplinking activity to handle UTM campaign parameters
+ * Directly saving and sending them while login
+ * Working on referral feature
+ **/
 public class DeepLinkActivity extends AppCompatActivity implements ApiListenerInterface {
 
     @Override
@@ -40,12 +44,6 @@ public class DeepLinkActivity extends AppCompatActivity implements ApiListenerIn
                 PreferenceServices.getInstance().setIdQueryparam(id);
                 PreferenceServices.getInstance().setShareQueryparam(valueOne);
                 PreferenceServices.getInstance().setTypeQueryparam(INSTALLREFERRERKEY);
-
-                /*Log.e("DeepLinkActivity TAG", "data saved "+ uri.getQueryParameter("utm_campaign"));
-                Log.e("DeepLinkActivity TAG", "data saved "+ uri.getQueryParameter("utm_source"));
-                Log.e("DeepLinkActivity TAG", "data saved "+ uri.getQueryParameter("utm_medium"));
-                Log.e("DeepLinkActivity TAG", "data saved "+ uri.getQueryParameter("utm_term"));
-                Log.e("DeepLinkActivity TAG", "data saved "+ uri.getQueryParameter("utm_content")); */
                 String referrer = "share=" +valueOne+
                         "&id="+id+
                         "&utm_campaign=" + uri.getQueryParameter("utm_campaign")+

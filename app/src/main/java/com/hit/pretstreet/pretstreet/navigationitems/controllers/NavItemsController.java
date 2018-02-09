@@ -25,6 +25,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ACCOUNT_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ADDSTORE_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CHANGEPASSWORD_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.FOLLOWINGPAGE;
 
 /**
@@ -35,10 +38,6 @@ public class NavItemsController {
 
     private static Context context;
     private static LoginCallbackInterface loginCallbackInterface;
-
-    private static final int ADDSTORE_FRAGMENT = 3;
-    private static final int ACCOUNT_FRAGMENT = 0;
-    private static final int CHANGEPASSWORD_FRAGMENT = 13;
 
     public NavItemsController(Context context) {
         this.context = context;

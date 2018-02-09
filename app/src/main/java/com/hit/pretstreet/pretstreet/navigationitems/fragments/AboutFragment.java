@@ -17,23 +17,19 @@ import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.ButtonClickCallback
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.ABOUTUS_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.CONTACTUS_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.FEEDBACK_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRIVACY_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.TERMS_FRAGMENT;
+
 /**
  * Created by User on 7/17/2017.
  */
 
 public class AboutFragment extends AbstractBaseFragment<WelcomeActivity> {
 
-    private static final int ACCOUNT_FRAGMENT = 0;
-    private static final int FOLLOWING_FRAGMENT = 1;
-    private static final int ABOUT_FRAGMENT = 2;
-    private static final int ADDSTORE_FRAGMENT = 3;
-    private static final int CONTACTUS_FRAGMENT = 4;
-    private static final int FEEDBACK_FRAGMENT = 5;
-    private static final int ABOUTUS_FRAGMENT = 6;
-    private static final int PRIVACY_FRAGMENT = 7;
-    private static final int TERMS_FRAGMENT = 8;
-
-    ButtonClickCallback buttonClickCallback;
+ ButtonClickCallback buttonClickCallback;
 
     @Override
     protected View onCreateViewImpl(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
