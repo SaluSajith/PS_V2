@@ -5,6 +5,7 @@
     <string name="facebookapp_id">322404801527783</string>//112206959218432
     <string name="default_notification_channel_id">default</string>
 
+    <!-- Welcome slider button texts -->
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
@@ -39,7 +40,6 @@
     <string name="follow">Follow</string>
     <string name="loading">Loading..Please wait.</string>
 
-    <!-- Strings related to login -->
 
     <!--Welcome page textx-->
     <string name="signup">sign up</string>
@@ -90,6 +90,7 @@
     <string name="no_stores">We\'re not in your locality right now. More locations coming very soon.
         Following are the cities where we are popular.</string>
 
+    <!--Category type in search page -->
     <string-array name="cattype">
         <item name="Product"></item>
         <item name="Store"></item>

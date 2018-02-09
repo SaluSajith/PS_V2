@@ -92,7 +92,6 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TERMS_FRAGMENT;
  *              Signup fragment
  *              Splash page (image)
  *              Welcome fragment - containing 4 buttons
- *
  */
 public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface {
@@ -172,15 +171,16 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 }
             }, 1500);
         }
-
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        /** Getting basic URL path whenever open the app */
         if (!PreferenceServices.instance().isFirstTimeLaunch())
-        getIP();
+            getIP();
         else {
+            /**Show introduction screens if he is using for the first time*/
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -189,17 +189,19 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 }
             }, 1500);
         }
-
     }
 
+    /** Getting basic URL path whenever open the app */
     public void getIP() {
         jsonRequestController.sendRequest(this, new JSONObject(), CHECKIP_URL);
     }
 
+    /**Saving notification data sothat on clicking app icon from
+     * status bar it should go to the inner page directly*/
     private void openotification(Intent intent) {
         try {
             int size = PreferenceServices.getInstance().getNotifCOunt();
-            if (size > 0)
+            if (size > 0) //updating notification count
                 PreferenceServices.getInstance().updateNotif(size - 1);
             else
                 PreferenceServices.getInstance().updateNotif(0);
@@ -211,6 +213,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /** Forwarding referral data received from intent sothat on clicking app icon from
+     * status bar it should go to the inner page directly*/
     private void saveReferralData() {
         try {
             if (getIntent().getExtras().containsKey(REFERAL_ID)) {
@@ -222,14 +226,14 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     finish();
                 }
             }
-            /*PreferenceServices.getInstance().setIdQueryparam(intent.getExtras().getString("id"));
-            PreferenceServices.getInstance().setShareQueryparam(intent.getExtras().getString("share"));
-            PreferenceServices.getInstance().setTypeQueryparam(NOTIFICATIONKEY);*/
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**Replacing fragments
+     * @param addBackstack boolean which denotes whether we have to add the previous to backstack or not
+     * @param fragment fragment that should be passed*/
     private void changeFragment(Fragment fragment, boolean addBackstack, int content) {
 
         try {
@@ -255,6 +259,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**Handling data received from facebook login and updating it in the website*/
     private void setupSocialLogin(String stringJSON) {
         try {
             JSONObject responseJSON = new JSONObject(stringJSON);
@@ -268,6 +273,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**Handling data received from google login and updating it in the website*/
     private void getGoogleResponse(GoogleSignInAccount signInAccount) {
         JSONObject resultJson = LoginController.getGoogleLoginDetails(signInAccount);
         //String googleImageUrl = String.valueOf(signInAccount.getPhotoUrl());
@@ -278,11 +284,10 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         //displayLogMessage("resultCode ", resultCode+"");
 
         switch (requestCode) {
-            case FACEBOOK_LOGIN_REQUEST_CODE:
+            case FACEBOOK_LOGIN_REQUEST_CODE: //Facebook login response
                 if (resultCode == FacebookLoginScreen.FACEBOOK_LOGIN_RESULT_CODE_SUCCESS) {
                     setupSocialLogin(data.getStringExtra("responsejson"));
                 } else {
@@ -290,7 +295,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 }
                 break;
 
-            case GOOGLE_LOGIN_REQUEST_CODE:
+            case GOOGLE_LOGIN_REQUEST_CODE: //Google login response
                 if (resultCode == RESULT_OK) {
                     GoogleSignInAccount account = data.getParcelableExtra("responsejson");
                     getGoogleResponse(account);
@@ -298,7 +303,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     displaySnackBar("Login failed!");
                 }
                 break;
-            case INTRO_SLIDES_REQUEST_CODE:
+            case INTRO_SLIDES_REQUEST_CODE: //Getting Basic URL after showing introduction slides
                 getIP();
                 break;
             default:
@@ -316,6 +321,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     public void onError(String error) {
         this.hideDialog();
         displaySnackBar(error);
+        /**Handling response in case of Register*/
         if (error.contains("mobile number") && error.contains("already registered")) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -328,6 +334,9 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**Handle button click in Welcome page
+     * @param id    SIGNUP_CLICK_CODE - move to Signup page
+     *              LOGIN_CLICK_CODE - move to Login page*/
     @Override
     public void buttonClick(int id) {
         if (id == SIGNUP_CLICK_CODE) {
@@ -370,7 +379,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
     @Override
     public void validationSuccess(JSONObject jsonObject, int type) {
-
     }
 
     /**Handling response corresponding to the URL
@@ -421,6 +429,11 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**To handle    notification click
+     *              Referral click
+     *              normal login
+     *              register login
+     * */
     private void saveNopenNext(JSONObject response) {
         try {
             String s = response.getString("BASEURL");
@@ -430,6 +443,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
 
             try {
                 if (sharedPreferencesHelper.getString("TOKEN", "").trim().length() == 0) {
+                    //getting device GCM token
                     TokenService tokenService = new TokenService();
                     tokenService.onTokenRefresh();
                 }
@@ -440,6 +454,9 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             if (getIntent().getExtras() != null && notif == false) {
                 notif = true;
                 try {
+                    /**checking if the data is coming from referral code or notification code
+                     * :- only difference between referral data and notification data
+                     * is that referral code wont contain images*/
                     if (!getIntent().getExtras().containsKey(NOTIF_IMAGE)) {
                         saveReferralData();
                     } else if (getIntent().getExtras().containsKey(NOTIF_SHARE)) {
@@ -454,6 +471,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**Maintaining User session in shared preference*/
     private void setupSession(JSONObject response, String loginType, int type) {
         showProgressDialog(getResources().getString(R.string.loading));
         try {
@@ -480,6 +498,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             PreferenceServices.instance().saveUserName(object.getString("UserFirstName") + " " + object.getString("UserLastName"));
             PreferenceServices.instance().saveLoginType(loginType);
 
+
+            /**Updating New login/register data in Google Analytics*/
             if (BuildConfig.DEBUG) {
             } else {
                 PretStreet pretStreet = (PretStreet) getApplication();
@@ -504,6 +524,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         .build());
             }
 
+            //Starting new activity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -524,6 +545,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**Handling Users who is opening the app for the frst time and the other users*/
     private Runnable mEndSplash = new Runnable() {
         public void run() {
             if (!isFinishing()) {
@@ -532,7 +554,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                 LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
                 if (loginSession.getSessionid().trim().length() == 0 || loginSession.getRegid().trim().length() == 0) {
                     changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
-                    setupOTPReceiver();
+                    setupOTPReceiver(); //Initialising OTP receiver sothat the value will get updated in the edittext
                 } else {
                     if (PreferenceServices.getInstance().getLatitute().equalsIgnoreCase("")
                             || PreferenceServices.getInstance().getLongitute().equalsIgnoreCase("")) {
@@ -554,6 +576,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     };
 
+    /**Handle Google Button click*/
     public void googleClick() {
         if (ContextCompat.checkSelfPermission(PretStreet.getInstance(), Manifest.permission.GET_ACCOUNTS)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -566,7 +589,6 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     Intent googleLoginIntent = new Intent(context, GoogleLoginActivity.class);
                     startActivityForResult(googleLoginIntent, GOOGLE_LOGIN_REQUEST_CODE);
                 }
-
                 @Override
                 public void permissionDenied() {
                 }
@@ -574,6 +596,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /** Handle Facebook button click*/
     public void facebookClick() {
         Intent facebookLoginIntent = new Intent(context, FacebookLoginScreen.class);
         facebookLoginIntent.putExtra("cat", "Login");
@@ -581,6 +604,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         startActivityForResult(facebookLoginIntent, FACEBOOK_LOGIN_REQUEST_CODE);
     }
 
+    /** Handle Terms & Conditions button click*/
     public void termsClick() {
         Intent intent = new Intent(context, NavigationItemsActivity.class);
         intent.putExtra(PRE_PAGE_KEY, SIGNUPPAGE);
@@ -588,6 +612,11 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         startActivity(intent);
     }
 
+    /**Show OTP entering popup
+     * @param jsonObject json object which will contain login data /registre data
+     * @param url URL that should be called after otp comparison and approval
+     *
+     * Retry option will change to some text after 2 trials*/
     private void showOTPScreem(final JSONObject jsonObject, final String url) {
 
         if (!popupDialog.isShowing()) {
@@ -658,7 +687,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         public void run() {
                             try {
                                 if (popupDialog.isShowing())
-                                    tv_resend.setText("Seems like mobile network is not available. Please try using Google or Facebook login.");
+                                    tv_resend.setText("Seems like mobile network is not available. " +
+                                            "Please try using Google or Facebook login.");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

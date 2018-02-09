@@ -197,6 +197,9 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         }, 3000);
     }
 
+    /**To change headername, filter button visibility and all as per the selected fragment
+     * @param fragmentId id of the fragment
+     * @param b shows addtobackstack boolean*/
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
             case ACCOUNT_FRAGMENT:
@@ -297,6 +300,9 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
         }
     }
 
+    /**Replacing fragments
+     * @param addBackstack boolean which denotes whether we have to add the previous to backstack or not
+     * @param fragment fragment that should be passed*/
     private void changeFragment(Fragment fragment, boolean addBackstack) {
 
         FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
@@ -420,11 +426,16 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
             jsonRequestController.sendRequest(this, jsonObject, UPDATEPASSWORD_ACCOUNT_URL);
     }
 
+    /**To load Privacy policy, terms, about pages
+     * @param URL   PRIVACY url
+     *              TERMS N CONDITIONS url
+     *              ABOUTUS url*/
     public void getHtmlData(String URL){
         JSONObject resultJson = navItemsController.getStaticPageJson();
         showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, URL);
     }
+
     public void openUpdatePassword(){
         setupFragment(CHANGEPASSWORD_FRAGMENT, true);
     }
@@ -440,12 +451,14 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case PLACE_PICKER_REQUEST:
-                    if (resultCode == RESULT_OK) {
-                        Place place = PlacePicker.getPlace(this, data);
-                        addStoreFragment.setLocation(place);
-                    }
+                /**get place picker request response for selecting store location*/
+                if (resultCode == RESULT_OK) {
+                    Place place = PlacePicker.getPlace(this, data);
+                    addStoreFragment.setLocation(place);
+                }
                 break;
             case PICK_IMAGE_REQUEST:
+                /**get image picker request response for selecting profile image*/
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                     Uri filePath = data.getData();
                     try {
@@ -462,9 +475,11 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
 
     @Override
     public void bindData(ArrayList<TrendingItems> trendingItems) {
+        /**forwarding dynamic link in case of Notification clicks*/
         forwardDeepLink(trendingItems.get(0).getShareUrl(), trendingItems.get(0).getId(), NOTIFICATIONKEY);
     }
 
+    /**Passing image array to the swipable fullscreen activity*/
     @Override
     public void onClicked(int position, ArrayList<String> mImagearray) {
         ArrayList<String> imageModels1 = mImagearray;

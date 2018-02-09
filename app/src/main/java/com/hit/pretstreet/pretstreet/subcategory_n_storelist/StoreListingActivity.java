@@ -342,6 +342,9 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         System.out.println("charCount "+charCount);
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(final JSONObject response) {
         try {
             String url = response.getString("URL");

@@ -134,6 +134,9 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         startActivity(intent);
     }
 
+    /**Replacing fragments
+     * @param addBackstack boolean which denotes whether we have to add the previous to backstack or not
+     * @param fragment fragment that should be passed*/
     private void changeFragment(Fragment fragment, boolean addBackstack) {
         try {
             FragmentManager fm = getSupportFragmentManager();       /*Removing stack*/
@@ -153,6 +156,9 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**Handling response corresponding to the URL
+     * @param response response corresponding to each URL - here I am appending the URL itself
+     *                 to the response so that I will be able to handle each response seperately*/
     private void handleResponse(JSONObject response){
         try {
             String url = response.getString("URL");
@@ -178,6 +184,9 @@ public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /**To change headername, filter button visibility and all as per the selected fragment
+     * @param fragmentId id of the fragment
+     * @param b shows addtobackstack boolean*/
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
             case SUBCAT_FRAGMENT:

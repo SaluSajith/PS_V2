@@ -77,7 +77,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
 
     private String mStrSearch = "", mCatID = "", mCaType;
     private boolean loadmore = true;
-    private String prepagekey, clicktypeid;
+    private String prepagekey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +97,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         ButterKnife.bind(this);
         dataModel = new ArrayList<>();
         arrayFilter = new JSONArray();
+        /**Default fragment which lists recent searches and popular searches*/
         setupFragment(AUTOSEARCH_FRAGMENT, false);
 
         if (getIntent() != null) {
@@ -107,14 +108,17 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         }
     }
 
+    /**To change headername, filter button visibility and all as per the selected fragment
+     * @param fragmentId id of the fragment
+     * @param b shows addtobackstack boolean*/
     private void setupFragment(int fragmentId, boolean b){
         switch (fragmentId){
-            case AUTOSEARCH_FRAGMENT:
+            case AUTOSEARCH_FRAGMENT: //Default fragment which lists recent searches and popular searches
                 AutoSearchFragment fragment = new AutoSearchFragment();
                 searchDataCallback = fragment;
                 changeFragment(fragment, b);
                 break;
-            case SEARCHRESULTS_FRAGMENT:
+            case SEARCHRESULTS_FRAGMENT://search results list
                 searchFragment = new SearchResultsFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(PRE_PAGE_KEY, SEARCHPAGE);
@@ -129,6 +133,9 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         }
     }
 
+    /**Replacing fragments
+     * @param addBackstack boolean which denotes whether we have to add the previous to backstack or not
+     * @param fragment fragment that should be passed*/
     private void changeFragment(Fragment fragment, boolean addBackstack) {
 
         FragmentManager fm = getSupportFragmentManager();//Removing stack
@@ -145,6 +152,8 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         ft.commit();
     }
 
+    /** Default fragment which lists recent searches and popular searches
+     * */
     public void getAutoSearch(String mStr, String mCatId, String mCattype){
         JSONObject resultJson = searchController.getAutoSearchListJson(mStr,
                 prepagekey,
@@ -153,6 +162,9 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, AUTOSEARCH_URL);
     }
 
+    /** To handle search button press after typing all
+     * @param first to handle pagination
+     * @param pageCount to handle pagination*/
     public void getSearchResult(int pageCount, boolean first){
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
@@ -162,6 +174,10 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         jsonRequestController.sendRequest(SearchActivity.this, resultJson, SEARCH_URL);
     }
 
+    /**To handle the SEARCH button press
+     * @param mCatId 0-All, 1-Designers, 2-Brands, 3-Jewellery, 4-Retails - Coming from server
+     * @param mCattype 0-stores, 1-Products
+     * @param mStr char/word that is typed*/
     public void openSearchResult(String mStr, String mCatId, String mCattype){
         mStrSearch = mStr;
         mCatID = mCatId;
@@ -169,6 +185,8 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         setupFragment(SEARCHRESULTS_FRAGMENT, true);
     }
 
+    /**Get recent searchlist from server
+     * @param mCatID 0-All, 1-Designers, 2-Brands, 3-Jewellery, 4-Retails - Coming from server*/
     public void getRecentPage(Fragment fragment, String mCatID){
         searchDataCallback = (AutoSearchFragment) fragment;
         JSONObject resultJson = searchController.getRecentSearchListJson(mCatID, SEARCHPAGE);
@@ -189,7 +207,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
             switch (url){
                 case AUTOSEARCH_URL:
                     ArrayList<BasicModel> searchModels = searchController.getAutoSearchList(response);
-                    searchDataCallback.setAutosearchList(searchModels);
+                    searchDataCallback.setAutosearchList(searchModels); //loading result data to list
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -201,7 +219,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                     ArrayList <StoreListModel> storeListModels = searchController.getSearchList(response);
                     if(storeListModels.size()<Integer.parseInt(LIMIT))
                         loadmore = false;
-                    searchDataCallback.setSearchList(storeListModels, loadmore);
+                    searchDataCallback.setSearchList(storeListModels, loadmore);  //loading result data to list
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -287,6 +305,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
         try {
             super.onActivityResult(requestCode, resultCode, data);
             if(resultCode  == RESULT_OK) {
+                /**Updating filterpage array */
                 if (requestCode == Integer.parseInt(FILTERPAGE)) {
                     Bundle bundle = data.getExtras();
                     dataModel = (ArrayList<TwoLevelDataModel>) bundle.getSerializable(PARCEL_KEY);
@@ -294,6 +313,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                     searchFragment.refreshSearchResult();
                 }
                 else if (requestCode == STORE_DETAILS){
+                    /**To update follow status and count in search result page*/
                     int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
                     String storeId = data.getStringExtra(ID_KEY);
                     storeList_recyclerAdapter.updateFollowStatus_fromDetails(status, storeId,

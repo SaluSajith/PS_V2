@@ -101,14 +101,15 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         getShoplist();
     }
 
+    /**Get all the shops in that multistore*/
     private void getShoplist(){
         if (getIntent() != null) {
             if (getIntent().getExtras() != null && getIntent().getExtras()
                     .containsKey(ID_KEY)) {
                 String pageid = getIntent().getStringExtra(PRE_PAGE_KEY);
                 String clicktypeid = getIntent().getStringExtra(CLICKTYPE_KEY);
-                String mCatid = getIntent().getStringExtra(Constant.ID_KEY);
-                JSONObject resultJson = searchController.getMultiStoreListJson(mCatid, pageid, clicktypeid, pageCount);//caat, prepage, clicktype, id
+                String mId = getIntent().getStringExtra(Constant.ID_KEY);
+                JSONObject resultJson = searchController.getMultiStoreListJson(mId, pageid, clicktypeid, pageCount);
                 if(pageCount ==1)
                     this.showProgressDialog(getResources().getString(R.string.loading));
                 jsonRequestController.sendRequest(this, resultJson, MULTISTORE_URL);
@@ -117,10 +118,12 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void setAdapter(){
-        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist, MultistoreActivity.this, storeListModels);
+        storeList_recyclerAdapter = new StoreList_RecyclerAdapter(Glide.with(this), rv_storelist,
+                MultistoreActivity.this, storeListModels);
         rv_storelist.setAdapter(storeList_recyclerAdapter);
     }
 
+    /**Append new data to recyclerview*/
     private void notifyListData(ArrayList<StoreListModel> storeListModels){
         storeList_recyclerAdapter.notifyDataSetChanged();
         //adapter.setHasStableIds(true);
@@ -140,6 +143,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         loadBackdrop(imageUrl);
     }
 
+    /**Append more rows on scrolling*/
     private void refreshListviewOnScrolling(){
         storeList_recyclerAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
@@ -149,12 +153,10 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                     requestCalled = true;
                     getShoplist();
                 }
-                else; //displaySnackBar("No more data available!");
+                else;
             }
-
             @Override
             public void reachedLastItem() {
-
             }
         });
     }
@@ -292,7 +294,8 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
                 if (requestCode == STORE_DETAILS){
                     int status = Integer.parseInt(data.getStringExtra(PARCEL_KEY));
                     String storeId = data.getStringExtra(ID_KEY);
-                    storeList_recyclerAdapter.updateFollowStatus_fromDetails(status, storeId, data.getStringExtra("followcount"));
+                    storeList_recyclerAdapter.updateFollowStatus_fromDetails
+                            (status, storeId, data.getStringExtra("followcount"));
                     storeList_recyclerAdapter.notifyDataSetChanged();
                 }
             }

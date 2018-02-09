@@ -223,6 +223,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         }catch (Exception e){}
     }
 
+    /**Register button visibility settings*/
     private void setRegisterVisibility(String flag){
         if(flag.contains("0")){
             tv_book_app.setClickable(true);
@@ -244,8 +245,8 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         }
     }
 
+    /**Show top collapsing image*/
     private void setupCollapsingHeader(String title, String img){
-
         CollapsingToolbarLayout collapsingToolbar =
                 findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
@@ -262,12 +263,14 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         rv_images.setAdapter(storeList_recyclerAdapter);
     }
 
+    /**Show top collapsing image*/
     private void loadBackdrop(String imageUrl) {
         final AppCompatImageView imageView = findViewById(R.id.backdrop);
         Glide.with(context).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_banner)
                 .diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(imageView);
     }
 
+    /**Show popup having 3 phone number fields*/
     public void showPopupPhoneNumber(StoreDetailsModel storeDetailsModel) {
         if (storeDetailsModel.getPhone().size()==0) {
             displaySnackBar("Number not found");
@@ -366,7 +369,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         }
     }
 
-
+    /**Class to check whether the user click on call button when he is in another call*/
     private class MyPhoneListener extends PhoneStateListener {
         private boolean onCall = false;
         @Override
@@ -396,6 +399,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         }
     }
 
+    /**Show address in popup*/
     public void showAddress(StoreDetailsModel storeDetailsModel) {
         if (storeDetailsModel.getAddress().equalsIgnoreCase("null") ||
                 storeDetailsModel.getAddress().equalsIgnoreCase("")) {
@@ -434,6 +438,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         }
     }
 
+    /**Show store location in map*/
     private void showLocation(StoreDetailsModel storeDetailsModel){
         if (storeDetailsModel.getLatitude().equalsIgnoreCase("") ||
                 storeDetailsModel.getLongitude().equalsIgnoreCase("")) {
@@ -468,8 +473,9 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
         }
     }
 
+    /**Registering using phone number
+     If number is there in the account we will take it otherwise gives popup*/
     public void showRegisterPopup() {
-
         final Dialog popupDialog = new Dialog(ExhibitionDetailsActivity.this);
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View view = li.inflate(R.layout.popup_register, null);
@@ -567,6 +573,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     @Override
     public void onBackPressed() {
+        /**PAssing likestatus to the previous listing page*/
         Intent intent = new Intent();
         Bundle b = new Bundle();
         b.putString(ID_KEY, exhibitionDetailsModel.getId());
@@ -602,14 +609,12 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
 
     @Override
     public void onClicked(int position, ArrayList<String> imageModels) {
-
         ArrayList<String> imageModels1 = imageModels;
         Intent intent = new Intent(ExhibitionDetailsActivity.this, FullscreenGalleryActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, imageModels1);
         intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.STORELISTINGPAGE));
         intent.putExtra(Constant.POSITION_KEY, position);
         startActivity(intent);
-
     }
 
     @OnClick(R.id.ll_call)

@@ -110,7 +110,6 @@ public class DefaultLocationActivity extends
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                // TODO Auto-generated method stub
             }
 
         });

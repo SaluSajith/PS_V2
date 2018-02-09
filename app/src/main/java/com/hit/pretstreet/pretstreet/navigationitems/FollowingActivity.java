@@ -146,6 +146,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
     }
 
     private void refreshListviewOnScrolling(){
+        /**Pagination - loading 20 rows per call*/
         storeList_recyclerAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -158,7 +159,6 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
                     }
                 }
             }
-
             @Override
             public void reachedLastItem() {
                 //if (!loadmore)
@@ -174,6 +174,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         intent.putExtra(ID_KEY, getIntent().getStringExtra(ID_KEY));
         startActivity(intent);
     }
+
     private void getFollowingData(String catId, boolean first){
         JSONObject resultJson = navItemsController.getFollowinglistJson(catId,
                 pageCount+"", getIntent().getStringExtra(Constant.PRE_PAGE_KEY));
@@ -194,6 +195,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         startActivity(intent);
     }*/
 
+    /** Creating Horizontaly scrolling header - to show all the sub categories*/
     private void createScrollingHeader(ArrayList<BasicModel> homeSubCategories){
         if(txtname==null) {
             int index = 0;
@@ -297,6 +299,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         textViewPret.setBackgroundColor(ContextCompat.getColor(FollowingActivity.this, R.color.yellow_storelist_scroll));
         textViewPret.setTextColor(ContextCompat.getColor(FollowingActivity.this, R.color.black));
 
+        /**Setting everything to default on each category click*/
         catTag = textViewPret.getTag().toString()+"";
         pageCount = 1;
         first = true;
@@ -305,6 +308,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         getFollowingData((String) textViewPret.getTag(), first);
     }
 
+    /**Handle onclick in rows - redirect to Store details page*/
     @Override
     public void buttonClick(StoreListModel storeListModel) {
         if(storeListModel.getPageTypeId().equals(STOREDETAILSPAGE)){
@@ -320,6 +324,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
             intent.putExtra(Constant.PRE_PAGE_KEY, FOLLOWINGPAGE);
             startActivity(intent);
         } else {
+            /**To handle dynamic clicks*/
             openNext(storeListModel, FOLLOWINGPAGE, "");
         }
     }
