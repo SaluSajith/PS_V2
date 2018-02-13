@@ -63,10 +63,13 @@ public class HomeFragmentController {
         return jsonBody;
     }
 
-    public static JSONObject getExhibitionlistJson(int offset, String prepage, String clicktypeid) {
+    public static JSONObject getExhibitionlistJson(int offset, String prepage, String clicktypeid,
+                                                   String month, String year) {
 
         JSONObject jsonBody = new JSONObject();
         try {
+            jsonBody.put("Month", month);
+            jsonBody.put("Year", year);
             jsonBody.put("Limit", Constant.LIMIT_S);
             jsonBody.put("Offset", offset);
             jsonBody.put("PreviousPageTypeId", prepage);

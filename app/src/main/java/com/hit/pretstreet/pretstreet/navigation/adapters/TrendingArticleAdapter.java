@@ -96,7 +96,7 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
                         trendingCallback = (NavigationItemsActivity)context;
                         ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
                         trendingItemses.add(notifItems);
-                        trendingCallback.bindData(trendingItemses);
+                        trendingCallback.bindData(trendingItemses, "");
                     }
                 }
             });
@@ -112,13 +112,13 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
                         trendingCallback = (TrendingArticleActivity) context;
                         ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
                         trendingItemses.add(notifItems);
-                        trendingCallback.bindData(trendingItemses);
+                        trendingCallback.bindData(trendingItemses, "");
                     }
                     else{
                         trendingCallback = (NavigationItemsActivity)context;
                         ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
                         trendingItemses.add(notifItems);
-                        trendingCallback.bindData(trendingItemses);
+                        trendingCallback.bindData(trendingItemses, "");
                     }
                     break;
                 case R.id.iv_banner:
@@ -133,7 +133,7 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
                         trendingCallback = (NavigationItemsActivity)context;
                         ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
                         trendingItemses.add(notifItems);
-                        trendingCallback.bindData(trendingItemses);
+                        trendingCallback.bindData(trendingItemses, "");
                     }
                     break;
                 case R.id.txt_description:
@@ -141,7 +141,7 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
                         trendingCallback = (NavigationItemsActivity)context;
                         ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
                         trendingItemses.add(notifItems);
-                        trendingCallback.bindData(trendingItemses);
+                        trendingCallback.bindData(trendingItemses, "");
                     }
                     break;
                 case R.id.txt_shopname:
@@ -149,7 +149,7 @@ public class TrendingArticleAdapter extends RecyclerView.Adapter<TrendingArticle
                         trendingCallback = (NavigationItemsActivity)context;
                         ArrayList<TrendingItems> trendingItemses = new ArrayList<>();
                         trendingItemses.add(notifItems);
-                        trendingCallback.bindData(trendingItemses);
+                        trendingCallback.bindData(trendingItemses, "");
                     }
                     break;
                 default:

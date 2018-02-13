@@ -87,10 +87,11 @@ public class StoreDetailsController {
 
         return jsonBody;
     }
-    public static StoreDetailsModel getStoreData(JSONObject response){
 
+    public static StoreDetailsModel getStoreData(JSONObject response){
         StoreDetailsModel storeDetailsModel = new StoreDetailsModel();
         try {
+
             JSONObject jsonObject = response.getJSONObject("Data");
             storeDetailsModel.setId(jsonObject.getString("StoreId"));
             storeDetailsModel.setStoreName(jsonObject.getString("StoreName"));

@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface TrendingCallback {
-    void bindData(ArrayList<TrendingItems> trendingItems);
+    void bindData(ArrayList<TrendingItems> trendingItems, String message);
 }

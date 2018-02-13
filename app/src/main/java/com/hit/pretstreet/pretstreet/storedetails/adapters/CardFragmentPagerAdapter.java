@@ -1,9 +1,5 @@
 package com.hit.pretstreet.pretstreet.storedetails.adapters;
 
-/**
- * Created by User on 6/30/2017.
- */
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +13,10 @@ import com.hit.pretstreet.pretstreet.storedetails.view.CardFragment;
 
 import java.util.ArrayList;
 
+/**
+ * Created by User on 6/30/2017.
+ * To setup Testimonial Card
+ */
 public class CardFragmentPagerAdapter extends FragmentStatePagerAdapter implements CardAdapter {
 
     private ArrayList<CardFragment> fragments;

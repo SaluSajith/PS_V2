@@ -95,7 +95,7 @@
             android:hint="Type City Name"
             android:padding="10sp"
             android:lines="1"
-            android:textAppearance="@android:style/TextAppearance.Small" />
+            android:textSize="@dimen/textsize_large"/>
 
         <RelativeLayout
             android:id="@+id/map"
@@ -126,11 +126,21 @@
 
         </RelativeLayout>
 
+        <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_heading"
+            android:layout_below="@id/map"
+            style="@style/textview_title"
+            android:layout_marginTop="15dp"
+            android:text="@string/popular_places"
+            android:gravity="left"/>
+
         <ListView
             android:id="@+id/list_places"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/map"
+            android:layout_below="@id/tv_heading"
             android:padding="10sp" />
 
     </RelativeLayout>

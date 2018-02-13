@@ -84,6 +84,7 @@
     <string name="book_btn">Book</string>
     <string name="get_dir">Get \nDirections</string>
     <string name="retry">Retry</string>
+    <string name="popular_places">Popular Places</string>
     <string name="mumbai">Mumbai</string>
     <string name="delhi">New Delhi</string>
     <string name="try_another">Try another location</string>

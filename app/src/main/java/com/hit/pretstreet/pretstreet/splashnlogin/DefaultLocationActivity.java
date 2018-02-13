@@ -27,6 +27,7 @@ import com.hit.pretstreet.pretstreet.R;
 import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
+import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.helpers.LocationTracker;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
@@ -69,6 +70,7 @@ public class DefaultLocationActivity extends
     @BindView(R.id.img_close) AppCompatImageView img_close;
     @BindView(R.id.edt_search) EdittextPret edt_search;
     @BindView(R.id.list_places) ListView placeList;
+    @BindView(R.id.tv_heading) TextViewPret tv_heading;
 
     private double lat1, long1;
     private DatabaseHelper helper;
@@ -83,6 +85,8 @@ public class DefaultLocationActivity extends
 
     JsonRequestController jsonRequestController;
     String strSearch;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> resultList;
     LocationTracker locationTracker;
 
     @Override
@@ -97,10 +101,28 @@ public class DefaultLocationActivity extends
         PreferenceServices.init(this);
         helper = new DatabaseHelper(getApplicationContext());
         locationTracker = new LocationTracker(DefaultLocationActivity.this);
+
+        /**Adding some static values to the listview*/
+        resultList = new ArrayList<>();
+        resultList.add("Mumbai");
+        resultList.add("New Delhi");
+        adapter = new ArrayAdapter(getBaseContext(),
+                R.layout.row_nav_text, R.id.tv_nav_item, resultList);
+        placeList.setAdapter(adapter);
+        placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String str = resultList.get(i);
+                getLocationFromAddress(DefaultLocationActivity.this, str);
+                placeList.setAdapter(null);
+            }
+        });
+
         edt_search.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tv_heading.setVisibility(View.GONE);
                 strSearch = s.toString();
                 new doInBackground().execute();
             }
@@ -114,6 +136,7 @@ public class DefaultLocationActivity extends
 
         });
     }
+
     @Override
     protected void setUpController() {
         jsonRequestController = new JsonRequestController(this);
@@ -191,8 +214,6 @@ public class DefaultLocationActivity extends
     }
 
     private class doInBackground extends AsyncTask<Void, Void, Boolean> {
-        ArrayList<String> resultList;
-
         @Override
         protected Boolean doInBackground(Void... voids) {
             // Retrieve the autocomplete results.
@@ -206,8 +227,8 @@ public class DefaultLocationActivity extends
             if (resultList==null) {
                 displaySnackBar("Please check your internet connection!");
             } else {
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(),
-                        android.R.layout.simple_list_item_1, android.R.id.text1, resultList);
+                adapter = new ArrayAdapter<>(getBaseContext(),
+                        R.layout.row_nav_text, R.id.tv_nav_item, resultList);
                 placeList.setAdapter(adapter);
                 placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

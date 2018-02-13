@@ -24,6 +24,11 @@ public class SubCategoryController {
         this.context = context;
     }
 
+    /**Create JSON object to POST for getting shoplist
+     * @param catId Category id/Sub category id
+     * @param offset for pagination purpose
+     * @param clicktype for logging purpose
+     * @param arrayFilter filter array that should be passed*/
     public static JSONObject getShoplistJson(String catId, String offset, String prepage, String clicktype, JSONArray arrayFilter) {
 
         JSONObject jsonBody = new JSONObject();
@@ -43,12 +48,12 @@ public class SubCategoryController {
         return jsonBody;
     }
 
-
-    public static JSONObject getFilterJson(String catId, String prepage) {
+    /**Get default filter JSON object*/
+    public static JSONObject getFilterJson(String id, String prepage) {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("Id", catId);
+            jsonBody.put("Id", id);
             jsonBody.put("PreviousPageTypeId", prepage);
             jsonBody.put("ClickTypeId", "");
 
@@ -75,6 +80,7 @@ public class SubCategoryController {
         return jsonBody;
     }
 
+    /**To create json array from two dimensional array*/
     public static JSONArray createFilterModel(ArrayList<TwoLevelDataModel> filterDataModels){
 
         JSONArray jsonArray1 = new JSONArray();
@@ -104,7 +110,7 @@ public class SubCategoryController {
         return jsonArray1;
     }
 
-
+    /**To get arraylist from JSON response from server*/
     public static ArrayList <StoreListModel> getList(JSONObject response){
         final ArrayList<StoreListModel> storeListModels = new ArrayList<>();
         try {
@@ -135,6 +141,7 @@ public class SubCategoryController {
         return  storeListModels;
     }
 
+    /**Get filter array from response*/
     public static ArrayList <TwoLevelDataModel> getFilterList(JSONObject response){
         ArrayList<TwoLevelDataModel> filterDataModels = new ArrayList<>();
         try {

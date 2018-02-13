@@ -76,14 +76,14 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
             @Override
             public void reachedLastItem() {
                 if(!loadmore) {
-                    ((HomeInnerActivity)getActivity()).displaySnackBar("No more data available!");
+                    ((HomeInnerActivity)getActivity()).displaySnackBar("No more exhibitions available!");
                 }
             }
         });
     }
 
     @Override
-    public void bindData(ArrayList<TrendingItems> exHItems) {
+    public void bindData(ArrayList<TrendingItems> exHItems, String message) {
         this.exHItems.addAll(exHItems);
         adapter.notifyDataSetChanged();
         if(exHItems.size()==0)
@@ -92,7 +92,7 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
             loadmore = true;
         adapter.setLoaded();
         if(this.exHItems.size()==0) {
-            tv_msg.setText("Please check your internet connection and try again!");
+            tv_msg.setText(message  );
             ll_empty.setVisibility(View.VISIBLE);
         }
         else ll_empty.setVisibility(View.INVISIBLE);
@@ -100,7 +100,6 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
 
     @Override
     public void onClicked(int position, ArrayList<String> mImagearray) {
-
         ArrayList<String> imageModels1 = mImagearray;
         Intent intent = new Intent(getActivity(), FullscreenGalleryActivity.class);
         intent.putExtra(Constant.PARCEL_KEY, imageModels1);

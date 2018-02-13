@@ -41,20 +41,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
     @Override
     public int getItemCount() {
         return this.urls != null ? urls.size() : 0;
-        //return urls.size();
     }
+
     @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(final GalleryHolder holder, final int position) {
 
         holder.name.setText("");
-        /*Glide.with(context)
-                .load(urls.get(position))
-                .placeholder(R.drawable.cloud_sad)
-                .error(R.drawable.cloud_sad)
-                .fitCenter()
-                .override(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT)
-                .into(holder.image);*/
 
         try {
             Glide.with(context)

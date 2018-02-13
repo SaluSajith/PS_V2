@@ -75,7 +75,7 @@ public class LoginFragment extends AbstractBaseFragment<WelcomeActivity>{
     public void onValidationError(EdittextPret editText, String message) {
         try {
             editText.setError(message);
-        }catch (Exception e){}
+        } catch (Exception e){}
     }
 
 }

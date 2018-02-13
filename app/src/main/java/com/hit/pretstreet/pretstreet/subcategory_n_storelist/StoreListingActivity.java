@@ -120,7 +120,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         dataModel = new ArrayList<>();
         storeListModels = new ArrayList<>();
 
-        PreferenceServices.getInstance().setFirstTimeListing(true);
+        //PreferenceServices.getInstance().setFirstTimeListing(true);
         if(PreferenceServices.getInstance().isFirstTimeListing())
         displayTuto();
 
@@ -162,7 +162,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             }
         }
         tv_cat_name.setText(mTitle);
-        setupCategoryScrollviewParams(0);
+        setupCategoryScrollviewParams();
         tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
         setListUtility();
@@ -172,7 +172,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         refreshListviewOnScrolling();
     }
 
-    private void setupCategoryScrollviewParams(int textlength){
+    /**To fix the position of the top horizontal scrollbar*/
+    private void setupCategoryScrollviewParams(){
         FrameLayout.LayoutParams layoutParams =
                 (FrameLayout.LayoutParams) ll_scroll.getLayoutParams();
         if (mTitle.equalsIgnoreCase("DESIGNERS")) //TODO dynamic header margin
@@ -210,7 +211,6 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                     }
                 }
             }
-
             @Override
             public void reachedLastItem() {
                 if (!loadmore)
@@ -219,9 +219,17 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         });
     }
 
+    /**To get the list data
+    * @param mCatid passing selected Sub Category id
+     * @param first mainly used to set the visibility of progressbar*/
     private void getShoplist(String mCatid, boolean first) {
         loadmore = true;
         btn_try_another.setVisibility(View.GONE);
+
+        /**Passing parameters to get the needed list
+         * pageCount - for pagination
+         * mpagetypeid - pageid
+         * arrayFilter - if filter is not applied, default array will be passed*/
         JSONObject resultJson = SubCategoryController.getShoplistJson(mCatid,
                 ++pageCount + "", mpagetypeid, mClicktypeid, arrayFilter);
         if (first)
@@ -246,6 +254,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @OnClick(R.id.btn_mumbai)
     public void onBtn_MumbaiPressed() {
+        //Static values
         PreferenceServices.instance().saveCurrentLocation("Mumbai");
         PreferenceServices.instance().saveLatitute( "19.0760");
         PreferenceServices.instance().saveLongitute( "72.8777");
@@ -257,6 +266,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @OnClick(R.id.btn_delhi)
     public void onBtn_DelhiPressed() {
+        //Static values
         PreferenceServices.instance().saveCurrentLocation("New Delhi");
         PreferenceServices.instance().saveLatitute( "28.6139");
         PreferenceServices.instance().saveLongitute( "77.2090");
@@ -278,15 +288,21 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         Bundle bundle = new Bundle();
         bundle.putString(PRE_PAGE_KEY, Constant.STORELISTINGPAGE);
         bundle.putString(ID_KEY, getIntent().getStringExtra(ID_KEY));
+        //passing datamodel to filter page so that we will get the updated one while returning
         bundle.putSerializable(PARCEL_KEY, this.dataModel);
         intent.putExtras(bundle);
         startActivityForResult(intent, parseInt(FILTERPAGE));
     }
 
+    /**To create dynamic scrolling header as per the subcategories got from the server
+     * Here I will eb creating a textview array and will include this array to the layout
+     *
+     * txtname[0] will be having the static "All" category - if it is selected I will pass the maincategoryid for getting list*/
     @SuppressLint("InflateParams")
     private void createScrollingHeader() {
 
-        final ArrayList<HomeCatItems> homeSubCategories = (ArrayList<HomeCatItems>) getIntent().getSerializableExtra("contentData");
+        final ArrayList<HomeCatItems> homeSubCategories = (ArrayList<HomeCatItems>)
+                getIntent().getSerializableExtra("contentData");
         int index = 0;
 
         txtname = new TextViewPret[homeSubCategories.size() + 1];
@@ -297,6 +313,8 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         ll_scroll.addView(view);
         txtname[0].setOnClickListener(this);
 
+        /**Will be 0 in case of RETAIL section
+         * Setting maincategory id as tag for the textview*/
         if (homeSubCategories.size() > 0) {
             //HomeCatContentData contentData = homeSubCategories.get(0).getHomeContentData();
             txtname[0].setTag(getIntent().getStringExtra(ID_KEY));
@@ -311,6 +329,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             txtname[0].performClick();
         }
 
+        /**Setting textview tags as per the category values*/
         for (HomeCatItems object : homeSubCategories) {
             index++;
             HomeCatItems homeCatItems = object;
@@ -368,6 +387,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         }
     }
 
+    /**Segregating list in a seperate thread*/
     private class JSONParsing extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -437,6 +457,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         }
     }
 
+    /**To show empty layout having static locations(Mumbai & Delhi)*/
     private void handleEmptyView(){
         btn_mumbai.setVisibility(View.VISIBLE);
         btn_delhi.setVisibility(View.VISIBLE);
@@ -447,6 +468,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
 
     @Override
     public void onClick(View v) {
+        /*Changing backgroung color n all for the clicked textview*/
         for (TextViewPret aTxtname : txtname) {
             aTxtname.setBackgroundColor(ContextCompat.getColor(StoreListingActivity.this, R.color.transparent));
             aTxtname.setTextColor(ContextCompat.getColor(StoreListingActivity.this, R.color.yellow_storelist_scroll));
@@ -507,6 +529,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
         }
     }
 
+    /**Tutorial view to show top horizontal slider*/
     protected void displayTuto() {
         PreferenceServices.getInstance().setFirstTimeListing(false);
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -529,6 +552,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
                 .show();
     }
 
+    /**Tutorial view to show store list scroll*/
     protected void displayNext() {
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View view = li.inflate(R.layout.tuto_showcase_tuto_sample, null);

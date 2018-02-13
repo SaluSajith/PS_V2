@@ -40,6 +40,7 @@ import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -360,25 +361,25 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     @Override
     public void onBackPressed() {
-        /**HAndle drawer status while going bak
+        /**Handle drawer status while going bak
          * Double press to exit*/
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            if (doubleBackToExitPressedOnce) {
+           /* if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
                 return;
             }
             this.doubleBackToExitPressedOnce = true;
-            displaySnackBar("Click again to exit");
+            displaySnackBar("Click again to exit!");
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     doubleBackToExitPressedOnce=false;
                 }
-            }, 2000);
+            }, 2000);*/
         }
     }
 

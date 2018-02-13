@@ -101,7 +101,7 @@ public class FilterActivity extends AbstractBaseAppCompatActivity implements
 
     /**Handling response corresponding to the URL
      * @param response response corresponding to each URL - here I am appending the URL itself
-     *                 to the response so that I will be able to handle each response seperately*/
+     *                 to the response so that I will be able to handle each response separately */
     private void handleResponse(JSONObject response) {
         try {
             String url = response.getString("URL");
@@ -124,6 +124,8 @@ public class FilterActivity extends AbstractBaseAppCompatActivity implements
         onBackPressed();
     }
 
+    /**Passing neededarray to the previous activity
+     * @dataModels will be having the needed two dimensional array */
     @OnClick(R.id.btn_apply)
     public void onApplyPress(){
         Intent intent = getIntent();

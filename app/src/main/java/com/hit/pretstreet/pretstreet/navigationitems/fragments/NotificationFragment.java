@@ -47,7 +47,7 @@ public class NotificationFragment extends AbstractBaseFragment<NavigationItemsAc
     }
 
     @Override
-    public void bindData(ArrayList<TrendingItems> trendingItems) {
+    public void bindData(ArrayList<TrendingItems> trendingItems, String msg) {
             TrendingArticleAdapter adapter = new TrendingArticleAdapter(getActivity(), trendingItems, getHostActivity());
             rv_trending.setAdapter(adapter);
             if (trendingItems.size() == 0)

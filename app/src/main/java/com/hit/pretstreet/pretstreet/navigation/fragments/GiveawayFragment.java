@@ -80,7 +80,7 @@ public class GiveawayFragment extends AbstractBaseFragment<WelcomeActivity>
     }
 
     @Override
-    public void bindData(ArrayList<TrendingItems> trendingItems) {
+    public void bindData(ArrayList<TrendingItems> trendingItems, String msg) {
         this.giveawayItems.addAll(trendingItems);
         adapter.notifyDataSetChanged();
         //adapter.setHasStableIds(true);
@@ -90,7 +90,7 @@ public class GiveawayFragment extends AbstractBaseFragment<WelcomeActivity>
             loadmore = true;
         adapter.setLoaded();
         if(this.giveawayItems.size()==0) {
-            tv_msg.setText("Please check your internet connection and try again!");
+            tv_msg.setText(msg);
             ll_empty.setVisibility(View.VISIBLE);
         }
         else ll_empty.setVisibility(View.INVISIBLE);

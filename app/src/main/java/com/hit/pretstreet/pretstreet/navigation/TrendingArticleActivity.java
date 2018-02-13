@@ -198,7 +198,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
     }
 
     @Override
-    public void bindData(ArrayList<TrendingItems> trendingItems) {
+    public void bindData(ArrayList<TrendingItems> trendingItems, String msg) {
         Intent intent;
         String pagetypeid = trendingItems.get(0).getPagetypeid();
         String id = trendingItems.get(0).getId();

@@ -81,7 +81,7 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
     }
 
     @Override
-    public void bindData(ArrayList<TrendingItems> trendingItems) {
+    public void bindData(ArrayList<TrendingItems> trendingItems, String msg) {
         this.trendingItems.addAll(trendingItems);
         adapter.notifyDataSetChanged();
         if(trendingItems.size()==0)
@@ -91,7 +91,7 @@ public class TrendingFragment extends AbstractBaseFragment<WelcomeActivity>
         adapter.setLoaded();
         if(this.trendingItems.size()==0) {
             ll_empty.setVisibility(View.VISIBLE);
-            tv_msg.setText("Please check your internet connection and try again!");
+            tv_msg.setText(msg);
         }
         else ll_empty.setVisibility(View.INVISIBLE);
     }

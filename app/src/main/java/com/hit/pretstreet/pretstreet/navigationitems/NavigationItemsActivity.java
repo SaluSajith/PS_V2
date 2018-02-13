@@ -184,7 +184,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     /**Getting notification list from database*/
     public void getNotificationlist(){
         ArrayList<TrendingItems> trendingItemses = navItemsController.getNotifList();
-        trendingCallback.bindData(trendingItemses);
+        trendingCallback.bindData(trendingItemses, "");
     }
 
     private void delayedBackpress(String msg){
@@ -474,7 +474,7 @@ public class NavigationItemsActivity extends AbstractBaseAppCompatActivity imple
     }
 
     @Override
-    public void bindData(ArrayList<TrendingItems> trendingItems) {
+    public void bindData(ArrayList<TrendingItems> trendingItems, String msg) {
         /**forwarding dynamic link in case of Notification clicks*/
         forwardDeepLink(trendingItems.get(0).getShareUrl(), trendingItems.get(0).getId(), NOTIFICATIONKEY);
     }

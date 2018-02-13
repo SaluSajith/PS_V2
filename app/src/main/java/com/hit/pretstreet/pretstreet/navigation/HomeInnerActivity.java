@@ -30,7 +30,6 @@ import com.hit.pretstreet.pretstreet.core.apis.JsonRequestController;
 import com.hit.pretstreet.pretstreet.core.apis.interfaces.ApiListenerInterface;
 import com.hit.pretstreet.pretstreet.core.customview.ButtonPret;
 import com.hit.pretstreet.pretstreet.core.customview.EdittextPret;
-import com.hit.pretstreet.pretstreet.core.customview.EmptyFragment;
 import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.customview.monthPicker.RackMonthPicker;
 import com.hit.pretstreet.pretstreet.core.customview.monthPicker.listener.DateMonthDialogListener;
@@ -117,6 +116,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     private String number;
     private JSONObject registerJson;
     private EdittextPret edittextPret;
+    private String mMonth = "", mYear = "";
 
     Dialog popupDialog;
     boolean requestCalled = false;
@@ -172,11 +172,9 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 .setPositiveButton(new DateMonthDialogListener() {
                     @Override
                     public void onDateMonth(int month, int startDate, int endDate, int year, String monthLabel) {
-                        System.out.println(month);
-                        System.out.println(startDate);
-                        System.out.println(endDate);
-                        System.out.println(year);
-                        System.out.println(monthLabel);
+                        mMonth = month + "";
+                        mYear = year + "";
+                        setupFragment(EXHIBITION_FRAGMENT, false);
                     }
                 })
                 .setNegativeButton(new OnCancelMonthDialogListener() {
@@ -259,7 +257,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     public void getExhibitionlist(int offset){
         JSONObject resultJson = homeFragmentController.getExhibitionlistJson(offset,
                 getIntent().getStringExtra(Constant.PRE_PAGE_KEY),
-                getIntent().getStringExtra(Constant.CLICKTYPE_KEY));
+                getIntent().getStringExtra(Constant.CLICKTYPE_KEY), mMonth, mYear);
         if(first)
             this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, EXHIBITION_URL);
@@ -298,7 +296,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                     first = false;
                     requestCalled = false;
                     ArrayList<TrendingItems> trendingItemses = homeFragmentController.getTrendingList(response);
-                    trendingCallback.bindData(trendingItemses);
+                    trendingCallback.bindData(trendingItemses, "");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -311,7 +309,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                     requestCalled = false;
                     tv_cat_name.setText(homeFragmentController.getHeading(response));
                     ArrayList<TrendingItems> giveawayItemses = homeFragmentController.getGiveawayList(response);
-                    trendingCallback.bindData(giveawayItemses);
+                    trendingCallback.bindData(giveawayItemses, "");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -323,7 +321,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                     first = false;
                     requestCalled = false;
                     ArrayList<TrendingItems> exHItemses = homeFragmentController.getExhibitionList(response);
-                    trendingCallback.bindData(exHItemses);
+                    trendingCallback.bindData(exHItemses, response.getString("CustomerMessage"));
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -372,7 +370,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         this.hideDialog();
         /**Show no data available message*/
         ArrayList<TrendingItems> giveawayItemses = new ArrayList<>();
-        trendingCallback.bindData(giveawayItemses);
+        trendingCallback.bindData(giveawayItemses, error);
     }
 
     @Override

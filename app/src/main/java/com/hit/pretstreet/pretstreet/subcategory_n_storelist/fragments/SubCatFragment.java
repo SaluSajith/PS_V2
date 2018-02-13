@@ -73,17 +73,6 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 mCatId = getActivity().getIntent().getStringExtra("mSubCatId");
             }
         }
-        /*String SavedSubCaTList = PreferenceServices.getInstance().getHomeSubCatList();
-        if (SavedSubCaTList.length() > 1) {
-            ArrayList<HomeCatItems> homeCatItemses = null;
-            try {
-                homeCatItemses = LoginController.getSubCatContent(new JSONObject(SavedSubCaTList));
-                onSubTrapeClick(homeCatItemses, "");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }*/
-
         ((SubCatActivity)getActivity()).getSubCAtPage(mCatId);
     }
 
@@ -107,6 +96,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 final AppCompatImageView mImageView = view.findViewById(R.id.img_cat_image);
                 txt_cat_name.setMaxLines(1);
 
+                /** Setting bottom margin to make it in trapezium shape - to make the image overlap each other*/
                 LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 if(i!=0) {
@@ -120,6 +110,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 txt_cat_name.getBackground().setFilterBitmap(true);
 
                 String catName = contentData.getCategoryName();
+                /**Setting margin (which should fit in all screen sizes)according to the text length*/
                 RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) txt_cat_name.getLayoutParams();
                 if(catName.length()>3&&catName.length()<=6)
                     lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_standard) - 2, -3, 0);
@@ -131,6 +122,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                     lp.setMargins(-3, (int) getResources().getDimension(R.dimen.padding_subcat) + 7, -3, 0);
                 txt_cat_name.setLayoutParams(lp);
 
+                /**Creating trapezium shaped images*/
                 Bitmap mask1 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_home);
                 Matrix matrix = new Matrix();
                 matrix.preScale(-1.0f, 1.0f);
@@ -138,8 +130,9 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 Bitmap mask3 = BitmapFactory.decodeResource(getResources(), R.drawable.mask_malls);
                 Bitmap mask4= Bitmap.createBitmap(mask3, 0, 0, mask3.getWidth(), mask3.getHeight(), matrix, true);
 
+                /**Creating layout in zig-zag form*/
                 final int finalI = i;
-                if(finalI == homeSubCategories.size()-1){
+                if(finalI == homeSubCategories.size()-1){ //to make the last category image base flat
                     if (finalI % 2 == 0) loadImage(contentData.getImageSource(), mImageView, mask4, R.drawable.mask_malls);
                     else loadImage(contentData.getImageSource(), mImageView, mask3, R.drawable.mask_malls);
                 }
@@ -150,6 +143,7 @@ public class SubCatFragment extends AbstractBaseFragment<WelcomeActivity> implem
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        /**To handle click events*/
                         onTrapeClick.onSubTrapeClick(homeCatItemses, contentData.getCategoryName());
                     }
                 });

@@ -17,6 +17,6 @@
         android:id="@+id/tv_nav_item"
         app:pret_typeface="@string/font_merriweather_light"
         android:textSize="@dimen/textsize_large"
-        android:paddingLeft="@dimen/padding_huge"
+        android:paddingLeft="@dimen/padding_large"
         android:layout_margin="@dimen/padding_small"/>
 </LinearLayout>
