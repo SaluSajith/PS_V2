@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.navigation.models.TrendingItems;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,6 +84,22 @@ public class HomeFragmentController {
 
         return jsonBody;
     }
+
+    public static JSONObject getExhibitionSeach(String str) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+           jsonBody.put("Search", str);
+
+            jsonBody = Constant.addConstants(jsonBody, context);
+
+        } catch (JSONException e) {
+        } catch (Exception e) {
+        }
+
+        return jsonBody;
+    }
+
     public static JSONObject getExhibitionlikeJson(String clicktype, String id, String prepage) {
 
         JSONObject jsonBody = new JSONObject();
@@ -263,6 +280,46 @@ public class HomeFragmentController {
         }
 
         return trendingItems;
+    }
+
+    public static ArrayList<BasicModel> getExhibitionSearchList(JSONObject response){
+        ArrayList<BasicModel> exHItems = new ArrayList<>();
+        try {
+            JSONArray jsonArray = response.getJSONArray("Data");
+            BasicModel item;
+            if (exHItems == null)
+                exHItems = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject searchContent = jsonArray.getJSONObject(i);
+                item = new BasicModel();
+                item.setId(searchContent.getString("Id"));
+                item.setPageType(searchContent.getString("PageType"));
+                item.setPageTypeId(searchContent.getString("PageTypeId"));
+                item.setTitle(searchContent.getString("Title"));
+
+                exHItems.add(item);
+            }
+        }catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+
+        return exHItems;
+    }
+    public static ArrayList getExhibitionSearchNameList(JSONObject response){
+        ArrayList exHItems = new ArrayList<>();
+        try {
+            JSONArray jsonArray = response.getJSONArray("Data");
+            if (exHItems == null)
+                exHItems = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject searchContent = jsonArray.getJSONObject(i);
+                exHItems.add(searchContent.getString("Title"));
+            }
+        }catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+
+        return exHItems;
     }
 
     public static ArrayList<TrendingItems> getExhibitionList(JSONObject response){

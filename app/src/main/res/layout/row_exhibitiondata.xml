@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="0sp"
+    card_view:cardElevation="3sp"
     android:layout_marginBottom="@dimen/divider_space_xlarge"
     android:paddingBottom="@dimen/divider_space_xlarge"
     app:cardUseCompatPadding="true"
@@ -23,10 +23,8 @@
                 android:layout_height="wrap_content">
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_banner"
-                    android:scaleType="fitXY"
                     android:adjustViewBounds="true"
                     android:clickable="false"
-                    android:maxHeight="@dimen/detail_backdrop_maxheight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="Image"/>

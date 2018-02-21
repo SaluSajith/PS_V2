@@ -45,6 +45,7 @@ public class Constant {
     public static final String EXHIBITIONREGISTER_URL = COMMON_URL + "exhibition/exhibitionRegister/";
     public static final String EXHIBITIONREGISTEROTP_URL = COMMON_URL + "exhibition/customerregistergenerateOtp";
     public static final String EXHIBITIONARTICLE_URL = COMMON_URL +  "exhibition/article/";
+    public static final String EXHIBITIONSEARCH_URL = COMMON_URL +  "exhibition/exhibitionSearch/";
     public static final String TRENDINGARTICLE_URL = COMMON_URL +  "trending/article/";
     public static final String GIVEAWAYARTICLE_URL = COMMON_URL +"giveaway/article/";
     public static final String MULTISTORE_URL = COMMON_URL + "store/multistorelisting";
@@ -97,6 +98,7 @@ public class Constant {
     public static final String SIGNUPPAGE = "16";
     public static final String GIVEAWAYPAGE = "18";
     public static final String GIVEAWAYARTICLEPAGE = "19";
+    public static final String EXHIBITIONSEARCH = "20";
 
     //Clicktype constants
     public static final String HOMEPAGELINK = "1";
@@ -192,6 +194,9 @@ public class Constant {
     public static final int ABOUTDESIGNER_FRAGMENT = 101;
     public static final int PICK_IMAGE_REQUEST = 111;
     public static final int PLACE_PICKER_REQUEST = 112;
+    public static final int EXHIBITION_REQUEST = 113;
+
+    public static final String[] popularPlaces = new String[]{"Mumbai", "New Delhi", "Kolkata", "Bangalore", "Hyderabad", "Pune"};
 
     /**Add constants to the jsonobject - for POSTing
      * Have to attach this to all apis

@@ -303,7 +303,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     static void loadImage(RequestManager glide, String url, AppCompatImageView view) {
         try {
-            glide.load(url).diskCacheStrategy(DiskCacheStrategy.NONE).into(view);
+            glide.load(url).diskCacheStrategy(DiskCacheStrategy.ALL).into(view);
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
         }catch (Exception e) {

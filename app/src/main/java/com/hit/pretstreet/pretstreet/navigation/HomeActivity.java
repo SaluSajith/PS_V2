@@ -151,6 +151,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             }
             int size = PreferenceServices.getInstance().getNotifCOunt();
             tv_profile.setText(PreferenceServices.getInstance().geUsertName());
+            tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
             updateNotificationFlag(size);
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,8 +175,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         View includedlayout = findViewById(R.id.includedlayout);
         ButterKnife.bind(this, includedlayout);
         setupDrawer(includedlayout);
-
-        tv_location.setText(PreferenceServices.getInstance().getCurrentLocation());
 
         /**HAndle SHare parameters and notification parameters*/
         if (PreferenceServices.getInstance().getShareQueryparam().trim().length()!=0 &&
@@ -211,9 +210,9 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
         if (SavedMAinCaTList.length() > 1)
             changeFragment(new HomeFragment(), false);
-       // else{
+        else
+            this.showProgressDialog(getResources().getString(R.string.loading));
         JSONObject resultJson = LoginController.getHomePageJson();
-        this.showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, resultJson, HOMEPAGE_URL);
     }
 
@@ -227,11 +226,11 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 new TwoLevelDataModel("nav_following", "Following", new ArrayList<BasicModel>()),
                 new TwoLevelDataModel("nav_account", "Account", new ArrayList<BasicModel>()),
                 new TwoLevelDataModel("nav_addstore", "Add Store", new ArrayList<BasicModel>()),
-                //new NavDrawerItem("nav_invite", "Refer & Earn"),
+                //new TwoLevelDataModel("nav_invite", "Refer & Earn", new ArrayList<BasicModel>()),
                 new TwoLevelDataModel("nav_about", "About Pretstreet", new ArrayList<BasicModel>()),
                 new TwoLevelDataModel("nav_contact", "Contact Us/Support", new ArrayList<BasicModel>())};
 
-        ExpandableListView elv_nav =  findViewById(R.id.elv_nav);
+        ExpandableListView elv_nav = (ExpandableListView) findViewById(R.id.elv_nav);
         NavDrawerExpandableAdapter navDrawerExpandableAdapter = new NavDrawerExpandableAdapter
                 (elv_nav, HomeActivity.this, twoLevelDataModels, HomeActivity.this);
         elv_nav.setAdapter(navDrawerExpandableAdapter);
@@ -240,13 +239,13 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
 
     /**Navigation Drawer with expandable listview to show categories*/
     private void setupDrawer(View toolbar){
-        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, null, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        final NavigationView navigationView =  findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
@@ -336,7 +335,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         try {
             /**Update Notification count*/
             View includedlayout = findViewById(R.id.includedlayout);
-            NavigationView navigationView = findViewById(R.id.nav_view);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             NotificationBadge badge_home = includedlayout.findViewById(R.id.badge);
             NotificationBadge mBadge = navigationView.findViewById(R.id.badge);
             badge_home.setNumber(size);
@@ -363,7 +362,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     public void onBackPressed() {
         /**Handle drawer status while going bak
          * Double press to exit*/
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -386,7 +385,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -394,7 +393,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     @Override
     public void menuOnClick(String id) {
         String itemId = id;
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         switch (itemId) {
@@ -538,7 +537,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
                 fm.popBackStack();
             }
-            FrameLayout fl_content = findViewById(R.id.content);
+            FrameLayout fl_content = (FrameLayout) findViewById(R.id.content);
             fl_content.removeAllViews();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
             ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -561,13 +560,16 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
     public void onError(String error) {
         this.hideDialog();
         /**Showing empty fragment with RETRY option*/
-        EmptyFragment emptyFragment = new EmptyFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("error", error);
-        bundle.putString("retry", "1");
-        bundle.putString("pageid", HOMEPAGE);
-        emptyFragment.setArguments(bundle);
-        changeFragment(emptyFragment, false);
+        String SavedMAinCaTList = PreferenceServices.getInstance().getHomeMainCatList();
+        if(SavedMAinCaTList.length()==0) {
+            EmptyFragment emptyFragment = new EmptyFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("error", error);
+            bundle.putString("retry", "1");
+            bundle.putString("pageid", HOMEPAGE);
+            emptyFragment.setArguments(bundle);
+            changeFragment(emptyFragment, false);
+        }
         //displaySnackBar(error);
     }
 
@@ -649,7 +651,11 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         if (locationTracker.canGetLocation()) {
             if(PreferenceServices.getInstance().isAutoDetect())
                 if (isLocationChanged(lat2, lng2)) {
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+
+                    /**location should change automatically without any popup/alert*/
+                    getLocation(lat2, lng2);
+
+                    /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
                     alertDialog.setTitle("Location Changed!");
                     alertDialog.setMessage("It is detected that your location has been changed!! Do you want to switch?");
 
@@ -663,7 +669,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                             dialog.cancel();
                         }
                     });
-                    alertDialog.show();
+                    alertDialog.show();*/
                 }
         } else ;
     }
@@ -756,68 +762,6 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
             receiver = null;
         }
         super.onDestroy();
-    }
-
-    protected  void openVideo(){
-        Intent intent = new Intent(this, VideoActivity.class);
-        startActivity(intent);
-    }
-
-    protected void displayTuto() {
-        Showcase.from(this)
-                .setListener(new Showcase.Listener() {
-                    @Override
-                    public void onDismissed() {
-                        //displaynext();
-                        //Toast.makeText(getApplicationContext(), "Tutorial dismissed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setContentView(R.layout.tuto_showcase_tuto_sample)
-                .setFitsSystemWindows(true)
-                .on(R.id.tv_location)
-                .addCircle()
-                .withBorder()
-
-                .onClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                })
-                /*.on(R.id.swipable)
-                .displaySwipableLeft()
-                .delayed(399)
-                .animated(true)*/
-                .show();
-    }
-
-    protected void displaynext() {
-        Showcase.from(this)
-                .setListener(new Showcase.Listener() {
-                    @Override
-                    public void onDismissed() {
-                        //displaySnackBar("Choose");
-                        //Toast.makeText(getApplicationContext(), "Tutorial dismissed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setContentView(R.layout.tuto_showcase_tuto_sample)
-                .setFitsSystemWindows(true)
-                .on(R.id.tv_location)
-                .addCircle()
-                .withBorder()
-
-                .onClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                })
-
-                /*.on(R.id.swipable)
-                .displaySwipableLeft()
-                .delayed(399)
-                .animated(true)*/
-                .show();
     }
 
 }

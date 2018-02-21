@@ -73,8 +73,10 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXARTICLEREGISTE
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONLIKE_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONREGISTEROTP_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONREGISTER_URL;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITIONSEARCH;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_DETAILS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_REQUEST;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_URL;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXUNLIKELINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.GIVEAWAYARTICLEPAGE;
@@ -110,6 +112,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     @BindView(R.id.content) FrameLayout fl_content;
     @BindView(R.id.iv_header)ImageView iv_header;
     @BindView(R.id.iv_filter)ImageView iv_filter;
+    @BindView(R.id.iv_search)ImageView iv_search;
     @BindView(R.id.tv_cat_name) TextViewPret tv_cat_name;
     @BindView(R.id.nsv_header)AppBarLayout nsv_header;
 
@@ -142,7 +145,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         popupDialog = new Dialog(this);
         context = getApplicationContext();
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView iv_menu = toolbar.findViewById(R.id.iv_back);
         iv_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,8 +153,8 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 onBackPressed();
             }
         });
-        ImageView iv_search = toolbar.findViewById(R.id.iv_search);
         iv_search.setVisibility(View.GONE);
+        iv_filter.setVisibility(View.GONE);
         nsv_header.bringToFront();
 
         Intent intent = getIntent();
@@ -191,6 +194,12 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         //showSortScreem();
     }
 
+    @OnClick(R.id.iv_search)
+    public void searchExhibitions(){
+        startActivityForResult(new Intent(HomeInnerActivity.this,
+                ExhibitionSearchActivity.class), EXHIBITION_REQUEST);
+    }
+
     /**To change headername, filter button visibility and all as per the selected fragment
      * @param fragmentId id of the fragment
      * @param b shows addtobackstack boolean*/
@@ -199,7 +208,6 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             case TRENDING_FRAGMENT:
                 first = true;//to handle pagination
                 tv_cat_name.setText("Trending");
-                iv_filter.setVisibility(View.GONE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 trendingFragment = new TrendingFragment();
                 trendingCallback = trendingFragment; //Callback to handle response : to show datain the corresponding fragments
@@ -208,7 +216,6 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
             case GIVEAWAY_FRAGMENT:
                 first = true;//to handle pagination
                 tv_cat_name.setText("Giveaway");
-                iv_filter.setVisibility(View.GONE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 giveawayFragment = new GiveawayFragment();
                 trendingCallback = giveawayFragment; //Callback to handle response : to show datain the corresponding fragments
@@ -218,6 +225,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 first = true; //to handle pagination
                 tv_cat_name.setText("Exhibition");
                 iv_filter.setVisibility(View.VISIBLE);
+                iv_search.setVisibility(View.VISIBLE);
                 iv_header.setImageResource(R.drawable.header_yellow);
                 exhibitionFragment = new ExhibitionFragment();
                 trendingCallback = exhibitionFragment; //Callback to handle response : to show datain the corresponding fragments
@@ -225,8 +233,6 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                 break;
             case TRENDINGARTICLE_FRAGMENT:
                 first = true;
-                iv_filter.setVisibility(View.GONE);
-                toolbar.setVisibility(View.GONE);
                 break;
             default:
                 break;
@@ -368,6 +374,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
     @Override
     public void onError(String error) {
         this.hideDialog();
+        displaySnackBar(error);
         /**Show no data available message*/
         ArrayList<TrendingItems> giveawayItemses = new ArrayList<>();
         trendingCallback.bindData(giveawayItemses, error);
@@ -706,6 +713,13 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        break;
+                    case EXHIBITION_REQUEST:
+                        TrendingItems trendingItems = new TrendingItems();
+                        trendingItems.setId(storeId);
+                        trendingItems.setPagetypeid(EXARTICLEPAGE);
+
+                        openNext(trendingItems, EXHIBITIONSEARCH);
                         break;
                     default:
                         break;

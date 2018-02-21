@@ -295,6 +295,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     /**Download image from URL
      * Removed caching strategy as it is affecting if the image is replaced with another*/
     static void loadImage(RequestManager glide, String url, AppCompatImageView view) {
-        glide.load(url).diskCacheStrategy(DiskCacheStrategy.NONE).into(view);
+        glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
     }
 }

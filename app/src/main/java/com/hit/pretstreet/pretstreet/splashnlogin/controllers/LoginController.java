@@ -24,6 +24,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYMOODS;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYPRO;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SLIDER;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.popularPlaces;
 
 /**
  * Created by User on 7/4/2017.
@@ -428,34 +429,20 @@ public class LoginController {
             e1.printStackTrace();
         }
         return navCatList;
-/*
+    }
 
 
+    public static ArrayList <BasicModel> getPopularPlacesList(){
+        final ArrayList<BasicModel> navCatList = new ArrayList<>();
 
+                BasicModel navCatModel;
+                for (int i = 0; i < popularPlaces.length; i++) {
+                    navCatModel = new BasicModel();
+                    navCatModel.setTitle(popularPlaces[i]);
 
-        ArrayList<TwoLevelDataModel> filterDataModels = new ArrayList<>();
-        try {
-            JSONArray jsonArray = response.getJSONArray("Data");
-            TwoLevelDataModel filterDataModel;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                filterDataModel = new TwoLevelDataModel();
-                filterDataModel.setHeaderTitle(jsonArray.getJSONObject(i).getString("Title"));
-                ArrayList<BasicModel> singleItem = new ArrayList<>();
-                BasicModel model;
-                JSONArray array = jsonArray.getJSONObject(i).getJSONArray("Options");
-                for (int j = 0; j < array.length(); j++) {
-                    model = new BasicModel();
-                    model.setId(array.getJSONObject(j).getString("Code"));
-                    model.setCategory(array.getJSONObject(j).getString("Title"));
-                    model.setStatus(false);
-                    singleItem.add(model);
+                    navCatList.add(navCatModel);
                 }
-                filterDataModel.setAllItemsInSection(singleItem);
-                filterDataModels.add(filterDataModel);
-            }
-        }catch (JSONException e1) {
-            e1.printStackTrace();
-        }
-        return  filterDataModels;*/
+
+        return navCatList;
     }
 }

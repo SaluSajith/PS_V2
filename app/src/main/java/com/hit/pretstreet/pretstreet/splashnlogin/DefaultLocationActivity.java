@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,8 +33,14 @@ import com.hit.pretstreet.pretstreet.core.helpers.DatabaseHelper;
 import com.hit.pretstreet.pretstreet.core.helpers.LocationTracker;
 import com.hit.pretstreet.pretstreet.core.utils.Constant;
 import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
+import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
+import com.hit.pretstreet.pretstreet.search.adapters.AutoSearchAdapter;
+import com.hit.pretstreet.pretstreet.search.interfaces.RecentCallback;
+import com.hit.pretstreet.pretstreet.search.models.BasicModel;
+import com.hit.pretstreet.pretstreet.splashnlogin.adapters.PopularPlacesAdapter;
+import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LocCallbackInterface;
 
 import org.json.JSONArray;
@@ -65,11 +72,12 @@ import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.dropdo
  * class LocationTracker for getting precise location
  **/
 public class DefaultLocationActivity extends
-        AbstractBaseAppCompatActivity implements ApiListenerInterface, LocCallbackInterface{
+        AbstractBaseAppCompatActivity implements ApiListenerInterface, LocCallbackInterface, RecentCallback{
 
     @BindView(R.id.img_close) AppCompatImageView img_close;
     @BindView(R.id.edt_search) EdittextPret edt_search;
     @BindView(R.id.list_places) ListView placeList;
+    @BindView(R.id.rv_popularplaces) RecyclerView rv_popularplaces;
     @BindView(R.id.tv_heading) TextViewPret tv_heading;
 
     private double lat1, long1;
@@ -103,20 +111,10 @@ public class DefaultLocationActivity extends
         locationTracker = new LocationTracker(DefaultLocationActivity.this);
 
         /**Adding some static values to the listview*/
-        resultList = new ArrayList<>();
-        resultList.add("Mumbai");
-        resultList.add("New Delhi");
-        adapter = new ArrayAdapter(getBaseContext(),
-                R.layout.row_nav_text, R.id.tv_nav_item, resultList);
-        placeList.setAdapter(adapter);
-        placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String str = resultList.get(i);
-                getLocationFromAddress(DefaultLocationActivity.this, str);
-                placeList.setAdapter(null);
-            }
-        });
+        ArrayList<BasicModel>  mViewModels = LoginController.getPopularPlacesList();
+        PopularPlacesAdapter viewAdapter = new PopularPlacesAdapter(DefaultLocationActivity.this, mViewModels);
+        Utility.setGridLayoutManager(rv_popularplaces, DefaultLocationActivity.this, 3);
+        rv_popularplaces.setAdapter(viewAdapter);
 
         edt_search.addTextChangedListener(new TextWatcher() {
 
@@ -213,6 +211,12 @@ public class DefaultLocationActivity extends
         displaySnackBar(error);
     }
 
+    @Override
+    public void viewClick(BasicModel searchModel) {
+        String str = searchModel.getTitle().toString();
+        getLocationFromAddress(DefaultLocationActivity.this, str);
+    }
+
     private class doInBackground extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... voids) {
@@ -224,9 +228,10 @@ public class DefaultLocationActivity extends
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if (resultList==null) {
+            if (placeList==null) {
                 displaySnackBar("Please check your internet connection!");
             } else {
+                rv_popularplaces.setVisibility(View.GONE);
                 adapter = new ArrayAdapter<>(getBaseContext(),
                         R.layout.row_nav_text, R.id.tv_nav_item, resultList);
                 placeList.setAdapter(adapter);
@@ -235,7 +240,6 @@ public class DefaultLocationActivity extends
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         String str = resultList.get(i);
                         getLocationFromAddress(DefaultLocationActivity.this, str);
-                        placeList.setAdapter(null);
                     }
                 });
             }
@@ -346,8 +350,9 @@ public class DefaultLocationActivity extends
                 System.out.println("============================================================");
                 if(predsJsonArray.getJSONObject(i).toString().contains("administrative_area_level_1")||
                         predsJsonArray.getJSONObject(i).toString().contains("country"));
-                else
+                else {
                     resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+                }
             }
         } catch (JSONException e) {
         }
@@ -356,7 +361,10 @@ public class DefaultLocationActivity extends
 
     @OnClick(R.id.img_close)
     public void onClosePressed() {
-        this.finish();
+        if(PreferenceServices.instance().getCurrentLocation().isEmpty())
+            displaySnackBar("Please select your location!");
+        else
+            this.finish();
     }
 
     @OnClick(R.id.rl_auto_detect)

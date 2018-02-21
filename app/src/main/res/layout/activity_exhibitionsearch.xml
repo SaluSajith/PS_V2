@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+        <RelativeLayout
+            android:id="@+id/rl_AppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:padding="15sp">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/img_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/close"
+                android:tint="@color/yellow"
+                android:contentDescription="Close"/>
+
+            <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
+                android:id="@+id/txt_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Search"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/yellow"
+                app:pret_typeface="@string/font_merriweather_bold" />
+
+        </RelativeLayout>
+        <com.hit.pretstreet.pretstreet.core.customview.EdittextPret
+            android:id="@+id/edt_search"
+            android:layout_below="@+id/rl_AppBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:drawableLeft="@drawable/searchloc"
+            android:drawablePadding="10dp"
+            android:hint="Type Exhibition Name"
+            android:padding="10sp"
+            android:lines="1"
+            android:textSize="@dimen/textsize_large"/>
+
+        <ListView
+            android:id="@+id/lv_exhibitions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_search"
+            android:padding="10sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

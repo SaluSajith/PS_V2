@@ -121,6 +121,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".splashnlogin.DefaultLocationActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".subcategory_n_storelist.SubCatActivity"
@@ -156,11 +157,16 @@
         <activity
             android:name=".subcategory_n_storelist.StoreListingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".splashnlogin.WelcomeIntroActivity"
+        <activity
+            android:name=".splashnlogin.WelcomeIntroActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".navigation.VideoActivity"
+        <activity
+            android:name=".navigation.ExhibitionSearchActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".navigation.VideoActivity"
             android:theme="@style/Theme.AppCompat.Translucent"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
 
         <!-- ************************** App Analytics start ******************************* -->
         <!-- ************************** App Analytics ******************************* -->

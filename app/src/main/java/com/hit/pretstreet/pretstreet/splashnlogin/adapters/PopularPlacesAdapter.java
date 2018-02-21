@@ -1,4 +1,4 @@
-package com.hit.pretstreet.pretstreet.search.adapters;
+package com.hit.pretstreet.pretstreet.splashnlogin.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -18,14 +18,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by User on 14/08/2017.
+ * Created by User on 20/02/2018.
  */
 
-public class AutoSearchAdapter extends RecyclerView.Adapter<AutoSearchAdapter.AutoSearchViewHolder>{
+public class PopularPlacesAdapter extends RecyclerView.Adapter<PopularPlacesAdapter.AutoSearchViewHolder>{
     ArrayList<BasicModel> artItems;
     RecentCallback recentCallback;
 
-    public AutoSearchAdapter(Context context, ArrayList<BasicModel> artItems) {
+    public PopularPlacesAdapter(Context context, ArrayList<BasicModel> artItems) {
         this.artItems = artItems;
         this.recentCallback = (RecentCallback) context;
     }
@@ -37,7 +37,7 @@ public class AutoSearchAdapter extends RecyclerView.Adapter<AutoSearchAdapter.Au
 
     @Override
     public AutoSearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_search_recent, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_popularplaces, parent, false);
         return new AutoSearchViewHolder(view);
     }
 
@@ -46,9 +46,7 @@ public class AutoSearchAdapter extends RecyclerView.Adapter<AutoSearchAdapter.Au
 
         BasicModel searchModel = artItems.get(position);
         setViewText(holder.txt_storename, searchModel.getTitle());
-        setViewText(holder.txt_address, searchModel.getLocation());
-        setViewText(holder.txt_cat, searchModel.getCategory());
-
+       // setViewText(holder.txt_address, searchModel.getLocation());
     }
 
     private void setViewText(TextView textView, String text) {
@@ -58,7 +56,6 @@ public class AutoSearchAdapter extends RecyclerView.Adapter<AutoSearchAdapter.Au
 
         @BindView(R.id.txt_storename)TextViewPret txt_storename;
         @BindView(R.id.txt_address)TextViewPret txt_address;
-        @BindView(R.id.txt_cat)TextViewPret txt_cat;
 
         public AutoSearchViewHolder(View itemView) {
             super(itemView);

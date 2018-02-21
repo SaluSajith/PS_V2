@@ -79,7 +79,7 @@ public class DetailsPageController {
 
             storeDetailsModel.setId(jsonObject.getString("ExhibitionArticleId"));
             storeDetailsModel.setStoreName(jsonObject.getString("ExhibitionArticleName"));
-            storeDetailsModel.setAreaCity(jsonObject.getString("AreaCity"));
+            storeDetailsModel.setAreaCity(jsonObject.getString("AreaCity").trim());
             storeDetailsModel.setFollowingStatus(jsonObject.getInt("CustomerLikeStatus") == 0 ? false : true);
             storeDetailsModel.setAddress(jsonObject.getString("Address"));
             storeDetailsModel.setBaseImage(jsonObject.getString("BaseImage"));

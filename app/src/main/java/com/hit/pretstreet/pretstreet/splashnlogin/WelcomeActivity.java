@@ -711,6 +711,16 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     }
                 }
             });
+            final TextViewPret tv_skipVeri = view.findViewById(R.id.tv_skipVeri);
+            tv_skipVeri.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pb_otp.setVisibility(View.INVISIBLE);
+                    popupDialog.dismiss();
+                    showProgressDialog(getResources().getString(R.string.loading));
+                    jsonRequestController.sendRequest(WelcomeActivity.this, jsonObject, url);
+                }
+            });
         }
     }
 

@@ -231,15 +231,13 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             tv_book_app.setVisibility(View.VISIBLE);
             tv_book_app.setTextColor(ContextCompat.getColor(context, R.color.dark_gray));
             tv_book_app.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
-        }
-        else if(flag.contains("1")){
+        } else if(flag.contains("1")){
             tv_book_app.setClickable(false);
             tv_book_app.setText("Registered");
             tv_book_app.setVisibility(View.VISIBLE);
             tv_book_app.setTextColor(ContextCompat.getColor(context, R.color.white));
             tv_book_app.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
-        }
-        else{
+        } else {
             tv_book_app.setEnabled(false);
             tv_book_app.setVisibility(View.GONE);
         }
@@ -266,7 +264,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
     /**Show top collapsing image*/
     private void loadBackdrop(String imageUrl) {
         final AppCompatImageView imageView = findViewById(R.id.backdrop);
-        Glide.with(context).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_banner)
+        Glide.with(context).load(imageUrl).asBitmap().fitCenter().placeholder(R.drawable.default_gallery)
                 .diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(imageView);
     }
 

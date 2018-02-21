@@ -460,7 +460,7 @@ public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implemen
         final AppCompatImageView imageView = findViewById(R.id.backdrop);
         Glide.with(this).load(imageUrl)
                 .asBitmap()
-                .placeholder(R.drawable.default_banner)
+                .placeholder(R.drawable.default_gallery)
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
