@@ -95,6 +95,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.ABOUT_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.ACCOUNT_FRAGMENT;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CLICKTYPE_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.CONTACTUS_FRAGMENT;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.EXHIBITION_REQUEST;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGELINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.HOMEPAGE_URL;
@@ -316,6 +317,12 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         }
         else{
             tv_profile.setText(PreferenceServices.getInstance().geUsertName());
+            tv_profile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    menuOnClick("nav_account");
+                }
+            });
             Glide.with(context).load(loginSession.getProfile_pic()).asBitmap()
                     .placeholder(R.drawable.profilepic)
                     .centerCrop().into(new BitmapImageViewTarget(iv_profile) {
@@ -683,7 +690,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
                 double lat1 = Double.parseDouble(PreferenceServices.instance().getLatitute());
                 double lng1 = Double.parseDouble(PreferenceServices.instance().getLongitute());
                 if(lat2!=0 && lng2!=0) {
-                    locationChanged = LocationTracker.distance(lat1, lng1, lat2, lng2) > 10;
+                    locationChanged = LocationTracker.distance(lat1, lng1, lat2, lng2) > 2;//in miles
                 }
             }
             else ;
@@ -701,7 +708,7 @@ public class HomeActivity extends AbstractBaseAppCompatActivity
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> list;
         try {
-            list = geocoder.getFromLocation(lat1, long1, 2);
+            list = geocoder.getFromLocation(lat1, long1, 5);
             if (list.isEmpty()) {
                 displaySnackBar("Oops! Something went wrong.");
             } else {

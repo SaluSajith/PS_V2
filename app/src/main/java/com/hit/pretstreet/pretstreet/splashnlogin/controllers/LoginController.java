@@ -12,6 +12,7 @@ import com.hit.pretstreet.pretstreet.navigation.models.HomeCatItems;
 import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LoginCallbackInterface;
 import com.hit.pretstreet.pretstreet.splashnlogin.models.LoginSession;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelDataModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -432,9 +433,11 @@ public class LoginController {
     }
 
 
-    public static ArrayList <BasicModel> getPopularPlacesList(){
-        final ArrayList<BasicModel> navCatList = new ArrayList<>();
+    public static ArrayList<TwoLevelDataModel> getPopularPlacesList(){
+        ArrayList<TwoLevelDataModel> pupularPlacesSectionedList = new ArrayList<>();
+        TwoLevelDataModel twoLevelDataModel = new TwoLevelDataModel();
 
+        final ArrayList<BasicModel> navCatList = new ArrayList<>();
                 BasicModel navCatModel;
                 for (int i = 0; i < popularPlaces.length; i++) {
                     navCatModel = new BasicModel();
@@ -442,7 +445,9 @@ public class LoginController {
 
                     navCatList.add(navCatModel);
                 }
-
-        return navCatList;
+        twoLevelDataModel.setHeaderTitle("Mumbai");
+        twoLevelDataModel.setAllItemsInSection(navCatList);
+        pupularPlacesSectionedList.add(twoLevelDataModel);
+        return pupularPlacesSectionedList;
     }
 }

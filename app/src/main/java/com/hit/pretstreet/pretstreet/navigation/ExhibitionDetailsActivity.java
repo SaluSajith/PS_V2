@@ -236,7 +236,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
             tv_book_app.setText("Registered");
             tv_book_app.setVisibility(View.VISIBLE);
             tv_book_app.setTextColor(ContextCompat.getColor(context, R.color.white));
-            tv_book_app.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+            tv_book_app.setBackgroundColor(ContextCompat.getColor(context, R.color.light_grey));
         } else {
             tv_book_app.setEnabled(false);
             tv_book_app.setVisibility(View.GONE);
@@ -544,7 +544,7 @@ public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity imp
                         tv_book_app.setEnabled(false);
                         tv_book_app.setText("Registered");
                         tv_book_app.setTextColor(ContextCompat.getColor(context, R.color.white));
-                        tv_book_app.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+                        tv_book_app.setBackgroundColor(ContextCompat.getColor(context, R.color.light_grey));
                     }
                     break;
                 default: break;

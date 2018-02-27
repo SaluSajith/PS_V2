@@ -39,20 +39,30 @@ public abstract class SectionedRecyclerViewAdapter<VH extends RecyclerView.ViewH
         return mHeaderLocationMap.get(position) != null;
     }
 
+    public final void setLayoutManager(RecyclerView mRecyclerView) {
+        mLayoutManager = (GridLayoutManager) mRecyclerView.getLayoutManager();
+        if (mLayoutManager == null) return;
+        final GridLayoutManager layoutManager = (GridLayoutManager)(mRecyclerView.getLayoutManager());
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return (isHeader(position))?  mLayoutManager.getSpanCount() : 1 ;
+            }
+        });
+    }
+
     public final void setLayoutManager(@Nullable GridLayoutManager lm) {
         mLayoutManager = lm;
         if (lm == null) return;
         lm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (isHeader(position))
-                    return mLayoutManager.getSpanCount();
-                return 1;
+                return (isHeader(position))? mLayoutManager.getSpanCount() : 1 ;
             }
         });
     }
 
-    // returns section along with offsetted position
+    // returns section along with offseted position
     private int[] getSectionIndexAndRelativePosition(int itemPosition) {
         synchronized (mHeaderLocationMap) {
             Integer lastSectionIndex = -1;
@@ -112,7 +122,8 @@ public abstract class SectionedRecyclerViewAdapter<VH extends RecyclerView.ViewH
     public final void onBindViewHolder(VH holder, int position) {
         StaggeredGridLayoutManager.LayoutParams layoutParams = null;
         if (holder.itemView.getLayoutParams() instanceof GridLayoutManager.LayoutParams)
-            layoutParams = new StaggeredGridLayoutManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams = new StaggeredGridLayoutManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
         else if (holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams)
             layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
         if (isHeader(position)) {

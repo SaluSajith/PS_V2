@@ -111,7 +111,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.pager_indicator.setVisibility(View.INVISIBLE);
                     holder.iv_banner.setVisibility(View.VISIBLE);
                     holder.article_images.setVisibility(View.GONE);
-                    holder.iv_banner.setImageResource(R.mipmap.ic_launcher);
+                    holder.iv_banner.setImageResource(R.drawable.default_banner);
                     break;
                 case 1:
                     loadImage(glide, trendingItems.getImagearray().get(0), holder.iv_banner);

@@ -56,23 +56,25 @@
         android:layout_marginTop="10dp"
         app:srcCompat="@drawable/buttonbg"
         android:padding="5dp" />
+    <!--android:text="Did't receive the verification code?"-->
 
     <com.hit.pretstreet.pretstreet.core.customview.TextViewPret
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Did't receive the verification code?"
         style="@style/textview_normal"
+        android:lines="2"
         android:textColor="@color/light_grey"
         android:layout_below="@+id/btn_send"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="38dp"
-        android:id="@+id/textViewPret" />
+        android:id="@+id/tv_msg" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/textViewPret"
+        android:layout_below="@+id/tv_msg"
         android:layout_marginBottom="28dp"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal">

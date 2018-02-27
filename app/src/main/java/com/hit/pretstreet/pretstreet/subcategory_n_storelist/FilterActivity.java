@@ -73,11 +73,13 @@ public class FilterActivity extends AbstractBaseAppCompatActivity implements
         }
     }
 
+    /** Setting two dimensional array for sectioned listing
+     * Here I am keeping an array and I will update it after downloading from server or after any changes*/
     private void setAdapter(){
         FilterSectionAdapter adapter = new FilterSectionAdapter(this, dataModels);
         GridLayoutManager manager = new GridLayoutManager(this, 3);
-        Utility.setListLayoutManager(rv_Filter, FilterActivity.this);
         adapter.setLayoutManager(manager);
+        Utility.setListLayoutManager(rv_Filter, FilterActivity.this);
         rv_Filter.setAdapter(adapter);
     }
 

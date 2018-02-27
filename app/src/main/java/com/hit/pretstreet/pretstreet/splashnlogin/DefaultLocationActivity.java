@@ -36,12 +36,12 @@ import com.hit.pretstreet.pretstreet.core.utils.PreferenceServices;
 import com.hit.pretstreet.pretstreet.core.utils.Utility;
 import com.hit.pretstreet.pretstreet.core.views.AbstractBaseAppCompatActivity;
 import com.hit.pretstreet.pretstreet.navigation.HomeActivity;
-import com.hit.pretstreet.pretstreet.search.adapters.AutoSearchAdapter;
 import com.hit.pretstreet.pretstreet.search.interfaces.RecentCallback;
 import com.hit.pretstreet.pretstreet.search.models.BasicModel;
-import com.hit.pretstreet.pretstreet.splashnlogin.adapters.PopularPlacesAdapter;
+import com.hit.pretstreet.pretstreet.splashnlogin.adapters.PopularPlacesSectionedAdapter;
 import com.hit.pretstreet.pretstreet.splashnlogin.controllers.LoginController;
 import com.hit.pretstreet.pretstreet.splashnlogin.interfaces.LocCallbackInterface;
+import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelDataModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,13 +111,13 @@ public class DefaultLocationActivity extends
         locationTracker = new LocationTracker(DefaultLocationActivity.this);
 
         /**Adding some static values to the listview*/
-        ArrayList<BasicModel>  mViewModels = LoginController.getPopularPlacesList();
-        PopularPlacesAdapter viewAdapter = new PopularPlacesAdapter(DefaultLocationActivity.this, mViewModels);
+        ArrayList<TwoLevelDataModel> mViewModels = LoginController.getPopularPlacesList();
+        PopularPlacesSectionedAdapter adapter = new PopularPlacesSectionedAdapter(this, mViewModels);
         Utility.setGridLayoutManager(rv_popularplaces, DefaultLocationActivity.this, 3);
-        rv_popularplaces.setAdapter(viewAdapter);
+        adapter.setLayoutManager(rv_popularplaces);
+        rv_popularplaces.setAdapter(adapter);
 
         edt_search.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tv_heading.setVisibility(View.GONE);
@@ -128,10 +128,8 @@ public class DefaultLocationActivity extends
             public void afterTextChanged(Editable editable) {
             }
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
         });
     }
 
@@ -246,29 +244,46 @@ public class DefaultLocationActivity extends
         }
     }
 
-    public void getLocationFromAddress(Context context, String strAddress) {
-        this.showProgressDialog(getResources().getString(R.string.loading));
-        strSearch = strAddress;
-        Geocoder coder = new Geocoder(context);
-        List<Address> address;
-        try {
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address != null) {
-                Address location = address.get(0);
-                Log.e("Address: ", address+"  1");
-                saveNContinue(location, strAddress);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JSONObject jsonObject = new JSONObject();
-            try {
-                String query = URLEncoder.encode(strAddress, "utf-8");
-                String URL = GETLOCATION_URL + "&address="+query;
+    public void getLocationFromAddress(final Context context, String strAddress) {
+        class doInBackground extends AsyncTask<String, String, Boolean> {
+            Context mContext = context;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
                 showProgressDialog(getResources().getString(R.string.loading));
-                jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             }
+
+            @Override
+            protected Boolean doInBackground(String... strAddress) {
+                strSearch = strAddress[0];
+                Geocoder coder = new Geocoder(mContext);
+                List<Address> address;
+                try {
+                    address = coder.getFromLocationName(strAddress[0], 5);
+                    if (address != null) {
+                        Address location = address.get(0);
+                        Log.e("Address: ", address+"  1");
+                        saveNContinue(location, strAddress[0]);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    getLocationFromGoogle(strAddress[0]);
+                }
+                return null;
+            }
+        }
+        new doInBackground().execute(strAddress);
+    }
+
+    private void getLocationFromGoogle(String strAddress){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            String query = URLEncoder.encode(strAddress, "utf-8");
+            String URL = GETLOCATION_URL + "&address="+query;
+            showProgressDialog(getResources().getString(R.string.loading));
+            jsonRequestController.sendRequestGoogle(DefaultLocationActivity.this, jsonObject, URL);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
 
@@ -304,7 +319,6 @@ public class DefaultLocationActivity extends
             PreferenceServices.instance().saveLongitute(longitude + "");
             PreferenceServices.instance().saveLocationType(dropdownloc);
             this.hideDialog();
-            finish();
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -343,6 +357,7 @@ public class DefaultLocationActivity extends
         }
         try {
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
+            System.out.println("jsonObj "+jsonObj);
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
             resultList = new ArrayList<>(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
@@ -387,48 +402,58 @@ public class DefaultLocationActivity extends
                     }
                 }, 10000);
             } else
-                getLocation();
+                new getLocationTask().execute();
         } else
             locationTracker.checkForLocationSettings();
     }
 
-    public void getLocation() {
-        try {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> list;
+    private class getLocationTask extends AsyncTask<String, String, Boolean> {
+        @Override
+        protected Boolean doInBackground(String... voids) {
             try {
-                list = geocoder.getFromLocation(lat1, long1, 2);
-                if (list.isEmpty()) {
-                    //displaySnackBar("Please try again");
-                    getLatlng();
-                } else {
-                    Address location = list.get(1);
-                    currentLocation = location.getSubLocality();
-                    //displaySnackBar( "Location set to " + currentLocation);
-                    try{
-                        String locality = location.getLocality();
-                        if(!locality.equalsIgnoreCase("null")) {
-                            if (currentLocation.equals(locality))
-                                PreferenceServices.instance().saveCurrentLocation(currentLocation);
-                            else
-                                PreferenceServices.instance().saveCurrentLocation(currentLocation + ", " + locality);
+                Geocoder geocoder = new Geocoder(DefaultLocationActivity.this, Locale.getDefault());
+                List<Address> list;
+                try {
+                    list = geocoder.getFromLocation(lat1, long1, 2);
+                    if (list.isEmpty()) {
+                        //displaySnackBar("Please try again");
+                        getLatlng();
+                    } else {
+                        Address location = list.get(1);
+                        currentLocation = location.getSubLocality();
+                        //displaySnackBar( "Location set to " + currentLocation);
+                        try{
+                            String locality = location.getLocality();
+                            if(!locality.equalsIgnoreCase("null")) {
+                                if (currentLocation.equals(locality))
+                                    PreferenceServices.instance().saveCurrentLocation(currentLocation);
+                                else
+                                    PreferenceServices.instance().saveCurrentLocation(currentLocation + ", " + locality);
+                            }
+                        }catch (Exception e){
+                            PreferenceServices.instance().saveCurrentLocation(currentLocation);
+                            e.printStackTrace();
                         }
-                    }catch (Exception e){
-                        PreferenceServices.instance().saveCurrentLocation(currentLocation);
-                        e.printStackTrace();
+                        PreferenceServices.instance().saveLatitute(lat1 + "");
+                        PreferenceServices.instance().saveLongitute(long1 + "");
+                        PreferenceServices.instance().saveLocationType(currentloc);
+
                     }
-                    PreferenceServices.instance().saveLatitute(lat1 + "");
-                    PreferenceServices.instance().saveLongitute(long1 + "");
-                    PreferenceServices.instance().saveLocationType(currentloc);
-                    this.finish();
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    getLatlng();
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                getLatlng();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            finish();
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
     }
 
@@ -472,7 +497,7 @@ public class DefaultLocationActivity extends
         hideDialog();
         lat1 = location.getLatitude();
         long1 = location.getLongitude();
-        getLocation();
+        new getLocationTask().execute();
     }
 
     @Override

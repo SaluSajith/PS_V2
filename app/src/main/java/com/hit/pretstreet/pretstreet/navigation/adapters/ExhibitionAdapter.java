@@ -135,7 +135,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 holder.bt_register.setEnabled(false);
                 holder.bt_register.setText("Registered");
                 holder.bt_register.setTextColor(ContextCompat.getColor(context, R.color.white));
-                holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+                holder.bt_register.setBackgroundColor(ContextCompat.getColor(context, R.color.light_grey));
                 holder.bt_register.setVisibility(View.VISIBLE);
                 break;
             case "2":
@@ -264,7 +264,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     textViewPret.setEnabled(false);
                     textViewPret.setText("Registered");
                     textViewPret.setTextColor(ContextCompat.getColor(context, R.color.white));
-                    textViewPret.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray));
+                    textViewPret.setBackgroundColor(ContextCompat.getColor(context, R.color.light_grey));
                 }
                 if(list.get(mPosition).getId().equals(storeid))
                     list.get(mPosition).setRegister(status+"");
@@ -295,6 +295,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     /**Download image from URL
      * Removed caching strategy as it is affecting if the image is replaced with another*/
     static void loadImage(RequestManager glide, String url, AppCompatImageView view) {
-        glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+        //glide.load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(view);
+        glide.load(url).diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(view);
     }
 }

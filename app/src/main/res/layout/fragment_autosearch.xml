@@ -86,7 +86,7 @@
                 android:paddingTop="@dimen/padding_small"
                 android:paddingBottom="@dimen/padding_small"
                 android:paddingLeft="@dimen/padding_xlarge"
-                android:background="@color/light_gray"
+                android:background="@color/light_grey"
                 android:textSize="@dimen/textsize_small"
                 app:pret_typeface="@string/font_merriweather_bold"/>
 
@@ -105,7 +105,7 @@
                 android:paddingTop="@dimen/padding_small"
                 android:paddingBottom="@dimen/padding_small"
                 android:paddingLeft="@dimen/padding_xlarge"
-                android:background="@color/light_gray"
+                android:background="@color/light_grey"
                 android:textSize="@dimen/textsize_small"
                 app:pret_typeface="@string/font_merriweather_bold"/>
 

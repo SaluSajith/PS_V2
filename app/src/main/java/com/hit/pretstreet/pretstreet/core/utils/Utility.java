@@ -45,17 +45,14 @@ public class Utility {
         recyclerView.setLayoutManager(llm);
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setHasFixedSize(true);
-        //recyclerView.setItemViewCacheSize(20);
-        //recyclerView.setDrawingCacheEnabled(true);
-        //recyclerView.setDrawingCacheQuality(SView.DRAWING_CACHE_QUALITY_HIGH);
         return llm;
     }
 
-    /** Settingup layout manager for gridview inside Nested scrollview
+    /** Setting layout manager for gridview inside Nested scrollview
      *  Scrollable header*/
     public static LinearLayoutManager setGridLayoutManager(RecyclerView recyclerView, Context context, int columnCount){
         GridLayoutManager llm = new GridLayoutManager(context, columnCount);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        llm.setOrientation(GridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setNestedScrollingEnabled(false);
         return llm;

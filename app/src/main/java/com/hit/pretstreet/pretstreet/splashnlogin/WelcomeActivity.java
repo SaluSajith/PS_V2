@@ -110,17 +110,15 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     private static final int LOGIN = 1;
     private static final int SOCIAL_LOGIN = 2;
 
-    @BindView(R.id.content)
-    FrameLayout fl_content;
-    @BindView(R.id.content_splash)
-    FrameLayout fl_content_splash;
+    @BindView(R.id.content) FrameLayout fl_content;
+    @BindView(R.id.content_splash) FrameLayout fl_content_splash;
 
     JsonRequestController jsonRequestController;
     LoginController loginController;
 
     private static int DURATION;
     private Handler splashHandler;
-    private static final int SPLASH_DURATION_END = 1500;
+    private static final int SPLASH_DURATION_END = 1000;
 
     String otpValue;
     Dialog popupDialog;
@@ -134,13 +132,28 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
     ButtonPret buttonPret;
 
     boolean notif = false;
+    boolean sleep = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(sleep) {
+            sleep = false;
+            LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
+            if (loginSession.getSessionid().trim().length() == 0 || loginSession.getRegid().trim().length() == 0) {
+                changeFragment(new WelcomeFragment(), false, WELCOME_FRAGMENT);
+                setupOTPReceiver(); //Initialising OTP receiver sothat the value will get updated in the edittext
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        init();
         changeFragment(new SplashFragment(), false, SPLASH_FRAGMENT);
+        init();
+        showView();
         fl_content_splash.bringToFront();
 
     }
@@ -160,22 +173,9 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         DURATION = Integer.valueOf(getString(R.string.splash_duration));
         sharedPreferencesHelper = new SharedPreferencesHelper(context);
         //PreferenceServices.getInstance().setFirstTimeLaunch(true);
-        if (!PreferenceServices.instance().isFirstTimeLaunch())
-            getIP();
-        else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent introIntent = new Intent(context, WelcomeIntroActivity.class);
-                    startActivityForResult(introIntent, INTRO_SLIDES_REQUEST_CODE);
-                }
-            }, 1500);
-        }
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
+    private void showView(){
         /** Getting basic URL path whenever open the app */
         if (!PreferenceServices.instance().isFirstTimeLaunch())
             getIP();
@@ -187,7 +187,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                     Intent introIntent = new Intent(context, WelcomeIntroActivity.class);
                     startActivityForResult(introIntent, INTRO_SLIDES_REQUEST_CODE);
                 }
-            }, 1500);
+            }, 1000);
         }
     }
 
@@ -241,7 +241,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
                 fm.popBackStack();
             }
-            fl_content.removeAllViews();
+            //fl_content.removeAllViews();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction(); /* Fragment transition*/
             ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
             if (content == SPLASH_FRAGMENT)
@@ -255,6 +255,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             }
             ft.commit();
         } catch (Exception e) {
+            if(content == WELCOME_FRAGMENT)
+                sleep = true;
             e.printStackTrace();
         }
     }
@@ -365,6 +367,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         loginSession.setMobile(phonenumber);
         loginJson = LoginController.getNormalLoginDetails(loginSession);
         JSONObject otpObject = LoginController.getOTPVerificationJson(phonenumber, "");
+        showOTPScreem(loginJson, LOGIN_URL);
         showProgressDialog(getResources().getString(R.string.loading));
         jsonRequestController.sendRequest(this, otpObject, LOGIN_OTP_URL);
     }
@@ -482,8 +485,8 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             loginSession.setLname(object.getString("UserLastName"));
             loginSession.setEmail(object.getString("UserEmail"));
             loginSession.setSessionid(object.getString("UserSessionId"));
-
             loginSession.setMobile(object.getString("UserMobile"));
+
             if (object.has("UserProfilePicture")) {
                 String url = "";
                 try {
@@ -550,6 +553,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         public void run() {
             if (!isFinishing()) {
                 splashHandler.removeCallbacks(this);
+                System.out.println("isFinishing");
                 //if (PreferenceServices.getInstance().geUsertId().equalsIgnoreCase("")) {
                 LoginSession loginSession = sharedPreferencesHelper.getUserDetails();
                 if (loginSession.getSessionid().trim().length() == 0 || loginSession.getRegid().trim().length() == 0) {
@@ -632,6 +636,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
             pb_otp.setVisibility(View.VISIBLE);
             edittextPret = edt_otp;
             ButtonPret btn_send = view.findViewById(R.id.btn_send);
+            final TextViewPret tv_msg = view.findViewById(R.id.tv_msg);
             buttonPret = btn_send;
 
             RelativeLayout rl = view.findViewById(R.id.popup_bundle);
@@ -687,7 +692,7 @@ public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
                         public void run() {
                             try {
                                 if (popupDialog.isShowing())
-                                    tv_resend.setText("Seems like mobile network is not available. " +
+                                    tv_msg.setText("Seems like mobile network is not available. " +
                                             "Please try using Google or Facebook login.");
                             } catch (Exception e) {
                                 e.printStackTrace();

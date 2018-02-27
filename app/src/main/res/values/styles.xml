@@ -23,8 +23,8 @@
         <item name="colorAccent">@color/yellow_indicator</item>
     </style>
 
-    <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Dialog">
-        <item name="android:windowNoTitle">true</item>
+    <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="textview_heading">

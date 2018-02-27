@@ -35,7 +35,7 @@
             style="@style/textview_normal"
             android:id="@+id/tv_location"
             android:layout_margin="0dp"
-            android:text="Worki"
+            android:text=""
             app:pret_typeface="@string/font_merriweather_light"/>
 
         <LinearLayout
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 style="@style/textview_normal"
                 android:textColor="@color/green"
-                android:text="Closed"
+                android:text=""
                 android:layout_marginRight="0dp"
                 android:id="@+id/tv_openstatus"
                 app:pret_typeface="@string/font_merriweather_light"/>

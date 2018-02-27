@@ -1,16 +1,20 @@
-package com.hit.pretstreet.pretstreet.subcategory_n_storelist.adapters;
+package com.hit.pretstreet.pretstreet.splashnlogin.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hit.pretstreet.pretstreet.R;
+import com.hit.pretstreet.pretstreet.core.customview.TextViewPret;
 import com.hit.pretstreet.pretstreet.core.utils.SectionedRecyclerViewAdapter;
+import com.hit.pretstreet.pretstreet.search.interfaces.RecentCallback;
 import com.hit.pretstreet.pretstreet.search.models.BasicModel;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.FilterActivity;
 import com.hit.pretstreet.pretstreet.subcategory_n_storelist.interfaces.FilterCallback;
@@ -19,15 +23,22 @@ import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelData
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerView.ViewHolder> {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+/**
+ * Created by User on 22/02/2018.
+ */
+
+public class PopularPlacesSectionedAdapter extends SectionedRecyclerViewAdapter<RecyclerView.ViewHolder> {
     private static List<TwoLevelDataModel> allData;
-    FilterCallback filterCallback;
+    private static RecentCallback recentCallback;
 
     /**Public constructor
      * @param data two dimensional array object*/
-    public FilterSectionAdapter(Context context, List<TwoLevelDataModel> data) {
+    public PopularPlacesSectionedAdapter(Context context, List<TwoLevelDataModel> data) {
         this.allData = data;
-        filterCallback = (FilterActivity) context;
+        this.recentCallback = (RecentCallback) context;
     }
     @Override
     public int getSectionCount() {
@@ -47,22 +58,18 @@ public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerV
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int section, final int relativePosition, int absolutePosition) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int section, final int relativePosition, int absolutePosition) {
 
         final ArrayList<BasicModel> itemsInSection = allData.get(section).getAllItemsInSection();
-        String itemName = itemsInSection.get(relativePosition).getCategory();
+        String itemName = itemsInSection.get(relativePosition).getTitle();
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-        itemViewHolder.cb_Item.setText(itemName);
-        itemViewHolder.cb_Item.setChecked(itemsInSection.get(relativePosition).getStatus()== true ? true : false );
-        itemViewHolder.cb_Item.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        itemViewHolder.txt_storename.setText(itemName);
+        itemViewHolder.txt_storename.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                itemsInSection.get(relativePosition).setStatus(isChecked);
-                filterCallback.updateStatus((ArrayList<TwoLevelDataModel>) allData);
-            }}
-        );
-        // Try to put a image . for sample i set background color in xml layout file
-        // itemViewHolder.itemImage.setBackgroundColor(Color.parseColor("#01579b"));
+            public void onClick(View view) {
+                recentCallback.viewClick(allData.get(section).getAllItemsInSection().get(relativePosition));
+            }
+        });
     }
 
     @Override
@@ -74,7 +81,7 @@ public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerV
             return new SectionViewHolder(v);
         } else {
             v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.row_filter_item, parent, false);
+                    .inflate(R.layout.row_popularplaces, parent, false);
             return new ItemViewHolder(v);
         }
     }
@@ -90,20 +97,22 @@ public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerV
     }
 
     /**ItemViewHolder Class for Items in each Section*/
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        final CheckBox cb_Item;
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {// implements View.OnClickListener{
+        @BindView(R.id.txt_storename)TextViewPret txt_storename;
+        @BindView(R.id.txt_address)TextViewPret txt_address;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            cb_Item = itemView.findViewById(R.id.cb_Item);
+            ButterKnife.bind(this, itemView);
 
-            /* itemView.setOnClickListener(new SView.OnClickListener() {
-                @Override
-                public void onClick(SView v) {
-                    Toast.makeText(v.getContext(), cb_Item.getText(), Toast.LENGTH_SHORT).show();
-
-                }
-            });*/
+            //itemView.setOnClickListener(this);
+            /*txt_storename.setOnClickListener(this);
+            txt_address.setOnClickListener(this);*/
         }
+
+        /*@Override
+        public void onClick(View view) {
+            recentCallback.viewClick(artItems.get(getAdapterPosition()));
+        }*/
     }
 }

@@ -123,7 +123,7 @@ public class SharedPreferencesHelper {
     public void createLoginSession(LoginSession loginSession) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_REG_ID, loginSession.getRegid());
-        editor.putString(KEY_MOBILE, loginSession.getMobile());
+        editor.putString(KEY_MOBILE, loginSession.getMobile().equals("null") ?  loginSession.getMobile() : "");
         editor.putString(KEY_FNAME, loginSession.getFname());
         editor.putString(KEY_LNAME, loginSession.getLname());
         editor.putString(KEY_EMAIL, loginSession.getEmail());
@@ -150,7 +150,7 @@ public class SharedPreferencesHelper {
     public LoginSession getUserDetails(){
         LoginSession userDetails = new LoginSession();
         userDetails.setRegid(pref.getString(KEY_REG_ID, ""));
-        userDetails.setMobile(pref.getString(KEY_MOBILE, ""));
+        userDetails.setMobile(pref.getString(KEY_MOBILE, "").equals("null") ?  "" : pref.getString(KEY_MOBILE, ""));
         userDetails.setFname(pref.getString(KEY_FNAME, ""));
         userDetails.setLname(pref.getString(KEY_LNAME, ""));
         userDetails.setEmail(pref.getString(KEY_EMAIL, ""));

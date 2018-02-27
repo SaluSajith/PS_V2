@@ -48,12 +48,12 @@ public class HomePagerAdapter extends PagerAdapter {
 
         final AppCompatImageView imageView = itemView.findViewById(R.id.img_pager_item);
         if(homeSubCategoriesArray.size()==0){
-            imageView.setImageResource(R.mipmap.ic_launcher);
+            imageView.setImageResource(R.drawable.default_banner);
         }else {
             Glide.with(mContext)
                     .load(homeSubCategoriesArray.get(position).getImageSource())
                     .fitCenter()
-                    .placeholder(R.mipmap.ic_launcher)
+                    .placeholder(R.drawable.default_banner)
                     .into(imageView);
         }
 
