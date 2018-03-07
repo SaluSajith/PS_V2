@@ -308,7 +308,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                         public void run() {
                             hideDialog();
                         }
-                    }, 1000);
+                    }, 200);
                     break;
                 case GIVEAWAY_URL:
                     first = false;
@@ -321,7 +321,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                         public void run() {
                             hideDialog();
                         }
-                    }, 1000);
+                    }, 200);
                     break;
                 case EXHIBITION_URL:
                     first = false;
@@ -333,7 +333,7 @@ public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
                         public void run() {
                             hideDialog();
                         }
-                    }, 1000);
+                    }, 200);
                     break;
                 case TRENDINGLIKE_URL:
                     JSONObject object = response.getJSONObject("Data");

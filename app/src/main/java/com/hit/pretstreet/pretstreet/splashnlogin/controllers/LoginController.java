@@ -26,6 +26,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.SHOPBYPRO;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SLIDER;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRAPE;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.popularPlaces;
+import static com.hit.pretstreet.pretstreet.core.utils.Constant.popularPlacesHeader;
 
 /**
  * Created by User on 7/4/2017.
@@ -357,7 +358,6 @@ public class LoginController {
                 }
                 list.add(homeCatItems);
             }
-
         } catch (JSONException e1) {
             e1.printStackTrace();
         }
@@ -393,7 +393,6 @@ public class LoginController {
         } catch (JSONException e1) {
             e1.printStackTrace();
         }
-
         return list;
     }
 
@@ -421,10 +420,7 @@ public class LoginController {
                             break;
                     }
                 }
-            }
-            else{
-
-            }
+            } else;
 
         } catch (JSONException e1) {
             e1.printStackTrace();
@@ -435,19 +431,23 @@ public class LoginController {
 
     public static ArrayList<TwoLevelDataModel> getPopularPlacesList(){
         ArrayList<TwoLevelDataModel> pupularPlacesSectionedList = new ArrayList<>();
-        TwoLevelDataModel twoLevelDataModel = new TwoLevelDataModel();
-
-        final ArrayList<BasicModel> navCatList = new ArrayList<>();
-                BasicModel navCatModel;
-                for (int i = 0; i < popularPlaces.length; i++) {
-                    navCatModel = new BasicModel();
-                    navCatModel.setTitle(popularPlaces[i]);
-
-                    navCatList.add(navCatModel);
-                }
-        twoLevelDataModel.setHeaderTitle("Mumbai");
-        twoLevelDataModel.setAllItemsInSection(navCatList);
-        pupularPlacesSectionedList.add(twoLevelDataModel);
+        TwoLevelDataModel twoLevelDataModel;
+        ArrayList<BasicModel> navCatList;
+        BasicModel navCatModel;
+        int index = 0;
+        for (String[] headers : popularPlaces){
+            navCatList = new ArrayList<>();
+            twoLevelDataModel = new TwoLevelDataModel();
+            for(String places : headers){
+                navCatModel = new BasicModel();
+                navCatModel.setTitle(places);
+                navCatList.add(navCatModel);
+            }
+            twoLevelDataModel.setHeaderTitle(popularPlacesHeader[index]);
+            twoLevelDataModel.setAllItemsInSection(navCatList);
+            pupularPlacesSectionedList.add(twoLevelDataModel);
+            index++;
+        }
         return pupularPlacesSectionedList;
     }
 }

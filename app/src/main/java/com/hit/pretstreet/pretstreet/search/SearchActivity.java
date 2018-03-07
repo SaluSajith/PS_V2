@@ -213,7 +213,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                         public void run() {
                             hideDialog();
                         }
-                    }, 1000);
+                    }, 200);
                     break;
                 case SEARCH_URL:
                     ArrayList <StoreListModel> storeListModels = searchController.getSearchList(response);
@@ -225,7 +225,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                         public void run() {
                             hideDialog();
                         }
-                    }, 1500);
+                    }, 200);
                     break;
                 case RECENTSEARCH_URL:
                     searchDataCallback.setRecentsearchList(searchController.getRecentViewList(response),
@@ -236,7 +236,7 @@ public class SearchActivity extends AbstractBaseAppCompatActivity
                         public void run() {
                             hideDialog();
                         }
-                    }, 1000);
+                    }, 100);
                     break;
                 case UPDATEFOLLOWSTATUS_URL:
                     try {

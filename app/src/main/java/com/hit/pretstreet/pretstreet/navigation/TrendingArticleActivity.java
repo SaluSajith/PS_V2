@@ -193,7 +193,7 @@ public class TrendingArticleActivity extends AbstractBaseAppCompatActivity imple
                 public void run() {
                     finish();
                 }
-            }, 1500);
+            }, 500);
         }
     }
 

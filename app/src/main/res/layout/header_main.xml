@@ -143,6 +143,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:visibility="visible"
+                android:layout_marginRight="-4dp"
                 app:srcCompat="@drawable/notification"
                 android:layout_centerVertical="true"
                 android:layout_alignRight="@+id/linearLayout"

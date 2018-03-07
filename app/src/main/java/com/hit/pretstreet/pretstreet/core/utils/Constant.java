@@ -196,8 +196,9 @@ public class Constant {
     public static final int PLACE_PICKER_REQUEST = 112;
     public static final int EXHIBITION_REQUEST = 113;
 
-    public static final String[] popularPlaces = new String[]{"Andheri", "Colaba", "Bandra", "Bangalore", "Hyderabad", "Pune"};
-
+    public static final String[] popularPlacesHeader = {"Mumbai", "New Delhi", "Hyderabad"};
+    public static final String[][] popularPlaces = {{"Bandra", "Colaba", "Vile Parle"}, {"Sainik Farm", "Shahdara", "Dwarka"}
+            , {"Secunderabad", "HITEC City", "Banjara Hills"}};
     /**Add constants to the jsonobject - for POSTing
      * Have to attach this to all apis
      *

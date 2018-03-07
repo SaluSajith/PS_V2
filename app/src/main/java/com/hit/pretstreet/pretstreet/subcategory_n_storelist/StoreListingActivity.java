@@ -430,7 +430,7 @@ public class StoreListingActivity extends AbstractBaseAppCompatActivity implemen
             public void run() {
                 hideDialog();
             }
-        }, 500);
+        }, 200);
     }
 
     @Override

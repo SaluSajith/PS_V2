@@ -92,7 +92,7 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
             loadmore = true;
         adapter.setLoaded();
         if(this.exHItems.size()==0) {
-            tv_msg.setText(message  );
+            tv_msg.setText(message);
             ll_empty.setVisibility(View.VISIBLE);
         }
         else ll_empty.setVisibility(View.INVISIBLE);
@@ -106,7 +106,6 @@ public class ExhibitionFragment extends  AbstractBaseFragment<HomeInnerActivity>
         intent.putExtra(Constant.PRE_PAGE_KEY, Integer.parseInt(Constant.HOMEPAGE));
         intent.putExtra(Constant.POSITION_KEY, position);
         startActivity(intent);
-
     }
 
     public void updateLikeStatus(int status, String storeid) {

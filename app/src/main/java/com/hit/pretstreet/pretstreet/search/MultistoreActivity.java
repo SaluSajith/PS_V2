@@ -247,7 +247,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
             public void run() {
                 hideDialog();
             }
-        }, 1000);
+        }, 200);
         handleResponse(response);
     }
 
@@ -260,7 +260,7 @@ public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
             public void run() {
                 finish();
             }
-        }, 2000);
+        }, 200);
     }
 
     @Override

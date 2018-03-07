@@ -265,7 +265,7 @@ public class FollowingActivity extends AbstractBaseAppCompatActivity implements
             public void run() {
                 hideDialog();
             }
-        }, 1000);
+        }, 200);
     }
 
     @Override
