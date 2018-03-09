@@ -97,6 +97,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 /**
  * Parent activity to display Exhibition fragment,
  * Trending, Giveaway fragment
+ * @author SVS
  **/
 public class HomeInnerActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, TrendingHolderInvoke, ZoomedViewListener {

@@ -71,6 +71,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 /**
  * Exhibition Details page
  * @ features : view, call, gallery, register option
+ *  * @author SVS
  **/
 public class ExhibitionDetailsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback {

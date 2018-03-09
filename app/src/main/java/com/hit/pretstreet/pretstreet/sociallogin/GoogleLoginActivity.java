@@ -14,7 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.hit.pretstreet.pretstreet.R;
-
+/**@author SVS*/
 public class GoogleLoginActivity extends AppCompatActivity
         implements GoogleApiClient.OnConnectionFailedListener {
 

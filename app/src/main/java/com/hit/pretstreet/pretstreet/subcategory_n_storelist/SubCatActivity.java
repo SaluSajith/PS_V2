@@ -46,6 +46,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATLINK;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
 /**
  * Shows sub category listing page
+ * @author SVS
  **/
 public class SubCatActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, SubCatTrapeClick {

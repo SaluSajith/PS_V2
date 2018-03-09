@@ -52,6 +52,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDINGLIKE_URL
 /**
  * Article Details page with like button
  * Detailing Trending and Giveaway Articles
+ * @author SVS
  **/
 public class TrendingArticleActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, TrendingCallback, ZoomedViewListener {

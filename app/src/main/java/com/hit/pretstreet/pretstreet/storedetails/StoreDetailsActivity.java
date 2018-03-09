@@ -86,6 +86,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.VIEWONMAPLINK;
  *                  Testimonials List
  *                  Book Appointment
  *                  Automatic  adjusting layout if data is null
+ *
+ * @author SVS
  **/
 public class StoreDetailsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback {

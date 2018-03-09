@@ -52,6 +52,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STORELISTINGPAGE
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 /**
  * Collapsing Header activity of Multistore listing
+ * @author SVS
  **/
 public class MultistoreActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ImageClickCallback, ButtonClickCallbackStoreList {

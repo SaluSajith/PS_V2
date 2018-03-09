@@ -39,6 +39,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TRENDING_URL;
 /**
  * Created by User on 15/02/2018.
  * Foe searching exhibition by name
+ *  * @author SVS
  */
 
 public class ExhibitionSearchActivity extends AbstractBaseAppCompatActivity

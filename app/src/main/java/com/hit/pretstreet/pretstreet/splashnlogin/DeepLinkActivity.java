@@ -26,6 +26,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.INSTALLREFERRERK
  * Deeplinking activity to handle UTM campaign parameters
  * Directly saving and sending them while login
  * Working on referral feature
+ * @author SVS
  **/
 public class DeepLinkActivity extends AppCompatActivity implements ApiListenerInterface {
 

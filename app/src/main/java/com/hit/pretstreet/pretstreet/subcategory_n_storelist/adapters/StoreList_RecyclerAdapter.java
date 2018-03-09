@@ -31,6 +31,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.MULTISTOREPAGE;
 
 /**
  * Created by User on 7/27/2017.
+ * Adapter class for SToreListing(including searchlist, follower list etc) section
+ * @author SVS
  */
 
 public class StoreList_RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder > {

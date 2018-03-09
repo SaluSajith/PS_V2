@@ -16,6 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by User on 6/30/2017.
  * To setup Testimonial Card
+ * @author SVS
  */
 public class CardFragmentPagerAdapter extends FragmentStatePagerAdapter implements CardAdapter {
 

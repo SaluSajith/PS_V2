@@ -68,6 +68,7 @@ import static java.lang.Integer.parseInt;
  * Main store Listing activity
  * Scrolling clickable header which shows all the subcategories
  * Filter feature
+ * @author SVS
  **/
 public class StoreListingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallbackStoreList, View.OnClickListener {

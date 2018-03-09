@@ -57,6 +57,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.STOREDETAILSPAGE
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTATUS_URL;
 /**
  * Lists following stores list of the User
+ * @author SVS
  **/
 public class FollowingActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, View.OnClickListener, ButtonClickCallbackStoreList, LoginCallbackInterface {

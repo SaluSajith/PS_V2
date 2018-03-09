@@ -17,6 +17,7 @@ import butterknife.BindView;
  * Full screen gallery image view
  * Swipe feature
  * Zoom feature
+ * @author SVS
  **/
 public class FullscreenGalleryActivity extends AbstractBaseAppCompatActivity {
 

@@ -87,6 +87,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.URL_KEY;
  *          Terms & Conditions
  *          Rate Us
  *          Change password
+ *
+ * @author SVS
  **/
 public class NavigationItemsActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface, TrendingCallback, ZoomedViewListener{

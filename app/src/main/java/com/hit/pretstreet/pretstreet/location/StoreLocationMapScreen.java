@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 /**
  * To show store location in a map
  * We can also redirect the user to Google Maps using this class
+ *  * @author SVS
  */
 public class StoreLocationMapScreen extends FragmentActivity {
 

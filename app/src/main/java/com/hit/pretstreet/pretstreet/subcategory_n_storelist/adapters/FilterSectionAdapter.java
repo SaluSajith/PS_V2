@@ -18,7 +18,10 @@ import com.hit.pretstreet.pretstreet.subcategory_n_storelist.models.TwoLevelData
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Adapter section for Filter section
+ * @author SVS
+ **/
 public class FilterSectionAdapter extends SectionedRecyclerViewAdapter<RecyclerView.ViewHolder> {
     private static List<TwoLevelDataModel> allData;
     FilterCallback filterCallback;

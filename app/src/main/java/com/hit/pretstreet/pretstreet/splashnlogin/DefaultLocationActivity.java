@@ -70,6 +70,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.PreferenceServices.dropdo
 /**
  * Location Select page which uses the
  * class LocationTracker for getting precise location
+ * @author SVS
  **/
 public class DefaultLocationActivity extends
         AbstractBaseAppCompatActivity implements ApiListenerInterface, LocCallbackInterface, RecentCallback{

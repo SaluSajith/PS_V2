@@ -54,6 +54,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.UPDATEFOLLOWSTAT
  *          Search main fragment which shows recent search and popular search
  *          AutoSearch Results fragment
  *          Search Results fragment
+ *
+ * @author SVS
  **/
 public class SearchActivity extends AbstractBaseAppCompatActivity
         implements ApiListenerInterface, ButtonClickCallbackStoreList, ImageClickCallback, RecentCallback {

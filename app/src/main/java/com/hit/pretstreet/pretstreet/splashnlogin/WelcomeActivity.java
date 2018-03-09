@@ -92,6 +92,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.TERMS_FRAGMENT;
  *              Signup fragment
  *              Splash page (image)
  *              Welcome fragment - containing 4 buttons
+ *
+ * @author SVS
  */
 public class WelcomeActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, ButtonClickCallback, LoginCallbackInterface {

@@ -14,6 +14,7 @@ import com.google.android.gms.analytics.Tracker;
  * Created by User on 20/07/2017.
  * Application class
  * Initialized Google analytics
+ * @author SVS
  */
 public class PretStreet extends MultiDexApplication{
 

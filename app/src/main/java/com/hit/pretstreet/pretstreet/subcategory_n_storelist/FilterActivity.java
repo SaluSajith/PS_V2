@@ -32,6 +32,7 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.PARCEL_KEY;
 import static com.hit.pretstreet.pretstreet.core.utils.Constant.PRE_PAGE_KEY;
 /**
  * Dynamic Filter page - included dynamic sectioned list
+ * @author SVS
  **/
 public class FilterActivity extends AbstractBaseAppCompatActivity implements
         ApiListenerInterface, FilterCallback {

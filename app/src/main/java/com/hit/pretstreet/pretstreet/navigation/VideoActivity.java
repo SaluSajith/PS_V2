@@ -10,6 +10,7 @@ import com.hit.pretstreet.pretstreet.R;
 /**
  * Play introduction video which will be there in the resource file
  * Not using now
+ * @author SVS
  * */
 public class VideoActivity extends AppCompatActivity {
 

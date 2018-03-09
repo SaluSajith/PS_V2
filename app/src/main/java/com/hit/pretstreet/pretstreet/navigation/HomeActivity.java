@@ -116,6 +116,8 @@ import static com.hit.pretstreet.pretstreet.core.utils.Constant.SUBCATPAGE;
  *
  * @features:   Auto Update popup feature
  *              Location change popup feature
+ *
+ * @author SVS
  **/
 public class HomeActivity extends AbstractBaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
